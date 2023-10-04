@@ -23,6 +23,7 @@ module.exports = {
           "index",
           "unknown",
         ],
+        "newlines-between": "always",
         alphabetize: {
           order: "asc",
           caseInsensitive: true,
