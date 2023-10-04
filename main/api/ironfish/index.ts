@@ -28,9 +28,9 @@ class Ironfish {
   private rpcClientResolve: PromiseResolve<RpcClient>;
 
   constructor() {
-    const [promise, resolve, reject] = PromiseUtils.split<RpcClient>()
-    this.rpcClientPromise = promise
-    this.rpcClientResolve = resolve 
+    const [promise, resolve] = PromiseUtils.split<RpcClient>();
+    this.rpcClientPromise = promise;
+    this.rpcClientResolve = resolve;
   }
 
   getRpcClient(): Promise<RpcClient> {

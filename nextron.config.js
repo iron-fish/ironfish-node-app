@@ -1,5 +1,5 @@
 module.exports = {
-  webpack: (defaultConfig, env) => {
+  webpack: (defaultConfig) => {
     return Object.assign(defaultConfig, {
       entry: {
         background: "./main/background.ts",

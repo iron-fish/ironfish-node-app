@@ -8,6 +8,7 @@
   "scripts": {
     "dev": "nextron",
     "build": "nextron build",
+    "lint": "eslint . --ext .js,.jsx,.ts,.tsx",
     "postinstall": "electron-builder install-app-deps"
   },
   "license": "MPL-2.0",
@@ -31,9 +32,14 @@
     "@types/node": "^18.0.0",
     "@types/react": "^18.0.0",
     "@types/react-dom": "^18.0.0",
+    "@typescript-eslint/eslint-plugin": "^6.7.4",
+    "@typescript-eslint/parser": "^6.7.4",
     "electron": "^26.2.2",
     "electron-builder": "^24.6.4",
     "electron-trpc": "^0.5.2",
+    "eslint": "^8.50.0",
+    "eslint-config-next": "^13.5.4",
+    "eslint-config-prettier": "^9.0.0",
     "framer-motion": "^6.5.1",
     "next": "^12.3.4",
     "nextron": "^8.11.3",
