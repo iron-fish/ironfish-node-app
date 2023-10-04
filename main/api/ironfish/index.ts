@@ -3,6 +3,9 @@ import {
   ALL_API_NAMESPACES,
   IronfishSdk,
   NodeUtils,
+  PromiseResolve,
+  PromiseUtils,
+  RpcClient,
   RpcMemoryClient,
   getPackageFrom,
 } from "@ironfish/sdk";
@@ -20,13 +23,21 @@ function getPrivateIdentity(sdk: IronfishSdk) {
 }
 
 class Ironfish {
-  public rpcClient: RpcMemoryClient | null = null;
+  public rpcClient: RpcClient | null = null;
+  private rpcClientPromise: Promise<RpcClient>;
+  private rpcClientResolve: PromiseResolve<RpcClient>;
 
   constructor() {
-    this.init();
+    const [promise, resolve, reject] = PromiseUtils.split<RpcClient>()
+    this.rpcClientPromise = promise
+    this.rpcClientResolve = resolve 
   }
 
-  private async init() {
+  getRpcClient(): Promise<RpcClient> {
+    return this.rpcClientPromise;
+  }
+
+  async init() {
     console.log("Starting IronFish...");
 
     const sdk = await IronfishSdk.init({
@@ -48,6 +59,8 @@ class Ironfish {
       node.logger,
       node.rpc.getRouter(ALL_API_NAMESPACES)
     );
+
+    this.rpcClientResolve(this.rpcClient);
   }
 }
 

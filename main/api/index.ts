@@ -37,11 +37,7 @@ export const router = t.router({
     });
   }),
   getAccounts: t.procedure.query(async () => {
-    const rcpClient = ironfish.rpcClient;
-
-    if (!rcpClient) {
-      throw new Error("Iron Fish not instantiated");
-    }
+    const rcpClient = await ironfish.getRpcClient();
 
     const accountsStream = await rcpClient.wallet.getAccounts();
     const accountsResponse = await accountsStream.waitForEnd();
