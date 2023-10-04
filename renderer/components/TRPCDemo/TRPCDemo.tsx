@@ -1,5 +1,5 @@
-import { trpcReact } from "../../providers/TRPCProvider";
 import { useState } from "react";
+import { trpcReact } from "@/providers/TRPCProvider";
 
 export function TRPCDemo() {
   return (

@@ -24,13 +24,13 @@ export default function Home() {
         <HStack>
           <Button
             as={ChakraLink}
-            href="/next"
+            href="/other"
             variant="solid"
             colorScheme="teal"
             rounded="button"
             width="full"
           >
-            Go to next page
+            Go to other page
           </Button>
         </HStack>
       </VStack>
