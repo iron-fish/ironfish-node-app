@@ -4,8 +4,10 @@ import serve from "electron-serve";
 import { createIPCHandler } from "electron-trpc/main";
 import { createWindow } from "./create-window";
 import { router } from "./api";
+import { ironfish } from "./api/ironfish";
 
 const isProd: boolean = process.env.NODE_ENV === "production";
+ironfish.init();
 
 if (isProd) {
   serve({ directory: "app" });
