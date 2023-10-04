@@ -8,8 +8,8 @@ import {
   VStack,
 } from "@chakra-ui/react";
 
-import { DarkModeSwitch } from "../components/DarkModeSwitch";
-import { TRPCDemo } from "../components/TRPCDemo/TRPCDemo";
+import { DarkModeSwitch } from "@/ui/DarkModeSwitch/DarkModeSwitch";
+import { TRPCDemo } from "@/components/TRPCDemo/TRPCDemo";
 
 export default function Home() {
   return (

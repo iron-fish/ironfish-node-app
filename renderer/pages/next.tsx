@@ -7,7 +7,7 @@ import {
   Heading,
   HStack,
 } from "@chakra-ui/react";
-import { DarkModeSwitch } from "../components/DarkModeSwitch";
+import { DarkModeSwitch } from "@/ui/DarkModeSwitch/DarkModeSwitch";
 
 const Next = () => {
   return (
