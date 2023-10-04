@@ -1,3 +1,6 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
+import path from "path";
+
 import { PromiseResolve, PromiseUtils } from "@ironfish/sdk";
 import {
   screen,
@@ -6,11 +9,10 @@ import {
   Rectangle,
 } from "electron";
 import Store from "electron-store";
-import path from "path";
 
 const createWindow = (
   windowName: string,
-  options: BrowserWindowConstructorOptions
+  options: BrowserWindowConstructorOptions,
 ): BrowserWindow => {
   const key = "window-state";
   const name = `window-state-${windowName}`;
@@ -36,7 +38,7 @@ const createWindow = (
 
   const windowWithinBounds = (
     windowState: { x?: number; y?: number; width: any; height: any },
-    bounds: Electron.Rectangle
+    bounds: Electron.Rectangle,
   ) => {
     return (
       (windowState.x ?? 0) >= bounds.x &&
@@ -120,9 +122,8 @@ class MainWindow {
     });
 
     this.windowResolve(this.window);
-    return this.window
+    return this.window;
   }
 }
 
 export const mainWindow = new MainWindow();
-

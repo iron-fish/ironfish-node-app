@@ -1,10 +1,12 @@
-import z from "zod";
+import { EventEmitter } from "events";
+
 import { initTRPC } from "@trpc/server";
 import { observable } from "@trpc/server/observable";
-import { EventEmitter } from "events";
-import { ironfish } from "./ironfish";
 import { dialog } from "electron";
-import log from 'electron-log'
+import log from "electron-log";
+import { z } from "zod";
+
+import { ironfish } from "./ironfish";
 import { mainWindow } from "../main-window";
 
 const ee = new EventEmitter();
@@ -54,18 +56,17 @@ export const router = t.router({
 
     try {
       const { canceled, filePaths } = await dialog.showOpenDialog(window, {
-        properties: ['openDirectory'],
-      })
+        properties: ["openDirectory"],
+      });
       if (canceled) {
-        return
-      } else {
-        return filePaths[0]
+        return;
       }
+      return filePaths[0];
     } catch (e) {
-      log.error(e)
+      log.error(e);
     }
-  
-    return
+
+    return;
   }),
 });
 

@@ -1,0 +1,8 @@
+# Ignore artifacts:
+app
+dist
+node_modules
+renderer/.next
+
+# File types
+**/*.json

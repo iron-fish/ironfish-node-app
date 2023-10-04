@@ -1,10 +1,10 @@
-import path from "path";
 import { app } from "electron";
 import serve from "electron-serve";
 import { createIPCHandler } from "electron-trpc/main";
-import { mainWindow } from "./main-window";
+
 import { router } from "./api";
 import { ironfish } from "./api/ironfish";
+import { mainWindow } from "./main-window";
 
 const isProd: boolean = process.env.NODE_ENV === "production";
 ironfish.init();

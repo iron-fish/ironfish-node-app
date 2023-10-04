@@ -1,5 +1,3 @@
-import React from "react";
-import Head from "next/head";
 import {
   Button,
   Link as ChakraLink,
@@ -7,9 +5,11 @@ import {
   Heading,
   VStack,
 } from "@chakra-ui/react";
+import Head from "next/head";
+import React from "react";
 
-import { DarkModeSwitch } from "@/ui/DarkModeSwitch/DarkModeSwitch";
 import { TRPCDemo } from "@/components/TRPCDemo/TRPCDemo";
+import { DarkModeSwitch } from "@/ui/DarkModeSwitch/DarkModeSwitch";
 
 export default function Home() {
   return (

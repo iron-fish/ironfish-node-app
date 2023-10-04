@@ -9,6 +9,7 @@ import {
   RpcMemoryClient,
   getPackageFrom,
 } from "@ironfish/sdk";
+
 import packageJson from "../../../package.json";
 
 function getPrivateIdentity(sdk: IronfishSdk) {
@@ -28,9 +29,9 @@ class Ironfish {
   private rpcClientResolve: PromiseResolve<RpcClient>;
 
   constructor() {
-    const [promise, resolve, reject] = PromiseUtils.split<RpcClient>()
-    this.rpcClientPromise = promise
-    this.rpcClientResolve = resolve 
+    const [promise, resolve] = PromiseUtils.split<RpcClient>();
+    this.rpcClientPromise = promise;
+    this.rpcClientResolve = resolve;
   }
 
   getRpcClient(): Promise<RpcClient> {
@@ -57,7 +58,7 @@ class Ironfish {
 
     this.rpcClient = new RpcMemoryClient(
       node.logger,
-      node.rpc.getRouter(ALL_API_NAMESPACES)
+      node.rpc.getRouter(ALL_API_NAMESPACES),
     );
 
     this.rpcClientResolve(this.rpcClient);
