@@ -7,7 +7,6 @@ import {
   Heading,
   VStack,
 } from "@chakra-ui/react";
-
 import { DarkModeSwitch } from "@/ui/DarkModeSwitch/DarkModeSwitch";
 import { TRPCDemo } from "@/components/TRPCDemo/TRPCDemo";
 
@@ -22,6 +21,16 @@ export default function Home() {
         <Heading>Home page</Heading>
         <TRPCDemo />
         <HStack>
+          <Button
+            as={ChakraLink}
+            href="/accounts"
+            variant="solid"
+            colorScheme="teal"
+            rounded="button"
+            width="full"
+          >
+            Go to accounts
+          </Button>
           <Button
             as={ChakraLink}
             href="/other"
