@@ -1,5 +1,3 @@
-import React from "react";
-import Head from "next/head";
 import {
   Button,
   Link as ChakraLink,
@@ -7,6 +5,9 @@ import {
   Heading,
   HStack,
 } from "@chakra-ui/react";
+import Head from "next/head";
+import React from "react";
+
 import { DarkModeSwitch } from "@/ui/DarkModeSwitch/DarkModeSwitch";
 
 const Next = () => {

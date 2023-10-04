@@ -4,7 +4,7 @@ import { initTRPC } from "@trpc/server";
 import { observable } from "@trpc/server/observable";
 import { dialog } from "electron";
 import log from "electron-log";
-import z from "zod";
+import { z } from "zod";
 
 import { ironfish } from "./ironfish";
 import { mainWindow } from "../main-window";

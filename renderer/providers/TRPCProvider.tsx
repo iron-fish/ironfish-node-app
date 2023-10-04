@@ -1,7 +1,8 @@
-import { useState, ReactNode } from "react";
-import { ipcLink } from "electron-trpc/renderer";
-import { createTRPCReact } from "@trpc/react-query";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { createTRPCReact } from "@trpc/react-query";
+import { ipcLink } from "electron-trpc/renderer";
+import { useState, ReactNode } from "react";
+
 import type { AppRouter } from "../../main/api";
 
 export const trpcReact = createTRPCReact<AppRouter>();
