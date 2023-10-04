@@ -1,41 +1,12 @@
-<p align="center">
-<img src="https://i.imgur.com/oahHuxG.png">
-<img src="https://i.imgur.com/sZ01Nyl.png">
-</p>
+# Iron Fish Node App
 
-## Usage
+## Development
 
-### Create an App
+1. Clone repo
+2. `cd iron-fish-node-app`
+3. Install dependencies: `yarn`
+4. Start dev server: `yarn dev`
 
-```
-# with npx
-$ npx create-nextron-app my-app --example with-chakra-ui
+## Creating production build
 
-# with yarn
-$ yarn create nextron-app my-app --example with-chakra-ui
-
-# with pnpm
-$ pnpm dlx create-nextron-app my-app --example with-chakra-ui
-```
-
-### Install Dependencies
-
-```
-$ cd my-app
-
-# using yarn or npm
-$ yarn (or `npm install`)
-
-# using pnpm
-$ pnpm install --shamefully-hoist
-```
-
-### Use it
-
-```
-# development mode
-$ yarn dev (or `npm run dev` or `pnpm run dev`)
-
-# production build
-$ yarn build (or `npm run build` or `pnpm run build`)
-```
+1. `yarn build`
