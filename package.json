@@ -41,6 +41,8 @@
     "eslint-config-next": "^13.5.4",
     "eslint-config-prettier": "^9.0.0",
     "framer-motion": "^6.5.1",
+    "husky": "^8.0.3",
+    "lint-staged": "^14.0.1",
     "next": "^12.3.4",
     "nextron": "^8.11.3",
     "react": "^18.2.0",
@@ -48,5 +50,14 @@
     "typescript": "^4.9.5",
     "usehooks-ts": "^2.9.1",
     "zod": "^3.22.3"
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": {}
+    }
+  },
+  "lint-staged": {
+    "*.ts": "eslint --cache --fix",
+    "*.{js,ts}": "prettier --write"
   }
 }

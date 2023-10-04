@@ -12,7 +12,10 @@ export function TRPCDemo() {
 }
 
 function SimpleGetter() {
-  const { data, isLoading, isError, error } = trpcReact.greeting.useQuery({
+  let foo = 123;
+
+  const { data, isLoading, isError,
+    error } = trpcReact.greeting.useQuery({
     name: "Electron",
   });
 
