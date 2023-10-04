@@ -52,7 +52,6 @@
     "zod": "^3.22.3"
   },
   "lint-staged": {
-    "*.ts": "eslint --cache --fix",
-    "*.{js,ts}": "prettier --write"
+    "*.{js,ts,tsx}": "eslint --cache --fix && prettier --write"
   }
 }
