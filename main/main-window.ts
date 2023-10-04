@@ -1,4 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
+import path from "path";
+
+import { PromiseResolve, PromiseUtils } from "@ironfish/sdk";
 import {
   screen,
   BrowserWindow,
@@ -7,7 +10,7 @@ import {
 } from "electron";
 import Store from "electron-store";
 
-export const createWindow = (
+const createWindow = (
   windowName: string,
   options: BrowserWindowConstructorOptions,
 ): BrowserWindow => {
@@ -91,3 +94,36 @@ export const createWindow = (
 
   return win;
 };
+
+class MainWindow {
+  window: BrowserWindow | null = null;
+  private windowPromise: Promise<BrowserWindow>;
+  private windowResolve: PromiseResolve<BrowserWindow>;
+
+  constructor() {
+    const [promise, resolve] = PromiseUtils.split<BrowserWindow>();
+    this.windowPromise = promise;
+    this.windowResolve = resolve;
+  }
+
+  getMainWindow(): Promise<BrowserWindow> {
+    return this.windowPromise;
+  }
+
+  init(): BrowserWindow {
+    this.window = createWindow("main", {
+      show: false,
+      webPreferences: {
+        preload: path.join(__dirname, "preload.js"),
+        nodeIntegration: false,
+        contextIsolation: true,
+        sandbox: false,
+      },
+    });
+
+    this.windowResolve(this.window);
+    return this.window;
+  }
+}
+
+export const mainWindow = new MainWindow();

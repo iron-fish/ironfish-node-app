@@ -17,6 +17,7 @@
   "dependencies": {
     "@ironfish/rust-nodejs": "^1.9.0",
     "@ironfish/sdk": "^1.10.0",
+    "electron-log": "^4.4.8",
     "electron-serve": "^1.1.0",
     "electron-store": "^8.1.0"
   },
@@ -42,6 +43,7 @@
     "eslint": "^8.50.0",
     "eslint-config-next": "^13.5.4",
     "eslint-config-prettier": "^9.0.0",
+    "eslint-plugin-import": "^2.28.1",
     "framer-motion": "^6.5.1",
     "husky": "^8.0.0",
     "lint-staged": "^14.0.1",
