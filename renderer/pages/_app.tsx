@@ -1,8 +1,8 @@
 import { ChakraProvider } from "@chakra-ui/react";
 import { AppProps } from "next/app";
 import { useIsClient } from "usehooks-ts";
-import theme from "../lib/theme";
-import { TRPCProvider } from "../providers/TRPCProvider";
+import theme from "@/ui/theme";
+import { TRPCProvider } from "@/providers/TRPCProvider";
 
 export default function MyApp({ Component, pageProps }: AppProps) {
   const isClient = useIsClient();

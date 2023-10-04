@@ -11,29 +11,29 @@ import {
 import { DarkModeSwitch } from "../components/DarkModeSwitch";
 import { TRPCDemo } from "../components/TRPCDemo/TRPCDemo";
 
-const Home = () => (
-  <React.Fragment>
-    <Head>
-      <title>Home - Nextron (with-typescript-chakra-ui)</title>
-    </Head>
-    <DarkModeSwitch />
-    <VStack minH="100vh" justifyContent="center">
-      <Heading>Home page</Heading>
-      <TRPCDemo />
-      <HStack>
-        <Button
-          as={ChakraLink}
-          href="/next"
-          variant="solid"
-          colorScheme="teal"
-          rounded="button"
-          width="full"
-        >
-          Go to next page
-        </Button>
-      </HStack>
-    </VStack>
-  </React.Fragment>
-);
-
-export default Home;
+export default function Home() {
+  return (
+    <React.Fragment>
+      <Head>
+        <title>Home - Nextron (with-typescript-chakra-ui)</title>
+      </Head>
+      <DarkModeSwitch />
+      <VStack minH="100vh" justifyContent="center">
+        <Heading>Home page</Heading>
+        <TRPCDemo />
+        <HStack>
+          <Button
+            as={ChakraLink}
+            href="/next"
+            variant="solid"
+            colorScheme="teal"
+            rounded="button"
+            width="full"
+          >
+            Go to next page
+          </Button>
+        </HStack>
+      </VStack>
+    </React.Fragment>
+  );
+}
