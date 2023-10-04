@@ -83,8 +83,6 @@ export const createWindow = (
     ...options,
     webPreferences: {
       ...options.webPreferences,
-      nodeIntegration: false,
-      contextIsolation: true,
     },
   });
 

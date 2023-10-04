@@ -1,7 +1,8 @@
+import path from "path";
 import { app } from "electron";
 import serve from "electron-serve";
 import { createIPCHandler } from "electron-trpc/main";
-import { createWindow } from "./helpers";
+import { createWindow } from "./create-window";
 import { router } from "./api";
 
 const isProd: boolean = process.env.NODE_ENV === "production";
@@ -17,6 +18,12 @@ if (isProd) {
 
   const mainWindow = createWindow("main", {
     show: false,
+    webPreferences: {
+      preload: path.join(__dirname, "preload.js"),
+      nodeIntegration: false,
+      contextIsolation: true,
+      sandbox: false,
+    },
   });
 
   mainWindow.maximize();

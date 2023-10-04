@@ -1,10 +1,16 @@
 import { ChakraProvider } from "@chakra-ui/react";
-
-import theme from "../lib/theme";
 import { AppProps } from "next/app";
+import { useIsClient } from "usehooks-ts";
+import theme from "../lib/theme";
 import { TRPCProvider } from "../providers/TRPCProvider";
 
-function MyApp({ Component, pageProps }: AppProps) {
+export default function MyApp({ Component, pageProps }: AppProps) {
+  const isClient = useIsClient();
+
+  if (!isClient) {
+    return null;
+  }
+
   return (
     <TRPCProvider>
       <ChakraProvider theme={theme}>
@@ -13,5 +19,3 @@ function MyApp({ Component, pageProps }: AppProps) {
     </TRPCProvider>
   );
 }
-
-export default MyApp;
