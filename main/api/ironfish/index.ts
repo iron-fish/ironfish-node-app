@@ -6,7 +6,7 @@ import {
   RpcMemoryClient,
   getPackageFrom,
 } from "@ironfish/sdk";
-import packageJson from "../../package.json";
+import packageJson from "../../../package.json";
 
 function getPrivateIdentity(sdk: IronfishSdk) {
   const networkIdentity = sdk.internal.get("networkIdentity");

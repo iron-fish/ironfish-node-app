@@ -2,7 +2,7 @@ import z from "zod";
 import { initTRPC } from "@trpc/server";
 import { observable } from "@trpc/server/observable";
 import { EventEmitter } from "events";
-import { ironfish } from "../ironfish";
+import { ironfish } from "./ironfish";
 
 const ee = new EventEmitter();
 const t = initTRPC.create({ isServer: true });
