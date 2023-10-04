@@ -1,8 +1,13 @@
-import z from "zod";
+import { EventEmitter } from "events";
+
 import { initTRPC } from "@trpc/server";
 import { observable } from "@trpc/server/observable";
-import { EventEmitter } from "events";
+import { dialog } from "electron";
+import log from "electron-log";
+import { z } from "zod";
+
 import { ironfish } from "./ironfish";
+import { mainWindow } from "../main-window";
 
 const ee = new EventEmitter();
 const t = initTRPC.create({ isServer: true });
@@ -45,6 +50,23 @@ export const router = t.router({
     return accountsResponse.content.accounts.map((account) => {
       return account.toUpperCase();
     });
+  }),
+  openDirectoryDialog: t.procedure.query(async () => {
+    const window = await mainWindow.getMainWindow();
+
+    try {
+      const { canceled, filePaths } = await dialog.showOpenDialog(window, {
+        properties: ["openDirectory"],
+      });
+      if (canceled) {
+        return;
+      }
+      return filePaths[0];
+    } catch (e) {
+      log.error(e);
+    }
+
+    return;
   }),
 });
 

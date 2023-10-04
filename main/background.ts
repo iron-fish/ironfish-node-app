@@ -1,10 +1,10 @@
-import path from "path";
 import { app } from "electron";
 import serve from "electron-serve";
 import { createIPCHandler } from "electron-trpc/main";
-import { createWindow } from "./create-window";
+
 import { router } from "./api";
 import { ironfish } from "./api/ironfish";
+import { mainWindow } from "./main-window";
 
 const isProd: boolean = process.env.NODE_ENV === "production";
 ironfish.init();
@@ -18,26 +18,17 @@ if (isProd) {
 (async () => {
   await app.whenReady();
 
-  const mainWindow = createWindow("main", {
-    show: false,
-    webPreferences: {
-      preload: path.join(__dirname, "preload.js"),
-      nodeIntegration: false,
-      contextIsolation: true,
-      sandbox: false,
-    },
-  });
+  const window = mainWindow.init();
+  window.maximize();
 
-  mainWindow.maximize();
-
-  createIPCHandler({ router, windows: [mainWindow] });
+  createIPCHandler({ router, windows: [window] });
 
   if (isProd) {
-    await mainWindow.loadURL("app://./home");
+    await window.loadURL("app://./home");
   } else {
     const port = process.argv[2];
-    await mainWindow.loadURL(`http://localhost:${port}/home`);
-    mainWindow.webContents.openDevTools();
+    await window.loadURL(`http://localhost:${port}/home`);
+    window.webContents.openDevTools();
   }
 })();
 
