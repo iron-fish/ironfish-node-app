@@ -6,5 +6,8 @@ module.exports = {
     "next/core-web-vitals",
     "prettier",
   ],
+  rules: {
+    "no-else-return": "error",
+  },
   ignorePatterns: ["node_modules/*", "app/*", "dist/*", "renderer/.next/*"],
 };

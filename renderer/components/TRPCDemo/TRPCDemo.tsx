@@ -11,8 +11,16 @@ export function TRPCDemo() {
   );
 }
 
+function doThing(cond: boolean) {
+  if (cond) {
+    return true;
+  } else {
+    return false;
+  }
+}
+
 function SimpleGetter() {
-  let foo = 123;
+  const foo = 123;
 
 
 

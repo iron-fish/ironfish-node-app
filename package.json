@@ -8,8 +8,8 @@
   "scripts": {
     "dev": "nextron",
     "build": "nextron build",
-    "lint": "eslint --config .eslintrc.js .",
-    "format": "prettier ",
+    "lint": "eslint --fix",
+    "format": "prettier --write",
     "prepare": "husky install",
     "postinstall": "electron-builder install-app-deps"
   },
@@ -55,6 +55,6 @@
     "zod": "^3.22.3"
   },
   "lint-staged": {
-    "*.{js,ts,tsx}": ["yarn lint", "yarn format"]
+    "*.{js,ts,tsx}": ["eslint --fix", "prettier --write"]
   }
 }

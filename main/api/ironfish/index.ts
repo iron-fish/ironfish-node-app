@@ -57,7 +57,7 @@ class Ironfish {
 
     this.rpcClient = new RpcMemoryClient(
       node.logger,
-      node.rpc.getRouter(ALL_API_NAMESPACES)
+      node.rpc.getRouter(ALL_API_NAMESPACES),
     );
 
     this.rpcClientResolve(this.rpcClient);

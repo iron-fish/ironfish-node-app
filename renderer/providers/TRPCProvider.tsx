@@ -11,7 +11,7 @@ export function TRPCProvider({ children }: { children: ReactNode }) {
   const [trpcClient] = useState(() =>
     trpcReact.createClient({
       links: [ipcLink()],
-    })
+    }),
   );
 
   return (

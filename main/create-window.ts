@@ -9,7 +9,7 @@ import Store from "electron-store";
 
 export const createWindow = (
   windowName: string,
-  options: BrowserWindowConstructorOptions
+  options: BrowserWindowConstructorOptions,
 ): BrowserWindow => {
   const key = "window-state";
   const name = `window-state-${windowName}`;
@@ -35,7 +35,7 @@ export const createWindow = (
 
   const windowWithinBounds = (
     windowState: { x?: number; y?: number; width: any; height: any },
-    bounds: Electron.Rectangle
+    bounds: Electron.Rectangle,
   ) => {
     return (
       (windowState.x ?? 0) >= bounds.x &&
