@@ -6,6 +6,5 @@ module.exports = {
     "next/core-web-vitals",
     "prettier",
   ],
-  // ignore patterns
   ignorePatterns: ["node_modules/*", "app/*", "dist/*", "renderer/.next/*"],
 };
