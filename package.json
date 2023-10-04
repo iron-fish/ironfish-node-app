@@ -8,7 +8,9 @@
   "scripts": {
     "dev": "nextron",
     "build": "nextron build",
-    "lint": "eslint . --ext .js,.jsx,.ts,.tsx",
+    "lint": "eslint --config .eslintrc.js .",
+    "format": "prettier ",
+    "prepare": "husky install",
     "postinstall": "electron-builder install-app-deps"
   },
   "license": "MPL-2.0",
@@ -53,6 +55,6 @@
     "zod": "^3.22.3"
   },
   "lint-staged": {
-    "*.{js,ts,tsx}": "eslint --cache --fix && prettier --write"
+    "*.{js,ts,tsx}": ["yarn lint", "yarn format"]
   }
 }

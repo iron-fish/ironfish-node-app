@@ -16,7 +16,7 @@ function SimpleGetter() {
 
 
 
-         
+    
   const { data, isLoading, isError,
     error } = trpcReact.greeting.useQuery({
     name: "Electron",
