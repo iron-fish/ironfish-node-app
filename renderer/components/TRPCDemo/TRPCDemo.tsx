@@ -11,22 +11,8 @@ export function TRPCDemo() {
   );
 }
 
-function doThing(cond: boolean) {
-  if (cond) {
-    return true;
-  } else {
-    return false;
-  }
-}
-
 function SimpleGetter() {
-  const foo = 123;
-
-
-
-    
-  const { data, isLoading, isError,
-    error } = trpcReact.greeting.useQuery({
+  const { data, isLoading, isError, error } = trpcReact.greeting.useQuery({
     name: "Electron",
   });
 
