@@ -1,0 +1,12 @@
+appId: com.example.iron-fish-node-app
+productName: Iron Fish Node App
+copyright: Copyright © 2023 IF Labs
+directories:
+  output: dist
+  buildResources: resources
+files:
+  - from: .
+    filter:
+      - package.json
+      - app
+publish: null
