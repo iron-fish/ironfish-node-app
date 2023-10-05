@@ -44,12 +44,43 @@ export const router = t.router({
   getAccounts: t.procedure.query(async () => {
     const rcpClient = await ironfish.getRpcClient();
 
-    const accountsStream = await rcpClient.wallet.getAccounts();
-    const accountsResponse = await accountsStream.waitForEnd();
+    const accountsResponse = await rcpClient.wallet.getAccounts();
 
-    return accountsResponse.content.accounts.map((account) => {
-      return account.toUpperCase();
-    });
+    const fullAccounts = accountsResponse.content.accounts.map(
+      async (account) => {
+        const balancesResponse = await rcpClient.wallet.getAccountBalances({
+          account,
+        });
+
+        const balances = await Promise.all(
+          balancesResponse.content.balances.map(async (balance) => {
+            const assetResponse = await rcpClient.chain.getAsset({
+              id: balance.assetId,
+            });
+
+            return {
+              ...balance,
+              asset: assetResponse.content,
+            };
+          }),
+        );
+
+        const publicAddressResponse =
+          await rcpClient.wallet.getAccountPublicKey({
+            account,
+          });
+
+        return {
+          name: account.toUpperCase(),
+          address: publicAddressResponse.content.publicKey,
+          balances,
+        };
+      },
+    );
+
+    const response = await Promise.all(fullAccounts);
+
+    return response;
   }),
   openDirectoryDialog: t.procedure.query(async () => {
     const window = await mainWindow.getMainWindow();
