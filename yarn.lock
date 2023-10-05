@@ -2153,10 +2153,10 @@
     "@ironfish/rust-nodejs-linux-x64-musl" "1.9.0"
     "@ironfish/rust-nodejs-win32-x64-msvc" "1.9.0"
 
-"@ironfish/sdk@^1.10.0":
-  version "1.10.0"
-  resolved "https://registry.npmjs.org/@ironfish/sdk/-/sdk-1.10.0.tgz#615f9ad5a07a1952e2ac62de3ea5dc0b9a701743"
-  integrity sha512-xI1/kfDKwXX3wJuKtpx5UlbpXTvATMM6P8sPhdnyKYW1FMAiOzLcv5lj6ZC09ip8zwBdfL6/bZJjWiDAh1JEhw==
+"@ironfish/sdk@1.10.1":
+  version "1.10.1"
+  resolved "https://registry.yarnpkg.com/@ironfish/sdk/-/sdk-1.10.1.tgz#91b364c0757da842dfb69f554837cd2131a7c4aa"
+  integrity sha512-yN/Xc6Z1aufqk0hKPNRq16hDqVnikqU31WaIGd+eKPjv/4NsfksMFdttI0bgN03R1g0PjsRbYAa13360InXZNw==
   dependencies:
     "@ethersproject/bignumber" "5.7.0"
     "@fast-csv/format" "4.3.5"
