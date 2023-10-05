@@ -3,6 +3,7 @@ import { AppProps } from "next/app";
 import { useIsClient } from "usehooks-ts";
 
 import { TRPCProvider } from "@/providers/TRPCProvider";
+import { LoadFonts } from "@/ui/LoadFonts/LoadFonts";
 import theme from "@/ui/theme";
 
 export default function MyApp({ Component, pageProps }: AppProps) {
@@ -13,10 +14,13 @@ export default function MyApp({ Component, pageProps }: AppProps) {
   }
 
   return (
-    <TRPCProvider>
-      <ChakraProvider theme={theme}>
-        <Component {...pageProps} />
-      </ChakraProvider>
-    </TRPCProvider>
+    <>
+      <LoadFonts />
+      <TRPCProvider>
+        <ChakraProvider theme={theme}>
+          <Component {...pageProps} />
+        </ChakraProvider>
+      </TRPCProvider>
+    </>
   );
 }
