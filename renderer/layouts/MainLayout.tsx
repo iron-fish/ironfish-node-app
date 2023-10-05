@@ -108,7 +108,7 @@ function Sidebar() {
                 },
               }}
             >
-              <HStack as="a">
+              <HStack>
                 <Box w="30px">{icon}</Box>
                 <Text
                   display={{

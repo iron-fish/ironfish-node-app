@@ -10,8 +10,8 @@ export function DraggableArea() {
       h="30px"
       zIndex={9999}
       sx={{
-        "-webkit-user-select": "none",
-        "-webkit-app-region": "drag",
+        WebkitUserSelect: "none",
+        WebkitAppRegion: "drag",
       }}
     />
   );
