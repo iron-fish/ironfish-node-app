@@ -9,9 +9,15 @@ const SHARED_PROPS = {
 
 const GRADIENTS = {
   pink: "linear-gradient(to right, #F4BFFF 0%, #DE83F0 100%)",
-  green: "linear-gradient(to right, #F4BFFF 0%, #DE83F0 100%)",
-  blue: "linear-gradient(to right, #F4BFFF 0%, #DE83F0 100%)",
+  green: "linear-gradient(to right, #E1FFB0 0%, #C7F182 100%)",
+  blue: "linear-gradient(to right, #BFF6FF 0%, #8AE1EF 100%)",
 };
+
+export const gradientOptions = Object.keys(GRADIENTS) as Array<
+  keyof typeof GRADIENTS
+>;
+
+export type GradientOptions = (typeof gradientOptions)[number];
 
 type Props = BoxProps & {
   contentContainerProps?: BoxProps;

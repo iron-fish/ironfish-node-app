@@ -8,7 +8,6 @@ import {
   RpcClient,
   RpcMemoryClient,
   getPackageFrom,
-  BoxKeyPair,
 } from "@ironfish/sdk";
 
 import packageJson from "../../../package.json";
