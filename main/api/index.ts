@@ -1,6 +1,5 @@
 import { EventEmitter } from "events";
 
-import { GetBalancesResponse, RpcAsset } from "@ironfish/sdk";
 import { initTRPC } from "@trpc/server";
 import { observable } from "@trpc/server/observable";
 import { dialog } from "electron";
@@ -9,8 +8,6 @@ import { z } from "zod";
 
 import { ironfish } from "./ironfish";
 import { mainWindow } from "../main-window";
-
-type Unpacked<T> = T extends (infer U)[] ? U : T;
 
 const ee = new EventEmitter();
 const t = initTRPC.create({ isServer: true });
@@ -44,46 +41,46 @@ export const router = t.router({
       };
     });
   }),
-  getBalances: t.procedure
-    .input(z.object({ account: z.string(), confirmations: z.number() }))
-    .query(async (opts) => {
-      const { input } = opts;
-
-      const rcpClient = await ironfish.getRpcClient();
-
-      const balancesStream = await rcpClient.wallet.getAccountBalances(input);
-      const accountsResponse = await balancesStream.waitForEnd();
-
-      type BalanceResponse = Unpacked<GetBalancesResponse["balances"]> & {
-        asset: RpcAsset;
-      };
-      const balances: BalanceResponse[] = [];
-
-      for (const balance of accountsResponse.content.balances) {
-        const assetStream = await rcpClient.chain.getAsset({
-          id: balance.assetId,
-        });
-        const assetResponse = await assetStream.waitForEnd();
-        balances.push({
-          ...balance,
-          asset: assetResponse.content,
-        });
-      }
-
-      return {
-        ...accountsResponse.content,
-        balances,
-      };
-    }),
   getAccounts: t.procedure.query(async () => {
     const rcpClient = await ironfish.getRpcClient();
 
-    const accountsStream = await rcpClient.wallet.getAccounts();
-    const accountsResponse = await accountsStream.waitForEnd();
+    const accountsResponse = await rcpClient.wallet.getAccounts();
 
-    return accountsResponse.content.accounts.map((account) => {
-      return account.toUpperCase();
-    });
+    const fullAccounts = accountsResponse.content.accounts.map(
+      async (account) => {
+        const balancesResponse = await rcpClient.wallet.getAccountBalances({
+          account,
+        });
+
+        const balances = await Promise.all(
+          balancesResponse.content.balances.map(async (balance) => {
+            const assetResponse = await rcpClient.chain.getAsset({
+              id: balance.assetId,
+            });
+
+            return {
+              ...balance,
+              asset: assetResponse.content,
+            };
+          }),
+        );
+
+        const publicAddressResponse =
+          await rcpClient.wallet.getAccountPublicKey({
+            account,
+          });
+
+        return {
+          name: account.toUpperCase(),
+          address: publicAddressResponse.content.publicKey,
+          balances,
+        };
+      },
+    );
+
+    const response = await Promise.all(fullAccounts);
+
+    return response;
   }),
   openDirectoryDialog: t.procedure.query(async () => {
     const window = await mainWindow.getMainWindow();
