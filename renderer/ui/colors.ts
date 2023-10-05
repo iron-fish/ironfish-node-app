@@ -1,0 +1,13 @@
+export const COLORS = {
+  BLACK: "#0D0C22",
+  WHITE: "#FFFFFF",
+  GRAY_LIGHT: "#F3F3F4",
+  GRAY_MEDIUM: "#7F7F7F",
+
+  DARK_MODE: {
+    BG: "#101010",
+    GRAY_LIGHT: "#ADAEB4",
+    GRAY_MEDIUM: "#3B3B3B",
+    GRAY_DARK: "#252525",
+  },
+};
