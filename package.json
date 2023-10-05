@@ -16,7 +16,7 @@
   "license": "MPL-2.0",
   "dependencies": {
     "@ironfish/rust-nodejs": "^1.9.0",
-    "@ironfish/sdk": "^1.10.0",
+    "@ironfish/sdk": "1.10.1",
     "electron-log": "^4.4.8",
     "electron-serve": "^1.1.0",
     "electron-store": "^8.1.0"
