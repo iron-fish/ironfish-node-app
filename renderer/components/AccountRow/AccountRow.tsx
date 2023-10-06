@@ -3,11 +3,12 @@ import { Box, Flex, Heading, Text, VStack } from "@chakra-ui/react";
 import { ShadowCard, type GradientOptions } from "@/ui/ShadowCard/ShadowCard";
 import { LogoSm } from "@/ui/SVGs/LogoSm";
 import { formatAddress } from "@/utils/addressUtils";
+import { formatOre } from "@/utils/ironUtils";
 
 type AccountRowProps = {
   color: GradientOptions;
   name: string;
-  balance: number;
+  balance: string;
   address: string;
 };
 
@@ -36,7 +37,7 @@ export function AccountRow({ color, name, balance, address }: AccountRowProps) {
         <VStack alignItems="flex-start" justifyContent="center" flexGrow={1}>
           <Text as="h3">{name}</Text>
           <Heading as="span" fontWeight="regular" fontSize="2xl">
-            {balance} $IRON
+            {formatOre(balance)} $IRON
           </Heading>
           <Text>{formatAddress(address)}</Text>
         </VStack>

@@ -4,16 +4,15 @@ import { UserAccountsList } from "@/components/UserAccountsList/UserAccountsList
 import MainLayout from "@/layouts/MainLayout";
 import { trpcReact } from "@/providers/TRPCProvider";
 import { COLORS } from "@/ui/colors";
-import { parseOre } from "@/utils/ironUtils";
+import { formatOre } from "@/utils/ironUtils";
 
 export default function Accounts() {
   const { data } = trpcReact.getAccounts.useQuery();
 
   const totalBalance =
     data?.reduce((acc, curr) => {
-      const accountBalance = parseOre(curr.balances[0].confirmed);
-      return acc + accountBalance;
-    }, 0) ?? "—";
+      return acc + parseInt(curr.balances[0].confirmed);
+    }, 0) ?? null;
 
   return (
     <MainLayout>
@@ -24,7 +23,7 @@ export default function Accounts() {
             Total accounts balance:{" "}
           </Text>
           <Text fontSize="md" as="span" fontWeight="bold">
-            {totalBalance} $IRON
+            {totalBalance !== null ? formatOre(totalBalance) : "—"} $IRON
           </Text>
         </Box>
       </VStack>

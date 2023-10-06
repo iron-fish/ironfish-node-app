@@ -26,7 +26,7 @@ export function UserAccountsList() {
               key={account.address}
               color={gradientOptions[i % gradientOptions.length]}
               name={account.name}
-              balance={parseInt(account.balances[0].confirmed) / 100000000}
+              balance={account.balances[0].confirmed}
               address={account.address}
             />
           );
