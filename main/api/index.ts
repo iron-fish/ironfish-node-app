@@ -5,6 +5,7 @@ import { dialog } from "electron";
 import log from "electron-log";
 
 import { getAccounts } from "./accounts/getAccounts";
+import { ironfish } from "./ironfish";
 import { mainWindow } from "../main-window";
 
 const ee = new EventEmitter();
@@ -20,6 +21,16 @@ emitEveryFiveSecs();
 
 export const router = t.router({
   getAccounts: t.procedure.query(getAccounts),
+  getPeers: t.procedure.query(async () => {
+    const rcpClient = await ironfish.getRpcClient();
+    const peerResponse = await rcpClient.peer.getPeers();
+    return peerResponse.content.peers;
+  }),
+  getStatus: t.procedure.query(async () => {
+    const rcpClient = await ironfish.getRpcClient();
+    const peerResponse = await rcpClient.node.getStatus();
+    return peerResponse.content;
+  }),
   openDirectoryDialog: t.procedure.query(async () => {
     const window = await mainWindow.getMainWindow();
 
