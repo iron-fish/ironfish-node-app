@@ -1,17 +1,11 @@
-import { SearchIcon } from "@chakra-ui/icons";
-import {
-  VStack,
-  HStack,
-  InputGroup,
-  InputLeftElement,
-  Input,
-} from "@chakra-ui/react";
+import { VStack, HStack } from "@chakra-ui/react";
 import { useState } from "react";
 
 import { trpcReact } from "@/providers/TRPCProvider";
 import { gradientOptions } from "@/ui/ShadowCard/ShadowCard";
 
 import { AccountRow } from "../AccountRow/AccountRow";
+import { SearchInput } from "../SearchInput/SearchInput";
 
 export function UserAccountsList() {
   const [searchInput, setSearchInput] = useState("");
@@ -20,24 +14,7 @@ export function UserAccountsList() {
   return (
     <VStack>
       <HStack w="100%" mb={4}>
-        <InputGroup>
-          <InputLeftElement pointerEvents="none">
-            <SearchIcon color="black" _dark={{ color: "white" }} />
-          </InputLeftElement>
-          <Input
-            type="text"
-            placeholder="Search"
-            borderColor="black"
-            onChange={(e) => setSearchInput(e.target.value)}
-            _hover={{ borderColor: "black" }}
-            _dark={{
-              borderColor: "white",
-              _hover: {
-                borderColor: "white",
-              },
-            }}
-          />
-        </InputGroup>
+        <SearchInput onChange={(e) => setSearchInput(e.target.value)} />
       </HStack>
       {data
         ?.filter((item) => {
