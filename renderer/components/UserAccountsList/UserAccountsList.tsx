@@ -29,7 +29,13 @@ export function UserAccountsList() {
             placeholder="Search"
             borderColor="black"
             onChange={(e) => setSearchInput(e.target.value)}
-            _dark={{ borderColor: "white" }}
+            _hover={{ borderColor: "black" }}
+            _dark={{
+              borderColor: "white",
+              _hover: {
+                borderColor: "white",
+              },
+            }}
           />
         </InputGroup>
       </HStack>

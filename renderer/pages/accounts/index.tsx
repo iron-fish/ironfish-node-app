@@ -9,8 +9,6 @@ import { parseOre } from "@/utils/ironUtils";
 export default function Accounts() {
   const { data } = trpcReact.getAccounts.useQuery();
 
-  console.log(data);
-
   const totalBalance =
     data?.reduce((acc, curr) => {
       const accountBalance = parseOre(curr.balances[0].confirmed);
