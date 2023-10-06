@@ -1,5 +1,7 @@
 import { Box, BoxProps } from "@chakra-ui/react";
 
+import { COLORS } from "../colors";
+
 const SPACING = "4px";
 
 const SHARED_PROPS = {
@@ -45,6 +47,9 @@ export function ShadowCard({
         p={3}
         zIndex={1}
         w="100%"
+        _dark={{
+          bg: gradient ? GRADIENTS[gradient] : COLORS.DARK_MODE.GRAY_DARK,
+        }}
         {...contentContainerProps}
         {...SHARED_PROPS}
       >
@@ -57,6 +62,9 @@ export function ShadowCard({
         left={SPACING}
         bottom={0}
         right={0}
+        _dark={{
+          bg: gradient ? GRADIENTS[gradient] : COLORS.DARK_MODE.GRAY_DARK,
+        }}
         {...SHARED_PROPS}
       />
     </Box>

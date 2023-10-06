@@ -28,7 +28,7 @@ export function AccountRow({ color, name, balance, address }: AccountRowProps) {
             justifyContent="center"
             alignItems="center"
           >
-            <Box transform="scale(1.5)">
+            <Box transform="scale(1.5)" color="black">
               <LogoSm />
             </Box>
           </Flex>

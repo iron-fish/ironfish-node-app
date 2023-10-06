@@ -1,9 +1,9 @@
 import { ASSET_DECIMALS } from "./constants";
 
 /**
- * Converts a string or number value in Ore to a value in $IRON.
+ * Converts a string or number value in Ore to a number in $IRON.
  */
-export function formatIron(value: string | number) {
+export function parseOre(value: string | number) {
   const parsedValue = typeof value === "string" ? parseFloat(value) : value;
   return parsedValue / 10 ** ASSET_DECIMALS;
 }
