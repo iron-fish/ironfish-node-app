@@ -29,7 +29,7 @@ export async function getAccounts() {
       });
 
       return {
-        name: account.toUpperCase(),
+        name: account,
         address: publicAddressResponse.content.publicKey,
         balances,
       };
