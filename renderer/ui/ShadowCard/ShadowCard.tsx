@@ -80,8 +80,8 @@ export function ShadowCard({
         _dark={{
           bg: gradient ? makeGradient(gradient) : COLORS.DARK_MODE.GRAY_DARK,
         }}
-        {...contentContainerProps}
         {...SHARED_PROPS}
+        {...contentContainerProps}
       >
         {children}
       </Box>

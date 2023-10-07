@@ -141,7 +141,7 @@ export default function MainLayout({ children }: { children: ReactNode }) {
       <GridItem w="265px" p={4} pt="50px" display="flex" alignItems="stretch">
         <Sidebar />
       </GridItem>
-      <GridItem px={6} pt={10} pb={8}>
+      <GridItem px={6} pt={10} pb={8} overflow="auto">
         <Box
           mx="auto"
           maxWidth={{
