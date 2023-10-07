@@ -22,7 +22,7 @@ type AccountRowProps = {
 export function AccountRow({ color, name, balance, address }: AccountRowProps) {
   const [_, copyToClipboard] = useCopyToClipboard();
   return (
-    <ChakraLink href={`/accounts/${address}`} w="100%">
+    <ChakraLink href={`/accounts/${name}`} w="100%">
       <ShadowCard hoverable>
         <Flex>
           <ShadowCard
