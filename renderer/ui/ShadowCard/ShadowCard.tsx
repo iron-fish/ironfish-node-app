@@ -10,20 +10,34 @@ const SHARED_PROPS = {
 };
 
 const GRADIENTS = {
-  pink: "linear-gradient(to right, #F4BFFF 0%, #DE83F0 100%)",
-  green: "linear-gradient(to right, #E1FFB0 0%, #C7F182 100%)",
-  blue: "linear-gradient(to right, #BFF6FF 0%, #8AE1EF 100%)",
+  pink: {
+    from: "#F4BFFF",
+    to: "#DE83F0",
+  },
+  green: {
+    from: "#E1FFB0",
+    to: "#C7F182",
+  },
+  blue: {
+    from: "#BFF6FF",
+    to: "#8AE1EF",
+  },
 };
 
-export const gradientOptions = Object.keys(GRADIENTS) as Array<
-  keyof typeof GRADIENTS
->;
+export type GradientOptions = keyof typeof GRADIENTS;
 
-export type GradientOptions = (typeof gradientOptions)[number];
+export const gradientOptions = Object.keys(GRADIENTS) as Array<GradientOptions>;
+
+function makeGradient(gradient: GradientOptions, isShadow?: boolean) {
+  const { from, to } = GRADIENTS[gradient];
+  return `linear-gradient(to right, ${
+    isShadow ? "white" : from
+  } 0%, ${to} 100%)`;
+}
 
 type Props = BoxProps & {
   contentContainerProps?: BoxProps;
-  gradient?: keyof typeof GRADIENTS;
+  gradient?: GradientOptions;
   hoverable?: boolean;
 };
 
@@ -59,12 +73,12 @@ export function ShadowCard({
     >
       <Box
         position="relative"
-        bg={gradient ? GRADIENTS[gradient] : "white"}
+        bg={gradient ? makeGradient(gradient) : "white"}
         p={3}
         zIndex={1}
         w="100%"
         _dark={{
-          bg: gradient ? GRADIENTS[gradient] : COLORS.DARK_MODE.GRAY_DARK,
+          bg: gradient ? makeGradient(gradient) : COLORS.DARK_MODE.GRAY_DARK,
         }}
         {...contentContainerProps}
         {...SHARED_PROPS}
@@ -74,13 +88,15 @@ export function ShadowCard({
       <Box
         data-is-shadow="true"
         position="absolute"
-        bg={gradient ? GRADIENTS[gradient] : "white"}
+        bg={gradient ? makeGradient(gradient, true) : "white"}
         top={SPACING}
         left={SPACING}
         bottom={0}
         right={0}
         _dark={{
-          bg: gradient ? GRADIENTS[gradient] : COLORS.DARK_MODE.GRAY_DARK,
+          bg: gradient
+            ? makeGradient(gradient, true)
+            : COLORS.DARK_MODE.GRAY_DARK,
         }}
         {...SHARED_PROPS}
       />
