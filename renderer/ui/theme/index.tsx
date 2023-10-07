@@ -10,6 +10,11 @@ const theme = extendTheme({
     body: "favorit-regular, sans-serif",
   },
   components: {
+    Heading: defineStyleConfig({
+      baseStyle: {
+        fontWeight: "regular",
+      },
+    }),
     Text: defineStyleConfig({
       baseStyle: {
         color: COLORS.BLACK,

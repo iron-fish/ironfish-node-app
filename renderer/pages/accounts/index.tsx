@@ -1,9 +1,12 @@
-import { Box, Heading, Text, VStack } from "@chakra-ui/react";
+import { Box, HStack, Heading, Text, VStack } from "@chakra-ui/react";
 
 import { UserAccountsList } from "@/components/UserAccountsList/UserAccountsList";
 import MainLayout from "@/layouts/MainLayout";
 import { trpcReact } from "@/providers/TRPCProvider";
 import { COLORS } from "@/ui/colors";
+import { PillButton } from "@/ui/PillButton/PillButton";
+import { CreateAccount } from "@/ui/SVGs/CreateAccount";
+import { ImportAccount } from "@/ui/SVGs/ImportAccount";
 import { formatOre } from "@/utils/ironUtils";
 
 export default function Accounts() {
@@ -17,7 +20,19 @@ export default function Accounts() {
   return (
     <MainLayout>
       <VStack mb={10} alignItems="stretch">
-        <Heading>Accounts</Heading>
+        <HStack>
+          <Heading flexGrow={1}>Accounts</Heading>
+          <HStack>
+            <PillButton variant="inverted">
+              <CreateAccount />
+              Create Account
+            </PillButton>
+            <PillButton variant="inverted">
+              <ImportAccount />
+              Import Account
+            </PillButton>
+          </HStack>
+        </HStack>
         <Box>
           <Text fontSize="md" as="span" color={COLORS.GRAY_MEDIUM} mr={1}>
             Total accounts balance:{" "}

@@ -24,12 +24,27 @@ export type GradientOptions = (typeof gradientOptions)[number];
 type Props = BoxProps & {
   contentContainerProps?: BoxProps;
   gradient?: keyof typeof GRADIENTS;
+  hoverable?: boolean;
+};
+
+const SHADOW_HOVER_STYLES = {
+  _hover: {
+    "& > [data-is-shadow]": {
+      bg: "black",
+    },
+    _dark: {
+      "& > [data-is-shadow]": {
+        bg: "white",
+      },
+    },
+  },
 };
 
 export function ShadowCard({
   children,
   contentContainerProps,
   gradient,
+  hoverable = false,
   ...rest
 }: Props) {
   return (
@@ -39,6 +54,7 @@ export function ShadowCard({
       position="relative"
       display="flex"
       alignItems="stretch"
+      sx={hoverable ? SHADOW_HOVER_STYLES : undefined}
       {...rest}
     >
       <Box
@@ -56,6 +72,7 @@ export function ShadowCard({
         {children}
       </Box>
       <Box
+        data-is-shadow="true"
         position="absolute"
         bg={gradient ? GRADIENTS[gradient] : "white"}
         top={SPACING}
