@@ -7,14 +7,11 @@ import {
 } from "@chakra-ui/react";
 import React from "react";
 
-import { TRPCDemo } from "@/components/TRPCDemo/TRPCDemo";
-
 export default function Home() {
   return (
     <React.Fragment>
       <VStack minH="100vh" justifyContent="center">
         <Heading>Home page</Heading>
-        <TRPCDemo />
         <HStack>
           <Button
             as={ChakraLink}
