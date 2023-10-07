@@ -88,7 +88,7 @@ function Sidebar() {
       </Box>
       <VStack alignItems="flex-start" flexGrow={1}>
         {LINKS.map(({ label, href, icon }) => {
-          const isActive = router.pathname === href;
+          const isActive = router.pathname.startsWith(href);
           return (
             <ChakraLink
               key={href}
