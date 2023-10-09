@@ -6,6 +6,7 @@ import { z } from "zod";
 import { handleGetAccount } from "./accounts/handleGetAccount";
 import { handleGetAccounts } from "./accounts/handleGetAccounts";
 import { ironfish } from "./ironfish";
+import { handleGetTransactions } from "./transactions/handleGetTransactions";
 import { mainWindow } from "../main-window";
 
 const t = initTRPC.create({ isServer: true });
@@ -21,6 +22,15 @@ export const router = t.router({
       return handleGetAccount(opts.input);
     }),
   getAccounts: t.procedure.query(handleGetAccounts),
+  getTransactions: t.procedure
+    .input(
+      z.object({
+        name: z.string(),
+      }),
+    )
+    .query(async (opts) => {
+      return handleGetTransactions(opts.input);
+    }),
   getPeers: t.procedure.query(async () => {
     const rcpClient = await ironfish.getRpcClient();
     const peerResponse = await rcpClient.peer.getPeers();

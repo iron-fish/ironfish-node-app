@@ -1,8 +1,23 @@
-import { Flex, Heading, HStack, LightMode, Text } from "@chakra-ui/react";
+import {
+  Box,
+  Flex,
+  Grid,
+  GridItem,
+  Heading,
+  HStack,
+  LightMode,
+  Text,
+} from "@chakra-ui/react";
+import Image from "next/image";
 
+import treasureChest from "@/images/treasure-chest.svg";
 import { trpcReact } from "@/providers/TRPCProvider";
 import { COLORS } from "@/ui/colors";
+import { PillButton } from "@/ui/PillButton/PillButton";
 import { ShadowCard } from "@/ui/ShadowCard/ShadowCard";
+import { ArrowReceive } from "@/ui/SVGs/ArrowReceive";
+import { ArrowSend } from "@/ui/SVGs/ArrowSend";
+import { hexToASCIIString } from "@/utils/hexToASCIIString";
 import { formatOre } from "@/utils/ironUtils";
 
 export function AccountAssets({ accountName }: { accountName: string }) {
@@ -15,6 +30,8 @@ export function AccountAssets({ accountName }: { accountName: string }) {
     return null;
   }
 
+  console.log(data.balances);
+
   return (
     <LightMode>
       <ShadowCard
@@ -26,16 +43,70 @@ export function AccountAssets({ accountName }: { accountName: string }) {
         <Heading color={COLORS.BLACK} fontSize={24} mb={4}>
           Your Assets
         </Heading>
-        <HStack bg="rgba(255, 255, 255, 0.15)" p={8} borderRadius="7px">
+        <HStack
+          bg="rgba(255, 255, 255, 0.15)"
+          p={8}
+          borderRadius="7px"
+          justifyContent="space-between"
+        >
           <Flex alignItems="flex-start" flexDirection="column">
-            <Text fontSize="md" mb={2}>
+            <Text fontSize="lg" mb={2}>
               $IRON
             </Text>
-            <Heading as="span" color="black">
-              {formatOre(data?.balances[0].confirmed)}
+            <Heading as="span" color="black" mb={5}>
+              {formatOre(data.balances.iron.confirmed)}
             </Heading>
+            <HStack alignItems="stretch" justifyContent="center">
+              <PillButton onClick={(e) => e.preventDefault()}>
+                <ArrowSend transform="scale(0.8)" />
+                Send
+              </PillButton>
+              <PillButton onClick={(e) => e.preventDefault()}>
+                <ArrowReceive transform="scale(0.8)" />
+                Receive
+              </PillButton>
+            </HStack>
           </Flex>
+          <Image alt="" src={treasureChest} />
         </HStack>
+
+        {data.balances.custom.length > 0 && (
+          <Box
+            bg="rgba(255, 255, 255, 0.15)"
+            p={8}
+            mt={8}
+            borderRadius="7px"
+            justifyContent="space-between"
+          >
+            <Text fontSize="lg" mb={4}>
+              Other Assets
+            </Text>
+            <Grid
+              gap={4}
+              templateColumns={
+                data.balances.custom.length > 1 ? "repeat(2, 1fr)" : "1fr"
+              }
+            >
+              {data.balances.custom.map((balance) => {
+                return (
+                  <GridItem
+                    key={balance.assetId}
+                    bg="rgba(255, 255, 255, 0.15)"
+                    display="flex"
+                    alignItems="center"
+                    p={4}
+                    borderRadius="4px"
+                  >
+                    <Text fontSize="lg" flexGrow={1} as="span">
+                      {hexToASCIIString(balance.asset.name)}
+                    </Text>
+                    <Text fontSize="lg">{formatOre(balance.confirmed)}</Text>
+                  </GridItem>
+                );
+              })}
+            </Grid>
+          </Box>
+        )}
       </ShadowCard>
     </LightMode>
   );
