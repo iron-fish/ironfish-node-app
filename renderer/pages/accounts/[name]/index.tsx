@@ -46,7 +46,7 @@ function AccountOverviewContent({ accountName }: { accountName: string }) {
 
           <TabPanels>
             <TabPanel p={0}>
-              <AccountAssets />
+              <AccountAssets accountName={accountName} />
             </TabPanel>
             <TabPanel p={0}>
               <p>two!</p>
@@ -56,8 +56,7 @@ function AccountOverviewContent({ accountName }: { accountName: string }) {
             </TabPanel>
           </TabPanels>
         </Tabs>
-        <pre>{JSON.stringify(data, null, 2)}</pre>
-        <pre>{JSON.stringify(data, null, 2)}</pre>
+        {/* <pre>{JSON.stringify(data, null, 2)}</pre> */}
       </Box>
     </MainLayout>
   );
