@@ -64,7 +64,7 @@ function AccountOverviewContent({ accountName }: { accountName: string }) {
 
 export default function AccountOverview() {
   const router = useRouter();
-  const accountName = asQueryString(router.query.name);
+  const accountName = asQueryString(router.query["account-name"]);
 
   if (!accountName) {
     return null;

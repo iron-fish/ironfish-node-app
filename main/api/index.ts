@@ -25,7 +25,7 @@ export const router = t.router({
   getTransactions: t.procedure
     .input(
       z.object({
-        name: z.string(),
+        accountName: z.string(),
       }),
     )
     .query(async (opts) => {
