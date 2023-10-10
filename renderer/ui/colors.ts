@@ -4,6 +4,8 @@ export const COLORS = {
   GRAY_LIGHT: "#F3F3F4",
   GRAY_MEDIUM: "#7F7F7F",
 
+  VIOLET: "#DE83F0",
+
   DARK_MODE: {
     BG: "#101010",
     GRAY_LIGHT: "#ADAEB4",

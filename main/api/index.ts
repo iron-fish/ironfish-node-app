@@ -1,15 +1,26 @@
 import { initTRPC } from "@trpc/server";
 import { dialog } from "electron";
 import log from "electron-log";
+import { z } from "zod";
 
-import { getAccounts } from "./accounts/getAccounts";
+import { handleGetAccount } from "./accounts/handleGetAccount";
+import { handleGetAccounts } from "./accounts/handleGetAccounts";
 import { ironfish } from "./ironfish";
 import { mainWindow } from "../main-window";
 
 const t = initTRPC.create({ isServer: true });
 
 export const router = t.router({
-  getAccounts: t.procedure.query(getAccounts),
+  getAccount: t.procedure
+    .input(
+      z.object({
+        name: z.string(),
+      }),
+    )
+    .query(async (opts) => {
+      return handleGetAccount(opts.input);
+    }),
+  getAccounts: t.procedure.query(handleGetAccounts),
   getPeers: t.procedure.query(async () => {
     const rcpClient = await ironfish.getRpcClient();
     const peerResponse = await rcpClient.peer.getPeers();
