@@ -1,15 +1,15 @@
 import { ironfish } from "../../ironfish";
 
 export async function getAccount(account: string) {
-  const rcpClient = await ironfish.getRpcClient();
+  const rpcClient = await ironfish.getRpcClient();
 
-  const balancesResponse = await rcpClient.wallet.getAccountBalances({
+  const balancesResponse = await rpcClient.wallet.getAccountBalances({
     account,
   });
 
   const balances = await Promise.all(
     balancesResponse.content.balances.map(async (balance) => {
-      const assetResponse = await rcpClient.chain.getAsset({
+      const assetResponse = await rpcClient.chain.getAsset({
         id: balance.assetId,
       });
 
@@ -20,7 +20,7 @@ export async function getAccount(account: string) {
     }),
   );
 
-  const publicAddressResponse = await rcpClient.wallet.getAccountPublicKey({
+  const publicAddressResponse = await rpcClient.wallet.getAccountPublicKey({
     account,
   });
 
