@@ -45,22 +45,8 @@ export async function formatTransactionsToNotes(
   for (const tx of transactions) {
     tx.notes
       ?.filter((note) => {
-        // Filter out notes that only represent the fee...
-
-        // If it's a receive transaction, it's not the fee.
-        if (tx.type === "receive") return true;
-
-        // If a note is not the native asset, it's not the fee.
-        if (note.assetId !== nativeAssetId) return true;
-
-        // If the owner is not the sender, it's not the fee.
-        if (note.owner !== note.sender) return true;
-
-        // If the note has a memo, it's not the fee.
-        if (note.memo) return true;
-
-        // @todo: This doesn't take into account if the user sent themselves $IRON.
-        return false;
+        // Filter out self-send notes
+        return note.owner !== note.sender;
       })
       .sort((note) => (note.assetId === nativeAssetId ? -1 : 1))
       .forEach((note) => {
