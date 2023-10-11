@@ -105,7 +105,7 @@ export function TransactionRow({
             <Text as="span">{formatDate(timestamp)}</Text>
           </GridItem>
           <GridItem display="flex" alignItems="center">
-            <Text as="span">{memo ?? "—"}</Text>
+            <Text as="span">{memo || "—"}</Text>
           </GridItem>
           <GridItem
             alignItems="center"

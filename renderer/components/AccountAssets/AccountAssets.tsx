@@ -111,8 +111,6 @@ export function AccountAssets({ accountName }: { accountName: string }) {
           )}
         </ShadowCard>
       </LightMode>
-
-      <TransactionsList accountName={accountName} />
     </Box>
   );
 }

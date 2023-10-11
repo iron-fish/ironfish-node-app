@@ -1,22 +1,22 @@
 import { ironfish } from "../ironfish";
 import { resolveContentStream } from "../utils/resolveContentStream";
 
-type Params = {
-  accountName: string;
-};
-
-export async function handleGetAccountNotes({ accountName }: Params) {
+export async function handleGetTransaction({
+  transactionHash,
+}: {
+  transactionHash: string;
+}) {
   const rpcClient = await ironfish.getRpcClient();
 
   const transactionsStream =
     await rpcClient.wallet.getAccountTransactionsStream({
-      account: accountName,
+      hash: transactionHash,
       notes: true,
     });
 
-  const transactions = await resolveContentStream(
+  const transaction = await resolveContentStream(
     transactionsStream.contentStream(),
   );
 
-  return transactions;
+  return transaction[0];
 }

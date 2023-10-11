@@ -46,6 +46,7 @@ export async function formatTransactionsToNotes(
     tx.notes
       ?.filter((note) => {
         // Filter out self-send notes
+        return true;
         return note.owner !== note.sender;
       })
       .sort((note) => (note.assetId === nativeAssetId ? -1 : 1))

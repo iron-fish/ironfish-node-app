@@ -11,6 +11,8 @@ import {
 import { useRouter } from "next/router";
 
 import { AccountAssets } from "@/components/AccountAssets/AccountAssets";
+import { CopyAddress } from "@/components/CopyAddress/CopyAddress";
+import { TransactionsList } from "@/components/TransactionsList/TransactionsList";
 import MainLayout from "@/layouts/MainLayout";
 import { trpcReact } from "@/providers/TRPCProvider";
 import { asQueryString } from "@/utils/parseRouteQuery";
@@ -26,10 +28,16 @@ function AccountOverviewContent({ accountName }: { accountName: string }) {
   }
 
   return (
-    <MainLayout>
+    <MainLayout
+      backLinkProps={{
+        href: "/accounts",
+        label: "Back to All Accounts",
+      }}
+    >
       <Box>
-        <HStack mb={4}>
+        <HStack mb={4} gap={4}>
           <Heading>{data.name}</Heading>
+          <CopyAddress address={data.address} transform="translateY(0.4em)" />
         </HStack>
         <Tabs>
           <TabList mb={8}>
@@ -47,6 +55,7 @@ function AccountOverviewContent({ accountName }: { accountName: string }) {
           <TabPanels>
             <TabPanel p={0}>
               <AccountAssets accountName={accountName} />
+              <TransactionsList accountName={accountName} />
             </TabPanel>
             <TabPanel p={0}>
               <p>two!</p>
@@ -56,7 +65,6 @@ function AccountOverviewContent({ accountName }: { accountName: string }) {
             </TabPanel>
           </TabPanels>
         </Tabs>
-        {/* <pre>{JSON.stringify(data, null, 2)}</pre> */}
       </Box>
     </MainLayout>
   );

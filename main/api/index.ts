@@ -6,6 +6,7 @@ import { z } from "zod";
 import { handleGetAccount } from "./accounts/handleGetAccount";
 import { handleGetAccounts } from "./accounts/handleGetAccounts";
 import { ironfish } from "./ironfish";
+import { handleGetTransaction } from "./transactions/handleGetTransaction";
 import { handleGetTransactions } from "./transactions/handleGetTransactions";
 import { mainWindow } from "../main-window";
 
@@ -22,6 +23,15 @@ export const router = t.router({
       return handleGetAccount(opts.input);
     }),
   getAccounts: t.procedure.query(handleGetAccounts),
+  getTransaction: t.procedure
+    .input(
+      z.object({
+        transactionHash: z.string(),
+      }),
+    )
+    .query(async (opts) => {
+      return handleGetTransaction(opts.input);
+    }),
   getTransactions: t.procedure
     .input(
       z.object({

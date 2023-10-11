@@ -22,7 +22,7 @@ export function TransactionsList({ accountName }: Props) {
   return (
     <Box>
       <Heading as="h2" fontSize="2xl" mb={8}>
-        Transactions
+        Transaction Activity
       </Heading>
       <TransactionsHeadings />
       {data.map((transaction) => {
