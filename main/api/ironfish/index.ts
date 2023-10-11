@@ -3,14 +3,14 @@ import {
   ALL_API_NAMESPACES,
   IronfishSdk,
   NodeUtils,
-  PromiseResolve,
-  PromiseUtils,
   RpcClient,
   RpcMemoryClient,
   getPackageFrom,
 } from "@ironfish/sdk";
 
 import packageJson from "../../../package.json";
+import { SnapshotManager } from "../snapshot/snapshotManager";
+import { SplitPromise, splitPromise } from "../utils";
 
 function getPrivateIdentity(sdk: IronfishSdk) {
   const networkIdentity = sdk.internal.get("networkIdentity");
@@ -24,22 +24,35 @@ function getPrivateIdentity(sdk: IronfishSdk) {
 }
 
 class Ironfish {
-  public rpcClient: RpcClient | null = null;
-  private rpcClientPromise: Promise<RpcClient>;
-  private rpcClientResolve: PromiseResolve<RpcClient>;
+  public snapshotManager: SnapshotManager = new SnapshotManager();
 
-  constructor() {
-    const [promise, resolve] = PromiseUtils.split<RpcClient>();
-    this.rpcClientPromise = promise;
-    this.rpcClientResolve = resolve;
+  private rpcClientPromise: SplitPromise<RpcClient> = splitPromise();
+  private sdkPromise: SplitPromise<IronfishSdk> = splitPromise();
+  private _started: boolean = false;
+  private _initialized: boolean = false;
+
+  rpcClient(): Promise<RpcClient> {
+    return this.rpcClientPromise.promise
   }
 
-  getRpcClient(): Promise<RpcClient> {
-    return this.rpcClientPromise;
+  sdk(): Promise<IronfishSdk> {
+    return this.sdkPromise.promise;
+  }
+
+  async startFromSnapshot(): Promise<void> {
+    const sdk = await this.sdk();
+    this.snapshotManager.start(sdk);
+    await this.snapshotManager.result();
+    await this.start();
   }
 
   async init() {
-    console.log("Starting IronFish...");
+    if(this._initialized) {
+      return;
+    }
+    this._initialized = true;
+
+    console.log("Initializing IronFish SDK...");
 
     const sdk = await IronfishSdk.init({
       pkg: getPackageFrom(packageJson),
@@ -48,6 +61,17 @@ class Ironfish {
       },
     });
 
+    this.sdkPromise.resolve(sdk);
+  }
+
+  async start() {
+    if(this._started) {
+      return;
+    }
+    this._started = true;
+
+    console.log("Starting IronFish Node...");
+    const sdk = await this.sdk()
     const node = await sdk.node({
       privateIdentity: getPrivateIdentity(sdk),
       autoSeed: true,
@@ -56,12 +80,12 @@ class Ironfish {
     await NodeUtils.waitForOpen(node);
     await node.rpc.start();
 
-    this.rpcClient = new RpcMemoryClient(
+    const rpcClient = new RpcMemoryClient(
       node.logger,
       node.rpc.getRouter(ALL_API_NAMESPACES),
     );
 
-    this.rpcClientResolve(this.rpcClient);
+    this.rpcClientPromise.resolve(rpcClient);
   }
 }
 

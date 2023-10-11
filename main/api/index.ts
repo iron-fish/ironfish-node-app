@@ -1,4 +1,6 @@
+import { ErrorUtils } from "@ironfish/sdk";
 import { initTRPC } from "@trpc/server";
+import { observable } from "@trpc/server/observable";
 import { dialog } from "electron";
 import log from "electron-log";
 import { z } from "zod";
@@ -6,6 +8,7 @@ import { z } from "zod";
 import { handleGetAccount } from "./accounts/handleGetAccount";
 import { handleGetAccounts } from "./accounts/handleGetAccounts";
 import { ironfish } from "./ironfish";
+import { SnapshotUpdate } from "../../shared/types";
 import { mainWindow } from "../main-window";
 
 const t = initTRPC.create({ isServer: true });
@@ -22,14 +25,43 @@ export const router = t.router({
     }),
   getAccounts: t.procedure.query(handleGetAccounts),
   getPeers: t.procedure.query(async () => {
-    const rcpClient = await ironfish.getRpcClient();
+    const rcpClient = await ironfish.rpcClient();
     const peerResponse = await rcpClient.peer.getPeers();
     return peerResponse.content.peers;
   }),
   getStatus: t.procedure.query(async () => {
-    const rcpClient = await ironfish.getRpcClient();
+    const rcpClient = await ironfish.rpcClient();
     const peerResponse = await rcpClient.node.getStatus();
     return peerResponse.content;
+  }),
+  isFirstRun: t.procedure.query(async () => {
+    const sdk = await ironfish.sdk();
+    return sdk.internal.get('isFirstRun');
+  }),
+  testMutation: t.procedure.mutation(async () => {
+    console.log('test mutation');
+  }),
+  snapshotProgress: t.procedure.subscription(async () => {
+    return observable<SnapshotUpdate>((emit) => {
+      const onProgress = (update: SnapshotUpdate) => {
+        emit.next(update);
+      }
+
+      ironfish.snapshotManager.onProgress.on(onProgress)
+
+      ironfish.snapshotManager.result()
+        .catch((err) => {
+          const error = ErrorUtils.renderError(err);
+          emit.error(error);
+        })
+
+      return () => {
+        ironfish.snapshotManager.onProgress.off(onProgress)
+      };
+    });
+  }),
+  startNodeFromSnapshot: t.procedure.mutation(async () => {
+    ironfish.startFromSnapshot();
   }),
   openDirectoryDialog: t.procedure.query(async () => {
     const window = await mainWindow.getMainWindow();

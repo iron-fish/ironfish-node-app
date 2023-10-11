@@ -1,5 +1,6 @@
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { createTRPCReact } from "@trpc/react-query";
+import { inferRouterInputs, inferRouterOutputs } from "@trpc/server";
 import { ipcLink } from "electron-trpc/renderer";
 import { useState, ReactNode } from "react";
 
@@ -21,3 +22,6 @@ export function TRPCProvider({ children }: { children: ReactNode }) {
     </trpcReact.Provider>
   );
 }
+
+export type TRPCRouterInputs = inferRouterInputs<AppRouter>;
+export type TRPCRouterOutputs = inferRouterOutputs<AppRouter>;
