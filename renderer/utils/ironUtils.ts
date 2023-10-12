@@ -1,4 +1,4 @@
-import { ASSET_DECIMALS } from "./constants";
+import { ASSET_DECIMALS } from "../../shared/constants";
 
 const ORE_FORMATTER = Intl.NumberFormat(undefined, {
   maximumFractionDigits: ASSET_DECIMALS,

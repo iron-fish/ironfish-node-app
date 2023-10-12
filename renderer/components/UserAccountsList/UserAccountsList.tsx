@@ -26,7 +26,7 @@ export function UserAccountsList() {
               key={account.address}
               color={gradientOptions[i % gradientOptions.length]}
               name={account.name}
-              balance={account.balances[0].confirmed}
+              balance={account.balances.iron.confirmed}
               address={account.address}
             />
           );

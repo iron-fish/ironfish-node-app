@@ -1,3 +1,4 @@
+import { ChevronLeftIcon } from "@chakra-ui/icons";
 import {
   Grid,
   GridItem,
@@ -128,7 +129,15 @@ function Sidebar() {
   );
 }
 
-export default function MainLayout({ children }: { children: ReactNode }) {
+type Props = {
+  children: ReactNode;
+  backLinkProps?: {
+    label: string;
+    href: string;
+  };
+};
+
+export default function MainLayout({ children, backLinkProps }: Props) {
   return (
     <Grid
       templateColumns="auto 1fr"
@@ -152,6 +161,30 @@ export default function MainLayout({ children }: { children: ReactNode }) {
             "2xl": "1280px",
           }}
         >
+          {backLinkProps && (
+            <ChakraLink href={backLinkProps.href} display="inline-block" mb={4}>
+              <HStack gap={3}>
+                <Box
+                  h="24px"
+                  w="24px"
+                  border="1px solid white"
+                  borderRadius="full"
+                  display="flex"
+                  alignItems="center"
+                  justifyContent="center"
+                >
+                  <ChevronLeftIcon boxSize={4} />
+                </Box>
+                <Text
+                  as="span"
+                  color={COLORS.GRAY_MEDIUM}
+                  _dark={{ color: COLORS.DARK_MODE.GRAY_LIGHT }}
+                >
+                  {backLinkProps.label}
+                </Text>
+              </HStack>
+            </ChakraLink>
+          )}
           {children}
         </Box>
       </GridItem>
