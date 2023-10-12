@@ -19,5 +19,5 @@ export async function handleGetTransactions({ accountName }: Params) {
     transactionsStream.contentStream(),
   );
 
-  return formatTransactionsToNotes(rpcClient, transactions);
+  return formatTransactionsToNotes(rpcClient, transactions, accountName);
 }

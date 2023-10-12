@@ -10,10 +10,11 @@ import { IRON_ID } from "../../../../shared/constants";
 export async function createAssetLookup(
   client: RpcClient,
   assetIds: string[],
+  accountName: string,
 ): Promise<{ [key: string]: RpcAsset }> {
   assetIds = [...new Set(assetIds)];
   const assets = await Promise.all(
-    assetIds.map((id) => client.wallet.getAsset({ id })),
+    assetIds.map((id) => client.wallet.getAsset({ id, account: accountName })),
   );
   return Object.fromEntries(
     assets.map((asset) => [asset.content.id, asset.content]),
@@ -34,11 +35,16 @@ export type TransactionNote = {
 export async function formatTransactionsToNotes(
   client: RpcClient,
   transactions: RpcWalletTransaction[],
+  accountName: string,
 ): Promise<TransactionNote[]> {
   const transactionAssetIds = transactions.flatMap((tx) => {
     return tx.notes?.map((note) => note.assetId) ?? [];
   });
-  const assetLookup = await createAssetLookup(client, transactionAssetIds);
+  const assetLookup = await createAssetLookup(
+    client,
+    transactionAssetIds,
+    accountName,
+  );
 
   const transactionNotes: Array<TransactionNote> = [];
 
