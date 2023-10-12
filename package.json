@@ -12,7 +12,8 @@
     "lint": "eslint --fix --config .eslintrc.js .",
     "format": "prettier --config .prettierrc --write .",
     "prepare": "husky install",
-    "postinstall": "electron-builder install-app-deps"
+    "postinstall": "electron-builder install-app-deps",
+    "release": "nextron build --publish always"
   },
   "license": "MPL-2.0",
   "dependencies": {
@@ -31,7 +32,6 @@
     "@chakra-ui/styled-system": "^2.9.1",
     "@chakra-ui/system": "^2.6.1",
     "@chakra-ui/theme-tools": "^2.1.1",
-    "@electron/rebuild": "^3.3.0",
     "@emotion/react": "^11.11.1",
     "@emotion/styled": "^11.11.0",
     "@tanstack/react-query": "^4.35.7",
@@ -52,6 +52,7 @@
     "electron": "^26.2.2",
     "electron-builder": "^24.6.4",
     "electron-trpc": "^0.5.2",
+    "electron-updater": "6.1.4",
     "eslint": "^8.50.0",
     "eslint-config-next": "^13.5.4",
     "eslint-config-prettier": "^9.0.0",

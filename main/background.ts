@@ -5,6 +5,7 @@ import { createIPCHandler } from "electron-trpc/main";
 import { router } from "./api";
 import { manager } from "./api/manager";
 import { mainWindow } from "./main-window";
+import { updater } from "./updater";
 
 const isProd: boolean = process.env.NODE_ENV === "production";
 
@@ -19,6 +20,10 @@ if (isProd) {
 
 (async () => {
   await app.whenReady();
+
+  if (isProd) {
+    updater.init();
+  }
 
   const window = mainWindow.init();
   window.maximize();

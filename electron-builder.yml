@@ -9,4 +9,8 @@ files:
     filter:
       - package.json
       - app
-publish: null
+mac:
+  notarize:
+    teamId: '9WR79D873L'
+win:
+  sign: './build/sign-windows.js'
