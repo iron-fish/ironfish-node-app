@@ -58,9 +58,6 @@ export const router = t.router({
     const sdk = await ironfish.sdk();
     return sdk.internal.get("isFirstRun");
   }),
-  testMutation: t.procedure.mutation(async () => {
-    console.log("test mutation");
-  }),
   snapshotProgress: t.procedure.subscription(async () => {
     return observable<SnapshotUpdate>((emit) => {
       const onProgress = (update: SnapshotUpdate) => {
