@@ -7,6 +7,7 @@ import { z } from "zod";
 
 import { handleGetAccount } from "./accounts/handleGetAccount";
 import { handleGetAccounts } from "./accounts/handleGetAccounts";
+import { handleGetInitialState } from "./initialState/handleGetInitialState";
 import { ironfish } from "./ironfish";
 import { handleGetTransaction } from "./transactions/handleGetTransaction";
 import { handleGetTransactions } from "./transactions/handleGetTransactions";
@@ -58,6 +59,7 @@ export const router = t.router({
     const sdk = await ironfish.sdk();
     return sdk.internal.get("isFirstRun");
   }),
+  getInitialState: t.procedure.query(handleGetInitialState),
   snapshotProgress: t.procedure.subscription(async () => {
     return observable<SnapshotUpdate>((emit) => {
       const onProgress = (update: SnapshotUpdate) => {
