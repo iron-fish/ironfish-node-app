@@ -78,8 +78,11 @@ export const router = t.router({
       };
     });
   }),
-  startNodeFromSnapshot: t.procedure.mutation(async () => {
-    ironfish.startFromSnapshot();
+  downloadSnapshot: t.procedure.mutation(async () => {
+    ironfish.downloadSnapshot();
+  }),
+  startNode: t.procedure.mutation(async () => {
+    ironfish.start();
   }),
   openDirectoryDialog: t.procedure.query(async () => {
     const window = await mainWindow.getMainWindow();

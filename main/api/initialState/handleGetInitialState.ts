@@ -1,14 +1,22 @@
 import { ironfish } from "../ironfish";
 
-export async function handleGetInitialState() {
-  type InitialState =
-    | "create-account"
-    | "snapshot-download-prompt"
-    | "sync-from-peers";
+type InitialState =
+  | "create-account"
+  | "snapshot-download-prompt"
+  | "start-node";
 
-  const _sdk = await ironfish.sdk();
+let initialStateData: InitialState | null = null;
 
-  const initialState: InitialState = "create-account";
+export async function handleGetInitialState(): Promise<InitialState> {
+  if (initialStateData) return initialStateData;
 
-  return initialState as InitialState;
+  const sdk = await ironfish.sdk();
+
+  if (sdk.internal.get("isFirstRun")) {
+    initialStateData = "snapshot-download-prompt";
+  }
+
+  initialStateData = "start-node";
+
+  return initialStateData;
 }

@@ -2,10 +2,7 @@ import { VStack, Flex, Spinner } from "@chakra-ui/react";
 import { useRouter } from "next/router";
 import React, { useCallback, useEffect } from "react";
 
-import {
-  SnapshotDownloadModal,
-  useShouldPromptForSnapshotDownload,
-} from "@/components/SnapshotDownloadModal/SnapshotDownloadModal";
+import { SnapshotDownloadModal } from "@/components/SnapshotDownloadModal/SnapshotDownloadModal";
 import { trpcReact } from "@/providers/TRPCProvider";
 import { LogoLg } from "@/ui/SVGs/LogoLg";
 
@@ -23,28 +20,25 @@ export default function Home() {
   const { data: initialStateData, isLoading: isInitialStateLoading } =
     trpcReact.getInitialState.useQuery();
 
-  console.log(initialStateData, isInitialStateLoading);
+  console.log({ initialStateData });
 
-  const { isReady: isSnapshotQueryReady, shouldPrompt } =
-    useShouldPromptForSnapshotDownload();
+  const { mutate: startNode } = trpcReact.startNode.useMutation();
 
   useEffect(() => {
-    if (!isSnapshotQueryReady || shouldPrompt) return;
+    if (isInitialStateLoading || initialStateData !== "start-node") return;
 
+    startNode();
     router.replace("/accounts");
-  }, [router, isSnapshotQueryReady, shouldPrompt]);
+  }, [router, startNode, initialStateData, isInitialStateLoading]);
 
   const handleSyncFromPeers = useCallback(() => {
     console.log("Syncing from peers");
   }, []);
 
   const handleSnapshotSuccess = useCallback(() => {
+    startNode();
     router.replace("/accounts");
-  }, [router]);
-
-  if (!isSnapshotQueryReady) {
-    return "Loading...";
-  }
+  }, [router, startNode]);
 
   return (
     <>
@@ -54,7 +48,7 @@ export default function Home() {
           <Spinner size="lg" />
         </VStack>
       </Flex>
-      {shouldPrompt && (
+      {initialStateData === "snapshot-download-prompt" && (
         <SnapshotDownloadModal
           onPeers={handleSyncFromPeers}
           onSuccess={handleSnapshotSuccess}

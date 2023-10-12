@@ -11,7 +11,7 @@ import {
   Box,
   HStack,
 } from "@chakra-ui/react";
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useState } from "react";
 
 import { trpcReact } from "@/providers/TRPCProvider";
 
@@ -111,25 +111,6 @@ function DownloadProgress({ onSuccess }: { onSuccess: () => void }) {
   );
 }
 
-export function useShouldPromptForSnapshotDownload() {
-  const [shouldPrompt, setShouldPrompt] = useState<boolean | undefined>();
-  const { data: isFirstRun, isLoading } = trpcReact.isFirstRun.useQuery();
-
-  useEffect(() => {
-    if (isLoading || typeof shouldPrompt !== "undefined") return;
-
-    setShouldPrompt(isFirstRun);
-  }, [isFirstRun, isLoading, shouldPrompt]);
-
-  return useMemo(
-    () => ({
-      isReady: !isLoading && typeof shouldPrompt !== "undefined",
-      shouldPrompt,
-    }),
-    [isLoading, shouldPrompt],
-  );
-}
-
 export function SnapshotDownloadModal({
   onPeers,
   onSuccess,
@@ -138,7 +119,7 @@ export function SnapshotDownloadModal({
   onSuccess: () => void;
 }) {
   const [currentStep, setCurrentStep] = useState<ModalSteps>("prompt");
-  const mutation = trpcReact.startNodeFromSnapshot.useMutation();
+  const mutation = trpcReact.downloadSnapshot.useMutation();
 
   return (
     <Modal isOpen={true} onClose={() => null}>

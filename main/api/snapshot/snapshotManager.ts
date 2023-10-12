@@ -19,17 +19,20 @@ import { SplitPromise, splitPromise } from "../utils";
 export class SnapshotManager {
   onProgress: Event<[SnapshotUpdate]> = new Event();
   snapshotPromise: SplitPromise<void> = splitPromise();
-  private _started = false;
+  private _downloading = false;
 
-  start(sdk: IronfishSdk): void {
-    if (!this._started) {
-      this._started = true;
-      this._start(sdk)
-        .then(this.snapshotPromise.resolve)
-        .catch((err) => {
-          console.log(ErrorUtils.renderError(err));
-          this.snapshotPromise.reject(ErrorUtils.renderError(err));
-        });
+  async downloadSnapshot(sdk: IronfishSdk) {
+    if (this._downloading) return;
+
+    this._downloading = true;
+
+    try {
+      await this._start(sdk);
+      this._downloading = false;
+      this.snapshotPromise.resolve();
+    } catch (err) {
+      console.log(ErrorUtils.renderError(err));
+      this.snapshotPromise.reject(ErrorUtils.renderError(err));
     }
   }
 
