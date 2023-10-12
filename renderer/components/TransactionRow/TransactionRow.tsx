@@ -7,7 +7,7 @@ import { COLORS } from "@/ui/colors";
 import { ShadowCard } from "@/ui/ShadowCard/ShadowCard";
 import { formatAddress } from "@/utils/addressUtils";
 import { formatDate } from "@/utils/formatDate";
-import { hexToASCIIString } from "@/utils/hexToASCIIString";
+import { hexToUTF16String } from "@/utils/hexToUTF16String";
 import { formatOre } from "@/utils/ironUtils";
 
 import { ReceivedIcon } from "./icons/ReceivedIcon";
@@ -95,7 +95,7 @@ export function TransactionRow({
           </GridItem>
           <GridItem display="flex" alignItems="center">
             <Text as="span">
-              {formatOre(value)} {hexToASCIIString(assetName)}
+              {formatOre(value)} {hexToUTF16String(assetName)}
             </Text>
           </GridItem>
           <GridItem display="flex" alignItems="center">

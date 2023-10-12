@@ -1,7 +1,7 @@
 /**
- * Takes a hex string and converts it to a string of ASCII characters.
+ * Takes a hex string and converts it to a string of UTF-16 characters.
  */
-export function hexToASCIIString(hex: string) {
+export function hexToUTF16String(hex: string) {
   const asString = hex.toString();
   let result = "";
 

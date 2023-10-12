@@ -17,10 +17,8 @@ import { PillButton } from "@/ui/PillButton/PillButton";
 import { ShadowCard } from "@/ui/ShadowCard/ShadowCard";
 import { ArrowReceive } from "@/ui/SVGs/ArrowReceive";
 import { ArrowSend } from "@/ui/SVGs/ArrowSend";
-import { hexToASCIIString } from "@/utils/hexToASCIIString";
+import { hexToUTF16String } from "@/utils/hexToUTF16String";
 import { formatOre } from "@/utils/ironUtils";
-
-import { TransactionsList } from "../TransactionsList/TransactionsList";
 
 export function AccountAssets({ accountName }: { accountName: string }) {
   const { data } = trpcReact.getAccount.useQuery({
@@ -100,7 +98,7 @@ export function AccountAssets({ accountName }: { accountName: string }) {
                       borderRadius="4px"
                     >
                       <Text fontSize="lg" flexGrow={1} as="span">
-                        {hexToASCIIString(balance.asset.name)}
+                        {hexToUTF16String(balance.asset.name)}
                       </Text>
                       <Text fontSize="lg">{formatOre(balance.confirmed)}</Text>
                     </GridItem>

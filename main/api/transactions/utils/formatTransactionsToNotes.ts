@@ -1,10 +1,11 @@
-import { Asset } from "@ironfish/rust-nodejs";
 import {
   RpcAsset,
   RpcClient,
   RpcWalletTransaction,
   TransactionType,
 } from "@ironfish/sdk";
+
+import { IRON_ID } from "../../../../shared/constants";
 
 export async function createAssetLookup(
   client: RpcClient,
@@ -38,18 +39,17 @@ export async function formatTransactionsToNotes(
     return tx.notes?.map((note) => note.assetId) ?? [];
   });
   const assetLookup = await createAssetLookup(client, transactionAssetIds);
-  const nativeAssetId = Asset.nativeId().toString("hex");
 
   const transactionNotes: Array<TransactionNote> = [];
 
   for (const tx of transactions) {
     tx.notes
-      ?.filter((note) => {
-        // Filter out self-send notes
+      ?.filter((_note) => {
+        // @todo: Add ability to filter out self-send notes (to hide noisy change notes).
+        // Consider that mining rewards are self-sends.
         return true;
-        return note.owner !== note.sender;
       })
-      .sort((note) => (note.assetId === nativeAssetId ? -1 : 1))
+      .sort((note) => (note.assetId === IRON_ID ? -1 : 1))
       .forEach((note) => {
         transactionNotes.push({
           assetName: assetLookup[note.assetId]?.name ?? "Unknown",

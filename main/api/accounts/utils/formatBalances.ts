@@ -23,8 +23,12 @@ export function formatBalances(balances: BalanceWithAsset[]) {
     }
   }
 
+  if (ironAsset === null) {
+    throw new Error("Iron asset not found in balances ");
+  }
+
   return {
-    iron: ironAsset!,
+    iron: ironAsset,
     custom: customAssets,
   };
 }
