@@ -1,10 +1,4 @@
-import {
-  Button,
-  Link as ChakraLink,
-  HStack,
-  Heading,
-  VStack,
-} from "@chakra-ui/react";
+import { VStack, Flex, Spinner } from "@chakra-ui/react";
 import { useRouter } from "next/router";
 import React, { useCallback, useEffect } from "react";
 
@@ -12,21 +6,20 @@ import {
   SnapshotDownloadModal,
   useShouldPromptForSnapshotDownload,
 } from "@/components/SnapshotDownloadModal/SnapshotDownloadModal";
+import { LogoLg } from "@/ui/SVGs/LogoLg";
 
 /**
- * When a user starts the app, they land on the Home page
+ * This component handles initializing the SDK and determining
+ * what state the user should be in.
  *
- * - If the user does not have an account, they should be routed to the create account flow
- * - If the user's node is in an error state, they should be routed to the error page where they can restart the node
- * - When the user lands on Home, we check if they're eligible for a snapshot download?
+ * - If the user has not created an account, they should go to the account creation flow.
+ * - If the user user is behind on syncing, they should be prompted to download a snapshot.
+ * - If the user is up to date, they should be redirected to the accounts page.
  */
-
 export default function Home() {
   const router = useRouter();
   const { isReady: isSnapshotQueryReady, shouldPrompt } =
     useShouldPromptForSnapshotDownload();
-
-  console.log({ isSnapshotQueryReady, shouldPrompt });
 
   useEffect(() => {
     if (!isSnapshotQueryReady || shouldPrompt) return;
@@ -47,28 +40,19 @@ export default function Home() {
   }
 
   return (
-    <React.Fragment>
-      <VStack minH="100vh" justifyContent="center">
-        <Heading>Home page</Heading>
-        <HStack>
-          <Button
-            as={ChakraLink}
-            href="/accounts"
-            variant="solid"
-            colorScheme="teal"
-            rounded="button"
-            width="full"
-          >
-            Go to accounts
-          </Button>
-          {shouldPrompt && (
-            <SnapshotDownloadModal
-              onPeers={handleSyncFromPeers}
-              onSuccess={handleSnapshotSuccess}
-            />
-          )}
-        </HStack>
-      </VStack>
-    </React.Fragment>
+    <>
+      <Flex h="100vh" justifyContent="center" alignItems="center">
+        <VStack gap={10}>
+          <LogoLg transform="scale(2)" />
+          <Spinner size="lg" />
+        </VStack>
+      </Flex>
+      {shouldPrompt && (
+        <SnapshotDownloadModal
+          onPeers={handleSyncFromPeers}
+          onSuccess={handleSnapshotSuccess}
+        />
+      )}
+    </>
   );
 }
