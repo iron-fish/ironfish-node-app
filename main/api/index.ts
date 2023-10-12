@@ -55,10 +55,6 @@ export const router = t.router({
     const peerResponse = await rcpClient.node.getStatus();
     return peerResponse.content;
   }),
-  isFirstRun: t.procedure.query(async () => {
-    const sdk = await ironfish.sdk();
-    return sdk.internal.get("isFirstRun");
-  }),
   getInitialState: t.procedure.query(handleGetInitialState),
   snapshotProgress: t.procedure.subscription(async () => {
     return observable<SnapshotUpdate>((emit) => {
@@ -68,7 +64,9 @@ export const router = t.router({
 
       ironfish.snapshotManager.onProgress.on(onProgress);
 
-      ironfish.snapshotManager.result().catch((err) => {
+      ironfish.snapshotManager.result().then(() => {
+        emit.next({step: "complete"})
+      }).catch((err) => {
         const error = ErrorUtils.renderError(err);
         emit.error(error);
       });

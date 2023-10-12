@@ -28,7 +28,6 @@ class Ironfish {
 
   private rpcClientPromise: SplitPromise<RpcClient> = splitPromise();
   private sdkPromise: SplitPromise<IronfishSdk> = splitPromise();
-  private _downloadingSnapshot: boolean = false;
   private _started: boolean = false;
   private _initialized: boolean = false;
 
@@ -41,8 +40,12 @@ class Ironfish {
   }
 
   async downloadSnapshot(): Promise<void> {
+    if(this._started) {
+      throw new Error("Cannot download snapshot after node has started")
+    }
+
     const sdk = await this.sdk();
-    await this.snapshotManager.downloadSnapshot(sdk);
+    await this.snapshotManager.run(sdk);
   }
 
   async init() {
@@ -67,14 +70,14 @@ class Ironfish {
     if (this._started) {
       return;
     }
+    this._started = true;
 
-    if (this._downloadingSnapshot) {
+    if (this.snapshotManager.started) {
       await this.snapshotManager.result();
     }
 
     console.log("Starting IronFish Node...");
 
-    this._started = true;
     const sdk = await this.sdk();
     const node = await sdk.node({
       privateIdentity: getPrivateIdentity(sdk),
@@ -83,6 +86,8 @@ class Ironfish {
 
     await NodeUtils.waitForOpen(node);
     await node.rpc.start();
+
+    node.internal.set("isFirstRun", false);
 
     const rpcClient = new RpcMemoryClient(
       node.logger,

@@ -14,9 +14,9 @@ export async function handleGetInitialState(): Promise<InitialState> {
 
   if (sdk.internal.get("isFirstRun")) {
     initialStateData = "snapshot-download-prompt";
+  } else {
+    initialStateData = "start-node";
   }
-
-  initialStateData = "start-node";
 
   return initialStateData;
 }

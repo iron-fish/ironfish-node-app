@@ -1,7 +1,6 @@
 import fsAsync from "fs/promises";
 
 import {
-  ErrorUtils,
   Event,
   IronfishSdk,
   Meter,
@@ -19,20 +18,20 @@ import { SplitPromise, splitPromise } from "../utils";
 export class SnapshotManager {
   onProgress: Event<[SnapshotUpdate]> = new Event();
   snapshotPromise: SplitPromise<void> = splitPromise();
-  private _downloading = false;
+  started = false;
 
-  async downloadSnapshot(sdk: IronfishSdk) {
-    if (this._downloading) return;
+  async run(sdk: IronfishSdk): Promise<void> {
+    if(this.started) {
+      return
+    }
 
-    this._downloading = true;
+    this.started = true;
 
     try {
-      await this._start(sdk);
-      this._downloading = false;
-      this.snapshotPromise.resolve();
-    } catch (err) {
-      console.log(ErrorUtils.renderError(err));
-      this.snapshotPromise.reject(ErrorUtils.renderError(err));
+      await this._run(sdk)
+      this.snapshotPromise.resolve()
+    } catch (e) {
+      this.snapshotPromise.reject(e)
     }
   }
 
@@ -40,7 +39,7 @@ export class SnapshotManager {
     return this.snapshotPromise.promise;
   }
 
-  private async _start(sdk: IronfishSdk): Promise<void> {
+  async _run(sdk: IronfishSdk): Promise<void> {
     const node = await sdk.node();
     await NodeUtils.waitForOpen(node);
     const nodeChainDBVersion = await node.chain.blockchainDb.getVersion();
@@ -117,6 +116,5 @@ export class SnapshotManager {
 
     await downloadedSnapshot.replaceDatabase();
     await fsAsync.rm(downloadedSnapshot.file);
-    this.onProgress.emit({ step: "complete" });
   }
 }
