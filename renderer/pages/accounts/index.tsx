@@ -14,7 +14,7 @@ export default function Accounts() {
 
   const totalBalance =
     data?.reduce((acc, curr) => {
-      return acc + parseInt(curr.balances[0].confirmed);
+      return acc + parseInt(curr.balances.iron.confirmed);
     }, 0) ?? null;
 
   return (

@@ -8,6 +8,8 @@ import { z } from "zod";
 import { handleGetAccount } from "./accounts/handleGetAccount";
 import { handleGetAccounts } from "./accounts/handleGetAccounts";
 import { ironfish } from "./ironfish";
+import { handleGetTransaction } from "./transactions/handleGetTransaction";
+import { handleGetTransactions } from "./transactions/handleGetTransactions";
 import { SnapshotUpdate } from "../../shared/types";
 import { mainWindow } from "../main-window";
 
@@ -24,6 +26,24 @@ export const router = t.router({
       return handleGetAccount(opts.input);
     }),
   getAccounts: t.procedure.query(handleGetAccounts),
+  getTransaction: t.procedure
+    .input(
+      z.object({
+        transactionHash: z.string(),
+      }),
+    )
+    .query(async (opts) => {
+      return handleGetTransaction(opts.input);
+    }),
+  getTransactions: t.procedure
+    .input(
+      z.object({
+        accountName: z.string(),
+      }),
+    )
+    .query(async (opts) => {
+      return handleGetTransactions(opts.input);
+    }),
   getPeers: t.procedure.query(async () => {
     const rcpClient = await ironfish.rpcClient();
     const peerResponse = await rcpClient.peer.getPeers();
@@ -36,27 +56,26 @@ export const router = t.router({
   }),
   isFirstRun: t.procedure.query(async () => {
     const sdk = await ironfish.sdk();
-    return sdk.internal.get('isFirstRun');
+    return sdk.internal.get("isFirstRun");
   }),
   testMutation: t.procedure.mutation(async () => {
-    console.log('test mutation');
+    console.log("test mutation");
   }),
   snapshotProgress: t.procedure.subscription(async () => {
     return observable<SnapshotUpdate>((emit) => {
       const onProgress = (update: SnapshotUpdate) => {
         emit.next(update);
-      }
+      };
 
-      ironfish.snapshotManager.onProgress.on(onProgress)
+      ironfish.snapshotManager.onProgress.on(onProgress);
 
-      ironfish.snapshotManager.result()
-        .catch((err) => {
-          const error = ErrorUtils.renderError(err);
-          emit.error(error);
-        })
+      ironfish.snapshotManager.result().catch((err) => {
+        const error = ErrorUtils.renderError(err);
+        emit.error(error);
+      });
 
       return () => {
-        ironfish.snapshotManager.onProgress.off(onProgress)
+        ironfish.snapshotManager.onProgress.off(onProgress);
       };
     });
   }),

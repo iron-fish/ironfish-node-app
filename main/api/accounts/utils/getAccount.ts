@@ -1,3 +1,4 @@
+import { formatBalances } from "./formatBalances";
 import { ironfish } from "../../ironfish";
 
 export async function getAccount(account: string) {
@@ -27,6 +28,6 @@ export async function getAccount(account: string) {
   return {
     name: account,
     address: publicAddressResponse.content.publicKey,
-    balances,
+    balances: formatBalances(balances),
   };
 }
