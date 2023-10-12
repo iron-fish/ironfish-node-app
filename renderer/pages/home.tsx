@@ -6,6 +6,7 @@ import {
   SnapshotDownloadModal,
   useShouldPromptForSnapshotDownload,
 } from "@/components/SnapshotDownloadModal/SnapshotDownloadModal";
+import { trpcReact } from "@/providers/TRPCProvider";
 import { LogoLg } from "@/ui/SVGs/LogoLg";
 
 /**
@@ -18,6 +19,12 @@ import { LogoLg } from "@/ui/SVGs/LogoLg";
  */
 export default function Home() {
   const router = useRouter();
+
+  const { data: initialStateData, isLoading: isInitialStateLoading } =
+    trpcReact.getInitialState.useQuery();
+
+  console.log(initialStateData, isInitialStateLoading);
+
   const { isReady: isSnapshotQueryReady, shouldPrompt } =
     useShouldPromptForSnapshotDownload();
 

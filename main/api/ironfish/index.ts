@@ -68,9 +68,9 @@ class Ironfish {
     if (this._started) {
       return;
     }
-    this._started = true;
-
     console.log("Starting IronFish Node...");
+
+    this._started = true;
     const sdk = await this.sdk();
     const node = await sdk.node({
       privateIdentity: getPrivateIdentity(sdk),
