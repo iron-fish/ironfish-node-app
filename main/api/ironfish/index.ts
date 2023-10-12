@@ -32,7 +32,7 @@ class Ironfish {
   private _initialized: boolean = false;
 
   rpcClient(): Promise<RpcClient> {
-    return this.rpcClientPromise.promise
+    return this.rpcClientPromise.promise;
   }
 
   sdk(): Promise<IronfishSdk> {
@@ -47,7 +47,7 @@ class Ironfish {
   }
 
   async init() {
-    if(this._initialized) {
+    if (this._initialized) {
       return;
     }
     this._initialized = true;
@@ -65,13 +65,13 @@ class Ironfish {
   }
 
   async start() {
-    if(this._started) {
+    if (this._started) {
       return;
     }
     this._started = true;
 
     console.log("Starting IronFish Node...");
-    const sdk = await this.sdk()
+    const sdk = await this.sdk();
     const node = await sdk.node({
       privateIdentity: getPrivateIdentity(sdk),
       autoSeed: true,

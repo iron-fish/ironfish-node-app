@@ -1,7 +1,3 @@
-/* This Source Code Form is subject to the terms of the Mozilla Public
- * License, v. 2.0. If a copy of the MPL was not distributed with this
- * file, You can obtain one at https://mozilla.org/MPL/2.0/. */
-
 import crypto from "crypto";
 import fs from "fs";
 import fsAsync from "fs/promises";
@@ -10,7 +6,7 @@ import path from "path";
 
 import { ErrorUtils, IronfishSdk, TimeUtils } from "@ironfish/sdk";
 import axios from "axios";
-import tar from "tar";
+import { list, extract } from "tar";
 
 export type SnapshotManifest = {
   block_sequence: number;
@@ -133,6 +129,9 @@ export class SnapshotDownloader {
 
     const idleTimeout = 30000;
     let idleLastChunk = Date.now();
+
+    // CancelToken is a TS type, not the value we want here
+    // eslint-disable-next-line import/no-named-as-default-member
     const idleCancelSource = axios.CancelToken.source();
 
     const idleInterval = setInterval(() => {
@@ -262,12 +261,12 @@ export class DownloadedSnapshot {
     let totalEntries = 0;
     let extracted = 0;
 
-    tar.list({
+    list({
       file: this.file,
       onentry: (_) => onEntry(++totalEntries, extracted, extracted),
     });
 
-    await tar.extract({
+    await extract({
       file: this.file,
       C: this.snapshotDatabasePath,
       strip: 1,

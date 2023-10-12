@@ -8,11 +8,14 @@ import {
 import { useRouter } from "next/router";
 import React, { useCallback, useEffect } from "react";
 
-import { SnapshotDownloadModal, useShouldPromptForSnapshotDownload } from "@/components/SnapshotDownloadModal/SnapshotDownloadModal";
+import {
+  SnapshotDownloadModal,
+  useShouldPromptForSnapshotDownload,
+} from "@/components/SnapshotDownloadModal/SnapshotDownloadModal";
 
 /**
  * When a user starts the app, they land on the Home page
- * 
+ *
  * - If the user does not have an account, they should be routed to the create account flow
  * - If the user's node is in an error state, they should be routed to the error page where they can restart the node
  * - When the user lands on Home, we check if they're eligible for a snapshot download?
@@ -20,26 +23,27 @@ import { SnapshotDownloadModal, useShouldPromptForSnapshotDownload } from "@/com
 
 export default function Home() {
   const router = useRouter();
-  const { isReady: isSnapshotQueryReady, shouldPrompt } = useShouldPromptForSnapshotDownload();
+  const { isReady: isSnapshotQueryReady, shouldPrompt } =
+    useShouldPromptForSnapshotDownload();
 
-  console.log({isSnapshotQueryReady, shouldPrompt})
+  console.log({ isSnapshotQueryReady, shouldPrompt });
 
   useEffect(() => {
     if (!isSnapshotQueryReady || shouldPrompt) return;
 
-    router.replace("/accounts")
-  }, [router, isSnapshotQueryReady, shouldPrompt])
+    router.replace("/accounts");
+  }, [router, isSnapshotQueryReady, shouldPrompt]);
 
   const handleSyncFromPeers = useCallback(() => {
-    console.log('Syncing from peers')
-  }, [])
+    console.log("Syncing from peers");
+  }, []);
 
   const handleSnapshotSuccess = useCallback(() => {
     router.replace("/accounts");
-  }, [router])
+  }, [router]);
 
   if (!isSnapshotQueryReady) {
-    return "Loading..."
+    return "Loading...";
   }
 
   return (
@@ -57,7 +61,12 @@ export default function Home() {
           >
             Go to accounts
           </Button>
-          {shouldPrompt && <SnapshotDownloadModal onPeers={handleSyncFromPeers} onSuccess={handleSnapshotSuccess} />}
+          {shouldPrompt && (
+            <SnapshotDownloadModal
+              onPeers={handleSyncFromPeers}
+              onSuccess={handleSnapshotSuccess}
+            />
+          )}
         </HStack>
       </VStack>
     </React.Fragment>

@@ -9,7 +9,7 @@
     "dev": "nextron",
     "build": "nextron build",
     "lint": "eslint --fix --config .eslintrc.js .",
-    "format": "prettier --write",
+    "format": "prettier --config .prettierrc --write .",
     "prepare": "husky install",
     "postinstall": "electron-builder install-app-deps"
   },
