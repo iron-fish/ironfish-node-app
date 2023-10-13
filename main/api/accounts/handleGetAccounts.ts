@@ -2,7 +2,7 @@ import { getAccount } from "./utils/getAccount";
 import { ironfish } from "../ironfish";
 
 export async function handleGetAccounts() {
-  const rpcClient = await ironfish.getRpcClient();
+  const rpcClient = await ironfish.rpcClient();
 
   const accountsResponse = await rpcClient.wallet.getAccounts();
 

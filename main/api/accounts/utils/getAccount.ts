@@ -2,7 +2,7 @@ import { formatBalances } from "./formatBalances";
 import { ironfish } from "../../ironfish";
 
 export async function getAccount(account: string) {
-  const rpcClient = await ironfish.getRpcClient();
+  const rpcClient = await ironfish.rpcClient();
 
   const balancesResponse = await rpcClient.wallet.getAccountBalances({
     account,
