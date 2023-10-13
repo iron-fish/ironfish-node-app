@@ -57,10 +57,10 @@ function DownloadProgress({ onSuccess }: { onSuccess: () => void }) {
   const [snapshotState, setSnapshotState] = useState<SnapshotUpdate>();
   trpcReact.snapshotProgress.useSubscription(undefined, {
     onData: (data) => {
-      console.log({ data });
       setSnapshotState(data);
     },
     onError: (err) => {
+      // @todo: Handle error with error boundary
       console.log(err);
     },
   });
@@ -70,8 +70,6 @@ function DownloadProgress({ onSuccess }: { onSuccess: () => void }) {
       onSuccess();
     }
   }, [onSuccess, snapshotState?.step]);
-
-  console.log(snapshotState);
 
   return (
     <ModalContent>

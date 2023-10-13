@@ -10,6 +10,7 @@ import { LogoLg } from "@/ui/SVGs/LogoLg";
  * This component handles initializing the SDK and determining
  * what state the user should be in.
  *
+ * - @todo: Handle creating an account
  * - If the user has not created an account, they should go to the account creation flow.
  * - If the user user is behind on syncing, they should be prompted to download a snapshot.
  * - If the user is up to date, they should be redirected to the accounts page.
@@ -32,6 +33,7 @@ export default function Home() {
   }, [router, startNode, initialStateData, isInitialStateLoading]);
 
   const handleSyncFromPeers = useCallback(() => {
+    // @todo: Handle syncing from peers
     console.log("Syncing from peers");
   }, []);
 
