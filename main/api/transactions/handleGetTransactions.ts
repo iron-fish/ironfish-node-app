@@ -7,7 +7,7 @@ type Params = {
 };
 
 export async function handleGetTransactions({ accountName }: Params) {
-  const rpcClient = await ironfish.getRpcClient();
+  const rpcClient = await ironfish.rpcClient();
 
   const transactionsStream =
     await rpcClient.wallet.getAccountTransactionsStream({

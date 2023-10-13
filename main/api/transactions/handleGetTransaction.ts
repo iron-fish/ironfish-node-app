@@ -6,7 +6,7 @@ export async function handleGetTransaction({
 }: {
   transactionHash: string;
 }) {
-  const rpcClient = await ironfish.getRpcClient();
+  const rpcClient = await ironfish.rpcClient();
 
   const transactionsStream =
     await rpcClient.wallet.getAccountTransactionsStream({
