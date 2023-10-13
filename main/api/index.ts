@@ -30,6 +30,7 @@ export const router = t.router({
   getTransaction: t.procedure
     .input(
       z.object({
+        accountName: z.string(),
         transactionHash: z.string(),
       }),
     )
@@ -64,12 +65,15 @@ export const router = t.router({
 
       ironfish.snapshotManager.onProgress.on(onProgress);
 
-      ironfish.snapshotManager.result().then(() => {
-        emit.next({step: "complete"})
-      }).catch((err) => {
-        const error = ErrorUtils.renderError(err);
-        emit.error(error);
-      });
+      ironfish.snapshotManager
+        .result()
+        .then(() => {
+          emit.next({ step: "complete" });
+        })
+        .catch((err) => {
+          const error = ErrorUtils.renderError(err);
+          emit.error(error);
+        });
 
       return () => {
         ironfish.snapshotManager.onProgress.off(onProgress);

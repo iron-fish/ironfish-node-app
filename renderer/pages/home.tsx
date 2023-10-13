@@ -21,8 +21,6 @@ export default function Home() {
   const { data: initialStateData, isLoading: isInitialStateLoading } =
     trpcReact.getInitialState.useQuery();
 
-  console.log({ initialStateData });
-
   const { mutate: startNode } = trpcReact.startNode.useMutation();
 
   useEffect(() => {

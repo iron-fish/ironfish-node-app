@@ -12,3 +12,10 @@ export function ChakraLink({ href, ...rest }: Props) {
     </Link>
   );
 }
+
+export function MaybeLink({ href, ...rest }: Partial<Props>) {
+  if (href) {
+    return <ChakraLink href={href} {...rest} />;
+  }
+  return <Box {...rest} />;
+}

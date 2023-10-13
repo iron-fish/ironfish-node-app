@@ -12,17 +12,21 @@ import { useRouter } from "next/router";
 
 import { AccountAssets } from "@/components/AccountAssets/AccountAssets";
 import { CopyAddress } from "@/components/CopyAddress/CopyAddress";
-import { TransactionsList } from "@/components/TransactionsList/TransactionsList";
+import { NotesList } from "@/components/NotesList/NotesList";
 import MainLayout from "@/layouts/MainLayout";
 import { trpcReact } from "@/providers/TRPCProvider";
 import { asQueryString } from "@/utils/parseRouteQuery";
 
 function AccountOverviewContent({ accountName }: { accountName: string }) {
-  const { data } = trpcReact.getAccount.useQuery({
+  const { data: accountData } = trpcReact.getAccount.useQuery({
     name: accountName,
   });
 
-  if (!data) {
+  const { data: transactionsData } = trpcReact.getTransactions.useQuery({
+    accountName,
+  });
+
+  if (!accountData || !transactionsData) {
     // @todo: Error handling
     return null;
   }
@@ -36,8 +40,11 @@ function AccountOverviewContent({ accountName }: { accountName: string }) {
     >
       <Box>
         <HStack mb={4} gap={4}>
-          <Heading>{data.name}</Heading>
-          <CopyAddress address={data.address} transform="translateY(0.4em)" />
+          <Heading>{accountData.name}</Heading>
+          <CopyAddress
+            address={accountData.address}
+            transform="translateY(0.4em)"
+          />
         </HStack>
         <Tabs>
           <TabList mb={8}>
@@ -55,7 +62,12 @@ function AccountOverviewContent({ accountName }: { accountName: string }) {
           <TabPanels>
             <TabPanel p={0}>
               <AccountAssets accountName={accountName} />
-              <TransactionsList accountName={accountName} />
+              <NotesList
+                linkToTransaction
+                accountName={accountName}
+                notes={transactionsData}
+                heading="Transaction Activity"
+              />
             </TabPanel>
             <TabPanel p={0}>
               <p>two!</p>
