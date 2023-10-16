@@ -7,6 +7,7 @@ import {
   RpcMemoryClient,
   getPackageFrom,
 } from "@ironfish/sdk";
+import { v4 as uuid } from "uuid";
 
 import packageJson from "../../../package.json";
 import { SnapshotManager } from "../snapshot/snapshotManager";
@@ -23,13 +24,18 @@ function getPrivateIdentity(sdk: IronfishSdk) {
   }
 }
 
-class Ironfish {
+export class Ironfish {
   public snapshotManager: SnapshotManager = new SnapshotManager();
 
   private rpcClientPromise: SplitPromise<RpcClient> = splitPromise();
   private sdkPromise: SplitPromise<IronfishSdk> = splitPromise();
   private _started: boolean = false;
   private _initialized: boolean = false;
+  private _dataDir: string;
+
+  constructor(dataDir: string) {
+    this._dataDir = dataDir;
+  }
 
   rpcClient(): Promise<RpcClient> {
     return this.rpcClientPromise.promise;
@@ -40,8 +46,8 @@ class Ironfish {
   }
 
   async downloadSnapshot(): Promise<void> {
-    if(this._started) {
-      throw new Error("Cannot download snapshot after node has started")
+    if (this._started) {
+      throw new Error("Cannot download snapshot after node has started");
     }
 
     const sdk = await this.sdk();
@@ -57,10 +63,8 @@ class Ironfish {
     console.log("Initializing IronFish SDK...");
 
     const sdk = await IronfishSdk.init({
+      dataDir: this._dataDir,
       pkg: getPackageFrom(packageJson),
-      configOverrides: {
-        enableRpcTcp: true,
-      },
     });
 
     this.sdkPromise.resolve(sdk);
@@ -85,9 +89,20 @@ class Ironfish {
     });
 
     await NodeUtils.waitForOpen(node);
-    await node.rpc.start();
 
-    node.internal.set("isFirstRun", false);
+    const newSecretKey = Buffer.from(
+      node.peerNetwork.localPeer.privateIdentity.secretKey,
+    ).toString("hex");
+    node.internal.set("networkIdentity", newSecretKey);
+    await node.internal.save();
+
+    if (node.internal.get("isFirstRun")) {
+      node.internal.set("isFirstRun", false);
+      node.internal.set("telemetryNodeId", uuid());
+      await node.internal.save();
+    }
+
+    await node.start();
 
     const rpcClient = new RpcMemoryClient(
       node.logger,
@@ -97,7 +112,3 @@ class Ironfish {
     this.rpcClientPromise.resolve(rpcClient);
   }
 }
-
-const ironfish = new Ironfish();
-
-export { ironfish };
