@@ -1,3 +1,4 @@
+import { AddressBookStorage } from "./address-book/v1/AddressBookStorage";
 import { Ironfish } from "./ironfish";
 import { UserSettingsStore, loadUserSettings } from "./userSettings";
 
@@ -10,6 +11,7 @@ export class Manager {
   private _userSettings: UserSettingsStore | null = null;
   private _ironfish: Ironfish | null = null;
   private _initialState: InitialState | null = null;
+  public v1AddressBook: AddressBookStorage = new AddressBookStorage();
 
   async getUserSettings(): Promise<UserSettingsStore> {
     if (this._userSettings) return this._userSettings;
