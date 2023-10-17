@@ -20,6 +20,7 @@
     "electron-log": "^4.4.8",
     "electron-serve": "^1.1.0",
     "electron-store": "^8.1.0",
+    "nedb": "^1.8.0",
     "tar": "^6.2.0",
     "uuid": "^9.0.1"
   },
@@ -37,6 +38,7 @@
     "@trpc/react-query": "^10.38.5",
     "@trpc/server": "^10.38.5",
     "@types/lodash-es": "^4.17.9",
+    "@types/nedb": "^1.8.14",
     "@types/node": "^18.0.0",
     "@types/react": "^18.0.0",
     "@types/react-dom": "^18.0.0",

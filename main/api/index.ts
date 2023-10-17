@@ -7,6 +7,8 @@ import { z } from "zod";
 
 import { handleGetAccount } from "./accounts/handleGetAccount";
 import { handleGetAccounts } from "./accounts/handleGetAccounts";
+import { ContactSchema } from "./address-book/v1/Contact";
+import SortType from "./address-book/v1/SortType";
 import { manager } from "./manager";
 import { handleGetTransaction } from "./transactions/handleGetTransaction";
 import { handleGetTransactions } from "./transactions/handleGetTransactions";
@@ -100,6 +102,15 @@ export const router = t.router({
   downloadSnapshot: t.procedure.mutation(async () => {
     const ironfish = await manager.getIronfish();
     ironfish.downloadSnapshot();
+  }),
+  v1GetContacts: t.procedure.input(z.string()).query((opts) => {
+    return manager.v1AddressBook.list(opts.input, SortType.ASC);
+  }),
+  v1AddContact: t.procedure.input(ContactSchema).mutation(async (opts) => {
+    return manager.v1AddressBook.add(opts.input);
+  }),
+  v1DeleteContact: t.procedure.input(z.string()).mutation(async (opts) => {
+    return manager.v1AddressBook.delete(opts.input);
   }),
   startNode: t.procedure.mutation(async () => {
     const ironfish = await manager.getIronfish();
