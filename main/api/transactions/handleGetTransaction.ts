@@ -1,9 +1,12 @@
+import { getTransactionNotes } from "./utils/formatTransactionsToNotes";
 import { ironfish } from "../ironfish";
 import { resolveContentStream } from "../utils/resolveContentStream";
 
 export async function handleGetTransaction({
+  accountName,
   transactionHash,
 }: {
+  accountName: string;
   transactionHash: string;
 }) {
   const rpcClient = await ironfish.rpcClient();
@@ -14,9 +17,16 @@ export async function handleGetTransaction({
       notes: true,
     });
 
-  const transaction = await resolveContentStream(
+  const streamResult = await resolveContentStream(
     transactionsStream.contentStream(),
   );
 
-  return transaction[0];
+  const transaction = streamResult[0];
+
+  const notes = await getTransactionNotes(rpcClient, transaction, accountName);
+
+  return {
+    transaction,
+    notes,
+  };
 }

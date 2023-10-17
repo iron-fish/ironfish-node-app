@@ -2,7 +2,7 @@ import { ChevronRightIcon } from "@chakra-ui/icons";
 import { Grid, GridItem, HStack, Text } from "@chakra-ui/react";
 import type { TransactionType } from "@ironfish/sdk";
 
-import { ChakraLink } from "@/ui/ChakraLink/ChakraLink";
+import { MaybeLink } from "@/ui/ChakraLink/ChakraLink";
 import { COLORS } from "@/ui/colors";
 import { ShadowCard } from "@/ui/ShadowCard/ShadowCard";
 import { formatAddress } from "@/utils/addressUtils";
@@ -52,6 +52,7 @@ export function TransactionRow({
   type,
   memo,
   transactionHash,
+  linkToTransaction,
 }: {
   accountName: string;
   assetName: string;
@@ -62,14 +63,19 @@ export function TransactionRow({
   type: TransactionType;
   memo: string;
   transactionHash: string;
+  linkToTransaction?: boolean;
 }) {
   return (
-    <ChakraLink
-      href={`/accounts/${accountName}/transaction/${transactionHash}`}
+    <MaybeLink
+      href={
+        linkToTransaction
+          ? `/accounts/${accountName}/transaction/${transactionHash}`
+          : undefined
+      }
       w="100%"
     >
       <ShadowCard
-        hoverable
+        hoverable={linkToTransaction}
         height="86px"
         contentContainerProps={{
           display: "flex",
@@ -81,7 +87,7 @@ export function TransactionRow({
         <Grid
           templateColumns={{
             base: `repeat(5, 1fr)`,
-            md: `repeat(5, 1fr) 55px`,
+            md: linkToTransaction ? `repeat(5, 1fr) 55px` : `repeat(5, 1fr)`,
           }}
           opacity="0.8"
           w="100%"
@@ -107,21 +113,23 @@ export function TransactionRow({
           <GridItem display="flex" alignItems="center">
             <Text as="span">{memo || "—"}</Text>
           </GridItem>
-          <GridItem
-            alignItems="center"
-            display={{
-              base: "none",
-              md: "flex",
-            }}
-          >
-            <ChevronRightIcon
-              boxSize={5}
-              color={COLORS.GRAY_MEDIUM}
-              _dark={{ color: COLORS.DARK_MODE.GRAY_LIGHT }}
-            />
-          </GridItem>
+          {linkToTransaction && (
+            <GridItem
+              alignItems="center"
+              display={{
+                base: "none",
+                md: "flex",
+              }}
+            >
+              <ChevronRightIcon
+                boxSize={5}
+                color={COLORS.GRAY_MEDIUM}
+                _dark={{ color: COLORS.DARK_MODE.GRAY_LIGHT }}
+              />
+            </GridItem>
+          )}
         </Grid>
       </ShadowCard>
-    </ChakraLink>
+    </MaybeLink>
   );
 }

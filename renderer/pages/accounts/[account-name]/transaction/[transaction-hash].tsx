@@ -1,7 +1,9 @@
-import { HStack, Heading, Text } from "@chakra-ui/react";
+import { HStack, Heading } from "@chakra-ui/react";
 import { useRouter } from "next/router";
 
 import { CopyAddress } from "@/components/CopyAddress/CopyAddress";
+import { NotesList } from "@/components/NotesList/NotesList";
+import { TransactionInformation } from "@/components/TransactionInformation/TransactionInformation";
 import MainLayout from "@/layouts/MainLayout";
 import { trpcReact } from "@/providers/TRPCProvider";
 import { asQueryString } from "@/utils/parseRouteQuery";
@@ -17,15 +19,14 @@ export function SingleTransactionContent({
     name: accountName,
   });
 
-  const { data: transactionData, ...rest } = trpcReact.getTransaction.useQuery({
+  const { data: transactionData } = trpcReact.getTransaction.useQuery({
+    accountName,
     transactionHash,
   });
 
-  if (!accountData) {
+  if (!accountData || !transactionData) {
     return null;
   }
-
-  console.log(transactionData, transactionHash, { ...rest });
 
   return (
     <MainLayout
@@ -34,18 +35,18 @@ export function SingleTransactionContent({
         label: "Back to Account Overview",
       }}
     >
-      <HStack mb={4} gap={4}>
+      <HStack mb={8} gap={4}>
         <Heading>{accountName}</Heading>
         <CopyAddress
           address={accountData.address}
           transform="translateY(0.4em)"
         />
       </HStack>
-      <Heading as="h3" fontSize="2xl">
-        Transaction Information
-      </Heading>
-      <Text>{accountName}</Text>
-      <Text>{transactionHash}</Text>
+      <TransactionInformation
+        transaction={transactionData.transaction}
+        mb={16}
+      />
+      <NotesList accountName={accountName} notes={transactionData.notes} />
     </MainLayout>
   );
 }

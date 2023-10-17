@@ -1,3 +1,17 @@
+import type { TransactionType } from "@ironfish/sdk";
+
+export type TransactionNote = {
+  assetName: string;
+  value: string;
+  timestamp: number;
+  from: string;
+  to: string;
+  transactionHash: string;
+  type: TransactionType;
+  memo: string;
+  noteHash: string;
+};
+
 export type SnapshotUpdate =
   | {
       step: "download";

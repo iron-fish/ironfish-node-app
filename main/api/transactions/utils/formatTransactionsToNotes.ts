@@ -1,11 +1,7 @@
-import {
-  RpcAsset,
-  RpcClient,
-  RpcWalletTransaction,
-  TransactionType,
-} from "@ironfish/sdk";
+import { RpcAsset, RpcClient, RpcWalletTransaction } from "@ironfish/sdk";
 
 import { IRON_ID } from "../../../../shared/constants";
+import { TransactionNote } from "../../../../shared/types";
 
 export async function createAssetLookup(
   client: RpcClient,
@@ -21,16 +17,42 @@ export async function createAssetLookup(
   );
 }
 
-export type TransactionNote = {
-  assetName: string;
-  value: string;
-  timestamp: number;
-  from: string;
-  to: string;
-  transactionHash: string;
-  type: TransactionType;
-  memo: string;
-};
+export async function getTransactionNotes(
+  client: RpcClient,
+  transaction: RpcWalletTransaction,
+  accountName: string,
+  maybeAssetLookup?: { [key: string]: RpcAsset },
+) {
+  const transactionAssetIds = transaction.notes?.map((note) => note.assetId);
+
+  const assetLookup =
+    maybeAssetLookup ??
+    (await createAssetLookup(client, transactionAssetIds ?? [], accountName));
+
+  const transactionNotes: Array<TransactionNote> =
+    transaction.notes
+      ?.filter((_note) => {
+        // @todo: Add ability to filter out self-send notes (to hide noisy change notes).
+        // Consider that mining rewards are self-sends.
+        return true;
+      })
+      .sort((note) => (note.assetId === IRON_ID ? -1 : 1))
+      .map((note) => {
+        return {
+          assetName: assetLookup[note.assetId]?.name ?? "Unknown",
+          value: note.value,
+          timestamp: transaction.timestamp,
+          from: note.sender,
+          to: note.owner,
+          transactionHash: transaction.hash,
+          type: transaction.type,
+          memo: note.memo,
+          noteHash: note.noteHash,
+        };
+      }) ?? [];
+
+  return transactionNotes;
+}
 
 export async function formatTransactionsToNotes(
   client: RpcClient,
@@ -49,25 +71,13 @@ export async function formatTransactionsToNotes(
   const transactionNotes: Array<TransactionNote> = [];
 
   for (const tx of transactions) {
-    tx.notes
-      ?.filter((_note) => {
-        // @todo: Add ability to filter out self-send notes (to hide noisy change notes).
-        // Consider that mining rewards are self-sends.
-        return true;
-      })
-      .sort((note) => (note.assetId === IRON_ID ? -1 : 1))
-      .forEach((note) => {
-        transactionNotes.push({
-          assetName: assetLookup[note.assetId]?.name ?? "Unknown",
-          value: note.value,
-          timestamp: tx.timestamp,
-          from: note.sender,
-          to: note.owner,
-          transactionHash: tx.hash,
-          type: tx.type,
-          memo: note.memo,
-        });
-      }) ?? [];
+    const notes = await getTransactionNotes(
+      client,
+      tx,
+      accountName,
+      assetLookup,
+    );
+    transactionNotes.push(...notes);
   }
 
   return transactionNotes;
