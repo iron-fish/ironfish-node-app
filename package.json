@@ -20,7 +20,8 @@
     "electron-log": "^4.4.8",
     "electron-serve": "^1.1.0",
     "electron-store": "^8.1.0",
-    "tar": "^6.2.0"
+    "tar": "^6.2.0",
+    "uuid": "^9.0.1"
   },
   "devDependencies": {
     "@chakra-ui/icons": "^2.1.1",
@@ -40,6 +41,7 @@
     "@types/react": "^18.0.0",
     "@types/react-dom": "^18.0.0",
     "@types/tar": "^6.1.6",
+    "@types/uuid": "^9.0.5",
     "@typescript-eslint/eslint-plugin": "^6.7.4",
     "@typescript-eslint/parser": "^6.7.4",
     "date-fns": "^2.30.0",

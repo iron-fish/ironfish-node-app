@@ -3,10 +3,12 @@ import serve from "electron-serve";
 import { createIPCHandler } from "electron-trpc/main";
 
 import { router } from "./api";
-import { ironfish } from "./api/ironfish";
+import { manager } from "./api/manager";
 import { mainWindow } from "./main-window";
 
 const isProd: boolean = process.env.NODE_ENV === "production";
+
+const ironfish = await manager.getIronfish();
 ironfish.init();
 
 if (isProd) {

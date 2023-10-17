@@ -7,10 +7,10 @@ import { z } from "zod";
 
 import { handleGetAccount } from "./accounts/handleGetAccount";
 import { handleGetAccounts } from "./accounts/handleGetAccounts";
-import { handleGetInitialState } from "./initialState/handleGetInitialState";
-import { ironfish } from "./ironfish";
+import { manager } from "./manager";
 import { handleGetTransaction } from "./transactions/handleGetTransaction";
 import { handleGetTransactions } from "./transactions/handleGetTransactions";
+import { PartialUserSettingsSchema } from "./userSettings";
 import { SnapshotUpdate } from "../../shared/types";
 import { mainWindow } from "../main-window";
 
@@ -46,18 +46,35 @@ export const router = t.router({
     .query(async (opts) => {
       return handleGetTransactions(opts.input);
     }),
+  getUserSetting: t.procedure.query(async () => {
+    const settings = await manager.getUserSettings();
+    return settings.config;
+  }),
+  setUserSetting: t.procedure
+    .input(PartialUserSettingsSchema)
+    .mutation(async (opts) => {
+      const settings = await manager.getUserSettings();
+      settings.setMany(opts.input);
+      await settings.save();
+    }),
   getPeers: t.procedure.query(async () => {
+    const ironfish = await manager.getIronfish();
     const rcpClient = await ironfish.rpcClient();
     const peerResponse = await rcpClient.peer.getPeers();
     return peerResponse.content.peers;
   }),
   getStatus: t.procedure.query(async () => {
+    const ironfish = await manager.getIronfish();
     const rcpClient = await ironfish.rpcClient();
     const peerResponse = await rcpClient.node.getStatus();
     return peerResponse.content;
   }),
-  getInitialState: t.procedure.query(handleGetInitialState),
+  getInitialState: t.procedure.query(async () => {
+    return manager.getInitialState();
+  }),
   snapshotProgress: t.procedure.subscription(async () => {
+    const ironfish = await manager.getIronfish();
+
     return observable<SnapshotUpdate>((emit) => {
       const onProgress = (update: SnapshotUpdate) => {
         emit.next(update);
@@ -81,9 +98,11 @@ export const router = t.router({
     });
   }),
   downloadSnapshot: t.procedure.mutation(async () => {
+    const ironfish = await manager.getIronfish();
     ironfish.downloadSnapshot();
   }),
   startNode: t.procedure.mutation(async () => {
+    const ironfish = await manager.getIronfish();
     ironfish.start();
   }),
   openDirectoryDialog: t.procedure.query(async () => {
