@@ -7,6 +7,7 @@
   "main": "app/background.js",
   "scripts": {
     "dev": "nextron",
+    "build-check": "nextron build --no-pack",
     "build": "nextron build",
     "lint": "eslint --fix --config .eslintrc.js .",
     "format": "prettier --config .prettierrc --write .",
