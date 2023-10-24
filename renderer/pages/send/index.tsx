@@ -1,11 +1,13 @@
 import { Heading } from "@chakra-ui/react";
 
+import { SendAssetsForm } from "@/components/SendAssetsForm/SendAssetsForm";
 import MainLayout from "@/layouts/MainLayout";
 
-export default function Placeholder() {
+export default function Send() {
   return (
     <MainLayout>
-      <Heading>Placeholder</Heading>
+      <Heading>Send</Heading>
+      <SendAssetsForm />
     </MainLayout>
   );
 }
