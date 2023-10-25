@@ -1,0 +1,3 @@
+.SelectContent {
+  min-width: var(--radix-select-trigger-width);
+} 

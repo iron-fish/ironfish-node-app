@@ -6,7 +6,7 @@ import MainLayout from "@/layouts/MainLayout";
 export default function Send() {
   return (
     <MainLayout>
-      <Heading>Send</Heading>
+      <Heading mb={5}>Send</Heading>
       <SendAssetsForm />
     </MainLayout>
   );
