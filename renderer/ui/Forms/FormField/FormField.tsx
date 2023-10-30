@@ -1,11 +1,12 @@
 import { Box, VStack, Text, HStack, StackProps } from "@chakra-ui/react";
-import { ReactNode } from "react";
+import { ReactNode, useMemo } from "react";
+import { FieldError, FieldErrorsImpl } from "react-hook-form";
 
 import { COLORS } from "@/ui/colors";
 
 export type FormFieldProps = {
   label: string;
-  error?: string;
+  error?: string | FieldError | FieldErrorsImpl;
   icon?: ReactNode;
   triggerProps?: StackProps & { ref: unknown };
 };
@@ -40,11 +41,34 @@ export function FormField({
         </Box>
         {icon && <Box pr={4}>{icon}</Box>}
       </HStack>
-      {error && (
-        <Text color={COLORS.RED} fontSize="sm" textAlign="left" w="100%">
-          {error}
-        </Text>
-      )}
+      <RenderError error={error} />
     </VStack>
+  );
+}
+
+function RenderError({
+  error,
+}: {
+  error?: string | FieldError | FieldErrorsImpl;
+}) {
+  const message = useMemo(() => {
+    if (typeof error === "string") {
+      return error;
+    }
+    return typeof error === "object" &&
+      "message" in error &&
+      typeof error.message === "string"
+      ? error.message
+      : "";
+  }, [error]);
+
+  if (!message) {
+    return null;
+  }
+
+  return (
+    <Text color={COLORS.RED} fontSize="sm" textAlign="left" w="100%">
+      {message}
+    </Text>
   );
 }

@@ -1,6 +1,9 @@
 import { AddressBookStorage } from "./address-book/v1/AddressBookStorage";
-import { Ironfish } from "./ironfish";
-import { UserSettingsStore, loadUserSettings } from "./userSettings";
+import { Ironfish } from "./ironfish/Ironfish";
+import {
+  UserSettingsStore,
+  loadUserSettings,
+} from "./user-settings/userSettings";
 
 export type InitialState =
   | "create-account"

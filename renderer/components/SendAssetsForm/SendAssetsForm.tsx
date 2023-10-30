@@ -1,46 +1,23 @@
-import { Input, Box, VStack, Text, chakra, Button } from "@chakra-ui/react";
+import { VStack, chakra, Button } from "@chakra-ui/react";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { ReactNode } from "react";
 import { useForm } from "react-hook-form";
 import * as z from "zod";
 
-import { COLORS } from "@/ui/colors";
+import { trpcReact } from "@/providers/TRPCProvider";
 import { Select } from "@/ui/Forms/Select/Select";
-
-type FormFieldProps = { children: ReactNode; label: string; error?: string };
-
-function FormField({ children, error, label }: FormFieldProps) {
-  return (
-    <VStack>
-      <Box
-        as="label"
-        border="1px solid"
-        borderColor={error ? COLORS.RED : COLORS.DEEP_BLUE}
-        borderRadius={4}
-        w="100%"
-        px={6}
-        py={3}
-      >
-        <Text fontSize="sm" color={COLORS.GRAY_MEDIUM}>
-          {label}
-        </Text>
-        {children}
-      </Box>
-      {error && (
-        <Text color={COLORS.RED} fontSize="sm" textAlign="left" w="100%">
-          {error}
-        </Text>
-      )}
-    </VStack>
-  );
-}
+import { TextInput } from "@/ui/Forms/TextInput/TextInput";
+import { isValidPublicAddress } from "@/utils/addressUtils";
+import { formatOre } from "@/utils/ironUtils";
 
 const schema = z.object({
-  fromAccount: z.string(),
-  toAccount: z.string(),
-  asset: z.string(),
-  amount: z.number(),
-  fee: z.number(),
+  fromAccount: z.string().min(1),
+  toAccount: z
+    .string()
+    .min(1)
+    .refine(isValidPublicAddress, "Invalid public address"),
+  asset: z.string().min(1),
+  amount: z.coerce.number().positive(),
+  fee: z.string().min(1),
   memo: z.string().optional(),
 });
 
@@ -49,32 +26,42 @@ export function SendAssetsForm() {
     register,
     handleSubmit,
     formState: { errors },
+    getValues,
   } = useForm({
     resolver: zodResolver(schema),
   });
 
+  const { data: accountsData } = trpcReact.getAccounts.useQuery();
+  const { data: estimatedFeesData } = trpcReact.getEstimatedFees.useQuery();
+
+  if (!accountsData || !estimatedFeesData) {
+    // @todo: Loading + no accounts state
+    return null;
+  }
+
+  const accountOptions = accountsData?.map((account) => {
+    return {
+      label: account.name,
+      value: account.name,
+    };
+  });
+
+  const onSubmit = (data: unknown) => console.log(data);
+
   return (
-    <chakra.form
-      maxW="592px"
-      onSubmit={() => handleSubmit((data) => console.log(data))}
-    >
+    <chakra.form onSubmit={handleSubmit(onSubmit)}>
       <VStack gap={4} alignItems="stretch">
         <Select
           {...register("fromAccount")}
           label="From"
-          options={[
-            { label: "Primary Account", value: "primary" },
-            { label: "Other Account", value: "other" },
-          ]}
+          options={accountOptions}
+          error={errors.fromAccount?.message}
         />
 
-        <Select
+        <TextInput
           {...register("toAccount")}
           label="To"
-          options={[
-            { label: "Primary Account", value: "primary" },
-            { label: "Other Account", value: "other" },
-          ]}
+          error={errors.toAccount?.message}
         />
 
         <Select
@@ -84,28 +71,49 @@ export function SendAssetsForm() {
             { label: "$IRON", value: "iron" },
             { label: "dan-coin", value: "dan-coin" },
           ]}
+          error={errors.asset?.message}
         />
 
-        <FormField
+        <TextInput
+          {...register("amount")}
           label="Amount"
-          error={errors.memo && "This field is required"}
-        >
-          <Input type="text" variant="unstyled" {...register("memo")} />
-        </FormField>
+          error={errors.amount?.message}
+        />
 
-        <FormField label="Fee" error={errors.memo && "This field is required"}>
-          <Input type="text" variant="unstyled" {...register("memo")} />
-        </FormField>
+        <Select
+          {...register("fee")}
+          label="Fee ($IRON)"
+          options={[
+            {
+              label: `Slow (${formatOre(estimatedFeesData.slow)} $IRON)`,
+              value: "slow",
+            },
+            {
+              label: `Average (${formatOre(estimatedFeesData.average)} $IRON)`,
+              value: "average",
+            },
+            {
+              label: `Fast (${formatOre(estimatedFeesData.fast)} $IRON)`,
+              value: "fast",
+            },
+          ]}
+          error={errors.fee?.message}
+        />
 
-        <FormField
+        <TextInput
+          {...register("memo")}
           label="Memo (32 characters max)"
-          error={errors.memo && "This field is required"}
-        >
-          <Input type="text" variant="unstyled" {...register("memo")} />
-        </FormField>
+          error={errors.memo?.message}
+        />
       </VStack>
 
-      <Button mt={8} type="submit">
+      <Button
+        mt={8}
+        type="submit"
+        onClick={() => {
+          console.log(getValues());
+        }}
+      >
         Submit
       </Button>
     </chakra.form>

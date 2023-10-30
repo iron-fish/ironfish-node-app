@@ -22,10 +22,7 @@ type Props = FormFieldProps &
   };
 
 export const Select = forwardRef<typeof RadixSelect.Trigger, Props>(
-  function Select(
-    { label, error, options, onChange, name, ...rest }: Props,
-    ref,
-  ) {
+  function Select({ label, error, options, onChange, name, ...rest }, ref) {
     const [isOpen, setIsOpen] = useState(false);
 
     return (
@@ -49,11 +46,15 @@ export const Select = forwardRef<typeof RadixSelect.Trigger, Props>(
           }
           triggerProps={{
             as: RadixSelect.Trigger,
+            className: styles.SelectTrigger,
             ref,
             textAlign: "inherit",
           }}
         >
-          <RadixSelect.Value placeholder="Select..." />
+          <RadixSelect.Value
+            placeholder="Select..."
+            className={styles.SelectValue}
+          />
         </FormField>
         <RadixSelect.Portal>
           <RadixSelect.Content
@@ -76,8 +77,6 @@ export const Select = forwardRef<typeof RadixSelect.Trigger, Props>(
                 {options.map(({ label, value }, i) => (
                   <Box
                     key={i}
-                    px={4}
-                    py={3}
                     cursor="pointer"
                     _hover={{
                       bg: COLORS.GRAY_LIGHT,
@@ -87,9 +86,17 @@ export const Select = forwardRef<typeof RadixSelect.Trigger, Props>(
                         bg: COLORS.DARK_MODE.GRAY_MEDIUM,
                       },
                     }}
+                    _focusWithin={{
+                      bg: COLORS.GRAY_LIGHT,
+                      _dark: {
+                        bg: COLORS.DARK_MODE.GRAY_MEDIUM,
+                      },
+                    }}
                   >
-                    <RadixSelect.Item value={value} key={i}>
-                      <RadixSelect.ItemText>{label}</RadixSelect.ItemText>
+                    <RadixSelect.Item value={value}>
+                      <Box px={4} py={3}>
+                        <RadixSelect.ItemText>{label}</RadixSelect.ItemText>
+                      </Box>
                     </RadixSelect.Item>
                   </Box>
                 ))}
