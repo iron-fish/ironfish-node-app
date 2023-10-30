@@ -1,12 +1,14 @@
 import { VStack, chakra, Button } from "@chakra-ui/react";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { useMemo } from "react";
 import { useForm } from "react-hook-form";
 import * as z from "zod";
 
-import { trpcReact } from "@/providers/TRPCProvider";
+import { TRPCRouterOutputs, trpcReact } from "@/providers/TRPCProvider";
 import { Select } from "@/ui/Forms/Select/Select";
 import { TextInput } from "@/ui/Forms/TextInput/TextInput";
 import { isValidPublicAddress } from "@/utils/addressUtils";
+import { hexToUTF16String } from "@/utils/hexToUTF16String";
 import { formatOre } from "@/utils/ironUtils";
 
 const schema = z.object({
@@ -21,30 +23,63 @@ const schema = z.object({
   memo: z.string().optional(),
 });
 
-export function SendAssetsForm() {
+export function SendAssetsFormContent({
+  accountsData,
+  estimatedFeesData,
+}: {
+  accountsData: TRPCRouterOutputs["getAccounts"];
+  estimatedFeesData: TRPCRouterOutputs["getEstimatedFees"];
+}) {
+  const accountOptions = useMemo(() => {
+    return accountsData?.map((account) => {
+      return {
+        label: account.name,
+        value: account.name,
+      };
+    });
+  }, [accountsData]);
+
   const {
     register,
     handleSubmit,
     formState: { errors },
     getValues,
+    watch,
   } = useForm({
     resolver: zodResolver(schema),
+    defaultValues: {
+      fromAccount: accountOptions?.[0].value,
+      toAccount: "",
+      asset: "",
+      amount: null,
+      fee: null,
+      memo: "",
+    },
   });
 
-  const { data: accountsData } = trpcReact.getAccounts.useQuery();
-  const { data: estimatedFeesData } = trpcReact.getEstimatedFees.useQuery();
+  const fromAccountValue = watch("fromAccount");
 
-  if (!accountsData || !estimatedFeesData) {
-    // @todo: Loading + no accounts state
-    return null;
-  }
-
-  const accountOptions = accountsData?.map((account) => {
-    return {
-      label: account.name,
-      value: account.name,
-    };
-  });
+  const assetOptions = useMemo(() => {
+    const selectedAccount = accountsData?.find(
+      (account) => account.name === fromAccountValue,
+    );
+    if (!selectedAccount) {
+      return [];
+    }
+    const assets = [
+      {
+        label: hexToUTF16String(selectedAccount.balances.iron.asset.name),
+        value: selectedAccount.balances.iron.asset.id,
+      },
+    ];
+    selectedAccount.balances.custom?.forEach((customAsset) => {
+      assets.push({
+        label: hexToUTF16String(customAsset.asset.name),
+        value: customAsset.asset.id,
+      });
+    });
+    return assets;
+  }, [accountsData, fromAccountValue]);
 
   const onSubmit = (data: unknown) => console.log(data);
 
@@ -53,6 +88,7 @@ export function SendAssetsForm() {
       <VStack gap={4} alignItems="stretch">
         <Select
           {...register("fromAccount")}
+          value={fromAccountValue}
           label="From"
           options={accountOptions}
           error={errors.fromAccount?.message}
@@ -67,10 +103,7 @@ export function SendAssetsForm() {
         <Select
           {...register("asset")}
           label="Asset"
-          options={[
-            { label: "$IRON", value: "iron" },
-            { label: "dan-coin", value: "dan-coin" },
-          ]}
+          options={assetOptions}
           error={errors.asset?.message}
         />
 
@@ -117,5 +150,21 @@ export function SendAssetsForm() {
         Submit
       </Button>
     </chakra.form>
+  );
+}
+
+export function SendAssetsForm() {
+  const { data: accountsData } = trpcReact.getAccounts.useQuery();
+  const { data: estimatedFeesData } = trpcReact.getEstimatedFees.useQuery();
+
+  if (!accountsData || !estimatedFeesData) {
+    return null;
+  }
+
+  return (
+    <SendAssetsFormContent
+      accountsData={accountsData}
+      estimatedFeesData={estimatedFeesData}
+    />
   );
 }
