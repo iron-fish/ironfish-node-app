@@ -26,3 +26,5 @@ export function parseIron(value: string | number) {
 export function formatOre(value: string | number) {
   return ORE_FORMATTER.format(parseOre(value));
 }
+
+export const MIN_IRON_VALUE = parseOre(1);

@@ -52,5 +52,5 @@ export async function handleSendTransaction({
     account: fromAccount,
   });
 
-  return postResponse;
+  return postResponse.content;
 }

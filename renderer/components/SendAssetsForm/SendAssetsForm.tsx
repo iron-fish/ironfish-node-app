@@ -1,27 +1,21 @@
-import { VStack, chakra, Button } from "@chakra-ui/react";
+import { VStack, chakra, HStack } from "@chakra-ui/react";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useMemo } from "react";
+import { useMemo, useState } from "react";
 import { useForm } from "react-hook-form";
-import * as z from "zod";
 
 import { TRPCRouterOutputs, trpcReact } from "@/providers/TRPCProvider";
 import { Select } from "@/ui/Forms/Select/Select";
 import { TextInput } from "@/ui/Forms/TextInput/TextInput";
-import { isValidPublicAddress } from "@/utils/addressUtils";
+import { PillButton } from "@/ui/PillButton/PillButton";
 import { hexToUTF16String } from "@/utils/hexToUTF16String";
-import { formatOre } from "@/utils/ironUtils";
+import { formatOre, parseIron } from "@/utils/ironUtils";
 
-const schema = z.object({
-  fromAccount: z.string().min(1),
-  toAccount: z
-    .string()
-    .min(1)
-    .refine(isValidPublicAddress, "Invalid public address"),
-  asset: z.string().min(1),
-  amount: z.coerce.number().positive(),
-  fee: z.string().min(1),
-  memo: z.string().optional(),
-});
+import { ConfirmTransactionModal } from "./ConfirmTransactionModal/ConfirmTransactionModal";
+import {
+  TransactionData,
+  TransactionFormData,
+  transactionSchema,
+} from "./transactionSchema";
 
 export function SendAssetsFormContent({
   accountsData,
@@ -30,6 +24,9 @@ export function SendAssetsFormContent({
   accountsData: TRPCRouterOutputs["getAccounts"];
   estimatedFeesData: TRPCRouterOutputs["getEstimatedFees"];
 }) {
+  const [pendingTransaction, setPendingTransaction] =
+    useState<TransactionData | null>(null);
+
   const accountOptions = useMemo(() => {
     return accountsData?.map((account) => {
       return {
@@ -43,21 +40,16 @@ export function SendAssetsFormContent({
     register,
     handleSubmit,
     formState: { errors },
-    getValues,
     watch,
-  } = useForm({
-    resolver: zodResolver(schema),
+  } = useForm<TransactionFormData>({
+    resolver: zodResolver(transactionSchema),
     defaultValues: {
       fromAccount: accountOptions?.[0].value,
-      toAccount: "",
-      asset: "",
-      amount: null,
-      fee: null,
-      memo: "",
     },
   });
 
   const fromAccountValue = watch("fromAccount");
+  const assetValue = watch("assetId");
 
   const assetOptions = useMemo(() => {
     const selectedAccount = accountsData?.find(
@@ -81,75 +73,96 @@ export function SendAssetsFormContent({
     return assets;
   }, [accountsData, fromAccountValue]);
 
-  const onSubmit = (data: unknown) => console.log(data);
-
   return (
-    <chakra.form onSubmit={handleSubmit(onSubmit)}>
-      <VStack gap={4} alignItems="stretch">
-        <Select
-          {...register("fromAccount")}
-          value={fromAccountValue}
-          label="From"
-          options={accountOptions}
-          error={errors.fromAccount?.message}
-        />
-
-        <TextInput
-          {...register("toAccount")}
-          label="To"
-          error={errors.toAccount?.message}
-        />
-
-        <Select
-          {...register("asset")}
-          label="Asset"
-          options={assetOptions}
-          error={errors.asset?.message}
-        />
-
-        <TextInput
-          {...register("amount")}
-          label="Amount"
-          error={errors.amount?.message}
-        />
-
-        <Select
-          {...register("fee")}
-          label="Fee ($IRON)"
-          options={[
-            {
-              label: `Slow (${formatOre(estimatedFeesData.slow)} $IRON)`,
-              value: "slow",
-            },
-            {
-              label: `Average (${formatOre(estimatedFeesData.average)} $IRON)`,
-              value: "average",
-            },
-            {
-              label: `Fast (${formatOre(estimatedFeesData.fast)} $IRON)`,
-              value: "fast",
-            },
-          ]}
-          error={errors.fee?.message}
-        />
-
-        <TextInput
-          {...register("memo")}
-          label="Memo (32 characters max)"
-          error={errors.memo?.message}
-        />
-      </VStack>
-
-      <Button
-        mt={8}
-        type="submit"
-        onClick={() => {
-          console.log(getValues());
-        }}
+    <>
+      <chakra.form
+        onSubmit={handleSubmit((data) => {
+          const fee = estimatedFeesData[data.fee];
+          setPendingTransaction({
+            fromAccount: data.fromAccount,
+            toAccount: data.toAccount,
+            assetId: data.assetId,
+            amount: parseIron(data.amount),
+            fee: parseInt(fee, 10),
+            memo: data.memo ?? "",
+          });
+        })}
       >
-        Submit
-      </Button>
-    </chakra.form>
+        <VStack gap={4} alignItems="stretch">
+          <Select
+            {...register("fromAccount")}
+            value={fromAccountValue}
+            label="From"
+            options={accountOptions}
+            error={errors.fromAccount?.message}
+          />
+
+          <TextInput
+            {...register("toAccount")}
+            label="To"
+            error={errors.toAccount?.message}
+          />
+
+          <Select
+            {...register("assetId")}
+            label="Asset"
+            options={assetOptions}
+            error={errors.assetId?.message}
+          />
+
+          <TextInput
+            {...register("amount")}
+            label="Amount"
+            error={errors.amount?.message}
+          />
+
+          <Select
+            {...register("fee")}
+            label="Fee ($IRON)"
+            options={[
+              {
+                label: `Slow (${formatOre(estimatedFeesData.slow)} $IRON)`,
+                value: "slow",
+              },
+              {
+                label: `Average (${formatOre(
+                  estimatedFeesData.average,
+                )} $IRON)`,
+                value: "average",
+              },
+              {
+                label: `Fast (${formatOre(estimatedFeesData.fast)} $IRON)`,
+                value: "fast",
+              },
+            ]}
+            error={errors.fee?.message}
+          />
+
+          <TextInput
+            {...register("memo")}
+            label="Memo (32 characters max)"
+            error={errors.memo?.message}
+          />
+        </VStack>
+
+        <HStack mt={8} justifyContent="flex-end">
+          <PillButton type="submit" height="60px" px={8}>
+            Send Asset
+          </PillButton>
+        </HStack>
+      </chakra.form>
+      <ConfirmTransactionModal
+        isOpen={!!pendingTransaction}
+        transactionData={pendingTransaction}
+        selectedAssetName={
+          assetOptions.find(({ value }) => value === assetValue)?.label ??
+          "unknown asset"
+        }
+        onCancel={() => {
+          setPendingTransaction(null);
+        }}
+      />
+    </>
   );
 }
 

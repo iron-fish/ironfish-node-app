@@ -3,6 +3,8 @@ import { Box, BoxProps } from "@chakra-ui/react";
 type PillButtonProps = {
   variant?: "primary" | "inverted";
   icon?: React.ReactNode;
+  isDisabled?: boolean;
+  type?: "button" | "submit";
 };
 
 type Props = Omit<BoxProps, keyof PillButtonProps> & PillButtonProps;
@@ -52,7 +54,13 @@ const VARIANT_PROPS = {
   },
 };
 
-export function PillButton({ variant = "primary", children, ...props }: Props) {
+export function PillButton({
+  variant = "primary",
+  children,
+  isDisabled,
+  type = "button",
+  ...props
+}: Props) {
   return (
     <Box
       as="button"
@@ -64,8 +72,14 @@ export function PillButton({ variant = "primary", children, ...props }: Props) {
       justifyContent="center"
       alignItems="center"
       gap={2}
+      disabled={isDisabled}
+      type={type}
       {...VARIANT_PROPS[variant].light}
       _dark={VARIANT_PROPS[variant].dark}
+      _disabled={{
+        opacity: 0.6,
+        pointerEvents: "none",
+      }}
       {...props}
     >
       {children}
