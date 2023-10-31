@@ -11,6 +11,7 @@ import {
   Progress,
 } from "@chakra-ui/react";
 import { useRouter } from "next/router";
+import { useCallback } from "react";
 
 import { trpcReact } from "@/providers/TRPCProvider";
 import { COLORS } from "@/ui/colors";
@@ -44,10 +45,17 @@ export function ConfirmTransactionModal({
   } = trpcReact.sendTransaction.useMutation();
   const router = useRouter();
 
-  const handleClose = () => {
+  const handleClose = useCallback(() => {
     reset();
     onCancel();
-  };
+  }, [onCancel, reset]);
+
+  const handleSubmit = useCallback(() => {
+    if (!transactionData) {
+      throw new Error("No transaction data");
+    }
+    sendTransaction(transactionData);
+  }, [sendTransaction, transactionData]);
 
   return (
     <Modal isOpen={isOpen} onClose={handleClose}>
@@ -147,10 +155,7 @@ export function ConfirmTransactionModal({
                 isDisabled={isLoading}
                 height="60px"
                 px={8}
-                onClick={() => {
-                  if (!transactionData) return;
-                  sendTransaction(transactionData);
-                }}
+                onClick={handleSubmit}
               >
                 Confirm &amp; Send
               </PillButton>
@@ -207,12 +212,7 @@ export function ConfirmTransactionModal({
                 isDisabled={isLoading}
                 height="60px"
                 px={8}
-                onClick={() => {
-                  if (!transactionData) {
-                    throw new Error("No transaction data");
-                  }
-                  sendTransaction(transactionData);
-                }}
+                onClick={handleSubmit}
               >
                 Try Again
               </PillButton>
