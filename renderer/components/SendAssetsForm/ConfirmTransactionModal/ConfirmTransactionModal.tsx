@@ -40,11 +40,17 @@ export function ConfirmTransactionModal({
     isLoading,
     isError,
     isSuccess,
+    reset,
   } = trpcReact.sendTransaction.useMutation();
   const router = useRouter();
 
+  const handleClose = () => {
+    reset();
+    onCancel();
+  };
+
   return (
-    <Modal isOpen={isOpen} onClose={onCancel}>
+    <Modal isOpen={isOpen} onClose={handleClose}>
       <ModalOverlay />
       <ModalContent maxW="100%" width="600px">
         <ModalBody px={16} pt={16}>
@@ -129,7 +135,7 @@ export function ConfirmTransactionModal({
             <>
               <PillButton
                 isDisabled={isLoading}
-                onClick={onCancel}
+                onClick={handleClose}
                 variant="inverted"
                 height="60px"
                 px={8}
@@ -158,7 +164,7 @@ export function ConfirmTransactionModal({
                 onClick={() => {
                   const account = transactionData?.fromAccount;
                   if (!account) {
-                    onCancel();
+                    handleClose();
                     return;
                   }
                   router.push(`/accounts/${account}`);
@@ -173,7 +179,7 @@ export function ConfirmTransactionModal({
                   const account = transactionData?.fromAccount;
                   const transactionHash = sentTransactionData?.hash;
                   if (!account || !transactionHash) {
-                    onCancel();
+                    handleClose();
                     return;
                   }
                   router.push(
@@ -189,7 +195,7 @@ export function ConfirmTransactionModal({
             <>
               <PillButton
                 isDisabled={isLoading}
-                onClick={onCancel}
+                onClick={handleClose}
                 variant="inverted"
                 height="60px"
                 px={8}
