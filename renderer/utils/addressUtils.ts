@@ -7,11 +7,3 @@ export function formatAddress(address: string) {
     address.slice(-4),
   ].join("...");
 }
-
-// @todo: Verify that this is a valid way of checking if an address is valid
-export function isValidPublicAddress(address: string) {
-  if (address.length !== 64) return false;
-
-  // Returns true if string only contains digits or letters a-f (case-insensitive)
-  return /^[a-f\d]+$/i.test(address);
-}

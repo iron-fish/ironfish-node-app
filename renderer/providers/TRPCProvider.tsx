@@ -1,4 +1,5 @@
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { createTRPCProxyClient } from "@trpc/client";
 import { createTRPCReact } from "@trpc/react-query";
 import { inferRouterInputs, inferRouterOutputs } from "@trpc/server";
 import { ipcLink } from "electron-trpc/renderer";
@@ -25,3 +26,7 @@ export function TRPCProvider({ children }: { children: ReactNode }) {
 
 export type TRPCRouterInputs = inferRouterInputs<AppRouter>;
 export type TRPCRouterOutputs = inferRouterOutputs<AppRouter>;
+
+export const trpcVanillaClient = createTRPCProxyClient<AppRouter>({
+  links: [ipcLink()],
+});

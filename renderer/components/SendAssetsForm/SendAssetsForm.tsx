@@ -45,11 +45,14 @@ export function SendAssetsFormContent({
     resolver: zodResolver(transactionSchema),
     defaultValues: {
       fromAccount: accountOptions?.[0].value,
+      assetId: accountsData[0].balances.iron.asset.id,
+      fee: "average",
     },
   });
 
   const fromAccountValue = watch("fromAccount");
   const assetValue = watch("assetId");
+  const feeValue = watch("fee");
 
   const assetOptions = useMemo(() => {
     const selectedAccount = accountsData?.find(
@@ -105,6 +108,7 @@ export function SendAssetsFormContent({
 
           <Select
             {...register("assetId")}
+            value={assetValue}
             label="Asset"
             options={assetOptions}
             error={errors.assetId?.message}
@@ -118,6 +122,7 @@ export function SendAssetsFormContent({
 
           <Select
             {...register("fee")}
+            value={feeValue}
             label="Fee ($IRON)"
             options={[
               {
