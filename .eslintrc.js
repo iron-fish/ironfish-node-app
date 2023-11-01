@@ -51,5 +51,11 @@ module.exports = {
       },
     },
   },
-  ignorePatterns: ["node_modules/*", "app/*", "dist/*", "renderer/.next/*"],
+  ignorePatterns: [
+    "node_modules/*",
+    "app/*",
+    "build/*",
+    "dist/*",
+    "renderer/.next/*",
+  ],
 };
