@@ -1,0 +1,11 @@
+.SelectTrigger[data-placeholder] {
+  color: gray;
+}
+
+.SelectContent {
+  min-width: var(--radix-select-trigger-width);
+} 
+
+.NoOutline {
+  outline: none;
+}

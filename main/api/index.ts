@@ -1,138 +1,20 @@
-import { ErrorUtils } from "@ironfish/sdk";
-import { initTRPC } from "@trpc/server";
-import { observable } from "@trpc/server/observable";
-import { dialog } from "electron";
-import log from "electron-log";
-import { z } from "zod";
+import { accountRouter } from "./accounts";
+import { addressBookRouter } from "./address-book/v1";
+import { ironfishRouter } from "./ironfish";
+import { snapshotRouter } from "./snapshot";
+import { transactionRouter } from "./transactions";
+import { t } from "./trpc";
+import { userSettingsRouter } from "./user-settings";
+import { windowRouter } from "./window";
 
-import { handleGetAccount } from "./accounts/handleGetAccount";
-import { handleGetAccounts } from "./accounts/handleGetAccounts";
-import { ContactSchema } from "./address-book/v1/Contact";
-import SortType from "./address-book/v1/SortType";
-import { manager } from "./manager";
-import { handleGetTransaction } from "./transactions/handleGetTransaction";
-import { handleGetTransactions } from "./transactions/handleGetTransactions";
-import { PartialUserSettingsSchema } from "./userSettings";
-import { SnapshotUpdate } from "../../shared/types";
-import { mainWindow } from "../main-window";
-
-const t = initTRPC.create({ isServer: true });
-
-export const router = t.router({
-  getAccount: t.procedure
-    .input(
-      z.object({
-        name: z.string(),
-      }),
-    )
-    .query(async (opts) => {
-      return handleGetAccount(opts.input);
-    }),
-  getAccounts: t.procedure.query(handleGetAccounts),
-  getTransaction: t.procedure
-    .input(
-      z.object({
-        accountName: z.string(),
-        transactionHash: z.string(),
-      }),
-    )
-    .query(async (opts) => {
-      return handleGetTransaction(opts.input);
-    }),
-  getTransactions: t.procedure
-    .input(
-      z.object({
-        accountName: z.string(),
-      }),
-    )
-    .query(async (opts) => {
-      return handleGetTransactions(opts.input);
-    }),
-  getUserSetting: t.procedure.query(async () => {
-    const settings = await manager.getUserSettings();
-    return settings.config;
-  }),
-  setUserSetting: t.procedure
-    .input(PartialUserSettingsSchema)
-    .mutation(async (opts) => {
-      const settings = await manager.getUserSettings();
-      settings.setMany(opts.input);
-      await settings.save();
-    }),
-  getPeers: t.procedure.query(async () => {
-    const ironfish = await manager.getIronfish();
-    const rcpClient = await ironfish.rpcClient();
-    const peerResponse = await rcpClient.peer.getPeers();
-    return peerResponse.content.peers;
-  }),
-  getStatus: t.procedure.query(async () => {
-    const ironfish = await manager.getIronfish();
-    const rcpClient = await ironfish.rpcClient();
-    const peerResponse = await rcpClient.node.getStatus();
-    return peerResponse.content;
-  }),
-  getInitialState: t.procedure.query(async () => {
-    return manager.getInitialState();
-  }),
-  snapshotProgress: t.procedure.subscription(async () => {
-    const ironfish = await manager.getIronfish();
-
-    return observable<SnapshotUpdate>((emit) => {
-      const onProgress = (update: SnapshotUpdate) => {
-        emit.next(update);
-      };
-
-      ironfish.snapshotManager.onProgress.on(onProgress);
-
-      ironfish.snapshotManager
-        .result()
-        .then(() => {
-          emit.next({ step: "complete" });
-        })
-        .catch((err) => {
-          const error = ErrorUtils.renderError(err);
-          emit.error(error);
-        });
-
-      return () => {
-        ironfish.snapshotManager.onProgress.off(onProgress);
-      };
-    });
-  }),
-  downloadSnapshot: t.procedure.mutation(async () => {
-    const ironfish = await manager.getIronfish();
-    ironfish.downloadSnapshot();
-  }),
-  v1GetContacts: t.procedure.input(z.string()).query((opts) => {
-    return manager.v1AddressBook.list(opts.input, SortType.ASC);
-  }),
-  v1AddContact: t.procedure.input(ContactSchema).mutation(async (opts) => {
-    return manager.v1AddressBook.add(opts.input);
-  }),
-  v1DeleteContact: t.procedure.input(z.string()).mutation(async (opts) => {
-    return manager.v1AddressBook.delete(opts.input);
-  }),
-  startNode: t.procedure.mutation(async () => {
-    const ironfish = await manager.getIronfish();
-    ironfish.start();
-  }),
-  openDirectoryDialog: t.procedure.query(async () => {
-    const window = await mainWindow.getMainWindow();
-
-    try {
-      const { canceled, filePaths } = await dialog.showOpenDialog(window, {
-        properties: ["openDirectory"],
-      });
-      if (canceled) {
-        return;
-      }
-      return filePaths[0];
-    } catch (e) {
-      log.error(e);
-    }
-
-    return;
-  }),
-});
+export const router = t.mergeRouters(
+  accountRouter,
+  transactionRouter,
+  userSettingsRouter,
+  snapshotRouter,
+  addressBookRouter,
+  ironfishRouter,
+  windowRouter,
+);
 
 export type AppRouter = typeof router;
