@@ -1,6 +1,6 @@
 import * as z from "zod";
 
-import { trpcVanillaClient } from "@/providers/TRPCProvider";
+import { getTrpcVanillaClient } from "@/providers/TRPCProvider";
 import { MIN_IRON_VALUE } from "@/utils/ironUtils";
 
 export const transactionSchema = z.object({
@@ -9,7 +9,8 @@ export const transactionSchema = z.object({
     .string()
     .min(1)
     .refine(async (value) => {
-      const response = await trpcVanillaClient.isValidPublicAddress.query({
+      const client = getTrpcVanillaClient();
+      const response = await client.isValidPublicAddress.query({
         address: value,
       });
       return !!response?.valid;
