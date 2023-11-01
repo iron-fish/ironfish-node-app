@@ -13,13 +13,20 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v4
-    - name: get-npm-version
+
+    - name: Get NPM package version
       id: package-version
-      uses: martinbeentjes/npm-get-version-action@v1.3.1
+      run: |
+        CURRENTVERSION=$(jq .version package.json -r)
+        echo $CURRENTVERSION
+        echo current-version=$CURRENTVERSION >> "$GITHUB_OUTPUT"
 
     - name: Get release status
       id: release-status
-      run: echo is-draft=$(gh release view ${{ env.version }} --json isDraft --jq .isDraft) >> "$GITHUB_OUTPUT"
+      run: |
+        ISDRAFT=$(gh release view ${{ env.VERSION }} --json isDraft --jq .isDraft)
+        echo $ISDRAFT
+        echo is-draft=$ISDRAFT >> "$GITHUB_OUTPUT"
       env:
         GITHUB_TOKEN: ${{ github.token }}
         VERSION: v${{ steps.package-version.outputs.current-version }}
@@ -27,7 +34,7 @@ jobs:
     - name: Fail if release exists and is not a draft
       if: ${{ steps.release-status.outputs.is-draft == 'false' }}
       run: |
-        "::error::Ran Publish Release on an already published release"
+        echo "::error::Ran Publish Release on an already published release"
         exit 1
 
   publish_on_windows:
@@ -203,9 +210,13 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - name: get-npm-version
+
+      - name: Get NPM package version
         id: package-version
-        uses: martinbeentjes/npm-get-version-action@v1.3.1
+        run: |
+          CURRENTVERSION=$(jq .version package.json -r)
+          echo $CURRENTVERSION
+          echo current-version=$CURRENTVERSION >> "$GITHUB_OUTPUT"
 
       - name: Download latest-mac-arm64.yml
         uses: actions/download-artifact@v3
