@@ -1,11 +1,7 @@
 import fsAsync from "fs/promises";
 
-import {
-  Event,
-  IronfishSdk,
-  Meter,
-  NodeUtils,
-} from "@ironfish/sdk";
+import { Event, IronfishSdk, Meter, NodeUtils } from "@ironfish/sdk";
+import log from "electron-log";
 
 import {
   DownloadedSnapshot,
@@ -21,17 +17,17 @@ export class SnapshotManager {
   started = false;
 
   async run(sdk: IronfishSdk): Promise<void> {
-    if(this.started) {
-      return
+    if (this.started) {
+      return;
     }
 
     this.started = true;
 
     try {
-      await this._run(sdk)
-      this.snapshotPromise.resolve()
+      await this._run(sdk);
+      this.snapshotPromise.resolve();
     } catch (e) {
-      this.snapshotPromise.reject(e)
+      this.snapshotPromise.reject(e);
     }
   }
 
@@ -45,7 +41,7 @@ export class SnapshotManager {
     const nodeChainDBVersion = await node.chain.blockchainDb.getVersion();
     await node.closeDB();
 
-    console.log("Starting snapshot download");
+    log.log("Starting snapshot download");
     const networkId = sdk.internal.get("networkId");
     const manifestUrl = getDefaultManifestUrl(networkId);
     if (!manifestUrl) {
@@ -69,7 +65,7 @@ export class SnapshotManager {
     downloadSpeed.start();
 
     await Downloader.download((prev, curr) => {
-      console.log(`Download progress: ${curr}/${manifest.file_size}`);
+      log.log(`Download progress: ${curr}/${manifest.file_size}`);
       downloadSpeed.add(curr - prev);
 
       this.onProgress.emit({
@@ -99,7 +95,7 @@ export class SnapshotManager {
           prevExtracted: number,
           currExtracted: number,
         ) => {
-          console.log(`Unzip progress: ${currExtracted}/${totalEntries}`);
+          log.log(`Unzip progress: ${currExtracted}/${totalEntries}`);
           unzipSpeed.add(currExtracted - prevExtracted);
 
           this.onProgress.emit({

@@ -15,9 +15,17 @@
 ## Development
 
 1. Clone repo
-2. `cd iron-fish-node-app`
+2. `cd ironfish-node-app`
 3. Install dependencies: `yarn`
 4. Start dev server: `yarn dev`
+
+### Logs
+
+`electron-log` writes logs to the following directories by default:
+
+* **on Linux:** `~/.config/{app name}/logs/main.log`
+* **on macOS:** `~/Library/Logs/{app name}/main.log`
+* **on Windows:** `%USERPROFILE%\AppData\Roaming\{app name}\logs\main.log`
 
 ## Creating a production build
 

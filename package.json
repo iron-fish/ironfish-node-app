@@ -20,7 +20,7 @@
     "@hookform/resolvers": "^3.3.2",
     "@ironfish/rust-nodejs": "^1.9.0",
     "@ironfish/sdk": "1.10.1",
-    "electron-log": "^4.4.8",
+    "electron-log": "5.0.0",
     "electron-serve": "^1.1.0",
     "electron-store": "^8.1.0",
     "nedb": "^1.8.0",
