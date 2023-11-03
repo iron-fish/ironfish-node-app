@@ -12,6 +12,7 @@ import { v4 as uuid } from "uuid";
 import packageJson from "../../../package.json";
 import { SnapshotManager } from "../snapshot/snapshotManager";
 import { SplitPromise, splitPromise } from "../utils";
+import { logger } from "./logger";
 
 function getPrivateIdentity(sdk: IronfishSdk) {
   const networkIdentity = sdk.internal.get("networkIdentity");
@@ -64,6 +65,7 @@ export class Ironfish {
 
     const sdk = await IronfishSdk.init({
       dataDir: this._dataDir,
+      logger: logger,
       pkg: getPackageFrom(packageJson),
     });
 
