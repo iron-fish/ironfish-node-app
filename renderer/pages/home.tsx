@@ -7,35 +7,39 @@ import { trpcReact } from "@/providers/TRPCProvider";
 import { LogoLg } from "@/ui/SVGs/LogoLg";
 
 /**
- * This component handles initializing the SDK and determining
- * what state the user should be in.
+ * This component handles initializing the SDK, determining what state
+ * the user should be in, and routing them to the appropriate page.
  *
- * - @todo: Handle creating an account
- * - If the user has not created an account, they should go to the account creation flow.
- * - If the user user is behind on syncing, they should be prompted to download a snapshot.
- * - If the user is up to date, they should be redirected to the accounts page.
+ * - If the user does not have an account, they go to the create/import flow.
+ * - If the user user is behind on syncing, they are prompted to download a snapshot.
+ * - If the user is up to date, they are redirected to the accounts page.
  */
 export default function Home() {
   const router = useRouter();
 
   const { data: initialStateData, isLoading: isInitialStateLoading } =
     trpcReact.getInitialState.useQuery();
-
   const { mutate: startNode } = trpcReact.startNode.useMutation();
 
   useEffect(() => {
-    if (isInitialStateLoading || initialStateData !== "start-node") return;
+    if (initialStateData === "onboarding") {
+      router.replace("/onboarding");
+    }
+  }, [initialStateData, router]);
 
-    startNode();
-    router.replace("/accounts");
+  useEffect(() => {
+    if (initialStateData === "start-node") {
+      startNode();
+      router.replace("/accounts");
+    }
   }, [router, startNode, initialStateData, isInitialStateLoading]);
 
-  const handleSyncFromPeers = useCallback(() => {
-    // @todo: Handle syncing from peers
-    console.log("Syncing from peers");
-  }, []);
-
   const handleSnapshotSuccess = useCallback(() => {
+    startNode();
+    router.replace("/accounts");
+  }, [router, startNode]);
+
+  const handleSyncFromPeers = useCallback(() => {
     startNode();
     router.replace("/accounts");
   }, [router, startNode]);
@@ -50,8 +54,8 @@ export default function Home() {
       </Flex>
       {initialStateData === "snapshot-download-prompt" && (
         <SnapshotDownloadModal
-          onPeers={handleSyncFromPeers}
           onSuccess={handleSnapshotSuccess}
+          onPeers={handleSyncFromPeers}
         />
       )}
     </>

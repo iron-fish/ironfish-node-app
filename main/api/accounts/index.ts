@@ -1,5 +1,10 @@
 import { z } from "zod";
 
+import { handleCreateAccount } from "./handleCreateAccount";
+import {
+  handleExportAccount,
+  handleExportAccountInputs,
+} from "./handleExportAccount";
 import { handleGetAccount } from "./handleGetAccount";
 import { handleGetAccounts } from "./handleGetAccounts";
 import { manager } from "../manager";
@@ -16,6 +21,20 @@ export const accountRouter = t.router({
       return handleGetAccount(opts.input);
     }),
   getAccounts: t.procedure.query(handleGetAccounts),
+  createAccount: t.procedure
+    .input(
+      z.object({
+        name: z.string(),
+      }),
+    )
+    .mutation(async (opts) => {
+      return handleCreateAccount(opts.input);
+    }),
+  exportAccount: t.procedure
+    .input(handleExportAccountInputs)
+    .query(async (opts) => {
+      return handleExportAccount(opts.input);
+    }),
   isValidPublicAddress: t.procedure
     .input(
       z.object({

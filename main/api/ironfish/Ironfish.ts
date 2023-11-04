@@ -1,6 +1,7 @@
 import { BoxKeyPair } from "@ironfish/rust-nodejs";
 import {
   ALL_API_NAMESPACES,
+  FullNode,
   IronfishSdk,
   NodeUtils,
   RpcClient,
@@ -29,6 +30,7 @@ export class Ironfish {
 
   private rpcClientPromise: SplitPromise<RpcClient> = splitPromise();
   private sdkPromise: SplitPromise<IronfishSdk> = splitPromise();
+  private fullNodePromise: SplitPromise<FullNode> = splitPromise();
   private _started: boolean = false;
   private _initialized: boolean = false;
   private _dataDir: string;
@@ -45,6 +47,10 @@ export class Ironfish {
     return this.sdkPromise.promise;
   }
 
+  fullNode(): Promise<FullNode> {
+    return this.fullNodePromise.promise;
+  }
+
   async downloadSnapshot(): Promise<void> {
     if (this._started) {
       throw new Error("Cannot download snapshot after node has started");
@@ -58,6 +64,7 @@ export class Ironfish {
     if (this._initialized) {
       return;
     }
+
     this._initialized = true;
 
     console.log("Initializing IronFish SDK...");
@@ -67,22 +74,6 @@ export class Ironfish {
       pkg: getPackageFrom(packageJson),
     });
 
-    this.sdkPromise.resolve(sdk);
-  }
-
-  async start() {
-    if (this._started) {
-      return;
-    }
-    this._started = true;
-
-    if (this.snapshotManager.started) {
-      await this.snapshotManager.result();
-    }
-
-    console.log("Starting IronFish Node...");
-
-    const sdk = await this.sdk();
     const node = await sdk.node({
       privateIdentity: getPrivateIdentity(sdk),
       autoSeed: true,
@@ -102,13 +93,26 @@ export class Ironfish {
       await node.internal.save();
     }
 
-    await node.start();
-
     const rpcClient = new RpcMemoryClient(
       node.logger,
       node.rpc.getRouter(ALL_API_NAMESPACES),
     );
 
+    this.sdkPromise.resolve(sdk);
+    this.fullNodePromise.resolve(node);
     this.rpcClientPromise.resolve(rpcClient);
+  }
+
+  async start() {
+    if (this._started) {
+      return;
+    }
+
+    console.log("Starting FullNode...");
+
+    this._started = true;
+
+    const node = await this.fullNode();
+    await node.start();
   }
 }
