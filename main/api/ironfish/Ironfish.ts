@@ -147,27 +147,23 @@ export class Ironfish {
 
     log.log("Deleting databases...");
 
-    try {
-      await Promise.all([
-        fsAsync.rm(chainDatabasePath, { recursive: true, force: true }),
-        fsAsync.rm(hostFilePath, { recursive: true, force: true }),
-      ]);
+    await Promise.all([
+      fsAsync.rm(chainDatabasePath, { recursive: true, force: true }),
+      fsAsync.rm(hostFilePath, { recursive: true, force: true }),
+    ]);
 
-      await this.init();
-      sdk = await this.sdk();
+    await this.init();
+    sdk = await this.sdk();
 
-      const node = await sdk.node();
-      await node.openDB();
+    const node = await sdk.node();
+    await node.openDB();
 
-      await node.wallet.reset();
+    await node.wallet.reset();
 
-      await node.closeDB();
+    await node.closeDB();
 
-      log.log("Databases deleted successfully");
+    log.log("Databases deleted successfully");
 
-      await this.start();
-    } catch (e) {
-      log.error(e);
-    }
+    await this.start();
   }
 }
