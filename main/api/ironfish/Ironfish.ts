@@ -1,11 +1,16 @@
+import fsAsync from "fs/promises";
+
 import {
   ALL_API_NAMESPACES,
+  FullNode,
+  HOST_FILE_NAME,
   IronfishSdk,
   NodeUtils,
   RpcClient,
   RpcMemoryClient,
   getPackageFrom,
 } from "@ironfish/sdk";
+import log from "electron-log";
 import { v4 as uuid } from "uuid";
 
 import { logger } from "./logger";
@@ -19,6 +24,7 @@ export class Ironfish {
   private rpcClientPromise: SplitPromise<RpcClient> = splitPromise();
   private sdkPromise: SplitPromise<IronfishSdk> = splitPromise();
   private _started: boolean = false;
+  private _fullNode: FullNode | null = null;
   private _initialized: boolean = false;
   private _dataDir: string;
 
@@ -55,6 +61,9 @@ export class Ironfish {
       dataDir: this._dataDir,
       logger: logger,
       pkg: getPackageFrom(packageJson),
+      configOverrides: {
+        databaseMigrate: true,
+      },
     });
 
     this.sdkPromise.resolve(sdk);
@@ -93,6 +102,7 @@ export class Ironfish {
     }
 
     await node.start();
+    this._fullNode = node;
 
     const rpcClient = new RpcMemoryClient(
       node.logger,
@@ -100,5 +110,64 @@ export class Ironfish {
     );
 
     this.rpcClientPromise.resolve(rpcClient);
+  }
+
+  async stop() {
+    if (this._fullNode) {
+      await this._fullNode.shutdown();
+      await this._fullNode.closeDB();
+      this._fullNode = null;
+    }
+
+    this._started = false;
+
+    this._initialized = false;
+    this.rpcClientPromise = splitPromise();
+    this.sdkPromise = splitPromise();
+  }
+
+  async restart() {
+    await this.stop();
+    await this.init();
+    await this.start();
+  }
+
+  async reset() {
+    // Implementation references the CLI reset command:
+    // https://github.com/iron-fish/ironfish/blob/master/ironfish-cli/src/commands/reset.ts
+    let sdk = await this.sdk();
+
+    const chainDatabasePath = sdk.config.chainDatabasePath;
+    const hostFilePath: string = sdk.config.files.join(
+      sdk.config.dataDir,
+      HOST_FILE_NAME,
+    );
+
+    await this.stop();
+
+    log.log("Deleting databases...");
+
+    try {
+      await Promise.all([
+        fsAsync.rm(chainDatabasePath, { recursive: true, force: true }),
+        fsAsync.rm(hostFilePath, { recursive: true, force: true }),
+      ]);
+
+      await this.init();
+      sdk = await this.sdk();
+
+      const node = await sdk.node();
+      await node.openDB();
+
+      await node.wallet.reset();
+
+      await node.closeDB();
+
+      log.log("Databases deleted successfully");
+
+      await this.start();
+    } catch (e) {
+      log.error(e);
+    }
   }
 }
