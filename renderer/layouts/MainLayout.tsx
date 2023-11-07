@@ -11,6 +11,7 @@ import {
 import { useRouter } from "next/router";
 import { ReactNode } from "react";
 
+import { StatusIndicator } from "@/components/StatusIndicator/StatusIndicator";
 import { ChakraLink } from "@/ui/ChakraLink/ChakraLink";
 import { COLORS } from "@/ui/colors";
 import { DarkModeSwitch } from "@/ui/DarkModeSwitch/DarkModeSwitch";
@@ -124,6 +125,7 @@ function Sidebar() {
           );
         })}
       </VStack>
+      <StatusIndicator />
       <DarkModeSwitch />
     </Flex>
   );
