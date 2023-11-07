@@ -1,11 +1,6 @@
 import fsAsync from "fs/promises";
 
-import {
-  Event,
-  IronfishSdk,
-  Meter,
-  NodeUtils,
-} from "@ironfish/sdk";
+import { Event, FullNode, IronfishSdk, Meter } from "@ironfish/sdk";
 
 import {
   DownloadedSnapshot,
@@ -20,18 +15,18 @@ export class SnapshotManager {
   snapshotPromise: SplitPromise<void> = splitPromise();
   started = false;
 
-  async run(sdk: IronfishSdk): Promise<void> {
-    if(this.started) {
-      return
+  async run(sdk: IronfishSdk, node: FullNode): Promise<void> {
+    if (this.started) {
+      return;
     }
 
     this.started = true;
 
     try {
-      await this._run(sdk)
-      this.snapshotPromise.resolve()
+      await this._run(sdk, node);
+      this.snapshotPromise.resolve();
     } catch (e) {
-      this.snapshotPromise.reject(e)
+      this.snapshotPromise.reject(e);
     }
   }
 
@@ -39,9 +34,7 @@ export class SnapshotManager {
     return this.snapshotPromise.promise;
   }
 
-  async _run(sdk: IronfishSdk): Promise<void> {
-    const node = await sdk.node();
-    await NodeUtils.waitForOpen(node);
+  async _run(sdk: IronfishSdk, node: FullNode): Promise<void> {
     const nodeChainDBVersion = await node.chain.blockchainDb.getVersion();
     await node.closeDB();
 

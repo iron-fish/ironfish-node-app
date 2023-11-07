@@ -1,24 +1,19 @@
-import { Box, Heading, Text } from "@chakra-ui/react";
-import Link from "next/link";
-import { useEffect } from "react";
+import { useRouter } from "next/router";
+import { useEffect, useState } from "react";
 
 import { trpcReact } from "@/providers/TRPCProvider";
-import { MnemonicPhrase } from "@/ui/Forms/MnemonicPhrase/MnemonicPhrase";
-import { TextInput } from "@/ui/Forms/TextInput/TextInput";
 
-function splitMnemonicPhrase(phrase: string) {
-  return phrase.split(/\s+/).map((part) => part.trim());
-}
+import { ConfirmAccountStep } from "./ConfirmAccountStep";
+import { CreateAccountStep } from "./CreateAccountStep";
 
-export function CreateAccount() {
+type Steps = "create" | "confirm";
+
+function useMaybeNewAccount() {
   const { data: accountsData, refetch: refetchGetAccounts } =
     trpcReact.getAccounts.useQuery();
-
-  const accountName = accountsData?.[0]?.name;
-
   const { mutate: createAccount, isIdle: isCreateIdle } =
     trpcReact.createAccount.useMutation();
-
+  const accountName = accountsData?.[0]?.name;
   const { data: exportData } = trpcReact.exportAccount.useQuery(
     {
       name: accountName ?? "",
@@ -48,25 +43,61 @@ export function CreateAccount() {
 
   const mnemonicPhrase = exportData?.account;
 
+  return {
+    accountName,
+    mnemonicPhrase,
+  };
+}
+
+export function CreateAccount() {
+  const router = useRouter();
+  const [step, setStep] = useState<Steps>("create");
+  const [editedName, setEditedName] = useState<string | null>(null);
+  const { mutate: renameAccount, isLoading: isRenameLoading } =
+    trpcReact.renameAccount.useMutation();
+
+  const { accountName, mnemonicPhrase } = useMaybeNewAccount();
+
   if (!accountName || typeof mnemonicPhrase !== "string") {
     return null;
   }
 
+  const newAccountName = editedName !== null ? editedName : accountName;
+
+  if (step === "create") {
+    return (
+      <CreateAccountStep
+        accountName={newAccountName}
+        onNameChange={(name: string) => {
+          setEditedName(name);
+        }}
+        mnemonicPhrase={mnemonicPhrase}
+        onBack={() => {
+          router.back();
+        }}
+        onNextStep={() => {
+          setStep("confirm");
+        }}
+      />
+    );
+  }
   return (
-    <Box>
-      <Link href="/onboarding">Back</Link>
-      <Heading mt={24} mb={8}>
-        Create Account
-      </Heading>
-      <TextInput label="Account Name" value={accountName} />
-      <Heading mt={8} mb={4}>
-        Recovery Phrase
-      </Heading>
-      <Text mb={4}>
-        Please keep this phrase stored somewhere safe. We will ask you to
-        re-enter this.
-      </Text>
-      <MnemonicPhrase readOnly phrase={splitMnemonicPhrase(mnemonicPhrase)} />
-    </Box>
+    <ConfirmAccountStep
+      accountName={accountName}
+      mnemonicPhrase={mnemonicPhrase}
+      isLoading={isRenameLoading}
+      onBack={() => {
+        setStep("create");
+      }}
+      onNextStep={async () => {
+        if (editedName !== null) {
+          await renameAccount({
+            account: accountName,
+            newName: editedName,
+          });
+        }
+        router.push("/onboarding/snapshot-download");
+      }}
+    />
   );
 }

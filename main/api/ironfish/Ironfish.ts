@@ -57,7 +57,8 @@ export class Ironfish {
     }
 
     const sdk = await this.sdk();
-    await this.snapshotManager.run(sdk);
+    const node = await this.fullNode();
+    await this.snapshotManager.run(sdk, node);
   }
 
   async init() {

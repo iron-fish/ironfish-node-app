@@ -19,6 +19,6 @@ export const ironfishRouter = t.router({
   }),
   startNode: t.procedure.mutation(async () => {
     const ironfish = await manager.getIronfish();
-    ironfish.start();
+    await ironfish.start();
   }),
 });

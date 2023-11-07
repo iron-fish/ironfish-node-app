@@ -7,6 +7,10 @@ import {
 } from "./handleExportAccount";
 import { handleGetAccount } from "./handleGetAccount";
 import { handleGetAccounts } from "./handleGetAccounts";
+import {
+  handleRenameAccountInputs,
+  handleRenameAccount,
+} from "./handleRenameAccount";
 import { manager } from "../manager";
 import { t } from "../trpc";
 
@@ -34,6 +38,11 @@ export const accountRouter = t.router({
     .input(handleExportAccountInputs)
     .query(async (opts) => {
       return handleExportAccount(opts.input);
+    }),
+  renameAccount: t.procedure
+    .input(handleRenameAccountInputs)
+    .mutation(async (opts) => {
+      return handleRenameAccount(opts.input);
     }),
   isValidPublicAddress: t.procedure
     .input(
