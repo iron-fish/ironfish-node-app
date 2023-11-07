@@ -56,7 +56,7 @@ function DownloadProgress({ onSuccess }: { onSuccess: () => void }) {
       )}
       {snapshotState?.step === "unzip" && (
         <Box>
-          <Heading mb={8}>Download in progress...</Heading>
+          <Heading mb={8}>Unzipping...</Heading>
           <Text mb={8}>
             You&apos;ll automatically be redirected to your accounts page once
             the snapshot is applied.
