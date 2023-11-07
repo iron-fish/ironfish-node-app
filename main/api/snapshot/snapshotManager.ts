@@ -109,5 +109,6 @@ export class SnapshotManager {
 
     await downloadedSnapshot.replaceDatabase();
     await fsAsync.rm(downloadedSnapshot.file);
+    await node.openDB();
   }
 }
