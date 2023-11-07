@@ -116,7 +116,6 @@ class MainWindow {
       titleBarStyle: "hidden",
       webPreferences: {
         preload: path.join(__dirname, "preload.js"),
-        sandbox: false,
       },
     });
 
