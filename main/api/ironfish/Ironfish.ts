@@ -32,6 +32,10 @@ export class Ironfish {
     this._dataDir = dataDir;
   }
 
+  isStarted(): boolean {
+    return this._started;
+  }
+
   rpcClient(): Promise<RpcClient> {
     return this.rpcClientPromise.promise;
   }
@@ -79,7 +83,7 @@ export class Ironfish {
       await this.snapshotManager.result();
     }
 
-    console.log("Starting IronFish Node...");
+    console.log("Starting Iron Fish Node...");
 
     const sdk = await this.sdk();
     const node = await sdk.node({
@@ -114,6 +118,7 @@ export class Ironfish {
 
   async stop() {
     if (this._fullNode) {
+      console.log("Stopping Iron Fish Node...");
       await this._fullNode.shutdown();
       await this._fullNode.closeDB();
       this._fullNode = null;

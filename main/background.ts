@@ -45,3 +45,13 @@ if (isProd) {
 app.on("window-all-closed", () => {
   app.quit();
 });
+
+app.on("will-quit", (e) => {
+  // Attempt to shut down the node gracefully before exiting the app
+  if (ironfish.isStarted()) {
+    e.preventDefault();
+    ironfish.stop().then(() => {
+      app.quit();
+    });
+  }
+});
