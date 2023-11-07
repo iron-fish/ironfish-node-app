@@ -1,6 +1,7 @@
 import fsAsync from "fs/promises";
 
 import { Event, FullNode, IronfishSdk, Meter } from "@ironfish/sdk";
+import log from "electron-log";
 
 import {
   DownloadedSnapshot,
@@ -38,7 +39,7 @@ export class SnapshotManager {
     const nodeChainDBVersion = await node.chain.blockchainDb.getVersion();
     await node.closeDB();
 
-    console.log("Starting snapshot download");
+    log.log("Starting snapshot download");
     const networkId = sdk.internal.get("networkId");
     const manifestUrl = getDefaultManifestUrl(networkId);
     if (!manifestUrl) {
@@ -62,6 +63,7 @@ export class SnapshotManager {
     downloadSpeed.start();
 
     await Downloader.download((prev, curr) => {
+      log.log(`Download progress: ${curr}/${manifest.file_size}`);
       downloadSpeed.add(curr - prev);
 
       this.onProgress.emit({
@@ -91,6 +93,7 @@ export class SnapshotManager {
           prevExtracted: number,
           currExtracted: number,
         ) => {
+          log.log(`Unzip progress: ${currExtracted}/${totalEntries}`);
           unzipSpeed.add(currExtracted - prevExtracted);
 
           this.onProgress.emit({

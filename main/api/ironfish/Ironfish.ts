@@ -10,6 +10,7 @@ import {
 } from "@ironfish/sdk";
 import { v4 as uuid } from "uuid";
 
+import { logger } from "./logger";
 import packageJson from "../../../package.json";
 import { SnapshotManager } from "../snapshot/snapshotManager";
 import { SplitPromise, splitPromise } from "../utils";
@@ -72,6 +73,7 @@ export class Ironfish {
 
     const sdk = await IronfishSdk.init({
       dataDir: this._dataDir,
+      logger: logger,
       pkg: getPackageFrom(packageJson),
     });
 
