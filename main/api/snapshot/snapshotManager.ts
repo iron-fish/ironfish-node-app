@@ -65,7 +65,7 @@ export class SnapshotManager {
     downloadSpeed.start();
 
     await Downloader.download((prev, curr) => {
-      log.log(`Download progress: ${curr}/${manifest.file_size}`);
+      log.debug(`Download progress: ${curr}/${manifest.file_size}`);
       downloadSpeed.add(curr - prev);
 
       this.onProgress.emit({
@@ -95,7 +95,7 @@ export class SnapshotManager {
           prevExtracted: number,
           currExtracted: number,
         ) => {
-          log.log(`Unzip progress: ${currExtracted}/${totalEntries}`);
+          log.debug(`Unzip progress: ${currExtracted}/${totalEntries}`);
           unzipSpeed.add(currExtracted - prevExtracted);
 
           this.onProgress.emit({
