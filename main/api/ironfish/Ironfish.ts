@@ -1,4 +1,3 @@
-import { BoxKeyPair } from "@ironfish/rust-nodejs";
 import {
   ALL_API_NAMESPACES,
   IronfishSdk,
@@ -9,21 +8,10 @@ import {
 } from "@ironfish/sdk";
 import { v4 as uuid } from "uuid";
 
+import { logger } from "./logger";
 import packageJson from "../../../package.json";
 import { SnapshotManager } from "../snapshot/snapshotManager";
 import { SplitPromise, splitPromise } from "../utils";
-import { logger } from "./logger";
-
-function getPrivateIdentity(sdk: IronfishSdk) {
-  const networkIdentity = sdk.internal.get("networkIdentity");
-  if (
-    !sdk.config.get("generateNewIdentity") &&
-    networkIdentity !== undefined &&
-    networkIdentity.length > 31
-  ) {
-    return BoxKeyPair.fromHex(networkIdentity);
-  }
-}
 
 export class Ironfish {
   public snapshotManager: SnapshotManager = new SnapshotManager();
@@ -86,7 +74,7 @@ export class Ironfish {
 
     const sdk = await this.sdk();
     const node = await sdk.node({
-      privateIdentity: getPrivateIdentity(sdk),
+      privateIdentity: sdk.getPrivateIdentity(),
       autoSeed: true,
     });
 
