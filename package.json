@@ -18,8 +18,9 @@
   "license": "MPL-2.0",
   "dependencies": {
     "@hookform/resolvers": "^3.3.2",
-    "@ironfish/rust-nodejs": "^1.9.0",
-    "@ironfish/sdk": "1.10.1",
+    "@ironfish/rust-nodejs": "1.10.0",
+    "@ironfish/sdk": "1.12.0",
+    "consola": "2.15.0",
     "electron-log": "5.0.0",
     "electron-serve": "^1.1.0",
     "electron-store": "^8.1.0",

@@ -9,10 +9,10 @@ import {
 } from "@ironfish/sdk";
 import { v4 as uuid } from "uuid";
 
+import { logger } from "./logger";
 import packageJson from "../../../package.json";
 import { SnapshotManager } from "../snapshot/snapshotManager";
 import { SplitPromise, splitPromise } from "../utils";
-import { logger } from "./logger";
 
 function getPrivateIdentity(sdk: IronfishSdk) {
   const networkIdentity = sdk.internal.get("networkIdentity");
