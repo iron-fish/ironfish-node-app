@@ -3,7 +3,7 @@ import fsAsync from "fs/promises";
 import {
   ALL_API_NAMESPACES,
   FullNode,
-  HOST_FILE_NAME,
+  PEER_STORE_FILE_NAME,
   IronfishSdk,
   NodeUtils,
   RpcClient,
@@ -140,7 +140,7 @@ export class Ironfish {
     const chainDatabasePath = sdk.config.chainDatabasePath;
     const hostFilePath: string = sdk.config.files.join(
       sdk.config.dataDir,
-      HOST_FILE_NAME,
+      PEER_STORE_FILE_NAME,
     );
 
     await this.stop();
