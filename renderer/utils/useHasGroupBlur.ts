@@ -19,11 +19,11 @@ export function useHasGroupBlur({ delay = 100 }: { delay: number }) {
   }, [delay]);
 
   return useMemo(
-    {
+    () => ({
       hasBlur,
       onFocus,
       onBlur,
-    },
-    [],
+    }),
+    [hasBlur, onBlur, onFocus],
   );
 }

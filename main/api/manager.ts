@@ -48,8 +48,8 @@ export class Manager {
     const headTimestamp = statusResponse.content.blockchain.headTimestamp;
     const hoursSinceLastBlock = (Date.now() - headTimestamp) / 1000 / 60 / 60;
 
-    // If the last block was more than a week ago, prompt the user to download a snapshot
-    if (hoursSinceLastBlock > 24 * 7) {
+    // If the last block was more than 2 weeks ago, prompt the user to download a snapshot
+    if (hoursSinceLastBlock > 24 * 7 * 2) {
       return "snapshot-download-prompt";
     }
 
