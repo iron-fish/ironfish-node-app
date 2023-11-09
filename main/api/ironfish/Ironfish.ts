@@ -23,6 +23,7 @@ export class Ironfish {
 
   private rpcClientPromise: SplitPromise<RpcClient> = splitPromise();
   private sdkPromise: SplitPromise<IronfishSdk> = splitPromise();
+  private fullNodePromise: SplitPromise<FullNode> = splitPromise();
   private _started: boolean = false;
   private _fullNode: FullNode | null = null;
   private _initialized: boolean = false;
@@ -44,19 +45,25 @@ export class Ironfish {
     return this.sdkPromise.promise;
   }
 
+  fullNode(): Promise<FullNode> {
+    return this.fullNodePromise.promise;
+  }
+
   async downloadSnapshot(): Promise<void> {
     if (this._started) {
       throw new Error("Cannot download snapshot after node has started");
     }
 
     const sdk = await this.sdk();
-    await this.snapshotManager.run(sdk);
+    const node = await this.fullNode();
+    await this.snapshotManager.run(sdk, node);
   }
 
   async init() {
     if (this._initialized) {
       return;
     }
+
     this._initialized = true;
 
     log.log("Initializing Iron Fish SDK...");
@@ -70,22 +77,6 @@ export class Ironfish {
       },
     });
 
-    this.sdkPromise.resolve(sdk);
-  }
-
-  async start() {
-    if (this._started) {
-      return;
-    }
-    this._started = true;
-
-    if (this.snapshotManager.started) {
-      await this.snapshotManager.result();
-    }
-
-    log.log("Starting Iron Fish Node...");
-
-    const sdk = await this.sdk();
     const node = await sdk.node({
       privateIdentity: sdk.getPrivateIdentity(),
       autoSeed: true,
@@ -96,6 +87,7 @@ export class Ironfish {
     const newSecretKey = Buffer.from(
       node.peerNetwork.localPeer.privateIdentity.secretKey,
     ).toString("hex");
+
     node.internal.set("networkIdentity", newSecretKey);
     await node.internal.save();
 
@@ -105,15 +97,27 @@ export class Ironfish {
       await node.internal.save();
     }
 
-    await node.start();
-    this._fullNode = node;
-
     const rpcClient = new RpcMemoryClient(
       node.logger,
       node.rpc.getRouter(ALL_API_NAMESPACES),
     );
 
+    this.sdkPromise.resolve(sdk);
+    this.fullNodePromise.resolve(node);
     this.rpcClientPromise.resolve(rpcClient);
+  }
+
+  async start() {
+    if (this._started) {
+      return;
+    }
+
+    log.log("Starting Iron Fish Node...");
+
+    this._started = true;
+
+    const node = await this.fullNode();
+    await node.start();
   }
 
   async stop() {

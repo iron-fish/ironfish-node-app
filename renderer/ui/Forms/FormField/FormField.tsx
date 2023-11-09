@@ -5,10 +5,11 @@ import { FieldError, FieldErrorsImpl } from "react-hook-form";
 import { COLORS } from "@/ui/colors";
 
 export type FormFieldProps = {
-  label: string;
+  label: string | ReactNode;
   error?: string | FieldError | FieldErrorsImpl;
   icon?: ReactNode;
   triggerProps?: StackProps & { ref: unknown };
+  actions?: ReactNode;
 };
 
 export function FormField({
@@ -17,6 +18,7 @@ export function FormField({
   label,
   icon,
   triggerProps,
+  actions,
 }: FormFieldProps & {
   children: ReactNode;
 }) {
@@ -34,9 +36,19 @@ export function FormField({
         {...triggerProps}
       >
         <Box flexGrow={1} w="100%" px={6} py={3}>
-          <Text fontSize="sm" color={COLORS.GRAY_MEDIUM}>
-            {label}
-          </Text>
+          <HStack>
+            {typeof label === "string" ? (
+              <Text fontSize="sm" color={COLORS.GRAY_MEDIUM} flexGrow={1}>
+                {label}
+              </Text>
+            ) : (
+              label
+            )}
+
+            {actions && (
+              <Box onClick={(e) => e.preventDefault()}>{actions}</Box>
+            )}
+          </HStack>
           {children}
         </Box>
         {icon && <Box pr={4}>{icon}</Box>}

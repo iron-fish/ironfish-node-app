@@ -6,7 +6,7 @@ import {
 } from "./user-settings/userSettings";
 
 export type InitialState =
-  | "create-account"
+  | "onboarding"
   | "snapshot-download-prompt"
   | "start-node";
 
@@ -36,15 +36,24 @@ export class Manager {
     if (this._initialState) return this._initialState;
 
     const ironfish = await this.getIronfish();
-    const sdk = await ironfish.sdk();
+    const rpcClient = await ironfish.rpcClient();
 
-    if (sdk.internal.get("isFirstRun")) {
-      this._initialState = "snapshot-download-prompt";
-    } else {
-      this._initialState = "start-node";
+    const accountsResponse = await rpcClient.wallet.getAccounts();
+
+    if (accountsResponse.content.accounts.length === 0) {
+      return "onboarding";
     }
 
-    return this._initialState;
+    const statusResponse = await rpcClient.node.getStatus();
+    const headTimestamp = statusResponse.content.blockchain.headTimestamp;
+    const hoursSinceLastBlock = (Date.now() - headTimestamp) / 1000 / 60 / 60;
+
+    // If the last block was more than 2 weeks ago, prompt the user to download a snapshot
+    if (hoursSinceLastBlock > 24 * 7 * 2) {
+      return "snapshot-download-prompt";
+    }
+
+    return "start-node";
   }
 }
 
