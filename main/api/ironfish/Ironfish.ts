@@ -3,7 +3,7 @@ import fsAsync from "fs/promises";
 import {
   ALL_API_NAMESPACES,
   FullNode,
-  PEER_STORE_FILE_NAME,
+  HOST_FILE_NAME,
   IronfishSdk,
   NodeUtils,
   RpcClient,
@@ -66,45 +66,49 @@ export class Ironfish {
 
     this._initialized = true;
 
-    log.log("Initializing Iron Fish SDK...");
+    try {
+      log.log("Initializing Iron Fish SDK...");
 
-    const sdk = await IronfishSdk.init({
-      dataDir: this._dataDir,
-      logger: logger,
-      pkg: getPackageFrom(packageJson),
-      configOverrides: {
-        databaseMigrate: true,
-      },
-    });
+      const sdk = await IronfishSdk.init({
+        dataDir: this._dataDir,
+        logger: logger,
+        pkg: getPackageFrom(packageJson),
+        configOverrides: {
+          databaseMigrate: true,
+        },
+      });
 
-    const node = await sdk.node({
-      privateIdentity: sdk.getPrivateIdentity(),
-      autoSeed: true,
-    });
+      const node = await sdk.node({
+        privateIdentity: sdk.getPrivateIdentity(),
+        autoSeed: true,
+      });
 
-    await NodeUtils.waitForOpen(node);
+      await NodeUtils.waitForOpen(node);
 
-    const newSecretKey = Buffer.from(
-      node.peerNetwork.localPeer.privateIdentity.secretKey,
-    ).toString("hex");
+      const newSecretKey = Buffer.from(
+        node.peerNetwork.localPeer.privateIdentity.secretKey,
+      ).toString("hex");
 
-    node.internal.set("networkIdentity", newSecretKey);
-    await node.internal.save();
-
-    if (node.internal.get("isFirstRun")) {
-      node.internal.set("isFirstRun", false);
-      node.internal.set("telemetryNodeId", uuid());
+      node.internal.set("networkIdentity", newSecretKey);
       await node.internal.save();
+
+      if (node.internal.get("isFirstRun")) {
+        node.internal.set("isFirstRun", false);
+        node.internal.set("telemetryNodeId", uuid());
+        await node.internal.save();
+      }
+
+      const rpcClient = new RpcMemoryClient(
+        node.logger,
+        node.rpc.getRouter(ALL_API_NAMESPACES),
+      );
+
+      this.sdkPromise.resolve(sdk);
+      this.fullNodePromise.resolve(node);
+      this.rpcClientPromise.resolve(rpcClient);
+    } catch (e) {
+      log.log(e);
     }
-
-    const rpcClient = new RpcMemoryClient(
-      node.logger,
-      node.rpc.getRouter(ALL_API_NAMESPACES),
-    );
-
-    this.sdkPromise.resolve(sdk);
-    this.fullNodePromise.resolve(node);
-    this.rpcClientPromise.resolve(rpcClient);
   }
 
   async start() {
@@ -112,12 +116,17 @@ export class Ironfish {
       return;
     }
 
-    log.log("Starting Iron Fish Node...");
+    try {
+      log.log("Starting Iron Fish Node...");
 
-    this._started = true;
+      this._started = true;
 
-    const node = await this.fullNode();
-    await node.start();
+      const node = await this.fullNode();
+      await node.start();
+      log.log("Started Iron Fish Node.");
+    } catch (e) {
+      log.log(e);
+    }
   }
 
   async stop() {
@@ -149,7 +158,7 @@ export class Ironfish {
     const chainDatabasePath = sdk.config.chainDatabasePath;
     const hostFilePath: string = sdk.config.files.join(
       sdk.config.dataDir,
-      PEER_STORE_FILE_NAME,
+      HOST_FILE_NAME,
     );
 
     await this.stop();
