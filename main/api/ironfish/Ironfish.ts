@@ -1,30 +1,22 @@
-import { BoxKeyPair } from "@ironfish/rust-nodejs";
+import fsAsync from "fs/promises";
+
 import {
   ALL_API_NAMESPACES,
   FullNode,
+  PEER_STORE_FILE_NAME,
   IronfishSdk,
   NodeUtils,
   RpcClient,
   RpcMemoryClient,
   getPackageFrom,
 } from "@ironfish/sdk";
+import log from "electron-log";
 import { v4 as uuid } from "uuid";
 
 import { logger } from "./logger";
 import packageJson from "../../../package.json";
 import { SnapshotManager } from "../snapshot/snapshotManager";
 import { SplitPromise, splitPromise } from "../utils";
-
-function getPrivateIdentity(sdk: IronfishSdk) {
-  const networkIdentity = sdk.internal.get("networkIdentity");
-  if (
-    !sdk.config.get("generateNewIdentity") &&
-    networkIdentity !== undefined &&
-    networkIdentity.length > 31
-  ) {
-    return BoxKeyPair.fromHex(networkIdentity);
-  }
-}
 
 export class Ironfish {
   public snapshotManager: SnapshotManager = new SnapshotManager();
@@ -33,11 +25,16 @@ export class Ironfish {
   private sdkPromise: SplitPromise<IronfishSdk> = splitPromise();
   private fullNodePromise: SplitPromise<FullNode> = splitPromise();
   private _started: boolean = false;
+  private _fullNode: FullNode | null = null;
   private _initialized: boolean = false;
   private _dataDir: string;
 
   constructor(dataDir: string) {
     this._dataDir = dataDir;
+  }
+
+  isStarted(): boolean {
+    return this._started;
   }
 
   rpcClient(): Promise<RpcClient> {
@@ -69,16 +66,19 @@ export class Ironfish {
 
     this._initialized = true;
 
-    console.log("Initializing IronFish SDK...");
+    log.log("Initializing Iron Fish SDK...");
 
     const sdk = await IronfishSdk.init({
       dataDir: this._dataDir,
       logger: logger,
       pkg: getPackageFrom(packageJson),
+      configOverrides: {
+        databaseMigrate: true,
+      },
     });
 
     const node = await sdk.node({
-      privateIdentity: getPrivateIdentity(sdk),
+      privateIdentity: sdk.getPrivateIdentity(),
       autoSeed: true,
     });
 
@@ -87,6 +87,7 @@ export class Ironfish {
     const newSecretKey = Buffer.from(
       node.peerNetwork.localPeer.privateIdentity.secretKey,
     ).toString("hex");
+
     node.internal.set("networkIdentity", newSecretKey);
     await node.internal.save();
 
@@ -111,11 +112,67 @@ export class Ironfish {
       return;
     }
 
-    console.log("Starting FullNode...");
+    log.log("Starting Iron Fish Node...");
 
     this._started = true;
 
     const node = await this.fullNode();
     await node.start();
+  }
+
+  async stop() {
+    if (this._fullNode) {
+      log.log("Stopping Iron Fish Node...");
+      await this._fullNode.shutdown();
+      await this._fullNode.closeDB();
+      this._fullNode = null;
+    }
+
+    this._started = false;
+
+    this._initialized = false;
+    this.rpcClientPromise = splitPromise();
+    this.sdkPromise = splitPromise();
+  }
+
+  async restart() {
+    await this.stop();
+    await this.init();
+    await this.start();
+  }
+
+  async reset() {
+    // Implementation references the CLI reset command:
+    // https://github.com/iron-fish/ironfish/blob/master/ironfish-cli/src/commands/reset.ts
+    let sdk = await this.sdk();
+
+    const chainDatabasePath = sdk.config.chainDatabasePath;
+    const hostFilePath: string = sdk.config.files.join(
+      sdk.config.dataDir,
+      PEER_STORE_FILE_NAME,
+    );
+
+    await this.stop();
+
+    log.log("Deleting databases...");
+
+    await Promise.all([
+      fsAsync.rm(chainDatabasePath, { recursive: true, force: true }),
+      fsAsync.rm(hostFilePath, { recursive: true, force: true }),
+    ]);
+
+    await this.init();
+    sdk = await this.sdk();
+
+    const node = await sdk.node();
+    await node.openDB();
+
+    await node.wallet.reset();
+
+    await node.closeDB();
+
+    log.log("Databases deleted successfully");
+
+    await this.start();
   }
 }
