@@ -16,8 +16,8 @@
 
 1. Clone repo
 2. `cd ironfish-node-app`
-3. Install dependencies: `yarn`
-4. Start dev server: `yarn dev`
+3. Install dependencies: `npm`
+4. Start dev server: `npm run dev`
 
 ### Logs
 
@@ -29,7 +29,7 @@
 
 ## Creating a production build
 
-1. `yarn build`
+1. `npm run build`
 
 ## Deploying a release
 
