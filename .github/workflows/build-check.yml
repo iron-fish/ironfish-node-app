@@ -19,7 +19,7 @@ jobs:
           node-version: "18"
 
       - name: Install dependencies
-        run: yarn install
+        run: npm install
 
       - name: Run build check
-        run: yarn build-check
+        run: npm run build-check
