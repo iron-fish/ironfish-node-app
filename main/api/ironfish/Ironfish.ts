@@ -23,7 +23,6 @@ export class Ironfish {
 
   private rpcClientPromise: SplitPromise<RpcClient> = splitPromise();
   private sdkPromise: SplitPromise<IronfishSdk> = splitPromise();
-  private fullNodePromise: SplitPromise<FullNode> = splitPromise();
   private _started: boolean = false;
   private _fullNode: FullNode | null = null;
   private _initialized: boolean = false;
@@ -45,17 +44,17 @@ export class Ironfish {
     return this.sdkPromise.promise;
   }
 
-  fullNode(): Promise<FullNode> {
-    return this.fullNodePromise.promise;
-  }
-
   async downloadSnapshot(): Promise<void> {
     if (this._started) {
       throw new Error("Cannot download snapshot after node has started");
     }
 
+    if (!this._fullNode) {
+      throw new Error("Node not initialized");
+    }
+
     const sdk = await this.sdk();
-    const node = await this.fullNode();
+    const node = this._fullNode;
     await this.snapshotManager.run(sdk, node);
   }
 
@@ -83,6 +82,8 @@ export class Ironfish {
         autoSeed: true,
       });
 
+      this._fullNode = node;
+
       await NodeUtils.waitForOpen(node);
 
       const newSecretKey = Buffer.from(
@@ -104,7 +105,6 @@ export class Ironfish {
       );
 
       this.sdkPromise.resolve(sdk);
-      this.fullNodePromise.resolve(node);
       this.rpcClientPromise.resolve(rpcClient);
     } catch (e) {
       log.log(e);
@@ -116,12 +116,16 @@ export class Ironfish {
       return;
     }
 
+    if (!this._fullNode) {
+      throw new Error("Node not initialized");
+    }
+
     try {
       log.log("Starting Iron Fish Node...");
 
       this._started = true;
 
-      const node = await this.fullNode();
+      const node = this._fullNode;
       await node.start();
       log.log("Started Iron Fish Node.");
     } catch (e) {
@@ -134,12 +138,11 @@ export class Ironfish {
       log.log("Stopping Iron Fish Node...");
       await this._fullNode.shutdown();
       await this._fullNode.closeDB();
-      this._fullNode = null;
     }
 
     this._started = false;
-
     this._initialized = false;
+
     this.rpcClientPromise = splitPromise();
     this.sdkPromise = splitPromise();
   }
