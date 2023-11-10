@@ -3,7 +3,8 @@ import { forwardRef } from "react";
 
 import { FormField, FormFieldProps } from "../FormField/FormField";
 
-type Props = FormFieldProps & InputProps;
+type Props = Pick<FormFieldProps, "label" | "error" | "icon" | "triggerProps"> &
+  InputProps;
 
 export const TextInput = forwardRef<HTMLInputElement, Props>(function TextInput(
   { label, error, icon, triggerProps, ...rest },

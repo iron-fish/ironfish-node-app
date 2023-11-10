@@ -17,8 +17,9 @@ import { useCopyToClipboard, useToggle } from "usehooks-ts";
 
 import { COLORS } from "@/ui/colors";
 import { useHasGroupBlur } from "@/utils/formUtils";
+import { MergeProps } from "@/utils/react";
 
-import { FormField } from "../FormField/FormField";
+import { FormField, FormFieldProps } from "../FormField/FormField";
 
 export const PHRASE_ITEM_COUNT = 24;
 export const EMPTY_PHRASE_ARRAY = Array.from(
@@ -26,13 +27,16 @@ export const EMPTY_PHRASE_ARRAY = Array.from(
   () => "",
 );
 
-type Props = {
-  phrase: Array<string>;
-  readOnly?: boolean;
-  onChange?: (phrase: Array<string>) => void;
-  defaultVisible?: boolean;
-  error?: string | null;
-};
+type Props = MergeProps<
+  {
+    phrase: Array<string>;
+    readOnly?: boolean;
+    onChange?: (phrase: Array<string>) => void;
+    defaultVisible?: boolean;
+    error?: string | null;
+  },
+  Omit<FormFieldProps, "label">
+>;
 
 export function MnemonicPhrase({
   phrase,
@@ -40,6 +44,7 @@ export function MnemonicPhrase({
   onChange,
   defaultVisible,
   error,
+  ...rest
 }: Props) {
   const { hasBlur, handleGroupFocus, handleGroupBlur } = useHasGroupBlur();
   const [isHidden, toggleIsHidden] = useToggle(defaultVisible ? false : true);
@@ -95,6 +100,7 @@ export function MnemonicPhrase({
 
   return (
     <FormField
+      {...rest}
       error={hasBlur && error ? error : undefined}
       label={
         <HStack flexGrow={1}>

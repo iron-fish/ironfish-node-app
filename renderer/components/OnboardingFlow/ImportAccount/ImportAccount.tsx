@@ -30,6 +30,7 @@ export function ImportAccount() {
   }, [phraseValues]);
 
   const hasValidName = accountName.length > 0;
+  const hasNameError = isAccountNameDirty && !hasValidName;
 
   return (
     <Box>
@@ -37,11 +38,6 @@ export function ImportAccount() {
       <Heading mt={24} mb={8}>
         Import Account
       </Heading>
-      <Text>
-        Enter your mnemonic phrase below. If you&apos;ve copied the full phrase
-        to your clipboard, you can paste it in any box below and it will
-        automatically be split into the correct number of words.
-      </Text>
       <TextInput
         label="Account Name"
         value={accountName}
@@ -57,6 +53,11 @@ export function ImportAccount() {
           setIsAccountNameDirty(true);
         }}
       />
+      <Text mt={8} mb={4}>
+        Please enter your mnemonic phrase. If you&apos;ve copied the full phrase
+        to your clipboard, you can paste it in any input and it will
+        automatically be split into the correct number of words.
+      </Text>
       <MnemonicPhrase
         defaultVisible
         phrase={phraseValues}
@@ -64,9 +65,12 @@ export function ImportAccount() {
         onChange={(value) => {
           setPhraseValues(value);
         }}
+        mb={8}
       />
       <PillButton
-        isDisabled={isLoading}
+        height="60px"
+        px={8}
+        isDisabled={isLoading || !!errorMessage || hasNameError}
         onClick={() => {
           if (!hasValidName) {
             setIsAccountNameDirty(true);
