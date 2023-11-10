@@ -1,7 +1,7 @@
 import { Box } from "@chakra-ui/react";
 import { useState } from "react";
 
-import { TextInput } from "@/ui/Forms/TextInput/TextInput";
+import { TextareaInput } from "@/ui/Forms/TextareaInput/TextareaInput";
 import { PillButton } from "@/ui/PillButton/PillButton";
 
 type Props = {
@@ -15,10 +15,9 @@ export function EncodedKeyImport({ handleImport, isLoading, error }: Props) {
 
   return (
     <Box>
-      <TextInput
+      <TextareaInput
         label="Enter Encoded Key"
         value={encodedKey}
-        type="textarea"
         error={error}
         onChange={(e) => {
           setEncodedKey(e.target.value);
