@@ -3,14 +3,18 @@ import { ReactNode, useMemo } from "react";
 import { FieldError, FieldErrorsImpl } from "react-hook-form";
 
 import { COLORS } from "@/ui/colors";
+import { MergeProps } from "@/utils/react";
 
-export type FormFieldProps = {
-  label: string | ReactNode;
-  error?: string | FieldError | FieldErrorsImpl;
-  icon?: ReactNode;
-  triggerProps?: StackProps & { ref: unknown };
-  actions?: ReactNode;
-};
+export type FormFieldProps = MergeProps<
+  {
+    label: string | ReactNode;
+    error?: string | FieldError | FieldErrorsImpl | null;
+    icon?: ReactNode;
+    triggerProps?: StackProps & { ref: unknown };
+    actions?: ReactNode;
+  },
+  StackProps
+>;
 
 export function FormField({
   children,
@@ -19,11 +23,12 @@ export function FormField({
   icon,
   triggerProps,
   actions,
+  ...rest
 }: FormFieldProps & {
   children: ReactNode;
 }) {
   return (
-    <VStack>
+    <VStack {...rest}>
       <HStack
         as="label"
         w="100%"
@@ -61,13 +66,14 @@ export function FormField({
 function RenderError({
   error,
 }: {
-  error?: string | FieldError | FieldErrorsImpl;
+  error?: string | FieldError | FieldErrorsImpl | null;
 }) {
   const message = useMemo(() => {
     if (typeof error === "string") {
       return error;
     }
     return typeof error === "object" &&
+      error !== null &&
       "message" in error &&
       typeof error.message === "string"
       ? error.message

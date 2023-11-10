@@ -8,6 +8,10 @@ import {
 import { handleGetAccount } from "./handleGetAccount";
 import { handleGetAccounts } from "./handleGetAccounts";
 import {
+  handleImportAccount,
+  handleImportAccountInputs,
+} from "./handleImportAccount";
+import {
   handleRenameAccountInputs,
   handleRenameAccount,
 } from "./handleRenameAccount";
@@ -33,6 +37,11 @@ export const accountRouter = t.router({
     )
     .mutation(async (opts) => {
       return handleCreateAccount(opts.input);
+    }),
+  importAccount: t.procedure
+    .input(handleImportAccountInputs)
+    .mutation(async (opts) => {
+      return handleImportAccount(opts.input);
     }),
   exportAccount: t.procedure
     .input(handleExportAccountInputs)
