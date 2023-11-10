@@ -34,7 +34,14 @@ export const TextInput = forwardRef<
         icon={icon}
         triggerProps={triggerProps}
       >
-        <Textarea type={type} rows={5} variant="unstyled" ref={ref} {...rest} />
+        <Textarea
+          my={1}
+          type={type}
+          rows={8}
+          variant="unstyled"
+          ref={ref}
+          {...rest}
+        />
       </FormField>
     );
   }

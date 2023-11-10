@@ -27,7 +27,7 @@ export function ImportAccount() {
   return (
     <Box>
       <Link href="/onboarding">Back</Link>
-      <Heading mt={24} mb={8}>
+      <Heading mt={16} mb={8}>
         Import Account
       </Heading>
 
@@ -72,10 +72,9 @@ export function ImportAccount() {
             <EncodedKeyImport
               isLoading={isLoading}
               error={error?.shape?.message}
-              handleImport={({ name, account }) => {
+              handleImport={({ account }) => {
                 importAccount(
                   {
-                    name,
                     account,
                   },
                   {
