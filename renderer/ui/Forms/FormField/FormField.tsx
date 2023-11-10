@@ -6,7 +6,7 @@ import { COLORS } from "@/ui/colors";
 
 export type FormFieldProps = {
   label: string | ReactNode;
-  error?: string | FieldError | FieldErrorsImpl;
+  error?: string | FieldError | FieldErrorsImpl | null;
   icon?: ReactNode;
   triggerProps?: StackProps & { ref: unknown };
   actions?: ReactNode;
@@ -61,13 +61,14 @@ export function FormField({
 function RenderError({
   error,
 }: {
-  error?: string | FieldError | FieldErrorsImpl;
+  error?: string | FieldError | FieldErrorsImpl | null;
 }) {
   const message = useMemo(() => {
     if (typeof error === "string") {
       return error;
     }
     return typeof error === "object" &&
+      error !== null &&
       "message" in error &&
       typeof error.message === "string"
       ? error.message

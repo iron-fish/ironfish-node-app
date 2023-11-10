@@ -4,9 +4,9 @@ import { useState, useMemo } from "react";
 import {
   EMPTY_PHRASE_ARRAY,
   MnemonicPhrase,
-  PHRASE_ITEM_COUNT,
 } from "@/ui/Forms/MnemonicPhrase/MnemonicPhrase";
 import { PillButton } from "@/ui/PillButton/PillButton";
+import { validateMnemonic } from "@/utils/mnemonic";
 
 export function ConfirmAccountStep({
   mnemonicPhrase,
@@ -24,20 +24,8 @@ export function ConfirmAccountStep({
     useState<Array<string>>(EMPTY_PHRASE_ARRAY);
 
   const errorMessage = useMemo(() => {
-    const valueString = confirmValues.join(" ").replace(/\s+/, " ");
-    const hasCorrectLength =
-      valueString.match(/\s/g)?.length === PHRASE_ITEM_COUNT - 1;
-
-    if (!hasCorrectLength) {
-      return "Please fill out the entire phrase.";
-    }
-
-    if (mnemonicPhrase !== valueString) {
-      return "The phrase you entered does not match. Please verify the phrase and try again.";
-    }
-
-    return undefined;
-  }, [confirmValues, mnemonicPhrase]);
+    return validateMnemonic(confirmValues);
+  }, [confirmValues]);
 
   const isValid = mnemonicPhrase === confirmValues.join(" ");
 

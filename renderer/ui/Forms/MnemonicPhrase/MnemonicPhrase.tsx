@@ -31,7 +31,7 @@ type Props = {
   readOnly?: boolean;
   onChange?: (phrase: Array<string>) => void;
   defaultVisible?: boolean;
-  error?: string;
+  error?: string | null;
 };
 
 export function MnemonicPhrase({
@@ -70,15 +70,18 @@ export function MnemonicPhrase({
       e.preventDefault();
 
       const number = get(e, "target.dataset.number") as unknown;
+
       if (typeof number !== "string") {
         throw new Error("data-number not found in mnemonic phrase input");
       }
 
-      const words = e.clipboardData.getData("text").split(/\s+/g);
+      const words = e.clipboardData.getData("text").trim().split(/\s+/g);
       const index = parseInt(number, 10) - 1;
 
       if (words.length === PHRASE_ITEM_COUNT) {
+        console.log("match", words.length, PHRASE_ITEM_COUNT);
         onChange(words);
+        return;
       }
 
       const nextValues = phrase
@@ -92,7 +95,7 @@ export function MnemonicPhrase({
 
   return (
     <FormField
-      error={hasBlur ? error : undefined}
+      error={hasBlur && error ? error : undefined}
       label={
         <HStack flexGrow={1}>
           <Text fontSize="sm" color={COLORS.GRAY_MEDIUM}>
