@@ -1,15 +1,53 @@
-import { Input, InputProps } from "@chakra-ui/react";
+import { Input, InputProps, Textarea, TextareaProps } from "@chakra-ui/react";
 import { forwardRef } from "react";
 
 import { FormField, FormFieldProps } from "../FormField/FormField";
 
-type Props = Pick<FormFieldProps, "label" | "error" | "icon" | "triggerProps"> &
-  InputProps;
+type FormFieldPassthrough = Pick<
+  FormFieldProps,
+  "label" | "error" | "icon" | "triggerProps"
+>;
 
-export const TextInput = forwardRef<HTMLInputElement, Props>(function TextInput(
-  { label, error, icon, triggerProps, ...rest },
-  ref,
-) {
+type AsTextarea = FormFieldPassthrough &
+  Omit<TextareaProps, "type"> & {
+    type?: "textarea";
+  };
+
+type AsInput = FormFieldPassthrough &
+  Omit<InputProps, "type"> & {
+    type?: "text";
+  };
+
+type Props = AsTextarea | AsInput;
+
+export const TextInput = forwardRef<
+  HTMLInputElement | HTMLTextAreaElement,
+  Props
+>(function TextInput(props, ref) {
+  if (props.type === "textarea") {
+    const { label, error, icon, triggerProps, type, ...rest } =
+      props as AsTextarea;
+    return (
+      <FormField
+        label={label}
+        error={error}
+        icon={icon}
+        triggerProps={triggerProps}
+      >
+        <Textarea type={type} rows={5} variant="unstyled" ref={ref} {...rest} />
+      </FormField>
+    );
+  }
+
+  const {
+    label,
+    error,
+    icon,
+    triggerProps,
+    type = "text",
+    ...rest
+  } = props as AsInput;
+
   return (
     <FormField
       label={label}
@@ -17,7 +55,7 @@ export const TextInput = forwardRef<HTMLInputElement, Props>(function TextInput(
       icon={icon}
       triggerProps={triggerProps}
     >
-      <Input type="text" variant="unstyled" ref={ref} {...rest} />
+      <Input type={type} variant="unstyled" ref={ref} {...rest} />
     </FormField>
   );
 });
