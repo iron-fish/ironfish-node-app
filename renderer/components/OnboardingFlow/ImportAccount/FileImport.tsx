@@ -1,6 +1,7 @@
-import { Box, Text, chakra } from "@chakra-ui/react";
+import { Box, Text, VStack, chakra } from "@chakra-ui/react";
 import { useRef, useState } from "react";
 
+import { COLORS } from "@/ui/colors";
 import { PillButton } from "@/ui/PillButton/PillButton";
 
 type Props = {
@@ -10,21 +11,37 @@ type Props = {
 };
 
 export function FileImport({ handleImport, isLoading, error }: Props) {
-  const [filePath, setFilePath] = useState("");
+  const [file, setFile] = useState<File | null>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
-
-  console.log(error);
 
   return (
     <Box>
-      <Text mt={8} mb={4}>
-        Select your JSON or Bech32 file to import your account.
-      </Text>
-      <chakra.input
-        ref={fileInputRef}
-        type="file"
-        onChange={(e) => setFilePath(e.target.value)}
-      />
+      <VStack alignItems="stretch" gap={4}>
+        <Text>Select your JSON or Bech32 file to import your account.</Text>
+        <chakra.input
+          h="1px"
+          w="1px"
+          overflow="hidden"
+          position="absolute"
+          opacity={0}
+          ref={fileInputRef}
+          type="file"
+          onChange={(e) => {
+            const file = e.target.files?.[0];
+
+            if (!file) {
+              setFile(null);
+              return;
+            }
+
+            setFile(file);
+          }}
+        />
+        <Text color={COLORS.GRAY_MEDIUM}>
+          Selected file: {file?.name || "—"}
+        </Text>
+        {error && <Text color={COLORS.RED}>{error}</Text>}
+      </VStack>
       <PillButton
         mt={8}
         height="60px"
@@ -32,17 +49,21 @@ export function FileImport({ handleImport, isLoading, error }: Props) {
         onClick={() => {
           fileInputRef.current?.click();
         }}
+        variant="inverted"
+        borderWidth="1.5px"
       >
         Browse
       </PillButton>
       <PillButton
-        mt={8}
+        mt={4}
         height="60px"
         px={8}
-        isDisabled={isLoading || !filePath}
-        onClick={() => {
+        isDisabled={isLoading || !file}
+        onClick={async () => {
+          const fileContent = await file?.text();
+          if (!fileContent) return;
           handleImport({
-            account: filePath,
+            account: fileContent,
           });
         }}
       >
