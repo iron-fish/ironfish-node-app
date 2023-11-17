@@ -1,14 +1,16 @@
 import { chakra } from "@chakra-ui/react";
 
+import { COLORS } from "@/ui/colors";
+
 export function ReceivedIcon() {
   return (
     <chakra.svg
       width={26}
       height={26}
       fill="none"
-      color="#ECFFCE"
+      color={COLORS.GREEN_LIGHT}
       _dark={{
-        color: "#242C18",
+        color: COLORS.DARK_MODE.GREEN_DARK,
       }}
     >
       <circle cx={13} cy={13} r={13} fill="currentColor" />
