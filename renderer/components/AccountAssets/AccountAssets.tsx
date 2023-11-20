@@ -9,6 +9,7 @@ import {
   Text,
 } from "@chakra-ui/react";
 import Image from "next/image";
+import NextLink from "next/link";
 
 import treasureChest from "@/images/treasure-chest.svg";
 import { trpcReact } from "@/providers/TRPCProvider";
@@ -57,14 +58,22 @@ export function AccountAssets({ accountName }: { accountName: string }) {
                 {formatOre(data.balances.iron.confirmed)}
               </Heading>
               <HStack alignItems="stretch" justifyContent="center">
-                <PillButton onClick={(e) => e.preventDefault()}>
-                  <ArrowSend transform="scale(0.8)" />
-                  Send
-                </PillButton>
-                <PillButton onClick={(e) => e.preventDefault()}>
-                  <ArrowReceive transform="scale(0.8)" />
-                  Receive
-                </PillButton>
+                <NextLink href={`/send?account=${accountName}`}>
+                  <Box>
+                    <PillButton as="div">
+                      <ArrowSend transform="scale(0.8)" />
+                      Send
+                    </PillButton>
+                  </Box>
+                </NextLink>
+                <NextLink href={`/receive?account=${accountName}`}>
+                  <Box>
+                    <PillButton as="div">
+                      <ArrowReceive transform="scale(0.8)" />
+                      Receive
+                    </PillButton>
+                  </Box>
+                </NextLink>
               </HStack>
             </Flex>
             <Image alt="" src={treasureChest} />
