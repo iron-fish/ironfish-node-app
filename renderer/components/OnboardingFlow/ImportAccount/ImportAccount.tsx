@@ -13,6 +13,7 @@ import { useRouter } from "next/router";
 import { trpcReact } from "@/providers/TRPCProvider";
 
 import { EncodedKeyImport } from "./EncodedKeyImport";
+import { FileImport } from "./FileImport";
 import { MnemonicImport } from "./MnemonicImport";
 
 export function ImportAccount() {
@@ -87,7 +88,22 @@ export function ImportAccount() {
             />
           </TabPanel>
           <TabPanel p={0}>
-            <p>Todo: File import</p>
+            <FileImport
+              isLoading={isLoading}
+              error={error?.shape?.message}
+              handleImport={({ account }) => {
+                importAccount(
+                  {
+                    account,
+                  },
+                  {
+                    onSuccess: () => {
+                      router.push("/onboarding/snapshot-download");
+                    },
+                  },
+                );
+              }}
+            />
           </TabPanel>
         </TabPanels>
       </Tabs>
