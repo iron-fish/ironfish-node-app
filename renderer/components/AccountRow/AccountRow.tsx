@@ -1,5 +1,6 @@
 import { ChevronRightIcon } from "@chakra-ui/icons";
 import { Box, Flex, Heading, Text, VStack } from "@chakra-ui/react";
+import { useRouter } from "next/router";
 
 import { ChakraLink } from "@/ui/ChakraLink/ChakraLink";
 import { COLORS } from "@/ui/colors";
@@ -20,6 +21,7 @@ type AccountRowProps = {
 };
 
 export function AccountRow({ color, name, balance, address }: AccountRowProps) {
+  const router = useRouter();
   return (
     <ChakraLink href={`/accounts/${name}`} w="100%">
       <ShadowCard hoverable>
@@ -51,11 +53,21 @@ export function AccountRow({ color, name, balance, address }: AccountRowProps) {
           </VStack>
 
           <VStack alignItems="stretch" justifyContent="center">
-            <PillButton onClick={(e) => e.preventDefault()}>
+            <PillButton
+              onClick={(e) => {
+                e.preventDefault();
+                router.push(`/send?account=${name}`);
+              }}
+            >
               <ArrowSend transform="scale(0.8)" />
               Send
             </PillButton>
-            <PillButton onClick={(e) => e.preventDefault()}>
+            <PillButton
+              onClick={(e) => {
+                e.preventDefault();
+                router.push(`/receive?account=${name}`);
+              }}
+            >
               <ArrowReceive transform="scale(0.8)" />
               Receive
             </PillButton>
