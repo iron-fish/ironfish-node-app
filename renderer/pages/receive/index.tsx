@@ -40,8 +40,6 @@ export function ReceiveAccountsContent({
     return queryMatch ? queryMatch.value : accountOptions?.[0].value;
   }, [accountOptions, router.query.account]);
 
-  console.log(defaultAccount, router.query);
-
   const {
     register,
     formState: { errors },
