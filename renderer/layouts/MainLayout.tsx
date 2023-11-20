@@ -97,7 +97,7 @@ function Sidebar() {
               href={href}
               w="100%"
               py={3}
-              px="18px"
+              px={2}
               borderRadius={4}
               bg={isActive ? COLORS.GRAY_LIGHT : "transparent"}
               _dark={{
@@ -111,7 +111,9 @@ function Sidebar() {
               }}
             >
               <HStack>
-                <Box w="30px">{icon}</Box>
+                <Box w="30px" display="flex" justifyContent="center">
+                  {icon}
+                </Box>
                 <Text
                   display={{
                     base: "none",
@@ -149,7 +151,16 @@ export default function MainLayout({ children, backLinkProps }: Props) {
         bg: COLORS.DARK_MODE.BG,
       }}
     >
-      <GridItem w="265px" p={4} pt="50px" display="flex" alignItems="stretch">
+      <GridItem
+        w={{
+          base: "auto",
+          sm: "265px",
+        }}
+        p={4}
+        pt="50px"
+        display="flex"
+        alignItems="stretch"
+      >
         <Sidebar />
       </GridItem>
       <GridItem px={6} pt={10} pb={8} overflow="auto">

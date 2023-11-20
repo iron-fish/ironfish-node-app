@@ -3,11 +3,18 @@ import { forwardRef } from "react";
 
 import { FormField, FormFieldProps } from "../FormField/FormField";
 
-type Props = Pick<FormFieldProps, "label" | "error" | "icon" | "triggerProps"> &
-  InputProps;
+type FormFieldPassthrough = Pick<
+  FormFieldProps,
+  "label" | "error" | "icon" | "triggerProps"
+>;
+
+type Props = FormFieldPassthrough &
+  Omit<InputProps, "type"> & {
+    type?: "text";
+  };
 
 export const TextInput = forwardRef<HTMLInputElement, Props>(function TextInput(
-  { label, error, icon, triggerProps, ...rest },
+  { label, error, icon, triggerProps, type = "text", ...rest },
   ref,
 ) {
   return (
@@ -17,7 +24,7 @@ export const TextInput = forwardRef<HTMLInputElement, Props>(function TextInput(
       icon={icon}
       triggerProps={triggerProps}
     >
-      <Input type="text" variant="unstyled" ref={ref} {...rest} />
+      <Input type={type} variant="unstyled" ref={ref} {...rest} />
     </FormField>
   );
 });
