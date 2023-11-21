@@ -74,6 +74,7 @@ export function PillButton({
       gap={2}
       disabled={isDisabled}
       type={type}
+      cursor="pointer"
       {...VARIANT_PROPS[variant].light}
       _dark={VARIANT_PROPS[variant].dark}
       _disabled={{

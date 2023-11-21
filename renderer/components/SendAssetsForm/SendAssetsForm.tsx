@@ -1,5 +1,6 @@
 import { VStack, chakra, HStack } from "@chakra-ui/react";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { useRouter } from "next/router";
 import { useMemo, useState } from "react";
 import { useForm } from "react-hook-form";
 
@@ -24,6 +25,8 @@ export function SendAssetsFormContent({
   accountsData: TRPCRouterOutputs["getAccounts"];
   estimatedFeesData: TRPCRouterOutputs["getEstimatedFees"];
 }) {
+  const router = useRouter();
+
   const [pendingTransaction, setPendingTransaction] =
     useState<TransactionData | null>(null);
 
@@ -36,6 +39,14 @@ export function SendAssetsFormContent({
     });
   }, [accountsData]);
 
+  const defaultAccount = useMemo(() => {
+    const queryMatch = accountOptions?.find(
+      (option) => option.value === router.query.account,
+    );
+
+    return queryMatch ? queryMatch.value : accountOptions?.[0].value;
+  }, [accountOptions, router.query.account]);
+
   const {
     register,
     handleSubmit,
@@ -44,7 +55,7 @@ export function SendAssetsFormContent({
   } = useForm<TransactionFormData>({
     resolver: zodResolver(transactionSchema),
     defaultValues: {
-      fromAccount: accountOptions?.[0].value,
+      fromAccount: defaultAccount,
       assetId: accountsData[0].balances.iron.asset.id,
       fee: "average",
     },

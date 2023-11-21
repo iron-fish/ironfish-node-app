@@ -1,6 +1,7 @@
 import { Heading, Flex, Box, Text, VStack } from "@chakra-ui/react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import Image from "next/image";
+import { useRouter } from "next/router";
 import { useMemo } from "react";
 import { useForm } from "react-hook-form";
 import * as z from "zod";
@@ -21,6 +22,7 @@ export function ReceiveAccountsContent({
 }: {
   accountsData: TRPCRouterOutputs["getAccounts"];
 }) {
+  const router = useRouter();
   const accountOptions = useMemo(() => {
     return accountsData?.map((account) => {
       return {
@@ -30,6 +32,14 @@ export function ReceiveAccountsContent({
     });
   }, [accountsData]);
 
+  const defaultAccount = useMemo(() => {
+    const queryMatch = accountOptions?.find(
+      (option) => option.label === router.query.account,
+    );
+
+    return queryMatch ? queryMatch.value : accountOptions?.[0].value;
+  }, [accountOptions, router.query.account]);
+
   const {
     register,
     formState: { errors },
@@ -37,7 +47,7 @@ export function ReceiveAccountsContent({
   } = useForm<z.infer<typeof dataSchema>>({
     resolver: zodResolver(dataSchema),
     defaultValues: {
-      account: accountOptions?.[0].value,
+      account: defaultAccount,
     },
   });
 
