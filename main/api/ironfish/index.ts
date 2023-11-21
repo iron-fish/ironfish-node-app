@@ -1,3 +1,4 @@
+import log from "electron-log";
 import { z } from "zod";
 
 import { manager } from "../manager";
@@ -11,8 +12,12 @@ const handleGetConfigInput = z
   .optional();
 
 const handleSetConfigInput = z.object({
-  name: z.string(),
-  value: z.any(),
+  configValues: z.array(
+    z.object({
+      name: z.string(),
+      value: z.any(),
+    }),
+  ),
   // Whether to restart the node after updating the config.
   // Not all config values are picked up without a restart, so defaults to true.
   restartAfterSet: z.boolean().default(true),
@@ -31,14 +36,26 @@ export const ironfishRouter = t.router({
   setConfig: t.procedure.input(handleSetConfigInput).mutation(async (opts) => {
     const ironfish = await manager.getIronfish();
     const rpcClient = await ironfish.rpcClient();
-    const response = await rpcClient.config.setConfig({
-      name: opts.input.name,
-      value: opts.input.value,
-    });
+
+    // Try to set as many config values as possible
+    for (const option of opts.input.configValues) {
+      await rpcClient.config
+        .setConfig({
+          name: option.name,
+          value: option.value,
+        })
+        .catch((e) =>
+          log.warn(
+            `Setting config '${option.name}' to '${
+              option.value
+            }' failed: ${JSON.stringify(e)}`,
+          ),
+        );
+    }
+
     if (opts.input.restartAfterSet) {
       await ironfish.restart();
     }
-    return response.content;
   }),
   getPeers: t.procedure.query(async () => {
     const ironfish = await manager.getIronfish();
