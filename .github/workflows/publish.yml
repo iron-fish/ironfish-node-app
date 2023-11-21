@@ -12,198 +12,198 @@ jobs:
     name: Cancel release if run on an already published release
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v4
+      - uses: actions/checkout@v4
 
-    - name: Get NPM package version
-      id: package-version
-      run: |
-        CURRENTVERSION=$(jq .version package.json -r)
-        echo $CURRENTVERSION
-        echo current-version=$CURRENTVERSION >> "$GITHUB_OUTPUT"
+      - name: Get NPM package version
+        id: package-version
+        run: |
+          CURRENTVERSION=$(jq .version package.json -r)
+          echo $CURRENTVERSION
+          echo current-version=$CURRENTVERSION >> "$GITHUB_OUTPUT"
 
-    - name: Get release status
-      id: release-status
-      run: |
-        ISDRAFT=$(gh release view ${{ env.VERSION }} --json isDraft --jq .isDraft)
-        echo $ISDRAFT
-        echo is-draft=$ISDRAFT >> "$GITHUB_OUTPUT"
-      env:
-        GITHUB_TOKEN: ${{ github.token }}
-        VERSION: v${{ steps.package-version.outputs.current-version }}
+      - name: Get release status
+        id: release-status
+        run: |
+          ISDRAFT=$(gh release view ${{ env.VERSION }} --json isDraft --jq .isDraft)
+          echo $ISDRAFT
+          echo is-draft=$ISDRAFT >> "$GITHUB_OUTPUT"
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+          VERSION: v${{ steps.package-version.outputs.current-version }}
 
-    - name: Fail if release exists and is not a draft
-      if: ${{ steps.release-status.outputs.is-draft == 'false' }}
-      run: |
-        echo "::error::Ran Publish Release on an already published release"
-        exit 1
+      - name: Fail if release exists and is not a draft
+        if: ${{ steps.release-status.outputs.is-draft == 'false' }}
+        run: |
+          echo "::error::Ran Publish Release on an already published release"
+          exit 1
 
   publish_on_windows:
     name: Windows x64
     needs: [check_release]
     runs-on: windows-latest
     steps:
-    - uses: actions/checkout@v4
-    - uses: actions/setup-node@v3
-      with:
-        node-version: 18
-    - name: Install dependencies
-      run: npm install --fetch-timeout 600000
-    - name: Install AzureSignTool
-      run: dotnet tool install --global AzureSignTool
-    - name: Build and publish release
-      env:
-        GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        AZURE_KEY_VAULT_URI: ${{ secrets.AZURE_KEY_VAULT_URI }}
-        AZURE_CLIENT_ID: ${{ secrets.AZURE_CLIENT_ID }}
-        AZURE_TENANT_ID: ${{ secrets.AZURE_TENANT_ID }}
-        AZURE_CLIENT_SECRET: ${{ secrets.AZURE_CLIENT_SECRET }}
-        AZURE_CERT_NAME: ${{ secrets.AZURE_CERT_NAME }}
-      run: npm run release
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v3
+        with:
+          node-version: 18
+      - name: Install dependencies
+        run: npm install --fetch-timeout 600000
+      - name: Install AzureSignTool
+        run: dotnet tool install --global AzureSignTool
+      - name: Build and publish release
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          AZURE_KEY_VAULT_URI: ${{ secrets.AZURE_KEY_VAULT_URI }}
+          AZURE_CLIENT_ID: ${{ secrets.AZURE_CLIENT_ID }}
+          AZURE_TENANT_ID: ${{ secrets.AZURE_TENANT_ID }}
+          AZURE_CLIENT_SECRET: ${{ secrets.AZURE_CLIENT_SECRET }}
+          AZURE_CERT_NAME: ${{ secrets.AZURE_CERT_NAME }}
+        run: npm run release
 
   publish_on_mac_arm64:
     name: Mac arm64
     needs: [check_release]
     runs-on: [self-hosted, macOS, ARM64]
     steps:
-    - uses: actions/checkout@v4
-    - uses: actions/setup-node@v3
-      with:
-        node-version: 18
-    - name: Install dependencies
-      run: npm install
-    - name: Setup code signing
-      env:
-        APPLE_IFLABS_SIGNING_CERT: ${{ secrets.APPLE_IFLABS_SIGNING_CERT }}
-        APPLE_IFLABS_SIGNING_CERT_PASSWORD: ${{ secrets.APPLE_IFLABS_SIGNING_CERT_PASSWORD }}
-        APPLE_PROVISIONING_PROFILE: ${{ secrets.APPLE_PROVISIONING_PROFILE }}
-      run: |
-        # create variables
-        CERTIFICATE_PATH=$RUNNER_TEMP/build_certificate.p12
-        PP_PATH=$RUNNER_TEMP/build_pp.mobileprovision
-        KEYCHAIN_PATH=$RUNNER_TEMP/app-signing.keychain-db
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v3
+        with:
+          node-version: 18
+      - name: Install dependencies
+        run: npm install
+      - name: Setup code signing
+        env:
+          APPLE_IFLABS_SIGNING_CERT: ${{ secrets.APPLE_IFLABS_SIGNING_CERT }}
+          APPLE_IFLABS_SIGNING_CERT_PASSWORD: ${{ secrets.APPLE_IFLABS_SIGNING_CERT_PASSWORD }}
+          APPLE_PROVISIONING_PROFILE: ${{ secrets.APPLE_PROVISIONING_PROFILE }}
+        run: |
+          # create variables
+          CERTIFICATE_PATH=$RUNNER_TEMP/build_certificate.p12
+          PP_PATH=$RUNNER_TEMP/build_pp.mobileprovision
+          KEYCHAIN_PATH=$RUNNER_TEMP/app-signing.keychain-db
 
-        # import certificate and provisioning profile from secrets
-        echo -n "$APPLE_IFLABS_SIGNING_CERT" | base64 --decode -o $CERTIFICATE_PATH
-        echo -n "$APPLE_PROVISIONING_PROFILE" | base64 --decode -o $PP_PATH
+          # import certificate and provisioning profile from secrets
+          echo -n "$APPLE_IFLABS_SIGNING_CERT" | base64 --decode -o $CERTIFICATE_PATH
+          echo -n "$APPLE_PROVISIONING_PROFILE" | base64 --decode -o $PP_PATH
 
-        # create temporary keychain
-        security create-keychain -p "$APPLE_IFLABS_SIGNING_CERT_PASSWORD" $KEYCHAIN_PATH
-        security set-keychain-settings -lut 21600 $KEYCHAIN_PATH
-        security unlock-keychain -p "$APPLE_IFLABS_SIGNING_CERT_PASSWORD" $KEYCHAIN_PATH
+          # create temporary keychain
+          security create-keychain -p "$APPLE_IFLABS_SIGNING_CERT_PASSWORD" $KEYCHAIN_PATH
+          security set-keychain-settings -lut 21600 $KEYCHAIN_PATH
+          security unlock-keychain -p "$APPLE_IFLABS_SIGNING_CERT_PASSWORD" $KEYCHAIN_PATH
 
-        # import certificate to keychain
-        security import $CERTIFICATE_PATH -P "$APPLE_IFLABS_SIGNING_CERT_PASSWORD" -A -t cert -f pkcs12 -k $KEYCHAIN_PATH
-        security list-keychain -d user -s $KEYCHAIN_PATH
+          # import certificate to keychain
+          security import $CERTIFICATE_PATH -P "$APPLE_IFLABS_SIGNING_CERT_PASSWORD" -A -t cert -f pkcs12 -k $KEYCHAIN_PATH
+          security list-keychain -d user -s $KEYCHAIN_PATH
 
-        # apply provisioning profile
-        mkdir -p ~/Library/MobileDevice/Provisioning\ Profiles
-        cp $PP_PATH ~/Library/MobileDevice/Provisioning\ Profiles
-        ls $RUNNER_TEMP
-    - name: Build and publish release
-      env:
-        GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        APPLE_ID: ${{ secrets.APPLE_ID }}
-        APPLE_APP_SPECIFIC_PASSWORD: ${{ secrets.APPLE_APP_SPECIFIC_PASSWORD }}
-      run: npm run release
+          # apply provisioning profile
+          mkdir -p ~/Library/MobileDevice/Provisioning\ Profiles
+          cp $PP_PATH ~/Library/MobileDevice/Provisioning\ Profiles
+          ls $RUNNER_TEMP
+      - name: Build and publish release
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          APPLE_ID: ${{ secrets.APPLE_ID }}
+          APPLE_APP_SPECIFIC_PASSWORD: ${{ secrets.APPLE_APP_SPECIFIC_PASSWORD }}
+        run: npm run release
 
-    - name: Set hashes in environment variables
-      working-directory: dist
-      run: |
-        echo MAC_ZIP_NAME=$(ls *.zip) >> "$GITHUB_ENV"
-        echo MAC_ZIP_HASH=$(openssl dgst -sha512 -binary "$(ls *.zip)" | base64) >> "$GITHUB_ENV"
-        echo MAC_DMG_NAME=$(ls *.dmg) >> "$GITHUB_ENV"
-        echo MAC_DMG_HASH=$(openssl dgst -sha512 -binary "$(ls *.dmg)" | base64) >> "$GITHUB_ENV"
+      - name: Set hashes in environment variables
+        working-directory: dist
+        run: |
+          echo MAC_ZIP_NAME=$(ls *.zip) >> "$GITHUB_ENV"
+          echo MAC_ZIP_HASH=$(openssl dgst -sha512 -binary "$(ls *.zip)" | base64) >> "$GITHUB_ENV"
+          echo MAC_DMG_NAME=$(ls *.dmg) >> "$GITHUB_ENV"
+          echo MAC_DMG_HASH=$(openssl dgst -sha512 -binary "$(ls *.dmg)" | base64) >> "$GITHUB_ENV"
 
-    - name: Replace SHAs
-      run: |
-        yq -i '(.files[] | select(.url == strenv(MAC_ZIP_NAME))).sha512 = strenv(MAC_ZIP_HASH)
-          | (.files[] | select(.url == strenv(MAC_DMG_NAME))).sha512 = strenv(MAC_DMG_HASH)
-          | (select(.path == strenv(MAC_ZIP_NAME))).sha512 = strenv(MAC_ZIP_HASH)
-          ' dist/latest-mac.yml
+      - name: Replace SHAs
+        run: |
+          yq -i '(.files[] | select(.url == strenv(MAC_ZIP_NAME))).sha512 = strenv(MAC_ZIP_HASH)
+            | (.files[] | select(.url == strenv(MAC_DMG_NAME))).sha512 = strenv(MAC_DMG_HASH)
+            | (select(.path == strenv(MAC_ZIP_NAME))).sha512 = strenv(MAC_ZIP_HASH)
+            ' dist/latest-mac.yml
 
-    - name: Upload latest-mac-arm64.yml
-      uses: actions/upload-artifact@v3
-      with:
-        name: latest-mac-arm64.yml
-        path: dist/latest-mac.yml
+      - name: Upload latest-mac-arm64.yml
+        uses: actions/upload-artifact@v3
+        with:
+          name: latest-mac-arm64.yml
+          path: dist/latest-mac.yml
 
-    - name: Clean up keychain and provisioning profile
-      if: ${{ always() }}
-      run: |
-        security delete-keychain $RUNNER_TEMP/app-signing.keychain-db
+      - name: Clean up keychain and provisioning profile
+        if: ${{ always() }}
+        run: |
+          security delete-keychain $RUNNER_TEMP/app-signing.keychain-db
 
   publish_on_mac:
     name: Mac x64
     needs: [check_release]
     runs-on: macos-latest
     steps:
-    - uses: actions/checkout@v4
-    - uses: actions/setup-node@v3
-      with:
-        node-version: 18
-    - name: Install dependencies
-      run: npm install
-    - name: Setup code signing
-      env:
-        APPLE_IFLABS_SIGNING_CERT: ${{ secrets.APPLE_IFLABS_SIGNING_CERT }}
-        APPLE_IFLABS_SIGNING_CERT_PASSWORD: ${{ secrets.APPLE_IFLABS_SIGNING_CERT_PASSWORD }}
-        APPLE_PROVISIONING_PROFILE: ${{ secrets.APPLE_PROVISIONING_PROFILE }}
-      run: |
-        # create variables
-        CERTIFICATE_PATH=$RUNNER_TEMP/build_certificate.p12
-        PP_PATH=$RUNNER_TEMP/build_pp.mobileprovision
-        KEYCHAIN_PATH=$RUNNER_TEMP/app-signing.keychain-db
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v3
+        with:
+          node-version: 18
+      - name: Install dependencies
+        run: npm install
+      - name: Setup code signing
+        env:
+          APPLE_IFLABS_SIGNING_CERT: ${{ secrets.APPLE_IFLABS_SIGNING_CERT }}
+          APPLE_IFLABS_SIGNING_CERT_PASSWORD: ${{ secrets.APPLE_IFLABS_SIGNING_CERT_PASSWORD }}
+          APPLE_PROVISIONING_PROFILE: ${{ secrets.APPLE_PROVISIONING_PROFILE }}
+        run: |
+          # create variables
+          CERTIFICATE_PATH=$RUNNER_TEMP/build_certificate.p12
+          PP_PATH=$RUNNER_TEMP/build_pp.mobileprovision
+          KEYCHAIN_PATH=$RUNNER_TEMP/app-signing.keychain-db
 
-        # import certificate and provisioning profile from secrets
-        echo -n "$APPLE_IFLABS_SIGNING_CERT" | base64 --decode -o $CERTIFICATE_PATH
-        echo -n "$APPLE_PROVISIONING_PROFILE" | base64 --decode -o $PP_PATH
+          # import certificate and provisioning profile from secrets
+          echo -n "$APPLE_IFLABS_SIGNING_CERT" | base64 --decode -o $CERTIFICATE_PATH
+          echo -n "$APPLE_PROVISIONING_PROFILE" | base64 --decode -o $PP_PATH
 
-        # create temporary keychain
-        security create-keychain -p "$APPLE_IFLABS_SIGNING_CERT_PASSWORD" $KEYCHAIN_PATH
-        security set-keychain-settings -lut 21600 $KEYCHAIN_PATH
-        security unlock-keychain -p "$APPLE_IFLABS_SIGNING_CERT_PASSWORD" $KEYCHAIN_PATH
+          # create temporary keychain
+          security create-keychain -p "$APPLE_IFLABS_SIGNING_CERT_PASSWORD" $KEYCHAIN_PATH
+          security set-keychain-settings -lut 21600 $KEYCHAIN_PATH
+          security unlock-keychain -p "$APPLE_IFLABS_SIGNING_CERT_PASSWORD" $KEYCHAIN_PATH
 
-        # import certificate to keychain
-        security import $CERTIFICATE_PATH -P "$APPLE_IFLABS_SIGNING_CERT_PASSWORD" -A -t cert -f pkcs12 -k $KEYCHAIN_PATH
-        security list-keychain -d user -s $KEYCHAIN_PATH
+          # import certificate to keychain
+          security import $CERTIFICATE_PATH -P "$APPLE_IFLABS_SIGNING_CERT_PASSWORD" -A -t cert -f pkcs12 -k $KEYCHAIN_PATH
+          security list-keychain -d user -s $KEYCHAIN_PATH
 
-        # apply provisioning profile
-        mkdir -p ~/Library/MobileDevice/Provisioning\ Profiles
-        cp $PP_PATH ~/Library/MobileDevice/Provisioning\ Profiles
-        ls $RUNNER_TEMP
-    - name: Build and publish release
-      env:
-        GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        APPLE_ID: ${{ secrets.APPLE_ID }}
-        APPLE_APP_SPECIFIC_PASSWORD: ${{ secrets.APPLE_APP_SPECIFIC_PASSWORD }}
-      run: npm run release
+          # apply provisioning profile
+          mkdir -p ~/Library/MobileDevice/Provisioning\ Profiles
+          cp $PP_PATH ~/Library/MobileDevice/Provisioning\ Profiles
+          ls $RUNNER_TEMP
+      - name: Build and publish release
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          APPLE_ID: ${{ secrets.APPLE_ID }}
+          APPLE_APP_SPECIFIC_PASSWORD: ${{ secrets.APPLE_APP_SPECIFIC_PASSWORD }}
+        run: npm run release
 
-    - name: Set hashes in environment variables
-      working-directory: dist
-      run: |
-        echo MAC_ZIP_NAME=$(ls *.zip) >> "$GITHUB_ENV"
-        echo MAC_ZIP_HASH=$(openssl dgst -sha512 -binary "$(ls *.zip)" | base64) >> "$GITHUB_ENV"
-        echo MAC_DMG_NAME=$(ls *.dmg) >> "$GITHUB_ENV"
-        echo MAC_DMG_HASH=$(openssl dgst -sha512 -binary "$(ls *.dmg)" | base64) >> "$GITHUB_ENV"
+      - name: Set hashes in environment variables
+        working-directory: dist
+        run: |
+          echo MAC_ZIP_NAME=$(ls *.zip) >> "$GITHUB_ENV"
+          echo MAC_ZIP_HASH=$(openssl dgst -sha512 -binary "$(ls *.zip)" | base64) >> "$GITHUB_ENV"
+          echo MAC_DMG_NAME=$(ls *.dmg) >> "$GITHUB_ENV"
+          echo MAC_DMG_HASH=$(openssl dgst -sha512 -binary "$(ls *.dmg)" | base64) >> "$GITHUB_ENV"
 
-    - name: Replace SHAs
-      run: |
-        yq -i '(.files[] | select(.url == strenv(MAC_ZIP_NAME))).sha512 = strenv(MAC_ZIP_HASH)
-          | (.files[] | select(.url == strenv(MAC_DMG_NAME))).sha512 = strenv(MAC_DMG_HASH)
-          | (select(.path == strenv(MAC_ZIP_NAME))).sha512 = strenv(MAC_ZIP_HASH)
-          ' dist/latest-mac.yml
+      - name: Replace SHAs
+        run: |
+          yq -i '(.files[] | select(.url == strenv(MAC_ZIP_NAME))).sha512 = strenv(MAC_ZIP_HASH)
+            | (.files[] | select(.url == strenv(MAC_DMG_NAME))).sha512 = strenv(MAC_DMG_HASH)
+            | (select(.path == strenv(MAC_ZIP_NAME))).sha512 = strenv(MAC_ZIP_HASH)
+            ' dist/latest-mac.yml
 
-    - name: Upload latest-mac-x64.yml
-      uses: actions/upload-artifact@v3
-      with:
-        name: latest-mac-x64.yml
-        path: dist/latest-mac.yml
+      - name: Upload latest-mac-x64.yml
+        uses: actions/upload-artifact@v3
+        with:
+          name: latest-mac-x64.yml
+          path: dist/latest-mac.yml
 
-    - name: Clean up keychain and provisioning profile
-      if: ${{ always() }}
-      run: |
-        security delete-keychain $RUNNER_TEMP/app-signing.keychain-db
-  
+      - name: Clean up keychain and provisioning profile
+        if: ${{ always() }}
+        run: |
+          security delete-keychain $RUNNER_TEMP/app-signing.keychain-db
+
   fix_mac_yml:
     name: Combine latest-mac.yml files
     needs: [publish_on_mac, publish_on_mac_arm64]
@@ -247,13 +247,13 @@ jobs:
     needs: [check_release]
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v4
-    - uses: actions/setup-node@v3
-      with:
-        node-version: 18
-    - name: Install dependencies
-      run: npm install
-    - name: Build and publish release
-      env:
-        GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      run: npm run release
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v3
+        with:
+          node-version: 18
+      - name: Install dependencies
+        run: npm install
+      - name: Build and publish release
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: npm run release
