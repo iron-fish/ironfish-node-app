@@ -1,5 +1,6 @@
 import { ChevronRightIcon } from "@chakra-ui/icons";
 import { Grid, GridItem, Text } from "@chakra-ui/react";
+import { useRouter } from "next/router";
 
 import { ChakraLink } from "@/ui/ChakraLink/ChakraLink";
 import { COLORS } from "@/ui/colors";
@@ -37,6 +38,7 @@ type Props = {
 
 export function ContactRow({ name, address }: Props) {
   // @todo: Add link to individual contact view
+  const router = useRouter();
   return (
     <ChakraLink href="#" w="100%">
       <ShadowCard
@@ -45,7 +47,7 @@ export function ContactRow({ name, address }: Props) {
           display: "flex",
           alignItems: "center",
           p: 0,
-          py: 4,
+          py: 5,
         }}
       >
         <Grid
@@ -64,8 +66,14 @@ export function ContactRow({ name, address }: Props) {
           <GridItem display="flex">
             <CopyAddress address={address} color="inherit" />
           </GridItem>
-          <GridItem display="flex">
-            <PillButton onClick={(e) => e.preventDefault()}>
+          <GridItem display="flex" alignItems="center" mr={4}>
+            <PillButton
+              onClick={(e) => {
+                e.preventDefault();
+                // @todo: Set default "to" value
+                router.push(`/send`);
+              }}
+            >
               <ArrowSend transform="scale(0.8)" />
               Send
             </PillButton>

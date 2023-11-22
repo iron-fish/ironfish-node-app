@@ -1,5 +1,5 @@
 import { HStack, Heading } from "@chakra-ui/react";
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import { useToggle } from "usehooks-ts";
 
 import { AddContactModal } from "@/components/AddContactModal/AddContactModal";
@@ -18,7 +18,14 @@ export default function AddressBookPage() {
   const [searchInput, setSearchInput] = useState("");
   const { data } = trpcReact.getContacts.useQuery();
 
-  console.log(data, searchInput);
+  const filteredData = useMemo(() => {
+    return data?.filter((contact) => {
+      return (
+        contact.name.toLowerCase().includes(searchInput.toLowerCase()) ||
+        contact.address.toLowerCase().includes(searchInput.toLowerCase())
+      );
+    });
+  }, [data, searchInput]);
 
   return (
     <MainLayout>
@@ -35,7 +42,7 @@ export default function AddressBookPage() {
         <SearchInput onChange={(e) => setSearchInput(e.target.value)} />
       </HStack>
       <ContactHeadings />
-      {data?.map((contact) => {
+      {filteredData?.map((contact) => {
         return (
           <ContactRow
             key={contact.id}
