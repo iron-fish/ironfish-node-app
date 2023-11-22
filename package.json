@@ -53,6 +53,7 @@
     "date-fns-tz": "^2.0.0",
     "electron": "^26.2.2",
     "electron-builder": "^24.6.4",
+    "electron-storage": "^1.0.7",
     "electron-trpc": "^0.5.2",
     "electron-updater": "6.1.4",
     "eslint": "^8.50.0",
