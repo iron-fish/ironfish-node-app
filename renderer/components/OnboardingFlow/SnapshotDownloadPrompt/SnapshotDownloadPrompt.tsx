@@ -99,7 +99,7 @@ function Prompt({
       <Text mb={8}>
         Sync from peers: Slower but decentralized. Retrieve the blockchain from
         other users, contributing to network decentralization. While it may take
-        longer, it strengthens the network&amp;s resilience.
+        longer, it strengthens the network&apos;s resilience.
       </Text>
       <HStack>
         <PillButton onClick={onSnapshot}>Download Snapshot</PillButton>
