@@ -28,3 +28,16 @@ export type SnapshotUpdate =
   | {
       step: "complete";
     };
+
+export type PartialGithubRelease = {
+  id: number;
+  node_id: string;
+  tag_name: string;
+  target_commitish: string;
+  name: string;
+  draft: boolean;
+  prerelease: boolean;
+  created_at: string;
+  published_at: string;
+  body: string;
+};

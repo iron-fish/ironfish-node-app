@@ -1,11 +1,66 @@
-import { Heading } from "@chakra-ui/react";
+import { VStack, Heading, HStack, Box, Text } from "@chakra-ui/react";
 
+import { ReleaseNote } from "@/components/ReleaseNote/ReleaseNote";
 import MainLayout from "@/layouts/MainLayout";
+import { trpcReact } from "@/providers/TRPCProvider";
+import { COLORS } from "@/ui/colors";
 
-export default function Placeholder() {
+import { PartialGithubRelease } from "../../../shared/types";
+
+function ReleaseNotesList({
+  currentVersion,
+  releases,
+}: {
+  currentVersion: string | undefined;
+  releases: PartialGithubRelease[];
+}) {
+  return (
+    <VStack gap={16}>
+      {releases.map((release) => {
+        return (
+          <ReleaseNote
+            key={release.id}
+            release={release}
+            currentVersion={currentVersion}
+          />
+        );
+      })}
+    </VStack>
+  );
+}
+
+export default function ReleaseNotes() {
+  const { data: currentVersion } = trpcReact.getCurrentVersion.useQuery();
+
+  const { isLoading, isError, isSuccess, data } =
+    trpcReact.getUpdateNotes.useQuery(undefined, { retry: false });
+
   return (
     <MainLayout>
-      <Heading>Placeholder</Heading>
+      <HStack alignItems="center" mb={10} gap={6}>
+        <Heading>Release Notes</Heading>
+        <Box
+          background={COLORS.GRAY_LIGHT}
+          borderRadius="5px"
+          px={4}
+          py={1.5}
+          _dark={{ background: COLORS.DARK_MODE.GRAY_LIGHT }}
+        >
+          <Text
+            color={COLORS.GRAY_MEDIUM}
+            _dark={{ color: COLORS.DARK_MODE.GRAY_MEDIUM }}
+          >
+            Version {currentVersion || 0}
+          </Text>
+        </Box>
+      </HStack>
+      {isLoading && <div>Loading...</div>}
+      {isError && (
+        <div>We&apos;re not able to download release notes right now.</div>
+      )}
+      {isSuccess && (
+        <ReleaseNotesList currentVersion={currentVersion} releases={data} />
+      )}
     </MainLayout>
   );
 }
