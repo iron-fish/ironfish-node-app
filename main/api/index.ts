@@ -1,5 +1,5 @@
 import { accountRouter } from "./accounts";
-import { addressBookRouter } from "./address-book/v1";
+import { contactsRouter } from "./contacts";
 import { ironfishRouter } from "./ironfish";
 import { snapshotRouter } from "./snapshot";
 import { transactionRouter } from "./transactions";
@@ -12,9 +12,9 @@ export const router = t.mergeRouters(
   transactionRouter,
   userSettingsRouter,
   snapshotRouter,
-  addressBookRouter,
   ironfishRouter,
   windowRouter,
+  contactsRouter,
 );
 
 export type AppRouter = typeof router;
