@@ -3,8 +3,6 @@ permissions:
   contents: write
 on:
   push:
-    branches:
-      - main
 concurrency: publish-release
 
 jobs:
@@ -37,9 +35,31 @@ jobs:
           echo "::error::Ran Publish Release on an already published release"
           exit 1
 
+  delete_existing_artifacts:
+    # electron-builder will occasionally throw a 422 when attempting to overwrite existing
+    # assets on a GitHub release.
+    name: Delete existing release artifacts
+    needs: [check_release]
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Get NPM package version
+        id: package-version
+        run: |
+          CURRENTVERSION=$(jq .version package.json -r)
+          echo $CURRENTVERSION
+          echo current-version=$CURRENTVERSION >> "$GITHUB_OUTPUT"
+
+      - name: Delete assets from release
+        run: gh release view ${{ env.VERSION }} --json assets --jq ".assets.[].name" | xargs -I {} gh release delete-asset ${{ env.VERSION }} {}
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+          VERSION: v${{ steps.package-version.outputs.current-version }}
+
   publish_on_windows:
     name: Windows x64
-    needs: [check_release]
+    needs: [delete_existing_artifacts]
     runs-on: windows-latest
     steps:
       - uses: actions/checkout@v4
@@ -62,7 +82,7 @@ jobs:
 
   publish_on_mac_arm64:
     name: Mac arm64
-    needs: [check_release]
+    needs: [delete_existing_artifacts]
     runs-on: [self-hosted, macOS, ARM64]
     steps:
       - uses: actions/checkout@v4
@@ -134,7 +154,7 @@ jobs:
 
   publish_on_mac:
     name: Mac x64
-    needs: [check_release]
+    needs: [delete_existing_artifacts]
     runs-on: macos-latest
     steps:
       - uses: actions/checkout@v4
@@ -244,7 +264,7 @@ jobs:
 
   publish_on_linux:
     name: Linux x64
-    needs: [check_release]
+    needs: [delete_existing_artifacts]
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
