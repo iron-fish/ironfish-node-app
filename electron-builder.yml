@@ -11,6 +11,8 @@ files:
       - app
 mac:
   notarize:
-    teamId: '9WR79D873L'
+    teamId: "9WR79D873L"
 win:
-  sign: './build/sign-windows.js'
+  sign: "./build/sign-windows.js"
+linux:
+  target: AppImage
