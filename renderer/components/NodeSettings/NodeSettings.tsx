@@ -4,11 +4,17 @@ import { useCallback, useEffect, useState } from "react";
 import { trpcReact } from "@/providers/TRPCProvider";
 
 export function NodeSettings() {
+  const utils = trpcReact.useUtils();
+
   const { data } = trpcReact.getConfig.useQuery();
 
   const { mutate, isLoading } = trpcReact.resetNode.useMutation();
   const { mutate: setConfig, isLoading: isSetConfigLoading } =
-    trpcReact.setConfig.useMutation();
+    trpcReact.setConfig.useMutation({
+      onSettled() {
+        utils.getConfig.invalidate();
+      },
+    });
 
   const [nodeName, setNodeName] = useState(data?.nodeName);
 
@@ -36,7 +42,9 @@ export function NodeSettings() {
           }}
         />
         <button
-          onClick={() => setConfig({ name: "nodeName", value: nodeName })}
+          onClick={() =>
+            setConfig({ configValues: [{ name: "nodeName", value: nodeName }] })
+          }
         >
           {isSetConfigLoading ? "Loading..." : "Update Node Name"}
         </button>
