@@ -33,7 +33,7 @@ const schema: Schema<{
   },
 };
 
-const store = new Store({ schema });
+const store = new Store({ schema, name: "contacts" });
 
 export const contactsRouter = t.router({
   getContacts: t.procedure.query(async () => {
