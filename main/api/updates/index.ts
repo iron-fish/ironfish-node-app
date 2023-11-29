@@ -6,7 +6,7 @@ import { PartialGithubRelease } from "../../../shared/types";
 import { t } from "../trpc";
 
 const githubReleaseUrl =
-  "https://api.github.com/repos/iron-fish/node-app/releases";
+  "https://api.github.com/repos/iron-fish/ironfish-node-app/releases";
 
 // GitHub API allows 60 calls per hour unauthenticated.
 // https://docs.github.com/en/rest/overview/rate-limits-for-the-rest-api?apiVersion=2022-11-28#primary-rate-limit-for-unauthenticated-users
@@ -41,10 +41,6 @@ export const updateRouter = t.router({
           if (error.response) {
             // The request was made and the server responded with a status code
             // that falls out of the range of 2xx
-
-            // console.log(error.response.data);
-            // console.log(error.response.status);
-            // console.log(error.response.headers);
             errorData = JSON.stringify(error.response.data);
           } else if (error.request) {
             // The request was made but no response was received

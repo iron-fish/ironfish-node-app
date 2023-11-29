@@ -7,7 +7,7 @@ import { COLORS } from "@/ui/colors";
 
 import { PartialGithubRelease } from "../../../shared/types";
 
-const stripLeadingV = (s: string) => (s.startsWith("v") ? s.slice(1) : s);
+const stripLeadingV = (str: string) => str.replace(/^v/, "");
 
 function New() {
   return (
