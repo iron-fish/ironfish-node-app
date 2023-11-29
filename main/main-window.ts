@@ -120,6 +120,13 @@ class MainWindow {
       },
     });
 
+    this.window.on("closed", () => {
+      this.window = null;
+      const [promise, resolve] = PromiseUtils.split<BrowserWindow>();
+      this.windowPromise = promise;
+      this.windowResolve = resolve;
+    });
+
     this.windowResolve(this.window);
     return this.window;
   }
