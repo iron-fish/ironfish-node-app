@@ -51,7 +51,7 @@
     "electron-store": "^8.1.0",
     "electron-trpc": "^0.5.2",
     "electron-updater": "6.1.4",
-    "electron": "^26.2.2",
+    "electron": "^27.1.2",
     "eslint-config-next": "^13.5.4",
     "eslint-config-prettier": "^9.0.0",
     "eslint-import-resolver-typescript": "^3.6.1",
