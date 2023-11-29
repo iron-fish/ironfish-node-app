@@ -39,6 +39,19 @@ export const contactsRouter = t.router({
   getContacts: t.procedure.query(async () => {
     return store.get("contacts", []);
   }),
+  getContactByAddress: t.procedure
+    .input(
+      z.object({
+        address: z.string(),
+      }),
+    )
+    .query(async (opts) => {
+      const contacts = store.get("contacts", []);
+      return (
+        contacts.find((contact) => contact.address === opts.input.address) ??
+        null
+      );
+    }),
   migrateNodeAppBetaContacts: t.procedure.mutation(async () => {
     const betaContacts = await getNodeAppBetaContacts();
     const contacts = await store.get("contacts", []);
@@ -72,6 +85,31 @@ export const contactsRouter = t.router({
         address: opts.input.address,
       });
       store.set("contacts", contacts);
+      return contacts;
+    }),
+  editContact: t.procedure
+    .input(
+      z.object({
+        id: z.string(),
+        name: z.string(),
+        address: z.string(),
+      }),
+    )
+    .mutation(async (opts) => {
+      const contacts = store.get("contacts", []);
+      const index = contacts.findIndex(
+        (contact) => contact.id === opts.input.id,
+      );
+
+      if (index > -1) {
+        contacts[index] = {
+          id: opts.input.id,
+          name: opts.input.name,
+          address: opts.input.address,
+        };
+        store.set("contacts", contacts);
+      }
+
       return contacts;
     }),
   deleteContact: t.procedure

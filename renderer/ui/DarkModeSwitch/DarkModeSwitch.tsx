@@ -51,6 +51,7 @@ export const DarkModeSwitch = () => {
           base: isDark ? "translateY(100%)" : "translateY(0%)",
           sm: isDark ? "translateX(100%)" : "translateX(0%)",
         }}
+        zIndex={1}
       >
         <Box transform="translateY(-1px) scale(0.85)">
           {isDark ? <MoonIcon /> : <SunIcon />}
@@ -64,7 +65,7 @@ export const DarkModeSwitch = () => {
           {isDark ? "Dark" : "Light"}
         </Text>
       </HStack>
-      {/* <HStack position="absolute" inset={0} w="100%" aria-hidden>
+      <HStack position="absolute" inset={0} w="100%" px={1} aria-hidden>
         <HStack w="50%" justifyContent="center" gap={1}>
           <Box transform="translateY(-1px) scale(0.85)">
             <SunIcon />
@@ -91,7 +92,7 @@ export const DarkModeSwitch = () => {
             Dark
           </Text>
         </HStack>
-      </HStack> */}
+      </HStack>
     </Stack>
   );
 };

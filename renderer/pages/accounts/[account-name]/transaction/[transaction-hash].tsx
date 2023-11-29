@@ -46,7 +46,7 @@ export function SingleTransactionContent({
         transaction={transactionData.transaction}
         mb={16}
       />
-      <NotesList accountName={accountName} notes={transactionData.notes} />
+      <NotesList notes={transactionData.notes} />
     </MainLayout>
   );
 }
