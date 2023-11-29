@@ -1,4 +1,4 @@
-import { app } from "electron";
+import { BrowserWindow, app } from "electron";
 import log from "electron-log";
 import serve from "electron-serve";
 import { createIPCHandler } from "electron-trpc/main";
@@ -12,26 +12,26 @@ const isProd: boolean = process.env.NODE_ENV === "production";
 
 log.transports.file.level = "info";
 
-const ironfish = await manager.getIronfish();
-ironfish.init();
-
 if (isProd) {
   serve({ directory: "app" });
 } else {
   app.setPath("userData", `${app.getPath("userData")} (development)`);
 }
 
-(async () => {
-  await app.whenReady();
+const ironfish = await manager.getIronfish();
+ironfish.init();
 
-  if (isProd) {
-    updater.init();
-  }
-
+async function createWindow(handler: ReturnType<typeof createIPCHandler>) {
   const window = mainWindow.init();
-  window.maximize();
+  handler.attachWindow(window);
 
-  createIPCHandler({ router, windows: [window] });
+  window.on("ready-to-show", () => {
+    window.maximize();
+  });
+
+  window.on("closed", () => {
+    handler.detachWindow(window);
+  });
 
   if (isProd) {
     await window.loadURL("app://./home");
@@ -40,10 +40,28 @@ if (isProd) {
     await window.loadURL(`http://localhost:${port}/home`);
     window.webContents.openDevTools();
   }
-})();
+}
+
+app.whenReady().then(() => {
+  if (isProd) {
+    updater.init();
+  }
+
+  const handler = createIPCHandler({ router });
+
+  createWindow(handler);
+
+  app.on("activate", () => {
+    if (BrowserWindow.getAllWindows().length === 0) {
+      createWindow(handler);
+    }
+  });
+});
 
 app.on("window-all-closed", () => {
-  app.quit();
+  if (process.platform !== "darwin") {
+    app.quit();
+  }
 });
 
 app.on("will-quit", (e) => {
