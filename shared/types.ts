@@ -10,6 +10,7 @@ export type TransactionNote = {
   type: TransactionType;
   memo: string;
   noteHash: string;
+  accountName: string;
 };
 
 export type SnapshotUpdate =

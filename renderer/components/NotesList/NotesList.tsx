@@ -8,14 +8,12 @@ import {
 import { TransactionNote } from "../../../shared/types";
 
 type Props = {
-  accountName: string;
   notes: TransactionNote[];
   heading?: string;
   linkToTransaction?: boolean;
 };
 
 export function NotesList({
-  accountName,
   notes,
   heading = "Transaction Notes",
   linkToTransaction = false,
@@ -30,7 +28,7 @@ export function NotesList({
         return (
           <TransactionRow
             key={note.noteHash}
-            accountName={accountName}
+            accountName={note.accountName}
             assetName={note.assetName}
             value={note.value}
             timestamp={note.timestamp}

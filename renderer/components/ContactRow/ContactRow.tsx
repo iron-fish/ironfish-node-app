@@ -40,7 +40,7 @@ export function ContactRow({ name, address }: Props) {
   // @todo: Add link to individual contact view
   const router = useRouter();
   return (
-    <ChakraLink href="#" w="100%">
+    <ChakraLink w="100%" href={`/address-book/${address}`}>
       <ShadowCard
         hoverable
         contentContainerProps={{

@@ -23,11 +23,13 @@ export async function getTransactionNotes(
   accountName: string,
   maybeAssetLookup?: { [key: string]: RpcAsset },
 ) {
-  const transactionAssetIds = transaction.notes?.map((note) => note.assetId);
-
   const assetLookup =
     maybeAssetLookup ??
-    (await createAssetLookup(client, transactionAssetIds ?? [], accountName));
+    (await createAssetLookup(
+      client,
+      transaction.notes?.map((note) => note.assetId) ?? [],
+      accountName,
+    ));
 
   const transactionNotes: Array<TransactionNote> =
     transaction.notes
@@ -48,6 +50,7 @@ export async function getTransactionNotes(
           type: transaction.type,
           memo: note.memo,
           noteHash: note.noteHash,
+          accountName,
         };
       }) ?? [];
 

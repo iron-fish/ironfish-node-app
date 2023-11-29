@@ -64,7 +64,6 @@ function AccountOverviewContent({ accountName }: { accountName: string }) {
               <AccountAssets accountName={accountName} />
               <NotesList
                 linkToTransaction
-                accountName={accountName}
                 notes={transactionsData}
                 heading="Transaction Activity"
               />

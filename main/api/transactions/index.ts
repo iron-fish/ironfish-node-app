@@ -2,6 +2,7 @@ import { z } from "zod";
 
 import { handleGetTransaction } from "./handleGetTransaction";
 import { handleGetTransactions } from "./handleGetTransactions";
+import { handleGetTransactionsForContact } from "./handleGetTransactionsForContact";
 import {
   handleSendTransaction,
   handleSendTransactionInput,
@@ -34,6 +35,15 @@ export const transactionRouter = t.router({
     )
     .query(async (opts) => {
       return handleGetTransactions(opts.input);
+    }),
+  getTransactionsForContact: t.procedure
+    .input(
+      z.object({
+        contactAddress: z.string(),
+      }),
+    )
+    .query(async (opts) => {
+      return handleGetTransactionsForContact(opts.input);
     }),
   sendTransaction: t.procedure
     .input(handleSendTransactionInput)
