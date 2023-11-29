@@ -37,7 +37,6 @@ type Props = {
 };
 
 export function ContactRow({ name, address }: Props) {
-  // @todo: Add link to individual contact view
   const router = useRouter();
   return (
     <ChakraLink w="100%" href={`/address-book/${address}`}>
