@@ -1,4 +1,3 @@
-import { useRouter } from "next/router";
 import { useMemo } from "react";
 import { IntlProvider as ReactIntlProvider } from "react-intl";
 
@@ -9,10 +8,15 @@ type Props = {
   children: React.ReactNode;
 };
 
+const DEFAULT_LOCALE = "en-US";
+
+function getLocale() {
+  const locale = navigator.language ?? DEFAULT_LOCALE;
+  return { locale, shortLocale: locale.split("-")[0] };
+}
+
 export function IntlProvider({ children }: Props) {
-  const router = useRouter();
-  const locale = router.locale ?? "en-US";
-  const [shortLocale] = locale.split("-");
+  const { shortLocale, locale } = getLocale();
 
   const messages = useMemo(() => {
     switch (shortLocale) {
@@ -28,7 +32,7 @@ export function IntlProvider({ children }: Props) {
   return (
     <ReactIntlProvider
       locale={locale}
-      defaultLocale={router.defaultLocale}
+      defaultLocale={DEFAULT_LOCALE}
       messages={messages}
     >
       {children}
