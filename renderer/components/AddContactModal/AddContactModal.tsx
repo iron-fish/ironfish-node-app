@@ -15,11 +15,7 @@ import { useCallback, useEffect } from "react";
 import { useForm } from "react-hook-form";
 import * as z from "zod";
 
-import {
-  getTrpcVanillaClient,
-  invalidteQueries,
-  trpcReact,
-} from "@/providers/TRPCProvider";
+import { getTrpcVanillaClient, trpcReact } from "@/providers/TRPCProvider";
 import { TextInput } from "@/ui/Forms/TextInput/TextInput";
 import { PillButton } from "@/ui/PillButton/PillButton";
 
@@ -137,11 +133,7 @@ export function AddContactModal({ isOpen, onClose }: Props) {
                 px={8}
                 onClick={() => {
                   handleSubmit((values) => {
-                    addContact(values, {
-                      onSuccess: () => {
-                        invalidteQueries();
-                      },
-                    });
+                    addContact(values);
                   })();
                 }}
               >

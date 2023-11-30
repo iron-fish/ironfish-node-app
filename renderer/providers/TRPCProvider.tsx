@@ -3,19 +3,20 @@ import { CreateTRPCProxyClient, createTRPCProxyClient } from "@trpc/client";
 import { createTRPCReact } from "@trpc/react-query";
 import { inferRouterInputs, inferRouterOutputs } from "@trpc/server";
 import { ipcLink } from "electron-trpc/renderer";
-import { useState, ReactNode, useEffect } from "react";
+import { useState, ReactNode } from "react";
 
 import type { AppRouter } from "../../main/api";
 
-export const trpcReact = createTRPCReact<AppRouter>();
-
-let cachedQueryClient: QueryClient;
-export function invalidteQueries() {
-  if (!cachedQueryClient) {
-    throw new Error("QueryClient not initialized");
-  }
-  cachedQueryClient.invalidateQueries();
-}
+export const trpcReact = createTRPCReact<AppRouter>({
+  overrides: {
+    useMutation: {
+      async onSuccess(opts) {
+        await opts.originalFn();
+        await opts.queryClient.invalidateQueries();
+      },
+    },
+  },
+});
 
 export function TRPCProvider({ children }: { children: ReactNode }) {
   const [queryClient] = useState(
@@ -33,10 +34,6 @@ export function TRPCProvider({ children }: { children: ReactNode }) {
       links: [ipcLink()],
     }),
   );
-
-  useEffect(() => {
-    cachedQueryClient = queryClient;
-  }, [queryClient]);
 
   return (
     <trpcReact.Provider client={trpcClient} queryClient={queryClient}>
