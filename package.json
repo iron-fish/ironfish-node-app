@@ -8,7 +8,7 @@
   "scripts": {
     "dev": "nextron",
     "build-check": "nextron build --no-pack",
-    "build": "nextron build",
+    "build": "npm run i18n && nextron build",
     "lint": "eslint --fix --config .eslintrc.js .",
     "format": "prettier --config .prettierrc --write .",
     "prepare": "husky install",
