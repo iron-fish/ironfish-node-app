@@ -21,9 +21,9 @@ export default function MyApp({ Component, pageProps }: AppProps) {
         <title>Iron Fish</title>
       </Head>
       <LoadFonts />
-      <DraggableArea />
       <TRPCProvider>
         <ChakraProvider theme={theme}>
+          <DraggableArea />
           <Component {...pageProps} />
         </ChakraProvider>
       </TRPCProvider>

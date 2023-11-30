@@ -1,39 +1,27 @@
-import { Box } from "@chakra-ui/react";
-import { useEffect, useState } from "react";
+import { Box, useColorMode, useColorModeValue } from "@chakra-ui/react";
+import { useEffect } from "react";
+
+import { trpcReact } from "@/providers/TRPCProvider";
 
 export function DraggableArea() {
-  const [height, setHeight] = useState(
-    () => navigator.windowControlsOverlay.getTitlebarAreaRect().height,
-  );
+  const { colorMode } = useColorMode();
+  const bg = useColorModeValue("#ffffff", "#111111");
+
+  const { mutate } = trpcReact.setTheme.useMutation();
 
   useEffect(() => {
-    const listener = () => {
-      const { height: newHeight } =
-        navigator.windowControlsOverlay.getTitlebarAreaRect();
-      if (height !== newHeight) {
-        setHeight(newHeight);
-      }
-    };
-
-    navigator.windowControlsOverlay.addEventListener(
-      "geometrychange",
-      listener,
-    );
-
-    return () =>
-      navigator.windowControlsOverlay.removeEventListener(
-        "geometrychange",
-        listener,
-      );
-  }, [height]);
+    console.log("color", colorMode);
+    mutate({ theme: colorMode });
+  }, [mutate, colorMode]);
 
   return (
     <Box
+      bg={bg}
       position="fixed"
-      top={0}
-      left={0}
-      w="100%"
-      h={`${height}px`}
+      top="env(titlebar-area-y, 0)"
+      left="env(titlebar-area-x, 0)"
+      w="env(titlebar-area-width, 100%)"
+      h="env(titlebar-area-height, 33px)"
       zIndex={9999}
       sx={{
         WebkitUserSelect: "none",
