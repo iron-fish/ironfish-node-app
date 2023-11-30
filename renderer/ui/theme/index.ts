@@ -4,6 +4,10 @@ import { breakpoints, createBreakpointArray } from "./breakpoints";
 import { COLORS } from "../colors";
 
 const theme = extendTheme({
+  config: {
+    initialColorMode: "system",
+    useSystemColorMode: true,
+  },
   colors: {
     muted: {
       500: "black",
