@@ -36,7 +36,7 @@ export default function Accounts() {
         </HStack>
         <Box>
           <Text fontSize="md" as="span" color={COLORS.GRAY_MEDIUM} mr={1}>
-            Total accounts balance:{" "}
+            <FormattedMessage defaultMessage="Total accounts balance" />:{" "}
           </Text>
           <Text fontSize="md" as="span" fontWeight="bold">
             {totalBalance !== null ? formatOre(totalBalance) : "—"} $IRON

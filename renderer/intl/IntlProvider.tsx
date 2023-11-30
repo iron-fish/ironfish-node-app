@@ -12,7 +12,6 @@ type Props = {
 export function IntlProvider({ children }: Props) {
   const router = useRouter();
   const locale = router.locale ?? "en-US";
-
   const [shortLocale] = locale.split("-");
 
   const messages = useMemo(() => {
