@@ -12,7 +12,6 @@ export const DarkModeSwitch = () => {
   const isDark = colorMode === "dark";
 
   const toggleColorMode = useCallback(() => {
-    console.log("calling toggleColorMode");
     colorMode === "dark"
       ? setUserSetting({ theme: "light" })
       : setUserSetting({ theme: "dark" });
