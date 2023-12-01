@@ -54,33 +54,40 @@ async function createConfigChangeHandler() {
   });
 }
 
+async function createThemeChangeHandler() {
+  const updateTitleBarOverlay = () => {
+    mainWindow.getMainWindow().then((mw) => {
+      if (nativeTheme.shouldUseDarkColors) {
+        // setTitleBarOverlay is undefined on non-Windows platforms
+        mw.setTitleBarOverlay?.({
+          color: "#101010",
+          symbolColor: "#ffffff",
+        });
+      } else {
+        mw.setTitleBarOverlay?.({
+          color: "#ffffff",
+          symbolColor: "#101010",
+        });
+      }
+    });
+  };
+
+  nativeTheme.on("updated", updateTitleBarOverlay);
+
+  updateTitleBarOverlay();
+}
+
 app.whenReady().then(() => {
   if (isProd) {
     updater.init();
   }
 
+  createThemeChangeHandler();
   createConfigChangeHandler();
 
   const handler = createIPCHandler({ router });
 
   createWindow(handler);
-
-  nativeTheme.on("updated", () => {
-    mainWindow.getMainWindow().then((mw) => {
-      if (nativeTheme.shouldUseDarkColors) {
-        // setTitleBarOverlay is undefined on non-Windows platforms
-        mw.setTitleBarOverlay?.({
-          color: "#111111",
-          symbolColor: "#ADAEB4",
-        });
-      } else {
-        mw.setTitleBarOverlay?.({
-          color: "#ffffff",
-          symbolColor: "#7F7F7F",
-        });
-      }
-    });
-  });
 
   app.on("activate", () => {
     if (BrowserWindow.getAllWindows().length === 0) {
