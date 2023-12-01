@@ -5,12 +5,14 @@ import { z } from "zod";
 export type UserSettings = {
   enabled: boolean;
   dataDir: string;
+  theme: "light" | "dark" | "system";
 };
 
 export const PartialUserSettingsSchema: z.ZodType<Partial<UserSettings>> = z
   .object({
     enabled: z.boolean(),
     dataDir: z.string(),
+    theme: z.enum(["light", "dark", "system"]),
   })
   .partial();
 
@@ -41,6 +43,7 @@ export async function loadUserSettings(): Promise<UserSettingsStore> {
     defaults: {
       dataDir: fileSystem.resolve(DEFAULT_DATA_DIR),
       enabled: false,
+      theme: "system",
     },
   });
 

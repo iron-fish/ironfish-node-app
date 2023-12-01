@@ -7,7 +7,7 @@ export function DraggableArea() {
       top={0}
       left={0}
       w="100%"
-      h="30px"
+      h="env(titlebar-area-height, 30px)"
       zIndex={9999}
       sx={{
         WebkitUserSelect: "none",

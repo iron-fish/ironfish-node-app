@@ -9,6 +9,45 @@ import { DraggableArea } from "@/ui/DraggableArea/DraggableArea";
 import { LoadFonts } from "@/ui/LoadFonts/LoadFonts";
 import theme from "@/ui/theme";
 
+// Fixes an issue where it's not possible to always use the system value for color mode.
+// Chakra sets chakra-ui-color-mode in localStorage to either light or dark depending
+// on the system theme, then on subsequent loads will prefer the value set in
+// localStorage over the system theme, but replacing the colorModeManager prevents it.
+class SystemColorModeManager implements StorageManager {
+  async persist(): Promise<boolean> {
+    return true;
+  }
+
+  async persisted(): Promise<boolean> {
+    return true;
+  }
+
+  async estimate(): Promise<StorageEstimate> {
+    return {
+      usage: 0,
+      quota: 0,
+    };
+  }
+
+  async getDirectory(): Promise<FileSystemDirectoryHandle> {
+    return {} as FileSystemDirectoryHandle;
+  }
+
+  get(): "light" | "dark" | undefined {
+    return window.matchMedia("(prefers-color-scheme: dark)").matches
+      ? "dark"
+      : "light";
+  }
+
+  type: "localStorage" | "cookie" = "localStorage";
+
+  set() {
+    return;
+  }
+}
+
+const systemColorModeManager = new SystemColorModeManager();
+
 export default function MyApp({ Component, pageProps }: AppProps) {
   const isClient = useIsClient();
 
@@ -22,9 +61,9 @@ export default function MyApp({ Component, pageProps }: AppProps) {
         <title>Iron Fish</title>
       </Head>
       <LoadFonts />
-      <DraggableArea />
       <TRPCProvider>
-        <ChakraProvider theme={theme}>
+        <ChakraProvider theme={theme} colorModeManager={systemColorModeManager}>
+          <DraggableArea />
           <IntlProvider>
             <Component {...pageProps} />
           </IntlProvider>

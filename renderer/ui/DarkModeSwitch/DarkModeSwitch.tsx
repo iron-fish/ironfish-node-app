@@ -1,11 +1,21 @@
 import { SunIcon, MoonIcon } from "@chakra-ui/icons";
 import { useColorMode, HStack, Text, Box, Stack } from "@chakra-ui/react";
+import { useCallback } from "react";
+
+import { trpcReact } from "@/providers/TRPCProvider";
 
 import { COLORS } from "../colors";
 
 export const DarkModeSwitch = () => {
-  const { colorMode, toggleColorMode } = useColorMode();
+  const { colorMode } = useColorMode();
+  const { mutate: setUserSetting } = trpcReact.setUserSetting.useMutation();
   const isDark = colorMode === "dark";
+
+  const toggleColorMode = useCallback(() => {
+    colorMode === "dark"
+      ? setUserSetting({ theme: "light" })
+      : setUserSetting({ theme: "dark" });
+  }, [setUserSetting, colorMode]);
 
   return (
     <Stack

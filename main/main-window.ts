@@ -114,6 +114,7 @@ class MainWindow {
     this.window = createWindow("main", {
       show: false,
       titleBarStyle: "hidden",
+      titleBarOverlay: true,
       webPreferences: {
         preload: path.join(__dirname, "preload.js"),
         nodeIntegration: true,

@@ -1,4 +1,4 @@
-import { BrowserWindow, app } from "electron";
+import { BrowserWindow, app, nativeTheme } from "electron";
 import log from "electron-log";
 import serve from "electron-serve";
 import { createIPCHandler } from "electron-trpc/main";
@@ -25,11 +25,11 @@ async function createWindow(handler: ReturnType<typeof createIPCHandler>) {
   const window = mainWindow.init();
   handler.attachWindow(window);
 
-  window.on("ready-to-show", () => {
+  window.once("ready-to-show", () => {
     window.maximize();
   });
 
-  window.on("closed", () => {
+  window.once("closed", () => {
     handler.detachWindow(window);
   });
 
@@ -42,10 +42,48 @@ async function createWindow(handler: ReturnType<typeof createIPCHandler>) {
   }
 }
 
+async function createConfigChangeHandler() {
+  const userSettings = await manager.getUserSettings();
+
+  nativeTheme.themeSource = userSettings.get("theme");
+
+  userSettings.onConfigChange.on((key) => {
+    if (key === "theme") {
+      nativeTheme.themeSource = userSettings.get(key);
+    }
+  });
+}
+
+async function createThemeChangeHandler() {
+  const updateTitleBarOverlay = () => {
+    mainWindow.getMainWindow().then((mw) => {
+      if (nativeTheme.shouldUseDarkColors) {
+        // setTitleBarOverlay is undefined on non-Windows platforms
+        mw.setTitleBarOverlay?.({
+          color: "#101010",
+          symbolColor: "#ffffff",
+        });
+      } else {
+        mw.setTitleBarOverlay?.({
+          color: "#ffffff",
+          symbolColor: "#101010",
+        });
+      }
+    });
+  };
+
+  nativeTheme.on("updated", updateTitleBarOverlay);
+
+  updateTitleBarOverlay();
+}
+
 app.whenReady().then(() => {
   if (isProd) {
     updater.init();
   }
+
+  createThemeChangeHandler();
+  createConfigChangeHandler();
 
   const handler = createIPCHandler({ router });
 
