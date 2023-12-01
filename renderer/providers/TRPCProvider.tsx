@@ -7,10 +7,28 @@ import { useState, ReactNode } from "react";
 
 import type { AppRouter } from "../../main/api";
 
-export const trpcReact = createTRPCReact<AppRouter>();
+export const trpcReact = createTRPCReact<AppRouter>({
+  overrides: {
+    useMutation: {
+      async onSuccess(opts) {
+        await opts.originalFn();
+        await opts.queryClient.invalidateQueries();
+      },
+    },
+  },
+});
 
 export function TRPCProvider({ children }: { children: ReactNode }) {
-  const [queryClient] = useState(() => new QueryClient());
+  const [queryClient] = useState(
+    () =>
+      new QueryClient({
+        defaultOptions: {
+          queries: {
+            refetchInterval: 1000 * 30,
+          },
+        },
+      }),
+  );
   const [trpcClient] = useState(() =>
     trpcReact.createClient({
       links: [ipcLink()],

@@ -3,6 +3,7 @@ import { AppProps } from "next/app";
 import Head from "next/head";
 import { useIsClient } from "usehooks-ts";
 
+import { IntlProvider } from "@/intl/IntlProvider";
 import { TRPCProvider } from "@/providers/TRPCProvider";
 import { DraggableArea } from "@/ui/DraggableArea/DraggableArea";
 import { LoadFonts } from "@/ui/LoadFonts/LoadFonts";
@@ -63,7 +64,9 @@ export default function MyApp({ Component, pageProps }: AppProps) {
       <TRPCProvider>
         <ChakraProvider theme={theme} colorModeManager={systemColorModeManager}>
           <DraggableArea />
-          <Component {...pageProps} />
+          <IntlProvider>
+            <Component {...pageProps} />
+          </IntlProvider>
         </ChakraProvider>
       </TRPCProvider>
     </>

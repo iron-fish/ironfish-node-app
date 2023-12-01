@@ -1,4 +1,5 @@
 import { Box, HStack, Heading, Text, VStack } from "@chakra-ui/react";
+import { FormattedMessage } from "react-intl";
 
 import { UserAccountsList } from "@/components/UserAccountsList/UserAccountsList";
 import MainLayout from "@/layouts/MainLayout";
@@ -25,17 +26,17 @@ export default function Accounts() {
           <HStack>
             <PillButton variant="inverted">
               <CreateAccount />
-              Create Account
+              <FormattedMessage defaultMessage="Create Account" />
             </PillButton>
             <PillButton variant="inverted">
               <ImportAccount />
-              Import Account
+              <FormattedMessage defaultMessage="Import Account" />
             </PillButton>
           </HStack>
         </HStack>
         <Box>
           <Text fontSize="md" as="span" color={COLORS.GRAY_MEDIUM} mr={1}>
-            Total accounts balance:{" "}
+            <FormattedMessage defaultMessage="Total accounts balance" />:{" "}
           </Text>
           <Text fontSize="md" as="span" fontWeight="bold">
             {totalBalance !== null ? formatOre(totalBalance) : "—"} $IRON

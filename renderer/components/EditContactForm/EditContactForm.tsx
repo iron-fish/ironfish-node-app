@@ -12,7 +12,6 @@ import {
   useToast,
 } from "@chakra-ui/react";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useQueryClient } from "@tanstack/react-query";
 import { useRouter } from "next/router";
 import { useRef } from "react";
 import { useForm } from "react-hook-form";
@@ -45,7 +44,6 @@ type Props = {
 export function EditContactForm({ id, name, address }: Props) {
   const router = useRouter();
   const toast = useToast();
-  const queryClient = useQueryClient();
 
   const {
     isOpen: isDeleteModalOpen,
@@ -55,10 +53,23 @@ export function EditContactForm({ id, name, address }: Props) {
   const cancelDeleteRef = useRef(null);
 
   const { mutate: editContact, isLoading: isEditLoading } =
-    trpcReact.editContact.useMutation();
+    trpcReact.editContact.useMutation({
+      onSuccess: () => {
+        toast({
+          title: "Contact updated",
+          status: "success",
+          duration: 5000,
+          isClosable: true,
+        });
+      },
+    });
 
   const { mutate: deleteContact, isLoading: isDeleteLoading } =
-    trpcReact.deleteContact.useMutation();
+    trpcReact.deleteContact.useMutation({
+      onSuccess: () => {
+        router.replace("/address-book");
+      },
+    });
 
   const isLoading = isEditLoading || isDeleteLoading;
 
@@ -94,20 +105,7 @@ export function EditContactForm({ id, name, address }: Props) {
             px={8}
             onClick={() => {
               handleSubmit((values) => {
-                editContact(
-                  { id, ...values },
-                  {
-                    onSuccess: () => {
-                      queryClient.invalidateQueries();
-                      toast({
-                        title: "Contact updated",
-                        status: "success",
-                        duration: 5000,
-                        isClosable: true,
-                      });
-                    },
-                  },
-                );
+                editContact({ id, ...values });
               })();
             }}
           >
@@ -147,15 +145,7 @@ export function EditContactForm({ id, name, address }: Props) {
               <Button
                 colorScheme="red"
                 onClick={() => {
-                  deleteContact(
-                    { id },
-                    {
-                      onSuccess: () => {
-                        queryClient.invalidateQueries();
-                        router.replace("/address-book");
-                      },
-                    },
-                  );
+                  deleteContact({ id });
                 }}
                 ml={3}
               >
