@@ -13,7 +13,7 @@
     "format": "prettier --config .prettierrc --write .",
     "prepare": "husky install",
     "postinstall": "electron-builder install-app-deps",
-    "release": "nextron build --publish always",
+    "release": "npm run i18n && nextron build --publish always",
     "extract:i18n": "formatjs extract './renderer/{pages,components,sections}/**/*.{js,ts,tsx}' --format simple --id-interpolation-pattern '[sha512:contenthash:base64:6]' --out-file renderer/intl/locales/en.json",
     "compile:i18n": "formatjs compile-folder --ast --format simple renderer/intl/locales renderer/intl/compiled-locales",
     "i18n": "npm run extract:i18n && npm run compile:i18n"
