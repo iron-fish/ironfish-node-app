@@ -13,23 +13,23 @@ import theme from "@/ui/theme";
 // on the system theme, then on subsequent loads will prefer the value set in
 // localStorage over the system theme, but replacing the colorModeManager prevents it.
 class SystemColorModeManager implements StorageManager {
-  persist(): Promise<boolean> {
-    return Promise.resolve(true);
+  async persist(): Promise<boolean> {
+    return true;
   }
 
-  persisted(): Promise<boolean> {
-    return Promise.resolve(true);
+  async persisted(): Promise<boolean> {
+    return true;
   }
 
-  estimate(): Promise<StorageEstimate> {
-    return Promise.resolve({
+  async estimate(): Promise<StorageEstimate> {
+    return {
       usage: 0,
       quota: 0,
-    });
+    };
   }
 
-  getDirectory(): Promise<FileSystemDirectoryHandle> {
-    return Promise.resolve({} as FileSystemDirectoryHandle);
+  async getDirectory(): Promise<FileSystemDirectoryHandle> {
+    return {} as FileSystemDirectoryHandle;
   }
 
   get(): "light" | "dark" | undefined {
