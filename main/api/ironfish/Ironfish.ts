@@ -3,7 +3,7 @@ import fsAsync from "fs/promises";
 import {
   ALL_API_NAMESPACES,
   FullNode,
-  HOST_FILE_NAME,
+  PEER_STORE_FILE_NAME,
   IronfishSdk,
   NodeUtils,
   RpcClient,
@@ -159,9 +159,9 @@ export class Ironfish {
     let sdk = await this.sdk();
 
     const chainDatabasePath = sdk.config.chainDatabasePath;
-    const hostFilePath: string = sdk.config.files.join(
+    const peerStoreFilePath: string = sdk.config.files.join(
       sdk.config.dataDir,
-      HOST_FILE_NAME,
+      PEER_STORE_FILE_NAME,
     );
 
     await this.stop();
@@ -170,7 +170,7 @@ export class Ironfish {
 
     await Promise.all([
       fsAsync.rm(chainDatabasePath, { recursive: true, force: true }),
-      fsAsync.rm(hostFilePath, { recursive: true, force: true }),
+      fsAsync.rm(peerStoreFilePath, { recursive: true, force: true }),
     ]);
 
     await this.init();
