@@ -3,7 +3,7 @@ import { Text, TextProps, useToast } from "@chakra-ui/react";
 import { useCopyToClipboard } from "usehooks-ts";
 
 import { COLORS } from "@/ui/colors";
-import { formatAddress } from "@/utils/addressUtils";
+import { truncateString } from "@/utils/truncateString";
 
 type Props = TextProps & {
   address: string;
@@ -33,7 +33,7 @@ export function CopyAddress({ address, ...rest }: Props) {
       }}
       {...rest}
     >
-      {formatAddress(address)}
+      {truncateString(address)}
       <CopyIcon ml={1} transform="translateY(-1px)" />
     </Text>
   );
