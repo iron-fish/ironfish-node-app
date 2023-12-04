@@ -21,8 +21,8 @@ import { TRPCRouterOutputs } from "@/providers/TRPCProvider";
 import { COLORS } from "@/ui/colors";
 import { ShadowCard } from "@/ui/ShadowCard/ShadowCard";
 import { formatDate } from "@/utils/formatDate";
-import { formatTransactionHash } from "@/utils/formatTransactionHash";
 import { formatOre } from "@/utils/ironUtils";
+import { truncateString } from "@/utils/truncateString";
 
 type Transaction = TRPCRouterOutputs["getTransaction"]["transaction"];
 
@@ -39,8 +39,7 @@ const ITEMS = [
   {
     label: "Transaction Hash",
     icon: <Image src={pinkHash} alt="" />,
-    render: (transaction: Transaction) =>
-      formatTransactionHash(transaction.hash),
+    render: (transaction: Transaction) => truncateString(transaction.hash, 2),
   },
   {
     label: "Timestamp",

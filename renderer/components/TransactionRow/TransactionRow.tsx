@@ -5,10 +5,10 @@ import type { TransactionType } from "@ironfish/sdk";
 import { MaybeLink } from "@/ui/ChakraLink/ChakraLink";
 import { COLORS } from "@/ui/colors";
 import { ShadowCard } from "@/ui/ShadowCard/ShadowCard";
-import { formatAddress } from "@/utils/addressUtils";
 import { formatDate } from "@/utils/formatDate";
 import { hexToUTF16String } from "@/utils/hexToUTF16String";
 import { formatOre } from "@/utils/ironUtils";
+import { truncateString } from "@/utils/truncateString";
 
 import { ReceivedIcon } from "./icons/ReceivedIcon";
 import { SentIcon } from "./icons/SentIcon";
@@ -105,7 +105,7 @@ export function TransactionRow({
             </Text>
           </GridItem>
           <GridItem display="flex" alignItems="center">
-            <Text as="span">{formatAddress(type === "send" ? to : from)}</Text>
+            <Text as="span">{truncateString(type === "send" ? to : from)}</Text>
           </GridItem>
           <GridItem display="flex" alignItems="center">
             <Text as="span">{formatDate(timestamp)}</Text>

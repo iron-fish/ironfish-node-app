@@ -16,8 +16,8 @@ import { useCallback } from "react";
 import { trpcReact } from "@/providers/TRPCProvider";
 import { COLORS } from "@/ui/colors";
 import { PillButton } from "@/ui/PillButton/PillButton";
-import { formatAddress } from "@/utils/addressUtils";
 import { formatOre } from "@/utils/ironUtils";
+import { truncateString } from "@/utils/truncateString";
 
 import { TransactionData } from "../transactionSchema";
 
@@ -77,7 +77,7 @@ export function ConfirmTransactionModal({
                 <Box py={4} borderBottom="1.5px dashed #DEDFE2">
                   <Text color={COLORS.GRAY_MEDIUM}>To:</Text>
                   <Text fontSize="md">
-                    {formatAddress(transactionData?.toAccount ?? "")}
+                    {truncateString(transactionData?.toAccount ?? "")}
                   </Text>
                 </Box>
 
