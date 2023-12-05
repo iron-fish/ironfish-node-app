@@ -113,6 +113,7 @@ class MainWindow {
   init(): BrowserWindow {
     this.window = createWindow("main", {
       show: false,
+      title: "Iron Fish Node App",
       titleBarStyle: "hidden",
       titleBarOverlay: true,
       webPreferences: {
