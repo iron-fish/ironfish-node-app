@@ -32,6 +32,12 @@ function useStatus() {
           : "Syncing blocks",
       };
     }
+    if (!data.blockchain.synced) {
+      return {
+        status: "SYNCING",
+        label: "Waiting for peers to sync from",
+      };
+    }
     if (data.accounts.head.hash !== data.blockchain.head.hash) {
       return {
         status: "SCANNING",
