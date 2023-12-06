@@ -18,9 +18,6 @@ mac:
     teamId: "9WR79D873L"
 dmg:
   icon: resources/dmg.icns
-  # electron-builder looks for a retina background file ending in @2x:
-  # https://www.electron.build/icons.html
-  background: resources/bg.png
   contents:
     - x: 204
       y: 316
