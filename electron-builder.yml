@@ -1,6 +1,10 @@
-appId: com.example.iron-fish-node-app
+appId: network.iflabs.ironfish-node-app
 productName: Iron Fish Node App
 copyright: Copyright © 2023 IF Labs
+# The app name in the Mac application menu uses the value from the
+# name field in package.json unless this is set.
+extraMetadata:
+  name: Iron Fish Node App
 directories:
   output: dist
   buildResources: resources

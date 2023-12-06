@@ -1,9 +1,9 @@
 {
   "private": true,
-  "name": "my-nextron-app",
+  "name": "ironfish-node-app",
   "description": "Iron Fish Node App",
-  "version": "1.0.0",
-  "author": "if-labs",
+  "version": "2.0.0",
+  "author": "IF Labs <engineering@iflabs.network> (https://iflabs.network)",
   "main": "app/background.js",
   "scripts": {
     "dev": "nextron",
@@ -52,7 +52,6 @@
     "consola": "^2.15.0",
     "date-fns": "^2.30.0",
     "date-fns-tz": "^2.0.0",
-    "electron": "^27.1.2",
     "electron-builder": "^24.6.4",
     "electron-log": "5.0.0",
     "electron-store": "^8.1.0",
@@ -90,5 +89,8 @@
       "eslint --fix",
       "prettier --write"
     ]
+  },
+  "overrides": {
+     "electron": "28.0.0-beta.11"
   }
 }
