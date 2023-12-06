@@ -30,3 +30,4 @@ win:
   sign: "./build/sign-windows.js"
 linux:
   target: AppImage
+  asarUnpack: "**/*.node"
