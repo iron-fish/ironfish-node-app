@@ -1,4 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
+import os from "os";
 import path from "path";
 
 import { PromiseResolve, PromiseUtils } from "@ironfish/sdk";
@@ -111,7 +112,14 @@ class MainWindow {
   }
 
   init(): BrowserWindow {
+    // On Linux, we explicitly set an icon on the window, since icon support for AppImages isn't always included
+    const icon =
+      os.platform() === "linux"
+        ? path.join(__dirname, "../resources/icons/128x128.png")
+        : undefined;
+
     this.window = createWindow("main", {
+      icon,
       show: false,
       title: "Iron Fish Node App",
       titleBarStyle: "hidden",

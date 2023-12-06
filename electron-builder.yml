@@ -31,3 +31,5 @@ win:
 linux:
   target: AppImage
   asarUnpack: "**/*.node"
+  files:
+    - resources/icons
