@@ -10,7 +10,7 @@ type FormFieldPassthrough = Pick<
 
 type Props = FormFieldPassthrough &
   Omit<InputProps, "type"> & {
-    type?: "text";
+    type?: "text" | "number";
   };
 
 export const TextInput = forwardRef<HTMLInputElement, Props>(function TextInput(
