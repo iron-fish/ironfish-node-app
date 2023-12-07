@@ -58,7 +58,7 @@ export default function MyApp({ Component, pageProps }: AppProps) {
   return (
     <>
       <Head>
-        <title>Iron Fish</title>
+        <title>Iron Fish Node App</title>
       </Head>
       <LoadFonts />
       <TRPCProvider>

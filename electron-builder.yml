@@ -16,7 +16,20 @@ files:
 mac:
   notarize:
     teamId: "9WR79D873L"
+dmg:
+  icon: resources/dmg.icns
+  contents:
+    - x: 204
+      y: 316
+    - x: 446
+      y: 316
+      type: link
+      path: /Applications
+
 win:
   sign: "./build/sign-windows.js"
 linux:
   target: AppImage
+  asarUnpack: "**/*.node"
+  files:
+    - resources/icons
