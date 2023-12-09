@@ -10,6 +10,8 @@ export const COLORS = {
 
   GREEN_LIGHT: "#ECFFCE",
   GREEN_DARK: "#6A991C",
+  YELLOW_LIGHT: "#FFF9B8",
+  YELLOW_DARK: "#887D09",
 
   LINK: "#2C72FF",
 
@@ -20,5 +22,7 @@ export const COLORS = {
     GRAY_DARK: "#252525",
     GREEN_LIGHT: "#C7F182",
     GREEN_DARK: "#242C18",
+    YELLOW_LIGHT: "#E3DB7C",
+    YELLOW_DARK: "#4B4608",
   },
 };

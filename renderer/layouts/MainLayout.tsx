@@ -24,6 +24,8 @@ import { LogoSm } from "@/ui/SVGs/LogoSm";
 import { ReleaseNotes } from "@/ui/SVGs/ReleaseNotes";
 import { YourNode } from "@/ui/SVGs/YourNode";
 
+import { WithDraggableArea } from "./WithDraggableArea";
+
 const LINKS = [
   {
     label: "Accounts",
@@ -143,64 +145,70 @@ type Props = {
 
 export default function MainLayout({ children, backLinkProps }: Props) {
   return (
-    <Grid
-      templateColumns="auto 1fr"
-      h="100vh"
+    <WithDraggableArea
       bg="white"
       _dark={{
         bg: COLORS.DARK_MODE.BG,
       }}
     >
-      <GridItem
-        w={{
-          base: "auto",
-          sm: "265px",
-        }}
-        p={4}
-        pt="50px"
-        display="flex"
-        alignItems="stretch"
-      >
-        <Sidebar />
-      </GridItem>
-      <GridItem px={6} pt={10} pb={8} overflow="auto">
-        <Box
-          mx="auto"
-          maxWidth={{
-            base: "100%",
-            sm: "597px",
-            lg: "825px",
-            xl: "1048px",
-            "2xl": "1280px",
+      <Grid height="100%" templateColumns="auto 1fr">
+        <GridItem
+          h="100%"
+          overflow="auto"
+          w={{
+            base: "auto",
+            sm: "265px",
           }}
+          p={4}
+          pt="50px"
+          display="flex"
+          alignItems="stretch"
         >
-          {backLinkProps && (
-            <ChakraLink href={backLinkProps.href} display="inline-block" mb={4}>
-              <HStack gap={3}>
-                <Box
-                  h="24px"
-                  w="24px"
-                  border="1px solid white"
-                  borderRadius="full"
-                  display="flex"
-                  alignItems="center"
-                  justifyContent="center"
-                >
-                  <ChevronLeftIcon boxSize={4} />
-                </Box>
-                <Text
-                  as="span"
-                  color={COLORS.GRAY_MEDIUM}
-                  _dark={{ color: COLORS.DARK_MODE.GRAY_LIGHT }}
-                >
-                  {backLinkProps.label}
-                </Text>
-              </HStack>
-            </ChakraLink>
-          )}
-          {children}
-        </Box>
-      </GridItem>
-    </Grid>
+          <Sidebar />
+        </GridItem>
+        <GridItem px={6} pt={10} pb={8} h="100%" overflow="auto">
+          <Box
+            mx="auto"
+            maxWidth={{
+              base: "100%",
+              sm: "597px",
+              lg: "825px",
+              xl: "1048px",
+              "2xl": "1280px",
+            }}
+          >
+            {backLinkProps && (
+              <ChakraLink
+                href={backLinkProps.href}
+                display="inline-block"
+                mb={4}
+              >
+                <HStack gap={3}>
+                  <Box
+                    h="24px"
+                    w="24px"
+                    border="1px solid white"
+                    borderRadius="full"
+                    display="flex"
+                    alignItems="center"
+                    justifyContent="center"
+                  >
+                    <ChevronLeftIcon boxSize={4} />
+                  </Box>
+                  <Text
+                    as="span"
+                    color={COLORS.GRAY_MEDIUM}
+                    _dark={{ color: COLORS.DARK_MODE.GRAY_LIGHT }}
+                  >
+                    {backLinkProps.label}
+                  </Text>
+                </HStack>
+              </ChakraLink>
+            )}
+            {children}
+          </Box>
+        </GridItem>
+      </Grid>
+    </WithDraggableArea>
   );
 }

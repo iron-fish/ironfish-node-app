@@ -5,7 +5,6 @@ import { useIsClient } from "usehooks-ts";
 
 import { IntlProvider } from "@/intl/IntlProvider";
 import { TRPCProvider } from "@/providers/TRPCProvider";
-import { DraggableArea } from "@/ui/DraggableArea/DraggableArea";
 import { LoadFonts } from "@/ui/LoadFonts/LoadFonts";
 import theme from "@/ui/theme";
 
@@ -63,7 +62,6 @@ export default function MyApp({ Component, pageProps }: AppProps) {
       <LoadFonts />
       <TRPCProvider>
         <ChakraProvider theme={theme} colorModeManager={systemColorModeManager}>
-          <DraggableArea />
           <IntlProvider>
             <Component {...pageProps} />
           </IntlProvider>
