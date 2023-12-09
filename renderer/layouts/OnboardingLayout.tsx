@@ -8,9 +8,9 @@ import { WithDraggableArea } from "./WithDraggableArea";
 
 export function OnboardingLayout({ children }: { children: ReactNode }) {
   return (
-    <WithDraggableArea>
-      <Box height="100%" width="100%" overflow="hidden" position="relative">
-        <LightMode>
+    <LightMode>
+      <WithDraggableArea>
+        <Box height="100%" width="100%" overflow="hidden" position="relative">
           <Box
             height="150vh"
             width="100%"
@@ -38,8 +38,8 @@ export function OnboardingLayout({ children }: { children: ReactNode }) {
           >
             {children}
           </Box>
-        </LightMode>
-      </Box>
-    </WithDraggableArea>
+        </Box>
+      </WithDraggableArea>
+    </LightMode>
   );
 }
