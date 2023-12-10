@@ -5,11 +5,7 @@ import {
   TabPanels,
   TabPanel,
   Tab,
-  Flex,
-  Box,
-  Text,
 } from "@chakra-ui/react";
-import Image from "next/image";
 import { FormattedMessage } from "react-intl";
 
 import { NodeOverview } from "@/components/NodeOverview/NodeOverview";
@@ -17,7 +13,7 @@ import { NodeResources } from "@/components/NodeResources/NodeResources";
 import { NodeSettings } from "@/components/NodeSettings/NodeSettings";
 import computerMonitor from "@/images/computer-monitor.svg";
 import MainLayout from "@/layouts/MainLayout";
-import { COLORS } from "@/ui/colors";
+import { WithExplanatorySidebar } from "@/layouts/WithExplanatorySidebar";
 
 export default function YourNode() {
   return (
@@ -43,36 +39,17 @@ export default function YourNode() {
             <NodeOverview />
           </TabPanel>
           <TabPanel p={0}>
-            <Flex gap={16}>
-              <Box
-                maxW={{
-                  base: "100%",
-                  lg: "592px",
-                }}
-                w="100%"
-              >
-                <NodeSettings />
-              </Box>
-              <Box
-                display={{
-                  base: "none",
-                  lg: "block",
-                }}
-              >
-                <Heading fontSize="2xl" mb={4}>
-                  <FormattedMessage defaultMessage="Node Settings" />
-                </Heading>
-                <Text
-                  fontSize="sm"
-                  maxW="340px"
-                  mb={16}
-                  color={COLORS.GRAY_MEDIUM}
-                >
+            <WithExplanatorySidebar
+              heading={<FormattedMessage defaultMessage="Node Settings" />}
+              description={
+                <WithExplanatorySidebar.Description>
                   <FormattedMessage defaultMessage="Changing node settings can optimize performance, improve connectivity, enhance security, and manage resources effectively." />
-                </Text>
-                <Image src={computerMonitor} alt="" />
-              </Box>
-            </Flex>
+                </WithExplanatorySidebar.Description>
+              }
+              imgSrc={computerMonitor}
+            >
+              <NodeSettings />
+            </WithExplanatorySidebar>
           </TabPanel>
           <TabPanel p={0}>
             <NodeResources />

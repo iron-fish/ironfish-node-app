@@ -9,11 +9,16 @@ import {
   HStack,
 } from "@chakra-ui/react";
 import { useRouter } from "next/router";
+import { FormattedMessage } from "react-intl";
 
 import { AccountAssets } from "@/components/AccountAssets/AccountAssets";
+import { AccountKeyExport } from "@/components/AccountKeyExport/AccountKeyExport";
+import { AccountMnemonicView } from "@/components/AccountMnemonicView/AccountMnenomicView";
 import { CopyAddress } from "@/components/CopyAddress/CopyAddress";
 import { NotesList } from "@/components/NotesList/NotesList";
+import keysGhost from "@/images/keys-ghost.svg";
 import MainLayout from "@/layouts/MainLayout";
+import { WithExplanatorySidebar } from "@/layouts/WithExplanatorySidebar";
 import { trpcReact } from "@/providers/TRPCProvider";
 import { asQueryString } from "@/utils/parseRouteQuery";
 
@@ -69,7 +74,19 @@ function AccountOverviewContent({ accountName }: { accountName: string }) {
               />
             </TabPanel>
             <TabPanel p={0}>
-              <p>two!</p>
+              <WithExplanatorySidebar
+                heading={<FormattedMessage defaultMessage="Keys" />}
+                description={
+                  <WithExplanatorySidebar.Description>
+                    <FormattedMessage defaultMessage="Keep your keys safe by only revealing their contents when you're sure nobody is peering. These are used to access your accounts and are the primary security measure against non-solicited user access." />
+                    <FormattedMessage defaultMessage="Safeguarding your mnemonic phrase and encoded keys is essential to maintain full ownership, control, and security over your digital assets." />
+                  </WithExplanatorySidebar.Description>
+                }
+                imgSrc={keysGhost}
+              >
+                <AccountMnemonicView accountName={accountName} />
+                <AccountKeyExport accountName={accountName} />
+              </WithExplanatorySidebar>
             </TabPanel>
             <TabPanel p={0}>
               <p>three!</p>
