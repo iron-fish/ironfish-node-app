@@ -46,7 +46,7 @@ export function AccountKeyExport({ accountName }: { accountName: string }) {
   const accountData = exportData.account;
 
   return (
-    <HStack mt={4} gap={4}>
+    <HStack gap={4}>
       <PillButton
         type="submit"
         height="60px"

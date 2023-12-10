@@ -2,6 +2,10 @@ import { z } from "zod";
 
 import { handleCreateAccount } from "./handleCreateAccount";
 import {
+  handleDeleteAccount,
+  handleDeleteAccountInputs,
+} from "./handleDeleteAccount";
+import {
   handleExportAccount,
   handleExportAccountInputs,
 } from "./handleExportAccount";
@@ -52,6 +56,11 @@ export const accountRouter = t.router({
     .input(handleRenameAccountInputs)
     .mutation(async (opts) => {
       return handleRenameAccount(opts.input);
+    }),
+  deleteAccount: t.procedure
+    .input(handleDeleteAccountInputs)
+    .mutation(async (opts) => {
+      return handleDeleteAccount(opts.input);
     }),
   isValidPublicAddress: t.procedure
     .input(
