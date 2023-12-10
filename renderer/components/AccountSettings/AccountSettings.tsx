@@ -13,6 +13,7 @@ import {
 } from "@chakra-ui/react";
 import { useRouter } from "next/router";
 import { useRef, useState } from "react";
+import { FormattedMessage } from "react-intl";
 
 import { trpcReact } from "@/providers/TRPCProvider";
 import { TextInput } from "@/ui/Forms/TextInput/TextInput";
@@ -36,7 +37,7 @@ export function AccountSettings({ accountName }: Props) {
       onSuccess: () => {
         router.replace(`/accounts/${newName}?tab=settings`);
         toast({
-          title: "Account renamed",
+          title: `Renamed account ${accountName} to ${newName}`,
           status: "success",
           duration: 5000,
           isClosable: true,
@@ -70,7 +71,9 @@ export function AccountSettings({ accountName }: Props) {
           }}
           label="Account name"
           error={
-            hasValidName ? undefined : "Please enter a name for this account"
+            hasValidName ? undefined : (
+              <FormattedMessage defaultMessage="Please enter a name for this account" />
+            )
           }
         />
         <HStack>
@@ -85,7 +88,7 @@ export function AccountSettings({ accountName }: Props) {
               })
             }
           >
-            Save Changes
+            <FormattedMessage defaultMessage="Save Changes" />
           </PillButton>
           <PillButton
             isDisabled={isRenameLoading}
@@ -95,7 +98,7 @@ export function AccountSettings({ accountName }: Props) {
             px={8}
             border={0}
           >
-            Delete Account
+            <FormattedMessage defaultMessage="Delete Account" />
           </PillButton>
         </HStack>
       </VStack>
@@ -107,16 +110,16 @@ export function AccountSettings({ accountName }: Props) {
         <AlertDialogOverlay>
           <AlertDialogContent>
             <AlertDialogHeader fontSize="lg" fontWeight="bold">
-              Delete Contact
+              <FormattedMessage defaultMessage="Delete Account" />
             </AlertDialogHeader>
 
             <AlertDialogBody>
-              Are you sure? You can&apos;t undo this action afterwards.
+              <FormattedMessage defaultMessage="Are you sure? You'll have to re-import this account if you want to use it again." />
             </AlertDialogBody>
 
             <AlertDialogFooter>
               <Button ref={cancelDeleteRef} onClick={onDeleteModalClose}>
-                Cancel
+                <FormattedMessage defaultMessage="Cancel" />
               </Button>
               <Button
                 isDisabled={isDeleteLoading}
@@ -126,7 +129,7 @@ export function AccountSettings({ accountName }: Props) {
                 }}
                 ml={3}
               >
-                Delete
+                <FormattedMessage defaultMessage="Delete" />
               </Button>
             </AlertDialogFooter>
           </AlertDialogContent>
