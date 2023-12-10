@@ -10,6 +10,7 @@ import {
 } from "@chakra-ui/react";
 import type { AccountFormat } from "@ironfish/sdk";
 import { useState } from "react";
+import { FormattedMessage } from "react-intl";
 
 import { trpcReact } from "@/providers/TRPCProvider";
 import { PillButton } from "@/ui/PillButton/PillButton";
@@ -57,12 +58,14 @@ export function AccountKeyExport({ accountName }: { accountName: string }) {
           );
         }}
       >
-        Export Account
+        <FormattedMessage defaultMessage="Export Account" />
       </PillButton>
       <Menu>
         <MenuButton as={Button} rightIcon={<ChevronDownIcon />}>
           <HStack>
-            <Text fontWeight="light">Export Format:</Text>
+            <Text fontWeight="light">
+              <FormattedMessage defaultMessage="Export Format:" />
+            </Text>
             <Text>{exportFormat}</Text>
           </HStack>
         </MenuButton>
