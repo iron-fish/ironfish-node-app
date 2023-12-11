@@ -12,11 +12,17 @@ import { validateMnemonic } from "@/utils/mnemonic";
 
 type Props = {
   onImport: (args: { name?: string; account: string }) => void;
+  onCancel: () => void;
   isLoading: boolean;
   error?: string | null;
 };
 
-export function MnemonicImport({ onImport, isLoading, error }: Props) {
+export function MnemonicImport({
+  onImport,
+  onCancel,
+  isLoading,
+  error,
+}: Props) {
   const [accountName, setAccountName] = useState("");
   const [isAccountNameDirty, setIsAccountNameDirty] = useState(false);
   const [phraseValues, setPhraseValues] =
@@ -72,7 +78,17 @@ export function MnemonicImport({ onImport, isLoading, error }: Props) {
         }}
         mb={8}
       />
-      <HStack justifyContent="flex-end">
+      <HStack justifyContent="flex-end" mt={8}>
+        <PillButton
+          isDisabled={isLoading}
+          onClick={onCancel}
+          variant="inverted"
+          height="60px"
+          px={8}
+          border={0}
+        >
+          <FormattedMessage defaultMessage="Cancel" />
+        </PillButton>
         <PillButton
           height="60px"
           px={8}

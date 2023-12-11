@@ -7,11 +7,12 @@ import { PillButton } from "@/ui/PillButton/PillButton";
 
 type Props = {
   onImport: (args: { name?: string; account: string }) => void;
+  onCancel: () => void;
   isLoading: boolean;
   error?: string | null;
 };
 
-export function FileImport({ onImport, isLoading, error }: Props) {
+export function FileImport({ onImport, onCancel, isLoading, error }: Props) {
   const [file, setFile] = useState<File | null>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
 
@@ -73,9 +74,18 @@ export function FileImport({ onImport, isLoading, error }: Props) {
         </HStack>
         {error && <Text color={COLORS.RED}>{error}</Text>}
       </VStack>
-      <HStack justifyContent="flex-end">
+      <HStack justifyContent="flex-end" mt={8}>
         <PillButton
-          mt={4}
+          isDisabled={isLoading}
+          onClick={onCancel}
+          variant="inverted"
+          height="60px"
+          px={8}
+          border={0}
+        >
+          <FormattedMessage defaultMessage="Cancel" />
+        </PillButton>
+        <PillButton
           height="60px"
           px={8}
           isDisabled={isDisabled}
