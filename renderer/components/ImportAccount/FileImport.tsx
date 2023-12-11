@@ -1,19 +1,29 @@
 import { Box, Text, VStack, HStack, chakra } from "@chakra-ui/react";
-import { useRef, useState } from "react";
+import { useCallback, useRef, useState } from "react";
 import { FormattedMessage } from "react-intl";
 
 import { COLORS } from "@/ui/colors";
 import { PillButton } from "@/ui/PillButton/PillButton";
 
 type Props = {
-  handleImport: (args: { account: string }) => void;
+  onImport: (args: { name?: string; account: string }) => void;
   isLoading: boolean;
   error?: string | null;
 };
 
-export function FileImport({ handleImport, isLoading, error }: Props) {
+export function FileImport({ onImport, isLoading, error }: Props) {
   const [file, setFile] = useState<File | null>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
+
+  const commitImport = useCallback(async () => {
+    const fileContent = await file?.text();
+    if (!fileContent) return;
+    onImport({
+      account: fileContent,
+    });
+  }, [file, onImport]);
+
+  const isDisabled = isLoading || !file;
 
   return (
     <Box>
@@ -68,14 +78,8 @@ export function FileImport({ handleImport, isLoading, error }: Props) {
           mt={4}
           height="60px"
           px={8}
-          isDisabled={isLoading || !file}
-          onClick={async () => {
-            const fileContent = await file?.text();
-            if (!fileContent) return;
-            handleImport({
-              account: fileContent,
-            });
-          }}
+          isDisabled={isDisabled}
+          onClick={commitImport}
         >
           <FormattedMessage defaultMessage="Continue" />
         </PillButton>

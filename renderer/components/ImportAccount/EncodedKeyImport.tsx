@@ -1,17 +1,24 @@
 import { Box, HStack } from "@chakra-ui/react";
-import { useState } from "react";
+import { useCallback, useState } from "react";
 
 import { TextareaInput } from "@/ui/Forms/TextareaInput/TextareaInput";
 import { PillButton } from "@/ui/PillButton/PillButton";
 
 type Props = {
-  handleImport: (args: { account: string }) => void;
+  onImport: (args: { name?: string; account: string }) => void;
   isLoading: boolean;
   error?: string | null;
 };
 
-export function EncodedKeyImport({ handleImport, isLoading, error }: Props) {
+export function EncodedKeyImport({ onImport, isLoading, error }: Props) {
   const [encodedKey, setEncodedKey] = useState("");
+  const commitImport = useCallback(() => {
+    onImport({
+      account: encodedKey,
+    });
+  }, [encodedKey, onImport]);
+
+  const isDisabled = isLoading || !encodedKey;
 
   return (
     <Box>
@@ -28,12 +35,8 @@ export function EncodedKeyImport({ handleImport, isLoading, error }: Props) {
           mt={8}
           height="60px"
           px={8}
-          isDisabled={isLoading || !encodedKey}
-          onClick={() => {
-            handleImport({
-              account: encodedKey,
-            });
-          }}
+          isDisabled={isDisabled}
+          onClick={commitImport}
         >
           Continue
         </PillButton>

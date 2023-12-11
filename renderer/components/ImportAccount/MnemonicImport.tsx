@@ -1,5 +1,5 @@
 import { Box, HStack, Text } from "@chakra-ui/react";
-import { useMemo, useState } from "react";
+import { useCallback, useMemo, useState } from "react";
 import { FormattedMessage } from "react-intl";
 
 import {
@@ -11,12 +11,12 @@ import { PillButton } from "@/ui/PillButton/PillButton";
 import { validateMnemonic } from "@/utils/mnemonic";
 
 type Props = {
-  handleImport: (args: { name: string; account: string }) => void;
+  onImport: (args: { name?: string; account: string }) => void;
   isLoading: boolean;
   error?: string | null;
 };
 
-export function MnemonicImport({ handleImport, isLoading, error }: Props) {
+export function MnemonicImport({ onImport, isLoading, error }: Props) {
   const [accountName, setAccountName] = useState("");
   const [isAccountNameDirty, setIsAccountNameDirty] = useState(false);
   const [phraseValues, setPhraseValues] =
@@ -28,6 +28,20 @@ export function MnemonicImport({ handleImport, isLoading, error }: Props) {
 
   const hasValidName = accountName.length > 0;
   const hasNameError = isAccountNameDirty && !hasValidName;
+
+  const commitImport = useCallback(() => {
+    if (!hasValidName) {
+      setIsAccountNameDirty(true);
+      return;
+    }
+
+    onImport({
+      name: accountName,
+      account: phraseValues.join(" "),
+    });
+  }, [accountName, onImport, hasValidName, phraseValues]);
+
+  const isDisabled = isLoading || !!errorMessage || hasNameError;
 
   return (
     <Box>
@@ -62,18 +76,8 @@ export function MnemonicImport({ handleImport, isLoading, error }: Props) {
         <PillButton
           height="60px"
           px={8}
-          isDisabled={isLoading || !!errorMessage || hasNameError}
-          onClick={() => {
-            if (!hasValidName) {
-              setIsAccountNameDirty(true);
-              return;
-            }
-
-            handleImport({
-              name: accountName,
-              account: phraseValues.join(" "),
-            });
-          }}
+          isDisabled={isDisabled}
+          onClick={commitImport}
         >
           <FormattedMessage defaultMessage="Continue" />
         </PillButton>

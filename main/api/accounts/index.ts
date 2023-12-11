@@ -60,7 +60,6 @@ export const accountRouter = t.router({
   deleteAccount: t.procedure
     .input(handleDeleteAccountInputs)
     .mutation(async (opts) => {
-      console.log(opts);
       return handleDeleteAccount(opts.input);
     }),
   isValidPublicAddress: t.procedure
