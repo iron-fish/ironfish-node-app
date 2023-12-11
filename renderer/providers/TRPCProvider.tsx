@@ -25,6 +25,10 @@ export function TRPCProvider({ children }: { children: ReactNode }) {
         defaultOptions: {
           queries: {
             refetchInterval: 1000 * 30,
+            networkMode: "always",
+          },
+          mutations: {
+            networkMode: "always",
           },
         },
       }),
