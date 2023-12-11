@@ -1,6 +1,8 @@
 import { Text, Progress, Box, HStack, Heading } from "@chakra-ui/react";
+import { formatDuration } from "date-fns";
 import { useRouter } from "next/router";
-import { useEffect, useState, useCallback } from "react";
+import { useEffect, useState, useCallback, useMemo } from "react";
+import { useCountdown } from "usehooks-ts";
 
 import { trpcReact } from "@/providers/TRPCProvider";
 import { PillButton } from "@/ui/PillButton/PillButton";
@@ -17,23 +19,75 @@ function bytesToMb(bytes: number) {
   return (bytes / 1024 / 1024).toFixed(2);
 }
 
+function useBackoff() {
+  const [nextInterval, setNextInterval] = useState(5);
+
+  const [count, { startCountdown, resetCountdown }] = useCountdown({
+    countStart: nextInterval,
+    intervalMs: 1000,
+  });
+
+  const increment = useCallback(() => {
+    resetCountdown();
+    setNextInterval((iv) => iv * 2);
+    startCountdown();
+  }, [resetCountdown, startCountdown]);
+
+  const reset = useCallback(() => {
+    setNextInterval(5);
+    resetCountdown();
+  }, [resetCountdown]);
+
+  return useMemo(
+    () => ({ count, increment, reset }),
+    [count, increment, reset],
+  );
+}
+
 function DownloadProgress({ onSuccess }: { onSuccess: () => void }) {
   const [snapshotState, setSnapshotState] = useState<SnapshotUpdate>();
-  trpcReact.snapshotProgress.useSubscription(undefined, {
-    onData: (data) => {
-      setSnapshotState(data);
+  const { mutate: downloadSnapshot } = trpcReact.downloadSnapshot.useMutation();
+  const [error, setError] = useState<string>();
+
+  // used to restart the subscription -- replace if there's another way to trigger the
+  // subscription to reconnect
+  const [subscriptionId, setSubscriptionId] = useState(0);
+  const { count, increment, reset } = useBackoff();
+
+  trpcReact.snapshotProgress.useSubscription(
+    { id: subscriptionId },
+    {
+      onData: (data) => {
+        setSnapshotState(data);
+        setError("");
+        reset();
+      },
+      onError: (err) => {
+        console.log(err);
+        setError(err.message);
+        increment();
+      },
     },
-    onError: (err) => {
-      // @todo: Handle error
-      console.log(err);
-    },
-  });
+  );
+
+  const downloadAndResubscribe = useCallback(() => {
+    setSubscriptionId((s) => ++s);
+    downloadSnapshot();
+  }, [downloadSnapshot]);
+
+  useEffect(() => {
+    if (count === 0) {
+      downloadAndResubscribe();
+    }
+  }, [count, downloadAndResubscribe]);
 
   useEffect(() => {
     if (snapshotState?.step === "complete") {
       onSuccess();
     }
   }, [onSuccess, snapshotState?.step]);
+
+  const retryDuration = formatDuration({ seconds: count });
 
   return (
     <Box>
@@ -71,6 +125,20 @@ function DownloadProgress({ onSuccess }: { onSuccess: () => void }) {
             Unzip progress:{" "}
             {percent(snapshotState.currEntries, snapshotState.totalEntries)}%
           </Text>
+        </Box>
+      )}
+      {error && (
+        <Box mt={8}>
+          <Text>An error occurred while downloading the snapshot:</Text>
+          <Text>{error}</Text>
+          {count > 0 && (
+            <Box mt={4}>
+              <Text mb={2}>Retrying in {retryDuration}...</Text>
+              <PillButton onClick={downloadAndResubscribe}>
+                Retry now
+              </PillButton>
+            </Box>
+          )}
         </Box>
       )}
     </Box>
