@@ -9,6 +9,7 @@ import {
 import { FormattedMessage } from "react-intl";
 
 import { CreateAccountModal } from "@/components/CreateAccountModal/CreateAccountModal";
+import { ImportAccountModal } from "@/components/ImportAccountModal/ImportAccountModal";
 import { UserAccountsList } from "@/components/UserAccountsList/UserAccountsList";
 import MainLayout from "@/layouts/MainLayout";
 import { trpcReact } from "@/providers/TRPCProvider";
@@ -32,6 +33,12 @@ export default function Accounts() {
     onClose: onCreateClose,
   } = useDisclosure();
 
+  const {
+    isOpen: isImportOpen,
+    onOpen: onImportOpen,
+    onClose: onImportClose,
+  } = useDisclosure();
+
   return (
     <>
       <MainLayout>
@@ -43,7 +50,7 @@ export default function Accounts() {
                 <CreateAccount />
                 <FormattedMessage defaultMessage="Create Account" />
               </PillButton>
-              <PillButton variant="inverted">
+              <PillButton variant="inverted" onClick={onImportOpen}>
                 <ImportAccount />
                 <FormattedMessage defaultMessage="Import Account" />
               </PillButton>
@@ -61,6 +68,7 @@ export default function Accounts() {
         <UserAccountsList />
       </MainLayout>
       <CreateAccountModal isOpen={isCreateOpen} onClose={onCreateClose} />
+      <ImportAccountModal isOpen={isImportOpen} onClose={onImportClose} />
     </>
   );
 }

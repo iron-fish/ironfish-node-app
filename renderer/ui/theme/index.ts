@@ -1,6 +1,7 @@
 import { defineStyleConfig, extendTheme } from "@chakra-ui/react";
 
 import { breakpoints, createBreakpointArray } from "./breakpoints";
+import { modalTheme } from "./styleConfigs/modal";
 import { COLORS } from "../colors";
 
 const theme = extendTheme({
@@ -42,6 +43,7 @@ const theme = extendTheme({
         size: "sm",
       },
     }),
+    Modal: modalTheme,
   },
 });
 

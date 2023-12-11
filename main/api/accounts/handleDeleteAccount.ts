@@ -12,13 +12,10 @@ export async function handleDeleteAccount({
   const ironfish = await manager.getIronfish();
   const rpcClient = await ironfish.rpcClient();
 
-  rpcClient.wallet.removeAccount({
+  const deleteResponse = await rpcClient.wallet.removeAccount({
     account,
+    confirm: true,
   });
 
-  const renameResponse = await rpcClient.wallet.removeAccount({
-    account,
-  });
-
-  return renameResponse.content;
+  return deleteResponse.content;
 }

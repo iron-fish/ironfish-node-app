@@ -42,13 +42,14 @@ export function FormField({
       >
         <Box flexGrow={1} w="100%" px={6} py={3}>
           <HStack>
-            {typeof label === "string" ? (
-              <Text fontSize="sm" color={COLORS.GRAY_MEDIUM} flexGrow={1}>
-                {label}
-              </Text>
-            ) : (
-              label
-            )}
+            <Text
+              as="span"
+              fontSize="sm"
+              color={COLORS.GRAY_MEDIUM}
+              flexGrow={1}
+            >
+              {label}
+            </Text>
 
             {actions && (
               <Box onClick={(e) => e.preventDefault()}>{actions}</Box>
