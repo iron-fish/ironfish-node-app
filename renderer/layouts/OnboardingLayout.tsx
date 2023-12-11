@@ -1,16 +1,30 @@
-import { Box, LightMode } from "@chakra-ui/react";
+import { Box, LightMode, useColorMode } from "@chakra-ui/react";
 import Image from "next/image";
-import { ReactNode } from "react";
+import { ReactNode, useEffect } from "react";
 
 import bigOnboardingFish from "@/images/big-onboarding-fish.svg";
 
-import { WithDraggableArea } from "./WithDraggableArea";
+import { WithDraggableArea, draggableAreaHeight } from "./WithDraggableArea";
 
 export function OnboardingLayout({ children }: { children: ReactNode }) {
+  const { colorMode, toggleColorMode } = useColorMode();
+
+  useEffect(() => {
+    if (colorMode === "dark") {
+      toggleColorMode();
+    }
+  }, [colorMode, toggleColorMode]);
+
   return (
     <LightMode>
       <WithDraggableArea>
-        <Box height="100%" width="100%" overflow="hidden" position="relative">
+        <Box
+          position="fixed"
+          inset={0}
+          pointerEvents="none"
+          overflow="hidden"
+          bg="pink"
+        >
           <Box
             height="150vh"
             width="100%"
@@ -27,15 +41,25 @@ export function OnboardingLayout({ children }: { children: ReactNode }) {
               objectPosition="right center"
             />
           </Box>
+        </Box>
+        <Box
+          bg="white"
+          h="100%"
+          maxW="900px"
+          position="relative"
+          w="100%"
+          zIndex={1}
+        >
           <Box
-            maxW="900px"
-            minH="100vh"
-            py="95px"
-            px="150px"
-            bg="white"
-            position="relative"
-            zIndex={1}
-          >
+            height={draggableAreaHeight}
+            bg="inherit"
+            position="absolute"
+            top={0}
+            left={0}
+            w="100%"
+            transform="translateY(-100%)"
+          />
+          <Box h="100%" overflow="auto" px="150px" py="95px">
             {children}
           </Box>
         </Box>

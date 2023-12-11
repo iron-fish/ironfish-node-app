@@ -62,7 +62,7 @@ export function ImportAccount() {
                   },
                   {
                     onSuccess: () => {
-                      router.push("/onboarding/snapshot-download");
+                      router.push(`/onboarding/telemetry`);
                     },
                   },
                 );
@@ -80,7 +80,7 @@ export function ImportAccount() {
                   },
                   {
                     onSuccess: () => {
-                      router.push("/onboarding/snapshot-download");
+                      router.push(`/onboarding/telemetry`);
                     },
                   },
                 );
@@ -98,7 +98,7 @@ export function ImportAccount() {
                   },
                   {
                     onSuccess: () => {
-                      router.push("/onboarding/snapshot-download");
+                      router.push(`/onboarding/telemetry`);
                     },
                   },
                 );
