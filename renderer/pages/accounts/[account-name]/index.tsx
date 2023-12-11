@@ -7,6 +7,7 @@ import {
   TabPanels,
   TabPanel,
   HStack,
+  VStack,
 } from "@chakra-ui/react";
 import { useRouter } from "next/router";
 import { FormattedMessage } from "react-intl";
@@ -14,15 +15,32 @@ import { FormattedMessage } from "react-intl";
 import { AccountAssets } from "@/components/AccountAssets/AccountAssets";
 import { AccountKeyExport } from "@/components/AccountKeyExport/AccountKeyExport";
 import { AccountMnemonicView } from "@/components/AccountMnemonicView/AccountMnenomicView";
+import { AccountSettings } from "@/components/AccountSettings/AccountSettings";
 import { CopyAddress } from "@/components/CopyAddress/CopyAddress";
 import { NotesList } from "@/components/NotesList/NotesList";
 import keysGhost from "@/images/keys-ghost.svg";
+import lionfishLock from "@/images/lionfish-lock.svg";
 import MainLayout from "@/layouts/MainLayout";
 import { WithExplanatorySidebar } from "@/layouts/WithExplanatorySidebar";
 import { trpcReact } from "@/providers/TRPCProvider";
 import { asQueryString } from "@/utils/parseRouteQuery";
 
+const tabs = ["overview", "keys", "settings"];
+
+function useInitialTabIndex() {
+  const router = useRouter();
+  const initialTab = asQueryString(router.query["tab"]);
+
+  if (!initialTab) return undefined;
+
+  const initialTabIndex = tabs.indexOf(initialTab);
+
+  return initialTabIndex !== -1 ? initialTabIndex : undefined;
+}
+
 function AccountOverviewContent({ accountName }: { accountName: string }) {
+  const initialTabIndex = useInitialTabIndex();
+
   const { data: accountData } = trpcReact.getAccount.useQuery({
     name: accountName,
   });
@@ -51,7 +69,7 @@ function AccountOverviewContent({ accountName }: { accountName: string }) {
             transform="translateY(0.4em)"
           />
         </HStack>
-        <Tabs>
+        <Tabs isLazy defaultIndex={initialTabIndex}>
           <TabList mb={8}>
             <Tab py={2} px={4} mr={4}>
               Account Overview
@@ -84,12 +102,24 @@ function AccountOverviewContent({ accountName }: { accountName: string }) {
                 }
                 imgSrc={keysGhost}
               >
-                <AccountMnemonicView accountName={accountName} />
-                <AccountKeyExport accountName={accountName} />
+                <VStack gap={8} alignItems="stretch">
+                  <AccountMnemonicView accountName={accountName} />
+                  <AccountKeyExport accountName={accountName} />
+                </VStack>
               </WithExplanatorySidebar>
             </TabPanel>
             <TabPanel p={0}>
-              <p>three!</p>
+              <WithExplanatorySidebar
+                heading={<FormattedMessage defaultMessage="Settings" />}
+                description={
+                  <WithExplanatorySidebar.Description>
+                    <FormattedMessage defaultMessage="You can remove and reimport your accounts at your convenience, provided that you possess the necessary account keys. To ensure a seamless experience, it is highly recommended to maintain a backup of your account keys in a secure location." />
+                  </WithExplanatorySidebar.Description>
+                }
+                imgSrc={lionfishLock}
+              >
+                <AccountSettings accountName={accountName} />
+              </WithExplanatorySidebar>
             </TabPanel>
           </TabPanels>
         </Tabs>
