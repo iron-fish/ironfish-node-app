@@ -1,5 +1,7 @@
 import { Box, BoxProps } from "@chakra-ui/react";
 
+import { COLORS } from "../colors";
+
 type PillButtonProps = {
   variant?: "primary" | "inverted";
   icon?: React.ReactNode;
@@ -42,7 +44,7 @@ const VARIANT_PROPS = {
       },
     },
     dark: {
-      bg: "black",
+      bg: COLORS.DARK_MODE.BG,
       color: "white",
       borderColor: "white",
       borderRightWidth: "3px",
