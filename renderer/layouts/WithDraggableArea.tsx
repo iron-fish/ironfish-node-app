@@ -1,6 +1,6 @@
 import { Grid, GridItem, Box, GridProps } from "@chakra-ui/react";
 
-const draggableAreaHeight = "env(titlebar-area-height, 30px)";
+export const draggableAreaHeight = "env(titlebar-area-height, 30px)";
 
 export function WithDraggableArea({ children, ...rest }: GridProps) {
   return (
