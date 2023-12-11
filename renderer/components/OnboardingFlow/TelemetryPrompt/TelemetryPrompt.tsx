@@ -68,7 +68,7 @@ export function TelemetryPrompt() {
             router.push("/onboarding/snapshot-download");
           }}
         >
-          Continue
+          <FormattedMessage defaultMessage="Continue" />
         </PillButton>
       </HStack>
     </Box>
