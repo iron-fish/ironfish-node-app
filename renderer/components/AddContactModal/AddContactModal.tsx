@@ -45,28 +45,29 @@ export function AddContactModal({ isOpen, onClose }: Props) {
     isLoading,
     isError,
     isSuccess,
-    reset,
+    reset: resetMutation,
   } = trpcReact.addContact.useMutation();
 
   const {
     register,
     handleSubmit,
     formState: { errors },
+    reset: resetForm,
   } = useForm<z.infer<typeof contactSchema>>({
     resolver: zodResolver(contactSchema),
   });
 
   const handleClose = useCallback(() => {
-    reset();
+    resetMutation();
     onClose();
-  }, [onClose, reset]);
+  }, [onClose, resetMutation]);
 
   useEffect(() => {
     if (isSuccess) {
-      reset();
+      resetMutation();
       handleClose();
     }
-  }, [handleClose, isSuccess, reset]);
+  }, [handleClose, isSuccess, resetMutation]);
 
   return (
     <Modal isOpen={isOpen} onClose={handleClose}>
@@ -151,13 +152,16 @@ export function AddContactModal({ isOpen, onClose }: Props) {
                 px={8}
                 border={0}
               >
-                Cancel
+                Close
               </PillButton>
               <PillButton
                 isDisabled={isLoading}
                 height="60px"
                 px={8}
-                onClick={() => {}}
+                onClick={() => {
+                  resetForm();
+                  resetMutation();
+                }}
               >
                 Try Again
               </PillButton>
