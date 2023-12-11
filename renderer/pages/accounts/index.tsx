@@ -1,6 +1,14 @@
-import { Box, HStack, Heading, Text, VStack } from "@chakra-ui/react";
+import {
+  Box,
+  HStack,
+  Heading,
+  Text,
+  VStack,
+  useDisclosure,
+} from "@chakra-ui/react";
 import { FormattedMessage } from "react-intl";
 
+import { CreateAccountModal } from "@/components/CreateAccountModal/CreateAccountModal";
 import { UserAccountsList } from "@/components/UserAccountsList/UserAccountsList";
 import MainLayout from "@/layouts/MainLayout";
 import { trpcReact } from "@/providers/TRPCProvider";
@@ -18,32 +26,41 @@ export default function Accounts() {
       return acc + parseInt(curr.balances.iron.confirmed);
     }, 0) ?? null;
 
+  const {
+    isOpen: isCreateOpen,
+    onOpen: onCreateOpen,
+    onClose: onCreateClose,
+  } = useDisclosure();
+
   return (
-    <MainLayout>
-      <VStack mb={10} alignItems="stretch">
-        <HStack>
-          <Heading flexGrow={1}>Accounts</Heading>
+    <>
+      <MainLayout>
+        <VStack mb={10} alignItems="stretch">
           <HStack>
-            <PillButton variant="inverted">
-              <CreateAccount />
-              <FormattedMessage defaultMessage="Create Account" />
-            </PillButton>
-            <PillButton variant="inverted">
-              <ImportAccount />
-              <FormattedMessage defaultMessage="Import Account" />
-            </PillButton>
+            <Heading flexGrow={1}>Accounts</Heading>
+            <HStack>
+              <PillButton variant="inverted" onClick={onCreateOpen}>
+                <CreateAccount />
+                <FormattedMessage defaultMessage="Create Account" />
+              </PillButton>
+              <PillButton variant="inverted">
+                <ImportAccount />
+                <FormattedMessage defaultMessage="Import Account" />
+              </PillButton>
+            </HStack>
           </HStack>
-        </HStack>
-        <Box>
-          <Text fontSize="md" as="span" color={COLORS.GRAY_MEDIUM} mr={1}>
-            <FormattedMessage defaultMessage="Total accounts balance" />:{" "}
-          </Text>
-          <Text fontSize="md" as="span" fontWeight="bold">
-            {totalBalance !== null ? formatOre(totalBalance) : "—"} $IRON
-          </Text>
-        </Box>
-      </VStack>
-      <UserAccountsList />
-    </MainLayout>
+          <Box>
+            <Text fontSize="md" as="span" color={COLORS.GRAY_MEDIUM} mr={1}>
+              <FormattedMessage defaultMessage="Total accounts balance" />:{" "}
+            </Text>
+            <Text fontSize="md" as="span" fontWeight="bold">
+              {totalBalance !== null ? formatOre(totalBalance) : "—"} $IRON
+            </Text>
+          </Box>
+        </VStack>
+        <UserAccountsList />
+      </MainLayout>
+      <CreateAccountModal isOpen={isCreateOpen} onClose={onCreateClose} />
+    </>
   );
 }

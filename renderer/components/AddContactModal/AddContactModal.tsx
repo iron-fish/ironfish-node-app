@@ -151,16 +151,19 @@ export function AddContactModal({ isOpen, onClose }: Props) {
                 px={8}
                 border={0}
               >
-                Cancel
+                Close
               </PillButton>
+              {/*
+              @todo: Implement retry logic
               <PillButton
                 isDisabled={isLoading}
                 height="60px"
                 px={8}
+                
                 onClick={() => {}}
               >
                 Try Again
-              </PillButton>
+              </PillButton> */}
             </>
           )}
         </ModalFooter>
