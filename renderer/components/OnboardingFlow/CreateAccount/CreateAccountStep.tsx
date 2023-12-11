@@ -1,13 +1,12 @@
 import { Box, Checkbox, Heading, Text } from "@chakra-ui/react";
 import { useState } from "react";
 
-import { MnemonicPhrase } from "@/ui/Forms/MnemonicPhrase/MnemonicPhrase";
+import {
+  MnemonicPhrase,
+  splitMnemonicPhrase,
+} from "@/ui/Forms/MnemonicPhrase/MnemonicPhrase";
 import { TextInput } from "@/ui/Forms/TextInput/TextInput";
 import { PillButton } from "@/ui/PillButton/PillButton";
-
-function splitMnemonicPhrase(phrase: string) {
-  return phrase.split(/\s+/).map((part) => part.trim());
-}
 
 export function CreateAccountStep({
   accountName,

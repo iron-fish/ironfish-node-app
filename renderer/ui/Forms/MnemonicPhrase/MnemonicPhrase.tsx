@@ -38,6 +38,10 @@ type Props = MergeProps<
   Omit<FormFieldProps, "label">
 >;
 
+export function splitMnemonicPhrase(phrase: string) {
+  return phrase.split(/\s+/).map((part) => part.trim());
+}
+
 export function MnemonicPhrase({
   phrase,
   readOnly,
