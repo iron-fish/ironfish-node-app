@@ -1,6 +1,6 @@
 import { Box, LightMode, useColorMode } from "@chakra-ui/react";
 import Image from "next/image";
-import { ReactNode } from "react";
+import { ReactNode, useEffect } from "react";
 
 import bigOnboardingFish from "@/images/big-onboarding-fish.svg";
 
@@ -8,9 +8,13 @@ import { WithDraggableArea, draggableAreaHeight } from "./WithDraggableArea";
 
 export function OnboardingLayout({ children }: { children: ReactNode }) {
   const { colorMode, toggleColorMode } = useColorMode();
-  if (colorMode === "dark") {
-    toggleColorMode();
-  }
+
+  useEffect(() => {
+    if (colorMode === "dark") {
+      toggleColorMode();
+    }
+  }, [colorMode, toggleColorMode]);
+
   return (
     <LightMode>
       <WithDraggableArea>

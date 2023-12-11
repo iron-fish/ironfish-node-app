@@ -96,7 +96,7 @@ export function CreateAccount() {
             newName: editedName,
           });
         }
-        router.push("/onboarding/snapshot-download");
+        router.push(`/onboarding/telemetry`);
       }}
     />
   );
