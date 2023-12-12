@@ -58,7 +58,10 @@ export function AccountKeyExport({ accountName }: { accountName: string }) {
           );
         }}
       >
-        <FormattedMessage defaultMessage="Export Account" />
+        <FormattedMessage
+          defaultMessage="Export Account"
+          description="Button to export account in the specified format"
+        />
       </PillButton>
       <Menu>
         <MenuButton as={Button} rightIcon={<ChevronDownIcon />}>
