@@ -121,6 +121,18 @@ function createContentChunks(content: JSONContent) {
   return chunks;
 }
 
+function isTranslationValid(translation: JSONContent) {
+  const isValid = Object.keys(english).every((key) => {
+    return (
+      Object.hasOwn(translation, key) &&
+      typeof translation[key].message === "string" &&
+      translation[key].message.length > 0
+    );
+  });
+
+  return isValid;
+}
+
 const languages = ["es-MX"];
 
 async function main() {
@@ -145,6 +157,12 @@ async function main() {
         ...translation,
       };
       console.timeEnd("Translated chunk in: ");
+    }
+
+    // Validate translation
+    const isValid = isTranslationValid(translatedContent);
+    if (!isValid) {
+      throw new Error(`Invalid translation encountered for ${language}`);
     }
 
     // Write result to file
