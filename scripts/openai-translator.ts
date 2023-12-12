@@ -34,7 +34,7 @@ Target Language: [Target Language Code]
 Expected Output:
 - Maintain the original JSON structure.
 - Replace the 'message' text with its translation.
-- The output's 'description' should be the same as the input's 'message'.
+- Do not include 'description' in the output.
 - Ensure accuracy and context-appropriate translation.
 - If any JSON errors exist, return a JSON object with a single key 'error' and value 'Invalid JSON'.
 
@@ -55,11 +55,9 @@ Expected Output:
 {
   "001": {
     "message": "Bienvenue sur notre site web",
-    "description": "Welcome to our website"
   },
   "002": {
-    "message": "Contactez-nous pour plus d'informations",
-    "description": "Contact us for more information"
+    "message": "Contactez-nous pour plus d'informations"
   }
 }
 `;
@@ -124,16 +122,24 @@ function createContentChunks(content: JSONContent) {
   return chunks;
 }
 
-function isTranslationValid(translation: JSONContent) {
-  const isValid = Object.keys(english).every((key) => {
-    return (
+function addOriginalMessageAsDescription(
+  translation: JSONContent,
+  language: string,
+) {
+  Object.entries(english).forEach(([key, value]) => {
+    const isValidEntry =
       Object.hasOwn(translation, key) &&
       typeof translation[key].message === "string" &&
-      translation[key].message.length > 0
-    );
-  });
+      translation[key].message.length > 0;
 
-  return isValid;
+    if (!isValidEntry) {
+      throw new Error(
+        `Invalid translation for key ${key} in language ${language}`,
+      );
+    }
+
+    translation[key].description = value.message;
+  });
 }
 
 const languages = ["es-MX"];
@@ -162,11 +168,8 @@ async function main() {
       console.timeEnd("Translated chunk in: ");
     }
 
-    // Validate translation
-    const isValid = isTranslationValid(translatedContent);
-    if (!isValid) {
-      throw new Error(`Invalid translation encountered for ${language}`);
-    }
+    // Add original message to each translated entry's description
+    addOriginalMessageAsDescription(translatedContent, language);
 
     // Write result to file
     const languageCode = language.split("-")[0];
