@@ -147,7 +147,10 @@ export function MnemonicPhrase({
         as="fieldset"
         onFocus={handleGroupFocus}
         onBlur={handleGroupBlur}
-        templateColumns="repeat(4, 1fr)"
+        templateColumns={{
+          base: "repeat(3, 1fr)",
+          sm: "repeat(4, 1fr)",
+        }}
         gap={2}
         mt={2}
       >
@@ -179,6 +182,12 @@ export function MnemonicPhrase({
                   onPaste={handlePaste}
                   borderColor={hasBlur && !value ? COLORS.RED : COLORS.BLACK}
                   placeholder="Empty"
+                  _dark={{
+                    borderColor:
+                      hasBlur && !value
+                        ? COLORS.RED
+                        : COLORS.DARK_MODE.GRAY_LIGHT,
+                  }}
                   _hover={{
                     borderColor: COLORS.BLACK,
                   }}

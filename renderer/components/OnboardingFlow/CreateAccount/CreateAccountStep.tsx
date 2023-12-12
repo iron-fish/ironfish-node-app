@@ -1,6 +1,7 @@
 import { Box, Checkbox, Heading, Text } from "@chakra-ui/react";
 import { useState } from "react";
 
+import { BackButton } from "@/components/BackButton/BackButton";
 import {
   MnemonicPhrase,
   splitMnemonicPhrase,
@@ -13,22 +14,18 @@ export function CreateAccountStep({
   mnemonicPhrase,
   onNameChange,
   onNextStep,
-  onBack,
 }: {
   accountName: string;
   mnemonicPhrase: string;
   onNameChange: (name: string) => void;
   onNextStep: () => void;
-  onBack: () => void;
 }) {
   const [isSavedChecked, setIsSavedChecked] = useState(false);
   const hasValidName = accountName.length > 0;
 
   return (
     <Box>
-      <Text as="button" onClick={onBack}>
-        Back
-      </Text>
+      <BackButton />
       <Heading mt={24} mb={4}>
         Create Account
       </Heading>
@@ -58,6 +55,8 @@ export function CreateAccountStep({
       </Text>
       <MnemonicPhrase readOnly phrase={splitMnemonicPhrase(mnemonicPhrase)} />
       <Checkbox
+        mt={4}
+        mb={8}
         checked={isSavedChecked}
         onChange={(e) => {
           setIsSavedChecked(e.target.checked);

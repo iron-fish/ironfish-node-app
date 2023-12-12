@@ -18,13 +18,7 @@ export function OnboardingLayout({ children }: { children: ReactNode }) {
   return (
     <LightMode>
       <WithDraggableArea>
-        <Box
-          position="fixed"
-          inset={0}
-          pointerEvents="none"
-          overflow="hidden"
-          bg="pink"
-        >
+        <Box position="fixed" inset={0} pointerEvents="none" overflow="hidden">
           <Box
             height="150vh"
             width="100%"
@@ -45,7 +39,11 @@ export function OnboardingLayout({ children }: { children: ReactNode }) {
         <Box
           bg="white"
           h="100%"
-          maxW="900px"
+          maxW={{
+            base: "100%",
+            md: "724px",
+            "2xl": "900px",
+          }}
           position="relative"
           w="100%"
           zIndex={1}
@@ -59,7 +57,16 @@ export function OnboardingLayout({ children }: { children: ReactNode }) {
             w="100%"
             transform="translateY(-100%)"
           />
-          <Box h="100%" overflow="auto" px="150px" py="95px">
+          <Box
+            h="100%"
+            overflow="auto"
+            px={{
+              base: "32px",
+              sm: "64px",
+              "2xl": "152px",
+            }}
+            py="95px"
+          >
             {children}
           </Box>
         </Box>

@@ -1,4 +1,3 @@
-import { ChevronLeftIcon } from "@chakra-ui/icons";
 import {
   Grid,
   GridItem,
@@ -11,6 +10,7 @@ import {
 import { useRouter } from "next/router";
 import { ReactNode } from "react";
 
+import { BackButton } from "@/components/BackButton/BackButton";
 import { StatusIndicator } from "@/components/StatusIndicator/StatusIndicator";
 import { ChakraLink } from "@/ui/ChakraLink/ChakraLink";
 import { COLORS } from "@/ui/colors";
@@ -178,32 +178,10 @@ export default function MainLayout({ children, backLinkProps }: Props) {
             }}
           >
             {backLinkProps && (
-              <ChakraLink
+              <BackButton
                 href={backLinkProps.href}
-                display="inline-block"
-                mb={4}
-              >
-                <HStack gap={3}>
-                  <Box
-                    h="24px"
-                    w="24px"
-                    border="1px solid white"
-                    borderRadius="full"
-                    display="flex"
-                    alignItems="center"
-                    justifyContent="center"
-                  >
-                    <ChevronLeftIcon boxSize={4} />
-                  </Box>
-                  <Text
-                    as="span"
-                    color={COLORS.GRAY_MEDIUM}
-                    _dark={{ color: COLORS.DARK_MODE.GRAY_LIGHT }}
-                  >
-                    {backLinkProps.label}
-                  </Text>
-                </HStack>
-              </ChakraLink>
+                label={backLinkProps.label}
+              />
             )}
             {children}
           </Box>

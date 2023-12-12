@@ -29,8 +29,7 @@ export const DarkModeSwitch = () => {
         sm: "auto",
       }}
       minWidth="40px"
-      py={1}
-      px={1}
+      p={1}
       position="relative"
       borderRadius="5px"
       _dark={{
@@ -75,8 +74,30 @@ export const DarkModeSwitch = () => {
           {isDark ? "Dark" : "Light"}
         </Text>
       </HStack>
-      <HStack position="absolute" inset={0} w="100%" px={1} aria-hidden>
-        <HStack w="50%" justifyContent="center" gap={1}>
+      <Stack
+        p={1}
+        flexDirection={{
+          base: "column",
+          sm: "row",
+        }}
+        position="absolute"
+        inset={0}
+        w="100%"
+        px={1}
+        aria-hidden
+      >
+        <HStack
+          w={{
+            base: "100%",
+            sm: "50%",
+          }}
+          h={{
+            base: "50%",
+            sm: "auto",
+          }}
+          justifyContent="center"
+          gap={1}
+        >
           <Box transform="translateY(-1px) scale(0.85)">
             <SunIcon />
           </Box>
@@ -89,7 +110,19 @@ export const DarkModeSwitch = () => {
             Light
           </Text>
         </HStack>
-        <HStack w="50%" justifyContent="center" gap={1} opacity={0.6}>
+        <HStack
+          w={{
+            base: "100%",
+            sm: "50%",
+          }}
+          h={{
+            base: "50%",
+            sm: "auto",
+          }}
+          justifyContent="center"
+          gap={1}
+          opacity={0.6}
+        >
           <Box transform="translateY(-1px) scale(0.85)">
             <MoonIcon />
           </Box>
@@ -102,7 +135,7 @@ export const DarkModeSwitch = () => {
             Dark
           </Text>
         </HStack>
-      </HStack>
+      </Stack>
     </Stack>
   );
 };

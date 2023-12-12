@@ -23,6 +23,7 @@ export function CreateImportAccount() {
           account or if you&apos;d like to create a new one.
         </Text>
         <PillButton
+          size="sm"
           onClick={() => {
             router.push(`/onboarding/create`);
           }}
@@ -39,6 +40,7 @@ export function CreateImportAccount() {
           using your account as expected.
         </Text>
         <PillButton
+          size="sm"
           onClick={() => {
             router.push("/onboarding/import");
           }}

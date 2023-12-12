@@ -8,7 +8,6 @@ export const breakpoints = {
 
 type BreakpointValues = {
   base?: string | number;
-  xs?: string | number;
   sm?: string | number;
   md?: string | number;
   lg?: string | number;
