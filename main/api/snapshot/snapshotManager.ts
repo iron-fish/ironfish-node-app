@@ -28,6 +28,9 @@ export class SnapshotManager {
       this.snapshotPromise.resolve();
     } catch (e) {
       this.snapshotPromise.reject(e);
+    } finally {
+      this.started = false;
+      this.snapshotPromise = splitPromise();
     }
   }
 
@@ -36,6 +39,9 @@ export class SnapshotManager {
   }
 
   async _run(sdk: IronfishSdk, node: FullNode): Promise<void> {
+    if (!node.chain.blockchainDb.db.isOpen) {
+      await node.openDB();
+    }
     const nodeChainDBVersion = await node.chain.blockchainDb.getVersion();
     await node.closeDB();
 
