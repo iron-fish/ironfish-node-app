@@ -35,6 +35,7 @@ Expected Output:
 - Maintain the original JSON structure.
 - Replace the 'message' text with its translation.
 - Do not include 'description' in the output.
+- Any text that is wrapped in curly braces, should be left as-is.
 - Ensure accuracy and context-appropriate translation.
 - If any JSON errors exist, return a JSON object with a single key 'error' and value 'Invalid JSON'.
 
@@ -47,6 +48,9 @@ Input:
   },
   "002": {
     "message": "Contact us for more information"
+  },
+  "003": {
+    "message": "Hello, {name}!"
   }
 }
 Target Language: fr-FR
@@ -58,6 +62,9 @@ Expected Output:
   },
   "002": {
     "message": "Contactez-nous pour plus d'informations"
+  },
+  "003": {
+    "message": "Bonjour, {name}!"
   }
 }
 `;
