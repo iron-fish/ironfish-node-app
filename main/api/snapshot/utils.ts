@@ -128,14 +128,14 @@ export class SnapshotDownloader {
     }
 
     const idleTimeout = 30000;
-    let idleLastChunk = Date.now();
+    let idleLastChunk = performance.now();
 
     // CancelToken is a TS type, not the value we want here
     // eslint-disable-next-line import/no-named-as-default-member
     const idleCancelSource = axios.CancelToken.source();
 
     const idleInterval = setInterval(() => {
-      const timeSinceLastChunk = Date.now() - idleLastChunk;
+      const timeSinceLastChunk = performance.now() - idleLastChunk;
 
       if (timeSinceLastChunk > idleTimeout) {
         clearInterval(idleInterval);
@@ -196,7 +196,7 @@ export class SnapshotDownloader {
 
         onDownloadProgress(downloaded, downloaded + chunk.length);
         downloaded += chunk.length;
-        idleLastChunk = Date.now();
+        idleLastChunk = performance.now();
       });
     })
       .catch((error) => {
