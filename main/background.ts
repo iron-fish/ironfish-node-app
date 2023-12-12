@@ -1,4 +1,4 @@
-import { BrowserWindow, app, nativeTheme } from "electron";
+import { BrowserWindow, app, nativeTheme, crashReporter } from "electron";
 import log from "electron-log";
 import serve from "electron-serve";
 import { createIPCHandler } from "electron-trpc/main";
@@ -17,6 +17,8 @@ if (isProd) {
 } else {
   app.setPath("userData", `${app.getPath("userData")} (development)`);
 }
+
+crashReporter.start({ uploadToServer: false });
 
 const ironfish = await manager.getIronfish();
 ironfish.init();
