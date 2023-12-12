@@ -1,6 +1,7 @@
 import { Box, Heading, Text } from "@chakra-ui/react";
 import { useState, useMemo } from "react";
 
+import { BackButton } from "@/components/BackButton/BackButton";
 import {
   EMPTY_PHRASE_ARRAY,
   MnemonicPhrase,
@@ -31,14 +32,12 @@ export function ConfirmAccountStep({
 
   return (
     <Box pointerEvents={isLoading ? "none" : undefined}>
-      <Text as="button" onClick={onBack} disabled={isLoading}>
-        Back
-      </Text>
+      <BackButton onClick={onBack} />
       <Heading mt={24} mb={8}>
         Create Account
       </Heading>
 
-      <Heading mt={8} mb={4}>
+      <Heading mt={8} mb={4} fontSize="2xl">
         Confirm Your Recovery Phrase
       </Heading>
       <Text mb={4}>Please keep this phrase stored somewhere safe.</Text>
@@ -49,6 +48,7 @@ export function ConfirmAccountStep({
         onChange={(value) => {
           setConfirmValues(value);
         }}
+        mb={8}
       />
       <PillButton isDisabled={isLoading || !isValid} onClick={onNextStep}>
         Continue

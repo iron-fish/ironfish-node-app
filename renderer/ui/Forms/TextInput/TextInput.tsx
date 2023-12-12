@@ -9,7 +9,7 @@ type FormFieldPassthrough = Pick<
 >;
 
 type Props = FormFieldPassthrough &
-  Omit<InputProps, "type"> & {
+  Omit<InputProps, "type" | "placeholder"> & {
     type?: "text" | "number";
   };
 
@@ -24,7 +24,13 @@ export const TextInput = forwardRef<HTMLInputElement, Props>(function TextInput(
       icon={icon}
       triggerProps={triggerProps}
     >
-      <Input type={type} variant="unstyled" ref={ref} {...rest} />
+      <Input
+        type={type}
+        variant="unstyled"
+        placeholder=" "
+        ref={ref}
+        {...rest}
+      />
     </FormField>
   );
 });

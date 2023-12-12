@@ -7,6 +7,7 @@ type PillButtonProps = {
   icon?: React.ReactNode;
   isDisabled?: boolean;
   type?: "button" | "submit";
+  size?: "sm" | "md";
 };
 
 type Props = Omit<BoxProps, keyof PillButtonProps> & PillButtonProps;
@@ -56,18 +57,29 @@ const VARIANT_PROPS = {
   },
 };
 
+const SIZE_PROPS = {
+  sm: {
+    py: "6px",
+    px: 4,
+  },
+  md: {
+    height: "60px",
+    px: 8,
+  },
+};
+
 export function PillButton({
   variant = "primary",
   children,
   isDisabled,
   type = "button",
+  size = "md",
   ...props
 }: Props) {
   return (
     <Box
       as="button"
       py="6px"
-      px={4}
       borderRadius="full"
       border="1px solid transparent"
       display="flex"
@@ -83,6 +95,7 @@ export function PillButton({
         opacity: 0.6,
         pointerEvents: "none",
       }}
+      {...SIZE_PROPS[size]}
       {...props}
     >
       {children}

@@ -40,13 +40,25 @@ export function FormField({
         }}
         {...triggerProps}
       >
-        <Box flexGrow={1} w="100%" px={6} py={3}>
+        <Box
+          flexGrow={1}
+          w="100%"
+          px={6}
+          py={3}
+          sx={{
+            ":has(input:placeholder-shown:not(:focus)) :is(.label-wrapper)": {
+              transform: "translateY(0.8em)",
+            },
+          }}
+        >
           <HStack>
             <Text
+              className="label-wrapper"
               as="span"
               fontSize="sm"
               color={COLORS.GRAY_MEDIUM}
               flexGrow={1}
+              transition="transform 0.2s ease-in-out"
             >
               {label}
             </Text>
@@ -86,7 +98,15 @@ function RenderError({
   }
 
   return (
-    <Text color={COLORS.RED} fontSize="sm" textAlign="left" w="100%">
+    <Text
+      color={COLORS.RED}
+      fontSize="sm"
+      textAlign="left"
+      w="100%"
+      _dark={{
+        color: COLORS.RED,
+      }}
+    >
       {message}
     </Text>
   );

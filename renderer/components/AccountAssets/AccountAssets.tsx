@@ -60,7 +60,7 @@ export function AccountAssets({ accountName }: { accountName: string }) {
               <HStack alignItems="stretch" justifyContent="center">
                 <NextLink href={`/send?account=${accountName}`}>
                   <Box>
-                    <PillButton as="div">
+                    <PillButton size="sm" as="div">
                       <ArrowSend transform="scale(0.8)" />
                       Send
                     </PillButton>
@@ -68,7 +68,7 @@ export function AccountAssets({ accountName }: { accountName: string }) {
                 </NextLink>
                 <NextLink href={`/receive?account=${accountName}`}>
                   <Box>
-                    <PillButton as="div">
+                    <PillButton size="sm" as="div">
                       <ArrowReceive transform="scale(0.8)" />
                       Receive
                     </PillButton>

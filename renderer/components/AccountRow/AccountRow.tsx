@@ -54,6 +54,7 @@ export function AccountRow({ color, name, balance, address }: AccountRowProps) {
 
           <VStack alignItems="stretch" justifyContent="center">
             <PillButton
+              size="sm"
               onClick={(e) => {
                 e.preventDefault();
                 router.push(`/send?account=${name}`);
@@ -63,6 +64,7 @@ export function AccountRow({ color, name, balance, address }: AccountRowProps) {
               Send
             </PillButton>
             <PillButton
+              size="sm"
               onClick={(e) => {
                 e.preventDefault();
                 router.push(`/receive?account=${name}`);

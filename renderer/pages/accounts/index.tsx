@@ -1,11 +1,17 @@
 import {
   Box,
+  Flex,
   HStack,
   Heading,
+  Menu,
+  MenuButton,
+  MenuItem,
+  MenuList,
   Text,
   VStack,
   useDisclosure,
 } from "@chakra-ui/react";
+import { BsThreeDots } from "react-icons/bs";
 import { FormattedMessage } from "react-intl";
 
 import { CreateAccountModal } from "@/components/CreateAccountModal/CreateAccountModal";
@@ -19,14 +25,7 @@ import { CreateAccount } from "@/ui/SVGs/CreateAccount";
 import { ImportAccount } from "@/ui/SVGs/ImportAccount";
 import { formatOre } from "@/utils/ironUtils";
 
-export default function Accounts() {
-  const { data } = trpcReact.getAccounts.useQuery();
-
-  const totalBalance =
-    data?.reduce((acc, curr) => {
-      return acc + parseInt(curr.balances.iron.confirmed);
-    }, 0) ?? null;
-
+function CreateImportActions() {
   const {
     isOpen: isCreateOpen,
     onOpen: onCreateOpen,
@@ -38,6 +37,70 @@ export default function Accounts() {
     onOpen: onImportOpen,
     onClose: onImportClose,
   } = useDisclosure();
+  return (
+    <>
+      <HStack
+        display={{
+          base: "none",
+          lg: "flex",
+        }}
+      >
+        <PillButton size="sm" variant="inverted" onClick={onCreateOpen}>
+          <CreateAccount />
+          <FormattedMessage defaultMessage="Create Account" />
+        </PillButton>
+        <PillButton size="sm" variant="inverted" onClick={onImportOpen}>
+          <ImportAccount />
+          <FormattedMessage defaultMessage="Import Account" />
+        </PillButton>
+      </HStack>
+
+      <Box
+        display={{
+          base: "flex",
+          lg: "none",
+        }}
+      >
+        <Menu>
+          <MenuButton
+            aria-label="Add or import account menu"
+            as={Flex}
+            h="48px"
+            w="48px"
+            borderRadius="full"
+            border="1px solid"
+            borderColor="currentColor"
+            alignItems="center"
+            textAlign="center"
+          >
+            <Flex as="span" justifyContent="center">
+              <BsThreeDots size="1.3em" />
+            </Flex>
+          </MenuButton>
+          <MenuList>
+            <MenuItem onClick={onCreateOpen}>
+              <FormattedMessage defaultMessage="Create Account" />
+            </MenuItem>
+            <MenuItem onClick={onImportOpen}>
+              <FormattedMessage defaultMessage="Import Account" />
+            </MenuItem>
+          </MenuList>
+        </Menu>
+      </Box>
+
+      <CreateAccountModal isOpen={isCreateOpen} onClose={onCreateClose} />
+      <ImportAccountModal isOpen={isImportOpen} onClose={onImportClose} />
+    </>
+  );
+}
+
+export default function Accounts() {
+  const { data } = trpcReact.getAccounts.useQuery();
+
+  const totalBalance =
+    data?.reduce((acc, curr) => {
+      return acc + parseInt(curr.balances.iron.confirmed);
+    }, 0) ?? null;
 
   return (
     <>
@@ -45,16 +108,7 @@ export default function Accounts() {
         <VStack mb={10} alignItems="stretch">
           <HStack>
             <Heading flexGrow={1}>Accounts</Heading>
-            <HStack>
-              <PillButton variant="inverted" onClick={onCreateOpen}>
-                <CreateAccount />
-                <FormattedMessage defaultMessage="Create Account" />
-              </PillButton>
-              <PillButton variant="inverted" onClick={onImportOpen}>
-                <ImportAccount />
-                <FormattedMessage defaultMessage="Import Account" />
-              </PillButton>
-            </HStack>
+            <CreateImportActions />
           </HStack>
           <Box>
             <Text fontSize="md" as="span" color={COLORS.GRAY_MEDIUM} mr={1}>
@@ -67,8 +121,6 @@ export default function Accounts() {
         </VStack>
         <UserAccountsList />
       </MainLayout>
-      <CreateAccountModal isOpen={isCreateOpen} onClose={onCreateClose} />
-      <ImportAccountModal isOpen={isImportOpen} onClose={onImportClose} />
     </>
   );
 }

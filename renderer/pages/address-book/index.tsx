@@ -1,6 +1,6 @@
-import { HStack, Heading, Skeleton, Stack, Text, Box } from "@chakra-ui/react";
-import Image from "next/image";
+import { HStack, Heading, Skeleton, Stack } from "@chakra-ui/react";
 import { useMemo, useState } from "react";
+import { FormattedMessage } from "react-intl";
 import { useToggle } from "usehooks-ts";
 
 import { AddContactModal } from "@/components/AddContactModal/AddContactModal";
@@ -8,8 +8,8 @@ import {
   ContactRow,
   ContactHeadings,
 } from "@/components/ContactRow/ContactRow";
+import { EmptyStateMessage } from "@/components/EmptyStateMessage/EmptyStateMessage";
 import { SearchInput } from "@/components/SearchInput/SearchInput";
-import emptyFish from "@/images/empty-fish.svg";
 import MainLayout from "@/layouts/MainLayout";
 import { trpcReact } from "@/providers/TRPCProvider";
 import { PillButton } from "@/ui/PillButton/PillButton";
@@ -34,7 +34,11 @@ export default function AddressBookPage() {
       <HStack mb={10}>
         <Heading flexGrow={1}>Address Book</Heading>
         <HStack>
-          <PillButton variant="inverted" onClick={toggleAddContactModal}>
+          <PillButton
+            size="sm"
+            variant="inverted"
+            onClick={toggleAddContactModal}
+          >
             <CreateAccount />
             Create Contact
           </PillButton>
@@ -50,16 +54,14 @@ export default function AddressBookPage() {
         </Stack>
       )}
       {!isLoading && data?.length === 0 ? (
-        <Box textAlign="center">
-          <Heading fontSize="2xl" mb={4}>
-            You don&apos;t have any contacts
-          </Heading>
-          <Text maxW="50ch" mx="auto" mb={8}>
-            Your address book is where you can manage all of your contacts,
-            their names, and their public addresses.
-          </Text>
-          <Image src={emptyFish} alt="" />
-        </Box>
+        <EmptyStateMessage
+          heading={
+            <FormattedMessage defaultMessage="You don't have any contacts" />
+          }
+          description={
+            <FormattedMessage defaultMessage="Your address book is where you can manage all of your contacts, their names, and their public addresses." />
+          }
+        />
       ) : (
         <>
           <HStack w="100%" mb={4}>

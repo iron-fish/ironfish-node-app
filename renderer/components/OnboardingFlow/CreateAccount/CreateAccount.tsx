@@ -72,9 +72,6 @@ export function CreateAccount() {
           setEditedName(name);
         }}
         mnemonicPhrase={mnemonicPhrase}
-        onBack={() => {
-          router.back();
-        }}
         onNextStep={() => {
           setStep("confirm");
         }}

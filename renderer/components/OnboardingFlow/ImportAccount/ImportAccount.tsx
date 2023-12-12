@@ -7,9 +7,9 @@ import {
   TabPanels,
   TabPanel,
 } from "@chakra-ui/react";
-import Link from "next/link";
 import { useRouter } from "next/router";
 
+import { BackButton } from "@/components/BackButton/BackButton";
 import { trpcReact } from "@/providers/TRPCProvider";
 
 import { EncodedKeyImport } from "./EncodedKeyImport";
@@ -27,7 +27,7 @@ export function ImportAccount() {
 
   return (
     <Box>
-      <Link href="/onboarding">Back</Link>
+      <BackButton />
       <Heading mt={16} mb={8}>
         Import Account
       </Heading>
