@@ -1,0 +1,224 @@
+{
+  "+02x3X": {
+    "message": "Su libreta de direcciones es donde puede administrar todos sus contactos, sus nombres y sus direcciones públicas."
+  },
+  "+gH1Ai": {
+    "message": "Nombre del nodo"
+  },
+  "/km2Zu": {
+    "message": "Importar cuenta"
+  },
+  "/tbC+S": {
+    "message": "Exportar cuenta"
+  },
+  "2G6Qs7": {
+    "message": "Configuraciones guardadas"
+  },
+  "2qzbcD": {
+    "message": "Mínimo de pares"
+  },
+  "3VI9mt": {
+    "message": "Guardar cambios"
+  },
+  "3WkdVP": {
+    "message": "Nombre de la cuenta"
+  },
+  "3euoRJ": {
+    "message": "Frase de recuperación"
+  },
+  "43FmnD": {
+    "message": "Proteger su frase mnemotécnica y claves codificadas es esencial para mantener la propiedad completa, el control y la seguridad sobre sus activos digitales."
+  },
+  "47FYwb": {
+    "message": "Cancelar"
+  },
+  "5JcXdV": {
+    "message": "Crear cuenta"
+  },
+  "5c3Wrw": {
+    "message": "Balance total de cuentas"
+  },
+  "5jeq8P": {
+    "message": "Desconocido"
+  },
+  "6AhQlk": {
+    "message": "¿Está seguro de que desea restablecer el nodo a su estado inicial?"
+  },
+  "6Ior7i": {
+    "message": "Guardé mi frase de recuperación"
+  },
+  "6P/bTL": {
+    "message": "Tipo de conexión"
+  },
+  "6T+v0W": {
+    "message": "Cuenta importada"
+  },
+  "6yYqh0": {
+    "message": "Telemetría"
+  },
+  "9uOFF3": {
+    "message": "Resumen"
+  },
+  "AetNAD": {
+    "message": "Navegar"
+  },
+  "Arxl88": {
+    "message": "Saliente"
+  },
+  "D3idYv": {
+    "message": "Configuraciones"
+  },
+  "Gcv5yj": {
+    "message": "Heap usado"
+  },
+  "H56oje": {
+    "message": "Trabajadores del nodo"
+  },
+  "HAlOn1": {
+    "message": "Nombre"
+  },
+  "JoB2Ml": {
+    "message": "Su cuenta fue importada exitosamente"
+  },
+  "K3r6DQ": {
+    "message": "Borrar"
+  },
+  "L4MaM3": {
+    "message": "Núcleos"
+  },
+  "Ld49Lh": {
+    "message": "¿Cómo le gustaría nombrar esta cuenta? Este nombre solo es visible para usted."
+  },
+  "N0KGQj": {
+    "message": "Graffiti de bloque"
+  },
+  "NDtjP8": {
+    "message": "¿Estás seguro? Tendrás que volver a importar esta cuenta si quieres usarla de nuevo."
+  },
+  "NX/nQR": {
+    "message": "Cambiar la configuración del nodo puede optimizar el rendimiento, mejorar la conectividad, aumentar la seguridad y administrar recursos de manera efectiva."
+  },
+  "Nw8+4i": {
+    "message": "ID de par"
+  },
+  "OfA95/": {
+    "message": "Archivo seleccionado: {fileName}"
+  },
+  "Og5CP/": {
+    "message": "Heap Máximo"
+  },
+  "Ohn4yX": {
+    "message": "Telemetría deshabilitada"
+  },
+  "Pq25uf": {
+    "message": "Restablecer nodo"
+  },
+  "R2OqnW": {
+    "message": "Borrar cuenta"
+  },
+  "RAL4T2": {
+    "message": "Mantenga sus claves seguras revelando su contenido solo cuando esté seguro de que nadie está mirando. Estas se usan para acceder a sus cuentas y son la principal medida de seguridad contra el acceso de usuarios no solicitado."
+  },
+  "RLGujF": {
+    "message": "Pares Conectados"
+  },
+  "SaPa2h": {
+    "message": "Clave Codificada"
+  },
+  "T2yddR": {
+    "message": "Su Nodo"
+  },
+  "Te4gbw": {
+    "message": "Formato de Exportación:"
+  },
+  "TebMku": {
+    "message": "No tienes ninguna transacción"
+  },
+  "TenpoO": {
+    "message": "Nos gustaría recopilar datos de telemetría anónimos para mejorar continuamente su experiencia. Estos datos incluyen rendimiento del nodo, información del bloque y otras métricas de salud. Puede habilitar o deshabilitar esto en cualquier momento en la página de configuración del nodo."
+  },
+  "WWEwrn": {
+    "message": "Configuraciones del Nodo"
+  },
+  "WsssxH": {
+    "message": "Seleccione su archivo JSON o Bech32 para importar su cuenta."
+  },
+  "XLvNHQ": {
+    "message": "Por favor, anote esta frase de recuperación y guárdela en un lugar seguro. La necesitará para recuperar su cuenta."
+  },
+  "Xvk80E": {
+    "message": "Por favor, ingrese un nombre para esta cuenta"
+  },
+  "YDkqMJ": {
+    "message": "Entrante"
+  },
+  "YFT4rG": {
+    "message": "Claves"
+  },
+  "ZhUW3G": {
+    "message": "Total del Montón"
+  },
+  "aAyZzA": {
+    "message": "Puede eliminar y volver a importar sus cuentas a su conveniencia, siempre que posea las claves de cuenta necesarias. Para asegurar una experiencia sin problemas, se recomienda encarecidamente mantener una copia de seguridad de sus claves de cuenta en un lugar seguro."
+  },
+  "acrOoz": {
+    "message": "Continuar"
+  },
+  "baVA6q": {
+    "message": "Secuencia de Cabeza"
+  },
+  "c/KktL": {
+    "message": "Recursos"
+  },
+  "e6Ph5+": {
+    "message": "Dirección"
+  },
+  "fF376U": {
+    "message": "Actual"
+  },
+  "flxGnZ": {
+    "message": "Telemetría habilitada"
+  },
+  "gyrIEl": {
+    "message": "Archivo"
+  },
+  "hR0flV": {
+    "message": "Todas sus transacciones, ya sean en $IRON u otros activos personalizados, se mostrarán en esta sección. Para iniciar una transacción, simplemente haga clic en las pestañas 'Enviar' o 'Recibir'."
+  },
+  "j2AFTQ": {
+    "message": "Estado del Nodo"
+  },
+  "nkeKcx": {
+    "message": "Hash de Cabeza"
+  },
+  "pbdvze": {
+    "message": "Por favor, introduzca su frase mnemónica. Si ha copiado la frase completa en su portapapeles, puede pegarla en cualquier campo de entrada y se dividirá automáticamente en el número correcto de palabras."
+  },
+  "q0qMyV": {
+    "message": "RSS"
+  },
+  "qDYGja": {
+    "message": "Guardar configuraciones"
+  },
+  "rbrahO": {
+    "message": "Cerrar"
+  },
+  "tf1lIh": {
+    "message": "Gratis"
+  },
+  "uCgp+K": {
+    "message": "Bloques por mensaje"
+  },
+  "vNT9Ip": {
+    "message": "Frase Mnemotécnica"
+  },
+  "xkLxAx": {
+    "message": "Cuenta creada"
+  },
+  "y3LzSM": {
+    "message": "Máximo de pares"
+  },
+  "yjpdGo": {
+    "message": "No tienes ningún contacto"
+  }
+}
