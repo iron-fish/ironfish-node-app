@@ -91,7 +91,6 @@ export function ShadowCard({
         position="relative"
         bg={gradient ? makeGradient(gradient) : "white"}
         p={3}
-        // zIndex={1}
         w="100%"
         _dark={{
           bg: gradient ? makeGradient(gradient) : COLORS.DARK_MODE.GRAY_DARK,
