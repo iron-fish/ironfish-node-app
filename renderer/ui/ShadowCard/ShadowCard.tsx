@@ -72,10 +72,26 @@ export function ShadowCard({
       {...rest}
     >
       <Box
+        data-is-shadow="true"
+        position="absolute"
+        bg={gradient ? makeGradient(gradient, true) : "white"}
+        top={SPACING}
+        left={SPACING}
+        bottom={0}
+        right={0}
+        pointerEvents="none"
+        _dark={{
+          bg: gradient
+            ? makeGradient(gradient, true)
+            : COLORS.DARK_MODE.GRAY_DARK,
+        }}
+        {...SHARED_PROPS}
+      />
+      <Box
         position="relative"
         bg={gradient ? makeGradient(gradient) : "white"}
         p={3}
-        zIndex={1}
+        // zIndex={1}
         w="100%"
         _dark={{
           bg: gradient ? makeGradient(gradient) : COLORS.DARK_MODE.GRAY_DARK,
@@ -85,21 +101,6 @@ export function ShadowCard({
       >
         {children}
       </Box>
-      <Box
-        data-is-shadow="true"
-        position="absolute"
-        bg={gradient ? makeGradient(gradient, true) : "white"}
-        top={SPACING}
-        left={SPACING}
-        bottom={0}
-        right={0}
-        _dark={{
-          bg: gradient
-            ? makeGradient(gradient, true)
-            : COLORS.DARK_MODE.GRAY_DARK,
-        }}
-        {...SHARED_PROPS}
-      />
     </Box>
   );
 }
