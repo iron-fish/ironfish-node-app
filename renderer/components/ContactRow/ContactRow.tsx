@@ -54,7 +54,6 @@ export function ContactRow({ name, address }: Props) {
             base: `1fr 3fr auto`,
             md: `1fr 3fr auto 55px`,
           }}
-          opacity="0.8"
           w="100%"
           gap={4}
         >
@@ -69,8 +68,7 @@ export function ContactRow({ name, address }: Props) {
             <PillButton
               onClick={(e) => {
                 e.preventDefault();
-                // @todo: Set default "to" value
-                router.push(`/send`);
+                router.push(`/send?to=${address}`);
               }}
             >
               <ArrowSend transform="scale(0.8)" />
