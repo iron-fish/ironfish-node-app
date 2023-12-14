@@ -8,11 +8,35 @@ import {
 } from "@chakra-ui/react";
 import { filesize } from "filesize";
 import { ReactNode } from "react";
-import { FormattedMessage } from "react-intl";
+import { useIntl, defineMessages } from "react-intl";
 
 import { trpcReact } from "@/providers/TRPCProvider";
 import { COLORS } from "@/ui/colors";
 import { ShadowCard } from "@/ui/ShadowCard/ShadowCard";
+
+const messages = defineMessages({
+  cores: {
+    defaultMessage: "Cores",
+  },
+  current: {
+    defaultMessage: "Current",
+  },
+  rss: {
+    defaultMessage: "RSS",
+  },
+  free: {
+    defaultMessage: "Free",
+  },
+  heapUsed: {
+    defaultMessage: "Heap Used",
+  },
+  heapTotal: {
+    defaultMessage: "Heap Total",
+  },
+  heapMax: {
+    defaultMessage: "Heap Max",
+  },
+});
 
 function Stat({ label, value }: { label: ReactNode; value: ReactNode }) {
   return (
@@ -31,6 +55,7 @@ export function NodeResources() {
   const { data } = trpcReact.getStatus.useQuery(undefined, {
     refetchInterval: 1000,
   });
+  const { formatMessage } = useIntl();
 
   if (!data) {
     return null;
@@ -59,19 +84,19 @@ export function NodeResources() {
         >
           <GridItem>
             <Stat
-              label={<FormattedMessage defaultMessage="Cores" />}
+              label={formatMessage(messages.cores)}
               value={data.cpu.cores}
             />
           </GridItem>
           <GridItem>
             <Stat
-              label={<FormattedMessage defaultMessage="Current" />}
+              label={formatMessage(messages.current)}
               value={`${data.cpu.percentCurrent.toFixed(1)}%`}
             />
           </GridItem>
           <GridItem>
             <Stat
-              label={<FormattedMessage defaultMessage="RSS" />}
+              label={formatMessage(messages.rss)}
               value={`${filesize(data.memory.rss)} (${(
                 (data.memory.rss / data.memory.memTotal) *
                 100
@@ -80,7 +105,7 @@ export function NodeResources() {
           </GridItem>
           <GridItem>
             <Stat
-              label={<FormattedMessage defaultMessage="Free" />}
+              label={formatMessage(messages.free)}
               value={`${filesize(data.memory.memFree)} (${(
                 (1 - data.memory.memFree / data.memory.memTotal) *
                 100
@@ -89,19 +114,19 @@ export function NodeResources() {
           </GridItem>
           <GridItem>
             <Stat
-              label={<FormattedMessage defaultMessage="Heap Used" />}
+              label={formatMessage(messages.heapUsed)}
               value={filesize(data.memory.heapUsed)}
             />
           </GridItem>
           <GridItem>
             <Stat
-              label={<FormattedMessage defaultMessage="Heap Total" />}
+              label={formatMessage(messages.heapTotal)}
               value={filesize(data.memory.heapTotal)}
             />
           </GridItem>
           <GridItem>
             <Stat
-              label={<FormattedMessage defaultMessage="Heap Max" />}
+              label={formatMessage(messages.heapMax)}
               value={`${filesize(data.memory.heapMax)} (${(
                 (data.memory.heapUsed / data.memory.heapMax) *
                 100

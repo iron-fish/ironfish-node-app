@@ -1,6 +1,6 @@
 import { HStack, Heading, Skeleton, Stack } from "@chakra-ui/react";
 import { useMemo, useState } from "react";
-import { FormattedMessage } from "react-intl";
+import { defineMessages, useIntl } from "react-intl";
 import { useToggle } from "usehooks-ts";
 
 import { AddContactModal } from "@/components/AddContactModal/AddContactModal";
@@ -15,10 +15,21 @@ import { trpcReact } from "@/providers/TRPCProvider";
 import { PillButton } from "@/ui/PillButton/PillButton";
 import { CreateAccount } from "@/ui/SVGs/CreateAccount";
 
+const messages = defineMessages({
+  noContacts: {
+    defaultMessage: "You don't have any contacts",
+  },
+  addressBookDescription: {
+    defaultMessage:
+      "Your address book is where you can manage all of your contacts, their names, and their public addresses.",
+  },
+});
+
 export default function AddressBookPage() {
   const [isAddContactModalOpen, toggleAddContactModal] = useToggle(false);
   const [searchInput, setSearchInput] = useState("");
   const { data, isLoading } = trpcReact.getContacts.useQuery();
+  const { formatMessage } = useIntl();
 
   const filteredData = useMemo(() => {
     return data?.filter((contact) => {
@@ -40,7 +51,7 @@ export default function AddressBookPage() {
             onClick={toggleAddContactModal}
           >
             <CreateAccount />
-            Create Contact
+            {formatMessage({ defaultMessage: "Create Contact" })}
           </PillButton>
         </HStack>
       </HStack>
@@ -55,12 +66,8 @@ export default function AddressBookPage() {
       )}
       {!isLoading && data?.length === 0 ? (
         <EmptyStateMessage
-          heading={
-            <FormattedMessage defaultMessage="You don't have any contacts" />
-          }
-          description={
-            <FormattedMessage defaultMessage="Your address book is where you can manage all of your contacts, their names, and their public addresses." />
-          }
+          heading={formatMessage(messages.noContacts)}
+          description={formatMessage(messages.addressBookDescription)}
         />
       ) : (
         <>

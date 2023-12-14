@@ -12,7 +12,7 @@ import {
   useDisclosure,
 } from "@chakra-ui/react";
 import { BsThreeDots } from "react-icons/bs";
-import { FormattedMessage } from "react-intl";
+import { defineMessages, useIntl } from "react-intl";
 
 import { CreateAccountModal } from "@/components/CreateAccountModal/CreateAccountModal";
 import { ImportAccountModal } from "@/components/ImportAccountModal/ImportAccountModal";
@@ -24,6 +24,18 @@ import { PillButton } from "@/ui/PillButton/PillButton";
 import { CreateAccount } from "@/ui/SVGs/CreateAccount";
 import { ImportAccount } from "@/ui/SVGs/ImportAccount";
 import { formatOre } from "@/utils/ironUtils";
+
+const messages = defineMessages({
+  createAccount: {
+    defaultMessage: "Create Account",
+  },
+  importAccount: {
+    defaultMessage: "Import Account",
+  },
+  totalAccountsBalance: {
+    defaultMessage: "Total accounts balance",
+  },
+});
 
 function CreateImportActions() {
   const {
@@ -37,6 +49,9 @@ function CreateImportActions() {
     onOpen: onImportOpen,
     onClose: onImportClose,
   } = useDisclosure();
+
+  const { formatMessage } = useIntl();
+
   return (
     <>
       <HStack
@@ -47,11 +62,11 @@ function CreateImportActions() {
       >
         <PillButton size="sm" variant="inverted" onClick={onCreateOpen}>
           <CreateAccount />
-          <FormattedMessage defaultMessage="Create Account" />
+          {formatMessage(messages.createAccount)}
         </PillButton>
         <PillButton size="sm" variant="inverted" onClick={onImportOpen}>
           <ImportAccount />
-          <FormattedMessage defaultMessage="Import Account" />
+          {formatMessage(messages.importAccount)}
         </PillButton>
       </HStack>
 
@@ -79,10 +94,10 @@ function CreateImportActions() {
           </MenuButton>
           <MenuList>
             <MenuItem onClick={onCreateOpen}>
-              <FormattedMessage defaultMessage="Create Account" />
+              {formatMessage(messages.createAccount)}
             </MenuItem>
             <MenuItem onClick={onImportOpen}>
-              <FormattedMessage defaultMessage="Import Account" />
+              {formatMessage(messages.importAccount)}
             </MenuItem>
           </MenuList>
         </Menu>
@@ -102,6 +117,8 @@ export default function Accounts() {
       return acc + parseInt(curr.balances.iron.confirmed);
     }, 0) ?? null;
 
+  const { formatMessage } = useIntl();
+
   return (
     <>
       <MainLayout>
@@ -112,7 +129,7 @@ export default function Accounts() {
           </HStack>
           <Box>
             <Text fontSize="md" as="span" color={COLORS.GRAY_MEDIUM} mr={1}>
-              <FormattedMessage defaultMessage="Total accounts balance" />:{" "}
+              {formatMessage(messages.totalAccountsBalance)}:{" "}
             </Text>
             <Text fontSize="md" as="span" fontWeight="bold">
               {totalBalance !== null ? formatOre(totalBalance) : "—"} $IRON

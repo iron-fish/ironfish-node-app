@@ -10,7 +10,7 @@ import {
 } from "@chakra-ui/react";
 import type { AccountFormat } from "@ironfish/sdk";
 import { useState } from "react";
-import { FormattedMessage } from "react-intl";
+import { defineMessages, useIntl } from "react-intl";
 
 import { trpcReact } from "@/providers/TRPCProvider";
 import { PillButton } from "@/ui/PillButton/PillButton";
@@ -25,8 +25,18 @@ const formatOptions: FormatTypes[] = [
   "SpendingKey",
 ];
 
+const messages = defineMessages({
+  exportAccount: {
+    defaultMessage: "Export Account",
+  },
+  exportFormat: {
+    defaultMessage: "Export Format:",
+  },
+});
+
 export function AccountKeyExport({ accountName }: { accountName: string }) {
   const [exportFormat, setExportFormat] = useState<FormatTypes>("Mnemonic");
+  const { formatMessage } = useIntl();
 
   if (accountName.length === 0) {
     throw new Error("Expected accountName to be a non-empty string");
@@ -58,13 +68,13 @@ export function AccountKeyExport({ accountName }: { accountName: string }) {
           );
         }}
       >
-        <FormattedMessage defaultMessage="Export Account" />
+        {formatMessage(messages.exportAccount)}
       </PillButton>
       <Menu>
         <MenuButton as={Button} rightIcon={<ChevronDownIcon />}>
           <HStack>
             <Text fontWeight="light">
-              <FormattedMessage defaultMessage="Export Format:" />
+              {formatMessage(messages.exportFormat)}
             </Text>
             <Text>{exportFormat}</Text>
           </HStack>
