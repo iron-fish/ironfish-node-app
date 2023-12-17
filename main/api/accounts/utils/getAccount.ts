@@ -9,6 +9,8 @@ export async function getAccount(account: string) {
     account,
   });
 
+  const status = await rpcClient.wallet.getAccountStatus({ account });
+
   const balances = await Promise.all(
     balancesResponse.content.balances.map(async (balance) => {
       const assetResponse = await rpcClient.chain.getAsset({
@@ -30,5 +32,6 @@ export async function getAccount(account: string) {
     name: account,
     address: publicAddressResponse.content.publicKey,
     balances: formatBalances(balances),
+    status: status.content.account,
   };
 }
