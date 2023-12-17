@@ -1,5 +1,5 @@
 import { Box, Heading } from "@chakra-ui/react";
-import { FormattedMessage } from "react-intl";
+import { defineMessages, useIntl } from "react-intl";
 
 import {
   TransactionRow,
@@ -8,6 +8,16 @@ import {
 
 import { TransactionNote } from "../../../shared/types";
 import { EmptyStateMessage } from "../EmptyStateMessage/EmptyStateMessage";
+
+const messages = defineMessages({
+  emptyStateHeading: {
+    defaultMessage: "You don't have any transactions",
+  },
+  emptyStateDescription: {
+    defaultMessage:
+      "All your transactions, whether in $IRON or other custom assets, will be displayed in this section. To start a transaction, simply click on the 'Send' or 'Receive' tabs.",
+  },
+});
 
 type Props = {
   notes: TransactionNote[];
@@ -20,16 +30,14 @@ export function NotesList({
   heading = "Transaction Notes",
   linkToTransaction = false,
 }: Props) {
+  const { formatMessage } = useIntl();
+
   if (notes.length === 0) {
     return (
       <EmptyStateMessage
         py={8}
-        heading={
-          <FormattedMessage defaultMessage="You don't have any transactions" />
-        }
-        description={
-          <FormattedMessage defaultMessage="All your transactions, whether in $IRON or other custom assets, will be displayed in this section. To start a transaction, simply click on the 'Send' or 'Receive' tabs." />
-        }
+        heading={formatMessage(messages.emptyStateHeading)}
+        description={formatMessage(messages.emptyStateDescription)}
       />
     );
   }

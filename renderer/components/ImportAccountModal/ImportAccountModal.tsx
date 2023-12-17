@@ -13,7 +13,7 @@ import {
   useToast,
 } from "@chakra-ui/react";
 import { useCallback, useMemo, useState } from "react";
-import { FormattedMessage, defineMessages, useIntl } from "react-intl";
+import { defineMessages, useIntl } from "react-intl";
 
 import { trpcReact } from "@/providers/TRPCProvider";
 
@@ -28,25 +28,39 @@ const messages = defineMessages({
   successDescription: {
     defaultMessage: "Your account was successfully imported",
   },
+  mnemonicPhrase: {
+    defaultMessage: "Mnemonic Phrase",
+  },
+  encodedKey: {
+    defaultMessage: "Encoded Key",
+  },
+  file: {
+    defaultMessage: "File",
+  },
+  importAccount: {
+    defaultMessage: "Import Account",
+  },
 });
 
 function useTabsComponents() {
+  const { formatMessage } = useIntl();
+
   return useMemo(
     () => [
       {
-        label: <FormattedMessage defaultMessage="Mnemonic Phrase" />,
+        label: formatMessage(messages.mnemonicPhrase),
         Component: MnemonicImport,
       },
       {
-        label: <FormattedMessage defaultMessage="Encoded Key" />,
+        label: formatMessage(messages.encodedKey),
         Component: EncodedKeyImport,
       },
       {
-        label: <FormattedMessage defaultMessage="File" />,
+        label: formatMessage(messages.file),
         Component: FileImport,
       },
     ],
-    [],
+    [formatMessage],
   );
 }
 
@@ -90,7 +104,7 @@ export function ImportAccountModal({ isOpen, onClose }: Props) {
       <ModalContent maxW="100%" width="700px">
         <ModalBody px={16} pt={16} pb={8}>
           <Heading fontSize="2xl" mb={4}>
-            <FormattedMessage defaultMessage="Import Account" />
+            {formatMessage(messages.importAccount)}
           </Heading>
           <Box>
             <Tabs

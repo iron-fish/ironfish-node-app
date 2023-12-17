@@ -9,7 +9,7 @@ import {
 import { filesize } from "filesize";
 import Image from "next/image";
 import { ReactNode } from "react";
-import { FormattedMessage } from "react-intl";
+import { defineMessages, useIntl } from "react-intl";
 
 import nodeOverviewGlobe from "@/images/node-overview-globe.svg";
 import { trpcReact } from "@/providers/TRPCProvider";
@@ -17,6 +17,42 @@ import { COLORS } from "@/ui/colors";
 import { ShadowCard } from "@/ui/ShadowCard/ShadowCard";
 import { truncateHash } from "@/utils/truncateHash";
 import { truncateString } from "@/utils/truncateString";
+
+const messages = defineMessages({
+  connectedPeers: {
+    defaultMessage: "Connected Peers",
+  },
+  nodeStatus: {
+    defaultMessage: "Node Status",
+  },
+  outgoing: {
+    defaultMessage: "Outgoing",
+  },
+  incoming: {
+    defaultMessage: "Incoming",
+  },
+  headHash: {
+    defaultMessage: "Head Hash",
+  },
+  headSequence: {
+    defaultMessage: "Head Sequence",
+  },
+  peerId: {
+    defaultMessage: "Peer ID",
+  },
+  name: {
+    defaultMessage: "Name",
+  },
+  connectionType: {
+    defaultMessage: "Connection Type",
+  },
+  address: {
+    defaultMessage: "Address",
+  },
+  unknown: {
+    defaultMessage: "Unknown",
+  },
+});
 
 function Stat({ label, value }: { label: ReactNode; value: ReactNode }) {
   return (
@@ -40,6 +76,8 @@ export function NodeOverview() {
   });
 
   const connectedPeers = peers?.filter((p) => p.state === "CONNECTED");
+
+  const { formatMessage } = useIntl();
 
   return (
     <>
@@ -85,19 +123,19 @@ export function NodeOverview() {
           >
             <GridItem>
               <Stat
-                label={<FormattedMessage defaultMessage="Connected Peers" />}
+                label={formatMessage(messages.connectedPeers)}
                 value={status?.peerNetwork.peers}
               />
             </GridItem>
             <GridItem>
               <Stat
-                label={<FormattedMessage defaultMessage="Node Status" />}
+                label={formatMessage(messages.nodeStatus)}
                 value={status?.node.status}
               />
             </GridItem>
             <GridItem>
               <Stat
-                label={<FormattedMessage defaultMessage="Outgoing" />}
+                label={formatMessage(messages.outgoing)}
                 value={
                   status && `${filesize(status.peerNetwork.outboundTraffic)}/s`
                 }
@@ -105,7 +143,7 @@ export function NodeOverview() {
             </GridItem>
             <GridItem>
               <Stat
-                label={<FormattedMessage defaultMessage="Incoming" />}
+                label={formatMessage(messages.incoming)}
                 value={
                   status && `${filesize(status.peerNetwork.inboundTraffic)}/s`
                 }
@@ -113,7 +151,7 @@ export function NodeOverview() {
             </GridItem>
             <GridItem>
               <Stat
-                label={<FormattedMessage defaultMessage="Head Hash" />}
+                label={formatMessage(messages.headHash)}
                 value={
                   status && `...${truncateHash(status.blockchain.head.hash, 1)}`
                 }
@@ -121,7 +159,7 @@ export function NodeOverview() {
             </GridItem>
             <GridItem>
               <Stat
-                label={<FormattedMessage defaultMessage="Head Sequence" />}
+                label={formatMessage(messages.headSequence)}
                 value={status?.blockchain.head.sequence}
               />
             </GridItem>
@@ -131,28 +169,20 @@ export function NodeOverview() {
 
       <Box>
         <Heading as="h2" fontSize="2xl" mb={8}>
-          <FormattedMessage defaultMessage="Connected Peers" />
+          {formatMessage(messages.connectedPeers)}
         </Heading>
         <Grid templateColumns="repeat(4, 1fr)" opacity="0.8" mb={4}>
           <GridItem pl={8}>
-            <Text as="span">
-              <FormattedMessage defaultMessage="Peer ID" />
-            </Text>
+            <Text as="span">{formatMessage(messages.peerId)}</Text>
           </GridItem>
           <GridItem pl={8}>
-            <Text as="span">
-              <FormattedMessage defaultMessage="Name" />
-            </Text>
+            <Text as="span">{formatMessage(messages.name)}</Text>
           </GridItem>
           <GridItem>
-            <Text as="span">
-              <FormattedMessage defaultMessage="Connection Type" />
-            </Text>
+            <Text as="span">{formatMessage(messages.connectionType)}</Text>
           </GridItem>
           <GridItem>
-            <Text as="span">
-              <FormattedMessage defaultMessage="Address" />
-            </Text>
+            <Text as="span">{formatMessage(messages.address)}</Text>
           </GridItem>
         </Grid>
       </Box>
@@ -166,13 +196,11 @@ export function NodeOverview() {
           address,
         }) => {
           const connectionType =
-            connectionWebRTC === "CONNECTED" ? (
-              "WebRTC"
-            ) : connectionWebSocket === "CONNECTED" ? (
-              "WebSocket"
-            ) : (
-              <FormattedMessage defaultMessage="Unknown" />
-            );
+            connectionWebRTC === "CONNECTED"
+              ? "WebRTC"
+              : connectionWebSocket === "CONNECTED"
+              ? "WebSocket"
+              : formatMessage(messages.unknown);
           return (
             <ShadowCard
               key={identity}

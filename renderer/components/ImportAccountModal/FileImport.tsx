@@ -1,6 +1,6 @@
 import { Box, Text, VStack, HStack, chakra } from "@chakra-ui/react";
 import { useCallback, useRef, useState } from "react";
-import { FormattedMessage } from "react-intl";
+import { defineMessages, useIntl } from "react-intl";
 
 import { COLORS } from "@/ui/colors";
 import { PillButton } from "@/ui/PillButton/PillButton";
@@ -12,9 +12,28 @@ type Props = {
   error?: string | null;
 };
 
+const messages = defineMessages({
+  selectFile: {
+    defaultMessage: "Select your JSON or Bech32 file to import your account.",
+  },
+  selectedFile: {
+    defaultMessage: "Selected file: {fileName}",
+  },
+  browse: {
+    defaultMessage: "Browse",
+  },
+  cancel: {
+    defaultMessage: "Cancel",
+  },
+  continue: {
+    defaultMessage: "Continue",
+  },
+});
+
 export function FileImport({ onImport, onCancel, isLoading, error }: Props) {
   const [file, setFile] = useState<File | null>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
+  const { formatMessage } = useIntl();
 
   const commitImport = useCallback(async () => {
     const fileContent = await file?.text();
@@ -29,9 +48,7 @@ export function FileImport({ onImport, onCancel, isLoading, error }: Props) {
   return (
     <Box>
       <VStack alignItems="stretch" gap={4}>
-        <Text>
-          <FormattedMessage defaultMessage="Select your JSON or Bech32 file to import your account." />
-        </Text>
+        <Text>{formatMessage(messages.selectFile)}</Text>
         <chakra.input
           h="1px"
           w="1px"
@@ -61,14 +78,13 @@ export function FileImport({ onImport, onCancel, isLoading, error }: Props) {
             variant="inverted"
             borderWidth="1.5px"
           >
-            <FormattedMessage defaultMessage="Browse" />
+            {formatMessage(messages.browse)}
           </PillButton>
           <VStack>
             <Text color={COLORS.GRAY_MEDIUM}>
-              <FormattedMessage
-                defaultMessage="Selected file: {fileName}"
-                values={{ fileName: file?.name || "—" }}
-              />
+              {formatMessage(messages.selectedFile, {
+                fileName: file?.name || "—",
+              })}
             </Text>
           </VStack>
         </HStack>
@@ -83,7 +99,7 @@ export function FileImport({ onImport, onCancel, isLoading, error }: Props) {
           px={8}
           border={0}
         >
-          <FormattedMessage defaultMessage="Cancel" />
+          {formatMessage(messages.cancel)}
         </PillButton>
         <PillButton
           height="60px"
@@ -91,7 +107,7 @@ export function FileImport({ onImport, onCancel, isLoading, error }: Props) {
           isDisabled={isDisabled}
           onClick={commitImport}
         >
-          <FormattedMessage defaultMessage="Continue" />
+          {formatMessage(messages.continue)}
         </PillButton>
       </HStack>
     </Box>

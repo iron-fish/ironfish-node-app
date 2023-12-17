@@ -10,7 +10,7 @@ import {
   VStack,
 } from "@chakra-ui/react";
 import { useRouter } from "next/router";
-import { FormattedMessage } from "react-intl";
+import { defineMessages, useIntl } from "react-intl";
 
 import { AccountAssets } from "@/components/AccountAssets/AccountAssets";
 import { AccountKeyExport } from "@/components/AccountKeyExport/AccountKeyExport";
@@ -24,6 +24,18 @@ import MainLayout from "@/layouts/MainLayout";
 import { WithExplanatorySidebar } from "@/layouts/WithExplanatorySidebar";
 import { trpcReact } from "@/providers/TRPCProvider";
 import { asQueryString } from "@/utils/parseRouteQuery";
+
+const messages = defineMessages({
+  accountOverview: {
+    defaultMessage: "Account Overview",
+  },
+  keys: {
+    defaultMessage: "Keys",
+  },
+  settings: {
+    defaultMessage: "Settings",
+  },
+});
 
 const tabs = ["overview", "keys", "settings"];
 
@@ -40,6 +52,7 @@ function useInitialTabIndex() {
 
 function AccountOverviewContent({ accountName }: { accountName: string }) {
   const initialTabIndex = useInitialTabIndex();
+  const { formatMessage } = useIntl();
 
   const { data: accountData } = trpcReact.getAccount.useQuery({
     name: accountName,
@@ -58,7 +71,7 @@ function AccountOverviewContent({ accountName }: { accountName: string }) {
     <MainLayout
       backLinkProps={{
         href: "/accounts",
-        label: "Back to All Accounts",
+        label: formatMessage(messages.accountOverview),
       }}
     >
       <Box>
@@ -72,13 +85,13 @@ function AccountOverviewContent({ accountName }: { accountName: string }) {
         <Tabs isLazy defaultIndex={initialTabIndex}>
           <TabList mb={8}>
             <Tab py={2} px={4} mr={4}>
-              Account Overview
+              {formatMessage(messages.accountOverview)}
             </Tab>
             <Tab py={2} px={4} mr={4}>
-              Keys
+              {formatMessage(messages.keys)}
             </Tab>
             <Tab py={2} px={4} mr={4}>
-              Settings
+              {formatMessage(messages.settings)}
             </Tab>
           </TabList>
 
@@ -88,18 +101,13 @@ function AccountOverviewContent({ accountName }: { accountName: string }) {
               <NotesList
                 linkToTransaction
                 notes={transactionsData}
-                heading="Transaction Activity"
+                heading={formatMessage(messages.accountOverview)}
               />
             </TabPanel>
             <TabPanel p={0}>
               <WithExplanatorySidebar
-                heading={<FormattedMessage defaultMessage="Keys" />}
-                description={
-                  <WithExplanatorySidebar.Description>
-                    <FormattedMessage defaultMessage="Keep your keys safe by only revealing their contents when you're sure nobody is peering. These are used to access your accounts and are the primary security measure against non-solicited user access." />
-                    <FormattedMessage defaultMessage="Safeguarding your mnemonic phrase and encoded keys is essential to maintain full ownership, control, and security over your digital assets." />
-                  </WithExplanatorySidebar.Description>
-                }
+                heading={formatMessage(messages.keys)}
+                description={formatMessage(messages.keys)}
                 imgSrc={keysGhost}
               >
                 <VStack gap={8} alignItems="stretch">
@@ -110,12 +118,8 @@ function AccountOverviewContent({ accountName }: { accountName: string }) {
             </TabPanel>
             <TabPanel p={0}>
               <WithExplanatorySidebar
-                heading={<FormattedMessage defaultMessage="Settings" />}
-                description={
-                  <WithExplanatorySidebar.Description>
-                    <FormattedMessage defaultMessage="You can remove and reimport your accounts at your convenience, provided that you possess the necessary account keys. To ensure a seamless experience, it is highly recommended to maintain a backup of your account keys in a secure location." />
-                  </WithExplanatorySidebar.Description>
-                }
+                heading={formatMessage(messages.settings)}
+                description={formatMessage(messages.settings)}
                 imgSrc={lionfishLock}
               >
                 <AccountSettings accountName={accountName} />

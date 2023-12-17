@@ -1,9 +1,21 @@
 import { Box, HStack } from "@chakra-ui/react";
 import { useCallback, useState } from "react";
-import { FormattedMessage } from "react-intl";
+import { defineMessages, useIntl } from "react-intl";
 
 import { TextareaInput } from "@/ui/Forms/TextareaInput/TextareaInput";
 import { PillButton } from "@/ui/PillButton/PillButton";
+
+const messages = defineMessages({
+  cancel: {
+    defaultMessage: "Cancel",
+  },
+  continue: {
+    defaultMessage: "Continue",
+  },
+  enterEncodedKey: {
+    defaultMessage: "Enter Encoded Key",
+  },
+});
 
 type Props = {
   onImport: (args: { name?: string; account: string }) => void;
@@ -19,6 +31,8 @@ export function EncodedKeyImport({
   error,
 }: Props) {
   const [encodedKey, setEncodedKey] = useState("");
+  const { formatMessage } = useIntl();
+
   const commitImport = useCallback(() => {
     onImport({
       account: encodedKey,
@@ -30,7 +44,7 @@ export function EncodedKeyImport({
   return (
     <Box>
       <TextareaInput
-        label="Enter Encoded Key"
+        label={formatMessage(messages.enterEncodedKey)}
         value={encodedKey}
         error={error}
         onChange={(e) => {
@@ -46,7 +60,7 @@ export function EncodedKeyImport({
           px={8}
           border={0}
         >
-          <FormattedMessage defaultMessage="Cancel" />
+          {formatMessage(messages.cancel)}
         </PillButton>
         <PillButton
           height="60px"
@@ -54,7 +68,7 @@ export function EncodedKeyImport({
           isDisabled={isDisabled}
           onClick={commitImport}
         >
-          Continue
+          {formatMessage(messages.continue)}
         </PillButton>
       </HStack>
     </Box>
