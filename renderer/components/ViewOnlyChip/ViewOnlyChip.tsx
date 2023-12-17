@@ -1,6 +1,16 @@
 import { Tooltip, Text, HStack } from "@chakra-ui/react";
+import { defineMessages, useIntl } from "react-intl";
 
 import { COLORS } from "@/ui/colors";
+
+const messages = defineMessages({
+  viewOnly: {
+    defaultMessage: "View Only",
+  },
+  viewOnlyTooltip: {
+    defaultMessage: "View only accounts cannot initiate transactions",
+  },
+});
 
 function Icon() {
   return (
@@ -14,11 +24,10 @@ function Icon() {
 }
 
 export function ViewOnlyChip() {
+  const { formatMessage } = useIntl();
+
   return (
-    <Tooltip
-      label="View only accounts cannot initiate transactions"
-      placement="top"
-    >
+    <Tooltip label={formatMessage(messages.viewOnlyTooltip)} placement="top">
       <HStack
         alignItems="center"
         bg={COLORS.GRAY_LIGHT}
@@ -40,7 +49,7 @@ export function ViewOnlyChip() {
         }}
       >
         <Icon />
-        <Text fontSize="12px">View Only</Text>
+        <Text fontSize="12px">{formatMessage(messages.viewOnly)}</Text>
       </HStack>
     </Tooltip>
   );
