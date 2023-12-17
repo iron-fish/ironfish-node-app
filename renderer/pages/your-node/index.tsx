@@ -6,7 +6,7 @@ import {
   TabPanel,
   Tab,
 } from "@chakra-ui/react";
-import { FormattedMessage } from "react-intl";
+import { defineMessages, useIntl } from "react-intl";
 
 import { NodeOverview } from "@/components/NodeOverview/NodeOverview";
 import { NodeResources } from "@/components/NodeResources/NodeResources";
@@ -15,22 +15,44 @@ import computerMonitor from "@/images/computer-monitor.svg";
 import MainLayout from "@/layouts/MainLayout";
 import { WithExplanatorySidebar } from "@/layouts/WithExplanatorySidebar";
 
+const messages = defineMessages({
+  yourNode: {
+    defaultMessage: "Your Node",
+  },
+  overview: {
+    defaultMessage: "Overview",
+  },
+  settings: {
+    defaultMessage: "Settings",
+  },
+  resources: {
+    defaultMessage: "Resources",
+  },
+  nodeSettings: {
+    defaultMessage: "Node Settings",
+  },
+  nodeSettingsDescription: {
+    defaultMessage:
+      "Changing node settings can optimize performance, improve connectivity, enhance security, and manage resources effectively.",
+  },
+});
+
 export default function YourNode() {
+  const { formatMessage } = useIntl();
+
   return (
     <MainLayout>
-      <Heading>
-        <FormattedMessage defaultMessage="Your Node" />
-      </Heading>
+      <Heading>{formatMessage(messages.yourNode)}</Heading>
       <Tabs isLazy>
         <TabList mb={8}>
           <Tab py={2} px={4} mr={4}>
-            <FormattedMessage defaultMessage="Overview" />
+            {formatMessage(messages.overview)}
           </Tab>
           <Tab py={2} px={4} mr={4}>
-            <FormattedMessage defaultMessage="Settings" />
+            {formatMessage(messages.settings)}
           </Tab>
           <Tab py={2} px={4} mr={4}>
-            <FormattedMessage defaultMessage="Resources" />
+            {formatMessage(messages.resources)}
           </Tab>
         </TabList>
 
@@ -40,12 +62,8 @@ export default function YourNode() {
           </TabPanel>
           <TabPanel p={0}>
             <WithExplanatorySidebar
-              heading={<FormattedMessage defaultMessage="Node Settings" />}
-              description={
-                <WithExplanatorySidebar.Description>
-                  <FormattedMessage defaultMessage="Changing node settings can optimize performance, improve connectivity, enhance security, and manage resources effectively." />
-                </WithExplanatorySidebar.Description>
-              }
+              heading={formatMessage(messages.nodeSettings)}
+              description={formatMessage(messages.nodeSettingsDescription)}
               imgSrc={computerMonitor}
             >
               <NodeSettings />

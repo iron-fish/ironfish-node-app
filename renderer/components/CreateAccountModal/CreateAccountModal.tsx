@@ -15,7 +15,7 @@ import {
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useCallback, useState } from "react";
 import { useForm } from "react-hook-form";
-import { FormattedMessage } from "react-intl";
+import { defineMessages, useIntl } from "react-intl";
 import { z } from "zod";
 
 import { trpcReact } from "@/providers/TRPCProvider";
@@ -23,6 +23,41 @@ import { TextInput } from "@/ui/Forms/TextInput/TextInput";
 import { PillButton } from "@/ui/PillButton/PillButton";
 
 import { AccountMnemonicView } from "../AccountMnemonicView/AccountMnenomicView";
+
+const messages = defineMessages({
+  createAccount: {
+    defaultMessage: "Create Account",
+  },
+  accountName: {
+    defaultMessage: "Account Name",
+  },
+  whatToName: {
+    defaultMessage:
+      "What would you like to name this account? This name is only visible to you.",
+  },
+  somethingWentWrong: {
+    defaultMessage: "Something went wrong, please try again.",
+  },
+  accountCreated: {
+    defaultMessage: "Account Created",
+  },
+  recoveryPhrase: {
+    defaultMessage: "Recovery Phrase",
+  },
+  writeDownRecoveryPhrase: {
+    defaultMessage:
+      "Please write down this recovery phrase and keep it in a safe place. You will need it to recover your account.",
+  },
+  savedRecoveryPhrase: {
+    defaultMessage: "I saved my recovery phrase",
+  },
+  cancel: {
+    defaultMessage: "Cancel",
+  },
+  close: {
+    defaultMessage: "Close",
+  },
+});
 
 const accountSchema = z.object({
   name: z.string().min(1),
@@ -66,6 +101,8 @@ export function CreateAccountModal({
     resolver: zodResolver(accountSchema),
   });
 
+  const { formatMessage } = useIntl();
+
   if (isSuccess && !data) {
     throw new Error(
       "Create account mutation succeeded but no data was returned",
@@ -80,17 +117,15 @@ export function CreateAccountModal({
           {!isSuccess && (
             <VStack gap={4} alignItems="stretch">
               <Heading fontSize="2xl">
-                <FormattedMessage defaultMessage="Create Account" />
+                {formatMessage(messages.createAccount)}
               </Heading>
 
-              <Text fontSize="md">
-                <FormattedMessage defaultMessage="What would you like to name this account? This name is only visible to you." />
-              </Text>
+              <Text fontSize="md">{formatMessage(messages.whatToName)}</Text>
 
               <VStack gap={4} alignItems="stretch">
                 <TextInput
                   {...register("name")}
-                  label="Account Name"
+                  label={formatMessage(messages.accountName)}
                   error={errors.name?.message}
                   isDisabled={isLoading}
                 />
@@ -99,7 +134,7 @@ export function CreateAccountModal({
               {isError && (
                 <Alert status="error">
                   <AlertIcon />
-                  {error?.message ?? "Something went wrong, please try again."}
+                  {error?.message ?? formatMessage(messages.somethingWentWrong)}
                 </Alert>
               )}
             </VStack>
@@ -108,19 +143,23 @@ export function CreateAccountModal({
           {isSuccess && (
             <Box>
               <Heading fontSize="2xl" mb={4}>
-                <FormattedMessage defaultMessage="Account Created" />
+                {formatMessage(messages.accountCreated)}
               </Heading>
 
               <VStack gap={4} alignItems="stretch" mb={8}>
-                <TextInput isReadOnly label="Account Name" value={data.name} />
+                <TextInput
+                  isReadOnly
+                  label={formatMessage(messages.accountName)}
+                  value={data.name}
+                />
               </VStack>
 
               <Heading fontSize="2xl" mb={4}>
-                <FormattedMessage defaultMessage="Recovery Phrase" />
+                {formatMessage(messages.recoveryPhrase)}
               </Heading>
 
               <Text fontSize="md" mb={4}>
-                <FormattedMessage defaultMessage="Please write down this recovery phrase and keep it in a safe place. You will need it to recover your account." />
+                {formatMessage(messages.writeDownRecoveryPhrase)}
               </Text>
 
               <Box mb={4}>
@@ -133,7 +172,7 @@ export function CreateAccountModal({
                   setIsSavedChecked(e.target.checked);
                 }}
               >
-                <FormattedMessage defaultMessage="I saved my recovery phrase" />
+                {formatMessage(messages.savedRecoveryPhrase)}
               </Checkbox>
             </Box>
           )}
@@ -150,7 +189,7 @@ export function CreateAccountModal({
                 px={8}
                 border={0}
               >
-                <FormattedMessage defaultMessage="Cancel" />
+                {formatMessage(messages.cancel)}
               </PillButton>
               <PillButton
                 isDisabled={isLoading}
@@ -160,7 +199,7 @@ export function CreateAccountModal({
                   createAccount(values);
                 })}
               >
-                <FormattedMessage defaultMessage="Create Account" />
+                {formatMessage(messages.createAccount)}
               </PillButton>
             </>
           )}
@@ -171,7 +210,7 @@ export function CreateAccountModal({
               px={8}
               onClick={handleClose}
             >
-              <FormattedMessage defaultMessage="Close" />
+              {formatMessage(messages.close)}
             </PillButton>
           )}
         </ModalFooter>

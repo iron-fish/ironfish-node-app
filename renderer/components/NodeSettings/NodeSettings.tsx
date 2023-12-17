@@ -18,7 +18,7 @@ import {
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useRef } from "react";
 import { useForm } from "react-hook-form";
-import { FormattedMessage, defineMessages, useIntl } from "react-intl";
+import { defineMessages, useIntl } from "react-intl";
 import { z } from "zod";
 
 import { trpcReact } from "@/providers/TRPCProvider";
@@ -38,6 +38,40 @@ const settingsSchema = z.object({
 const messages = defineMessages({
   resetNode: {
     defaultMessage: "Reset Node",
+  },
+  settingsSaved: {
+    defaultMessage: "Settings saved",
+  },
+  nodeNameLabel: {
+    defaultMessage: "Node Name",
+  },
+  blockGraffitiLabel: {
+    defaultMessage: "Block Graffiti",
+  },
+  minPeersLabel: {
+    defaultMessage: "Min Peers",
+  },
+  maxPeersLabel: {
+    defaultMessage: "Max Peers",
+  },
+  nodeWorkersLabel: {
+    defaultMessage: "Node Workers",
+  },
+  blocksPerMessageLabel: {
+    defaultMessage: "Blocks Per message",
+  },
+  enableTelemetryLabel: {
+    defaultMessage: "Telemetry enabled",
+  },
+  cancel: {
+    defaultMessage: "Cancel",
+  },
+  areYouSureResetNode: {
+    defaultMessage:
+      "Are you sure you want to reset the node to its initial state?",
+  },
+  saveSettings: {
+    defaultMessage: "Save Settings",
   },
 });
 
@@ -67,7 +101,7 @@ function NodeSettingsContent({
     trpcReact.setConfig.useMutation({
       onSuccess: () => {
         toast({
-          title: <FormattedMessage defaultMessage="Settings saved" />,
+          title: formatMessage(messages.settingsSaved),
           status: "success",
           isClosable: true,
           duration: 2000,
@@ -106,21 +140,21 @@ function NodeSettingsContent({
       <Grid templateColumns="repeat(2, 1fr)" gap={8}>
         <GridItem>
           <TextInput
-            label={<FormattedMessage defaultMessage="Node Name" />}
+            label={formatMessage(messages.nodeNameLabel)}
             {...register("nodeName")}
             error={errors.nodeName?.message}
           />
         </GridItem>
         <GridItem>
           <TextInput
-            label={<FormattedMessage defaultMessage="Block Graffiti" />}
+            label={formatMessage(messages.blockGraffitiLabel)}
             {...register("blockGraffiti")}
             error={errors.blockGraffiti?.message}
           />
         </GridItem>
         <GridItem>
           <TextInput
-            label={<FormattedMessage defaultMessage="Min Peers" />}
+            label={formatMessage(messages.minPeersLabel)}
             type="number"
             {...register("minPeers", {
               valueAsNumber: true,
@@ -130,7 +164,7 @@ function NodeSettingsContent({
         </GridItem>
         <GridItem>
           <TextInput
-            label={<FormattedMessage defaultMessage="Max Peers" />}
+            label={formatMessage(messages.maxPeersLabel)}
             type="number"
             {...register("maxPeers", {
               valueAsNumber: true,
@@ -140,7 +174,7 @@ function NodeSettingsContent({
         </GridItem>
         <GridItem>
           <TextInput
-            label={<FormattedMessage defaultMessage="Node Workers" />}
+            label={formatMessage(messages.nodeWorkersLabel)}
             type="number"
             {...register("nodeWorkers", {
               valueAsNumber: true,
@@ -150,7 +184,7 @@ function NodeSettingsContent({
         </GridItem>
         <GridItem>
           <TextInput
-            label={<FormattedMessage defaultMessage="Blocks Per message" />}
+            label={formatMessage(messages.blocksPerMessageLabel)}
             type="number"
             {...register("blocksPerMessage", {
               valueAsNumber: true,
@@ -162,7 +196,7 @@ function NodeSettingsContent({
       <FormControl mt={8} display="flex" alignItems="center">
         <Switch mr={4} {...register("enableTelemetry")} />
         <FormLabel mb={0}>
-          <FormattedMessage defaultMessage="Telemetry enabled" />
+          {formatMessage(messages.enableTelemetryLabel)}
         </FormLabel>
       </FormControl>
       <HStack mt={8} justifyContent="flex-start">
@@ -184,7 +218,7 @@ function NodeSettingsContent({
             })();
           }}
         >
-          <FormattedMessage defaultMessage="Save Settings" />
+          {formatMessage(messages.saveSettings)}
         </PillButton>
         <PillButton
           isDisabled={isLoading}
@@ -209,12 +243,12 @@ function NodeSettingsContent({
             </AlertDialogHeader>
 
             <AlertDialogBody>
-              <FormattedMessage defaultMessage="Are you sure you want to reset the node to its initial state?" />
+              {formatMessage(messages.areYouSureResetNode)}
             </AlertDialogBody>
 
             <AlertDialogFooter>
               <Button ref={cancelResetRef} onClick={onResetNodeModalClose}>
-                <FormattedMessage defaultMessage="Cancel" />
+                {formatMessage(messages.cancel)}
               </Button>
               <Button
                 colorScheme="red"
