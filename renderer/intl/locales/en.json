@@ -20,6 +20,7 @@
   "9uOFF3": "Overview",
   "AetNAD": "Browse",
   "Arxl88": "Outgoing",
+  "BxM6mJ": "Lowest to highest balance",
   "D3idYv": "Settings",
   "Gcv5yj": "Heap Used",
   "Gcv7QB": "Account name",
@@ -30,6 +31,7 @@
   "KtDXZW": "Export Account",
   "L4MaM3": "Cores",
   "Ld49Lh": "What would you like to name this account? This name is only visible to you.",
+  "MFUhla": "Highest to lowest balance",
   "N0KGQj": "Block Graffiti",
   "NDtjP8": "Are you sure? You'll have to re-import this account if you want to use it again.",
   "NX/nQR": "Changing node settings can optimize performance, improve connectivity, enhance security, and manage resources effectively.",
@@ -38,6 +40,7 @@
   "Og5CP/": "Heap Max",
   "Ohn4yX": "Telemetry disabled",
   "Pq25uf": "Reset Node",
+  "QS9NTE": "Account name — A to Z",
   "R2OqnW": "Delete Account",
   "RLGujF": "Connected Peers",
   "SaPa2h": "Encoded Key",
@@ -73,5 +76,6 @@
   "wsALI4": "Enter Encoded Key",
   "xkLxAx": "Account Created",
   "y3LzSM": "Max Peers",
-  "yjpdGo": "You don't have any contacts"
+  "yjpdGo": "You don't have any contacts",
+  "zAPy5e": "Account name — Z to A"
 }
