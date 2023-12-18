@@ -1,4 +1,4 @@
-import { HStack, Heading } from "@chakra-ui/react";
+import { HStack, Heading, Skeleton } from "@chakra-ui/react";
 import { useRouter } from "next/router";
 
 import { CopyAddress } from "@/components/CopyAddress/CopyAddress";
@@ -8,7 +8,7 @@ import MainLayout from "@/layouts/MainLayout";
 import { trpcReact } from "@/providers/TRPCProvider";
 import { asQueryString } from "@/utils/parseRouteQuery";
 
-export function SingleTransactionContent({
+function SingleTransactionContent({
   accountName,
   transactionHash,
 }: {
@@ -24,8 +24,28 @@ export function SingleTransactionContent({
     transactionHash,
   });
 
-  if (!accountData || !transactionData) {
+  if (!accountData) {
     return null;
+  }
+
+  if (!transactionData) {
+    return (
+      <MainLayout
+        backLinkProps={{
+          href: `/accounts/${accountName}`,
+          label: "Back to Account Overview",
+        }}
+      >
+        <HStack mb={8} gap={4}>
+          <Heading>{accountName}</Heading>
+          <CopyAddress
+            address={accountData.address}
+            transform="translateY(0.4em)"
+          />
+        </HStack>
+        <Skeleton height={600} />
+      </MainLayout>
+    );
   }
 
   return (
