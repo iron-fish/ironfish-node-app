@@ -16,13 +16,12 @@ export async function handleGetTransactions({
   const ironfish = await manager.getIronfish();
   const rpcClient = await ironfish.rpcClient();
 
-  const transactionsStream =
-    await rpcClient.wallet.getAccountTransactionsStream({
-      offset: cursor,
-      limit: limit,
-      account: accountName,
-      notes: true,
-    });
+  const transactionsStream = rpcClient.wallet.getAccountTransactionsStream({
+    offset: cursor,
+    limit: limit,
+    account: accountName,
+    notes: true,
+  });
 
   const transactions = await resolveContentStream(
     transactionsStream.contentStream(),
