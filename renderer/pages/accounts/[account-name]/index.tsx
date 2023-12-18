@@ -10,6 +10,7 @@ import {
   VStack,
 } from "@chakra-ui/react";
 import { useRouter } from "next/router";
+import { useState } from "react";
 import { defineMessages, useIntl } from "react-intl";
 
 import { AccountAssets } from "@/components/AccountAssets/AccountAssets";
@@ -23,6 +24,7 @@ import lionfishLock from "@/images/lionfish-lock.svg";
 import MainLayout from "@/layouts/MainLayout";
 import { WithExplanatorySidebar } from "@/layouts/WithExplanatorySidebar";
 import { trpcReact } from "@/providers/TRPCProvider";
+import { PillButton } from "@/ui/PillButton/PillButton";
 import { asQueryString } from "@/utils/parseRouteQuery";
 
 const messages = defineMessages({
@@ -54,15 +56,23 @@ function AccountOverviewContent({ accountName }: { accountName: string }) {
   const initialTabIndex = useInitialTabIndex();
   const { formatMessage } = useIntl();
 
+  const [cursor, setCursor] = useState(0);
+
   const { data: accountData } = trpcReact.getAccount.useQuery({
     name: accountName,
   });
 
-  const { data: transactionsData } = trpcReact.getTransactions.useQuery({
+  const {
+    data: transactionsData,
+    isLoading,
+    isError,
+  } = trpcReact.getTransactions.useQuery({
     accountName,
+    cursor,
+    limit: 10,
   });
 
-  if (!accountData || !transactionsData) {
+  if (!accountData) {
     // @todo: Error handling
     return null;
   }
@@ -100,9 +110,29 @@ function AccountOverviewContent({ accountName }: { accountName: string }) {
               <AccountAssets accountName={accountName} />
               <NotesList
                 linkToTransaction
-                notes={transactionsData}
+                isLoading={isLoading}
+                isError={isError}
+                notes={transactionsData?.transactions ?? []}
                 heading={formatMessage(messages.accountOverview)}
               />
+              <HStack flex={1} justifyContent="center">
+                <PillButton
+                  isDisabled={!transactionsData || cursor <= 0}
+                  onClick={() => {
+                    setCursor((c) => Math.max(c - 10, 0));
+                  }}
+                >
+                  Previous
+                </PillButton>
+                <PillButton
+                  isDisabled={!transactionsData?.hasNextPage}
+                  onClick={() => {
+                    setCursor((c) => c + 10);
+                  }}
+                >
+                  Next
+                </PillButton>
+              </HStack>
             </TabPanel>
             <TabPanel p={0}>
               <WithExplanatorySidebar

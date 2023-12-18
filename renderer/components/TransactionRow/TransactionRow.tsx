@@ -1,5 +1,5 @@
 import { ChevronRightIcon } from "@chakra-ui/icons";
-import { Grid, GridItem, HStack, Text } from "@chakra-ui/react";
+import { Box, Grid, GridItem, HStack, Text } from "@chakra-ui/react";
 import type { TransactionType } from "@ironfish/sdk";
 
 import { MaybeLink } from "@/ui/ChakraLink/ChakraLink";
@@ -74,62 +74,65 @@ export function TransactionRow({
       }
       w="100%"
     >
-      <ShadowCard
-        hoverable={linkToTransaction}
-        height="86px"
-        contentContainerProps={{
-          display: "flex",
-          alignItems: "center",
-          p: 0,
-        }}
-        mb={4}
-      >
-        <Grid
-          templateColumns={{
-            base: `repeat(5, 1fr)`,
-            md: linkToTransaction ? `repeat(5, 1fr) 55px` : `repeat(5, 1fr)`,
+      <Box py={2}>
+        <ShadowCard
+          hoverable={linkToTransaction}
+          height="86px"
+          contentContainerProps={{
+            display: "flex",
+            alignItems: "center",
+            p: 0,
           }}
-          opacity="0.8"
-          w="100%"
-          gap={4}
         >
-          <GridItem display="flex" alignItems="center" pl={8}>
-            <HStack gap={4}>
-              {type === "send" ? <SentIcon /> : <ReceivedIcon />}
-              <Text as="span">{type === "send" ? "Sent" : "Received"}</Text>
-            </HStack>
-          </GridItem>
-          <GridItem display="flex" alignItems="center">
-            <Text as="span">
-              {formatOre(value)} {hexToUTF16String(assetName)}
-            </Text>
-          </GridItem>
-          <GridItem display="flex" alignItems="center">
-            <Text as="span">{truncateString(type === "send" ? to : from)}</Text>
-          </GridItem>
-          <GridItem display="flex" alignItems="center">
-            <Text as="span">{formatDate(timestamp)}</Text>
-          </GridItem>
-          <GridItem display="flex" alignItems="center">
-            <Text as="span">{memo || "—"}</Text>
-          </GridItem>
-          {linkToTransaction && (
-            <GridItem
-              alignItems="center"
-              display={{
-                base: "none",
-                md: "flex",
-              }}
-            >
-              <ChevronRightIcon
-                boxSize={5}
-                color={COLORS.GRAY_MEDIUM}
-                _dark={{ color: COLORS.DARK_MODE.GRAY_LIGHT }}
-              />
+          <Grid
+            templateColumns={{
+              base: `repeat(5, 1fr)`,
+              md: linkToTransaction ? `repeat(5, 1fr) 55px` : `repeat(5, 1fr)`,
+            }}
+            opacity="0.8"
+            w="100%"
+            gap={4}
+          >
+            <GridItem display="flex" alignItems="center" pl={8}>
+              <HStack gap={4}>
+                {type === "send" ? <SentIcon /> : <ReceivedIcon />}
+                <Text as="span">{type === "send" ? "Sent" : "Received"}</Text>
+              </HStack>
             </GridItem>
-          )}
-        </Grid>
-      </ShadowCard>
+            <GridItem display="flex" alignItems="center">
+              <Text as="span">
+                {formatOre(value)} {hexToUTF16String(assetName)}
+              </Text>
+            </GridItem>
+            <GridItem display="flex" alignItems="center">
+              <Text as="span">
+                {truncateString(type === "send" ? to : from)}
+              </Text>
+            </GridItem>
+            <GridItem display="flex" alignItems="center">
+              <Text as="span">{formatDate(timestamp)}</Text>
+            </GridItem>
+            <GridItem display="flex" alignItems="center">
+              <Text as="span">{memo || "—"}</Text>
+            </GridItem>
+            {linkToTransaction && (
+              <GridItem
+                alignItems="center"
+                display={{
+                  base: "none",
+                  md: "flex",
+                }}
+              >
+                <ChevronRightIcon
+                  boxSize={5}
+                  color={COLORS.GRAY_MEDIUM}
+                  _dark={{ color: COLORS.DARK_MODE.GRAY_LIGHT }}
+                />
+              </GridItem>
+            )}
+          </Grid>
+        </ShadowCard>
+      </Box>
     </MaybeLink>
   );
 }
