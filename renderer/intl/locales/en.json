@@ -153,6 +153,9 @@
   "TenpoO": {
     "message": "We'd like to collect anonymous telemetry data in order to continually improve your experience. This data includes node performance, block information, and other health metrics. You can enable or disable this at any time in the node settings page."
   },
+  "UTOugV": {
+    "message": "Your Assets"
+  },
   "WWEwrn": {
     "message": "Node Settings"
   },

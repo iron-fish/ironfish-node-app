@@ -10,6 +10,7 @@ import {
 } from "@chakra-ui/react";
 import Image from "next/image";
 import NextLink from "next/link";
+import { defineMessages, useIntl } from "react-intl";
 
 import treasureChest from "@/images/treasure-chest.svg";
 import { trpcReact } from "@/providers/TRPCProvider";
@@ -21,7 +22,14 @@ import { ArrowSend } from "@/ui/SVGs/ArrowSend";
 import { hexToUTF16String } from "@/utils/hexToUTF16String";
 import { formatOre } from "@/utils/ironUtils";
 
+const messages = defineMessages({
+  yourAssets: {
+    defaultMessage: "Your Assets",
+  },
+});
+
 export function AccountAssets({ accountName }: { accountName: string }) {
+  const { formatMessage } = useIntl();
   const { data } = trpcReact.getAccount.useQuery({
     name: accountName,
   });
@@ -42,7 +50,7 @@ export function AccountAssets({ accountName }: { accountName: string }) {
           mb={10}
         >
           <Heading color={COLORS.BLACK} fontSize={24} mb={4}>
-            Your Assets
+            {formatMessage(messages.yourAssets)}
           </Heading>
           <HStack
             bg="rgba(255, 255, 255, 0.15)"
