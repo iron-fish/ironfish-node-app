@@ -8,7 +8,7 @@ import {
   Flex,
 } from "@chakra-ui/react";
 import { useRouter } from "next/router";
-import { createContext, ReactNode, useState } from "react";
+import { createContext, ReactNode, useContext, useState } from "react";
 
 import { BackButton } from "@/components/BackButton/BackButton";
 import { StatusIndicator } from "@/components/StatusIndicator/StatusIndicator";
@@ -143,7 +143,11 @@ type Props = {
   };
 };
 
-export const ScrollElementContext = createContext<HTMLDivElement | null>(null);
+const ScrollElementContext = createContext<HTMLDivElement | null>(null);
+
+export function useScrollElementContext() {
+  return useContext(ScrollElementContext);
+}
 
 export default function MainLayout({ children, backLinkProps }: Props) {
   const [scrollElement, setScrollElement] = useState<HTMLDivElement | null>(

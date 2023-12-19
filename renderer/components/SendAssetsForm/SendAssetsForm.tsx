@@ -43,11 +43,11 @@ export function SendAssetsFormContent({
   }, [accountsData]);
 
   const defaultAccount = useMemo(() => {
-    const queryMatch = accountOptions?.find(
+    const queryMatch = accountOptions.find(
       (option) => option.value === router.query.account,
     );
 
-    return queryMatch ? queryMatch.value : accountOptions?.[0].value;
+    return queryMatch ? queryMatch.value : accountOptions[0]?.value;
   }, [accountOptions, router.query.account]);
 
   const {
@@ -60,7 +60,7 @@ export function SendAssetsFormContent({
     defaultValues: {
       fromAccount: defaultAccount,
       toAccount: defaultToAddress ?? "",
-      assetId: accountsData[0].balances.iron.asset.id,
+      assetId: accountsData[0]?.balances.iron.asset.id,
       fee: "average",
     },
   });
@@ -189,16 +189,17 @@ export function SendAssetsFormContent({
 export function SendAssetsForm() {
   const router = useRouter();
   const { data: accountsData } = trpcReact.getAccounts.useQuery();
+  const filteredAccounts = accountsData?.filter((a) => !a.status.viewOnly);
   const { data: estimatedFeesData } = trpcReact.getEstimatedFees.useQuery();
   const defaultToAddress = asQueryString(router.query.to);
 
-  if (!accountsData || !estimatedFeesData) {
+  if (!filteredAccounts || !estimatedFeesData) {
     return null;
   }
 
   return (
     <SendAssetsFormContent
-      accountsData={accountsData}
+      accountsData={filteredAccounts}
       estimatedFeesData={estimatedFeesData}
       defaultToAddress={defaultToAddress}
     />

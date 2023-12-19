@@ -122,6 +122,7 @@ export function UserAccountsList() {
               name={account.name}
               balance={account.balances.iron.confirmed}
               address={account.address}
+              viewOnly={account.status.viewOnly}
             />
           );
         })}
