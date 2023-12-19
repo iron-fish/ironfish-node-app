@@ -42,6 +42,7 @@ export function ConfirmTransactionModal({
     isError,
     isSuccess,
     reset,
+    error,
   } = trpcReact.sendTransaction.useMutation();
   const router = useRouter();
 
@@ -131,9 +132,14 @@ export function ConfirmTransactionModal({
                 Transaction Error
               </Heading>
               <Text fontSize="md">
-                Something went wrong, please review your transaction and try
+                Something went wrong. please review your transaction and try
                 again.
               </Text>
+
+              <Heading fontSize="lg" mt={8} mb={2}>
+                Error
+              </Heading>
+              <code>{error.message}</code>
             </>
           )}
         </ModalBody>
