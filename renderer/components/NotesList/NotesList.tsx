@@ -1,5 +1,4 @@
 import { Box, Heading, Skeleton } from "@chakra-ui/react";
-import { useContext } from "react";
 import { defineMessages, useIntl } from "react-intl";
 import { Virtuoso } from "react-virtuoso";
 
@@ -7,7 +6,7 @@ import {
   TransactionRow,
   TransactionsHeadings,
 } from "@/components/TransactionRow/TransactionRow";
-import { ScrollElementContext } from "@/layouts/MainLayout";
+import { useScrollElementContext } from "@/layouts/MainLayout";
 
 import { TransactionNote } from "../../../shared/types";
 import { EmptyStateMessage } from "../EmptyStateMessage/EmptyStateMessage";
@@ -45,7 +44,7 @@ export function NotesList({
   isLoading,
 }: Props) {
   const { formatMessage } = useIntl();
-  const customScrollElement = useContext(ScrollElementContext);
+  const customScrollElement = useScrollElementContext();
 
   if (isError) {
     return (
