@@ -11,6 +11,7 @@ import { useRouter } from "next/router";
 import { ReactNode } from "react";
 
 import { BackButton } from "@/components/BackButton/BackButton";
+import { LanguageSelector } from "@/components/LanguageSelector/LanguageSelector";
 import { StatusIndicator } from "@/components/StatusIndicator/StatusIndicator";
 import { ChakraLink } from "@/ui/ChakraLink/ChakraLink";
 import { COLORS } from "@/ui/colors";
@@ -129,8 +130,11 @@ function Sidebar() {
           );
         })}
       </VStack>
-      <StatusIndicator />
-      <DarkModeSwitch />
+      <VStack alignItems="stretch" gap={3}>
+        <StatusIndicator />
+        <LanguageSelector />
+        <DarkModeSwitch />
+      </VStack>
     </Flex>
   );
 }

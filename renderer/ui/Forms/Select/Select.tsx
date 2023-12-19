@@ -61,6 +61,9 @@ export const Select = forwardRef<typeof RadixSelect.Trigger, Props>(
             position="popper"
             sideOffset={5}
             className={styles.SelectContent}
+            style={{
+              zIndex: 9999,
+            }}
           >
             <RadixSelect.Viewport>
               <Box
