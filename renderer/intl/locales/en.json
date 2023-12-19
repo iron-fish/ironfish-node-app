@@ -78,6 +78,9 @@
   "D3idYv": {
     "message": "Settings"
   },
+  "Fn/FTS": {
+    "message": "An error occurred while loading your transactions. If this happens several times, please let us know on Discord."
+  },
   "Gcv5yj": {
     "message": "Heap Used"
   },
@@ -152,6 +155,9 @@
   },
   "TenpoO": {
     "message": "We'd like to collect anonymous telemetry data in order to continually improve your experience. This data includes node performance, block information, and other health metrics. You can enable or disable this at any time in the node settings page."
+  },
+  "ThbkST": {
+    "message": "Unable to load your transactions"
   },
   "UTOugV": {
     "message": "Your Assets"

@@ -1,6 +1,5 @@
 import { getTransactionNotes } from "./utils/formatTransactionsToNotes";
 import { manager } from "../manager";
-import { resolveContentStream } from "../utils/resolveContentStream";
 
 export async function handleGetTransaction({
   accountName,
@@ -12,22 +11,26 @@ export async function handleGetTransaction({
   const ironfish = await manager.getIronfish();
   const rpcClient = await ironfish.rpcClient();
 
-  const transactionsStream =
-    await rpcClient.wallet.getAccountTransactionsStream({
-      hash: transactionHash,
-      notes: true,
-    });
+  const { content } = await rpcClient.wallet.getAccountTransaction({
+    account: accountName,
+    hash: transactionHash,
+    notes: true,
+  });
 
-  const streamResult = await resolveContentStream(
-    transactionsStream.contentStream(),
+  if (content.transaction == null) {
+    throw new Error(
+      `No transaction found for ${content.account} with hash ${transactionHash}`,
+    );
+  }
+
+  const notes = await getTransactionNotes(
+    rpcClient,
+    content.transaction,
+    accountName,
   );
 
-  const transaction = streamResult[0];
-
-  const notes = await getTransactionNotes(rpcClient, transaction, accountName);
-
   return {
-    transaction,
+    transaction: content.transaction,
     notes,
   };
 }
