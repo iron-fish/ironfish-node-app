@@ -58,9 +58,17 @@ export function AccountAssets({ accountName }: { accountName: string }) {
                 {formatOre(data.balances.iron.confirmed)}
               </Heading>
               <HStack alignItems="stretch" justifyContent="center">
-                <NextLink href={`/send?account=${accountName}`}>
+                <NextLink
+                  href={
+                    data.status.viewOnly ? "#" : `/send?account=${accountName}`
+                  }
+                >
                   <Box>
-                    <PillButton size="sm" as="div">
+                    <PillButton
+                      size="sm"
+                      as="div"
+                      isDisabled={data.status.viewOnly}
+                    >
                       <ArrowSend transform="scale(0.8)" />
                       Send
                     </PillButton>

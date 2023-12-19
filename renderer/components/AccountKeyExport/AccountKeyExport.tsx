@@ -7,23 +7,35 @@ import {
   MenuList,
   MenuItem,
   Text,
+  VStack,
+  Flex,
+  Switch,
 } from "@chakra-ui/react";
 import type { AccountFormat } from "@ironfish/sdk";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { defineMessages, useIntl } from "react-intl";
 
 import { trpcReact } from "@/providers/TRPCProvider";
 import { PillButton } from "@/ui/PillButton/PillButton";
 import { downloadString } from "@/utils/downloadString";
 
+import { ViewOnlyChip } from "../ViewOnlyChip/ViewOnlyChip";
+
 type FormatTypes = `${AccountFormat}`;
 
-const formatOptions: FormatTypes[] = [
-  "Mnemonic",
-  "JSON",
-  "Bech32",
-  "SpendingKey",
-];
+const viewOnlyFormatOptions: Map<string, FormatTypes> = new Map([
+  ["Bech32", "Bech32"],
+  ["JSON", "JSON"],
+]);
+
+const formatOptions: Map<string, FormatTypes> = new Map([
+  ["Bech32", "Bech32"],
+  ["JSON", "JSON"],
+  ["Mnemonic", "Mnemonic"],
+  ["Spending Key", "SpendingKey"],
+]);
+
+const defaultFormat: FormatTypes = "Bech32";
 
 const messages = defineMessages({
   exportAccount: {
@@ -35,58 +47,95 @@ const messages = defineMessages({
 });
 
 export function AccountKeyExport({ accountName }: { accountName: string }) {
-  const [exportFormat, setExportFormat] = useState<FormatTypes>("Mnemonic");
+  const [exportFormat, setExportFormat] = useState<FormatTypes>(defaultFormat);
+  const [viewOnlyChecked, setViewOnlyChecked] = useState<boolean>(false);
   const { formatMessage } = useIntl();
 
   if (accountName.length === 0) {
     throw new Error("Expected accountName to be a non-empty string");
   }
 
-  const { data: exportData } = trpcReact.exportAccount.useQuery({
+  const { data: accountData } = trpcReact.getAccount.useQuery({
     name: accountName,
-    format: exportFormat,
   });
 
-  if (!exportData) return null;
+  useEffect(() => {
+    if (
+      viewOnlyChecked &&
+      ![...viewOnlyFormatOptions.values()].includes(exportFormat)
+    ) {
+      setExportFormat(defaultFormat);
+    }
+  }, [exportFormat, viewOnlyChecked]);
 
-  if (typeof exportData.account !== "string") {
-    throw new Error("Expected exportData.account to be a string");
-  }
+  useEffect(() => {
+    if (accountData?.status.viewOnly) {
+      setViewOnlyChecked(true);
+    }
+  }, [accountData?.status.viewOnly]);
 
-  const accountData = exportData.account;
+  const formatOptionsEntries = [
+    ...(viewOnlyChecked ? viewOnlyFormatOptions : formatOptions).entries(),
+  ];
+  const exportFormatDisplay =
+    formatOptionsEntries.find((m) => m[1] === exportFormat)?.[0] ?? "";
+
+  const exportQuery = trpcReact.useUtils().exportAccount;
 
   return (
-    <HStack gap={4}>
-      <PillButton
-        type="submit"
-        height="60px"
-        px={8}
-        onClick={() => {
-          downloadString(
-            accountData,
-            `iron-fish-account-${exportFormat.toLowerCase()}-${accountName}.txt`,
-          );
-        }}
-      >
-        {formatMessage(messages.exportAccount)}
-      </PillButton>
-      <Menu>
-        <MenuButton as={Button} rightIcon={<ChevronDownIcon />}>
-          <HStack>
-            <Text fontWeight="light">
-              {formatMessage(messages.exportFormat)}
-            </Text>
-            <Text>{exportFormat}</Text>
-          </HStack>
-        </MenuButton>
-        <MenuList>
-          {formatOptions.map((format) => (
-            <MenuItem key={format} onClick={() => setExportFormat(format)}>
-              {format}
-            </MenuItem>
-          ))}
-        </MenuList>
-      </Menu>
-    </HStack>
+    <Flex>
+      <VStack gap={4} alignItems={"flex-start"}>
+        <Menu>
+          <MenuButton as={Button} rightIcon={<ChevronDownIcon />}>
+            <HStack>
+              <Text fontWeight="light">
+                {formatMessage(messages.exportFormat)}
+              </Text>
+              <Text>{exportFormatDisplay}</Text>
+            </HStack>
+          </MenuButton>
+          <MenuList>
+            {formatOptionsEntries.map(([k, v]) => (
+              <MenuItem key={v} onClick={() => setExportFormat(v)}>
+                {k}
+              </MenuItem>
+            ))}
+          </MenuList>
+        </Menu>
+        <HStack>
+          <ViewOnlyChip />
+          <Switch
+            isDisabled={accountData?.status.viewOnly}
+            isChecked={viewOnlyChecked}
+            onChange={(c) => setViewOnlyChecked(c.target.checked)}
+          />
+        </HStack>
+        <PillButton
+          type="submit"
+          height="60px"
+          px={8}
+          onClick={() => {
+            exportQuery
+              .fetch({
+                name: accountName,
+                format: exportFormat,
+                viewOnly: viewOnlyChecked,
+              })
+              .then((c) => {
+                if (typeof c.account !== "string") {
+                  console.error("account should not be string");
+                  return;
+                }
+                downloadString(
+                  c.account,
+                  `iron-fish-account-${exportFormat.toLowerCase()}-${accountName}`,
+                );
+              });
+          }}
+        >
+          {formatMessage(messages.exportAccount)}
+        </PillButton>
+      </VStack>
+    </Flex>
   );
 }
