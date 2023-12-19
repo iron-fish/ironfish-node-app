@@ -12,6 +12,9 @@
     "description": "Button to export account in the specified format",
     "message": "Export Account"
   },
+  "/zn2B0": {
+    "message": "View only accounts cannot initiate transactions"
+  },
   "2G6Qs7": {
     "message": "Settings saved"
   },
@@ -29,6 +32,9 @@
   },
   "47FYwb": {
     "message": "Cancel"
+  },
+  "551bXe": {
+    "message": "View Only"
   },
   "5JcXdV": {
     "message": "Create Account"

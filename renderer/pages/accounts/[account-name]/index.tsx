@@ -18,6 +18,7 @@ import { AccountMnemonicView } from "@/components/AccountMnemonicView/AccountMne
 import { AccountSettings } from "@/components/AccountSettings/AccountSettings";
 import { CopyAddress } from "@/components/CopyAddress/CopyAddress";
 import { NotesList } from "@/components/NotesList/NotesList";
+import { ViewOnlyChip } from "@/components/ViewOnlyChip/ViewOnlyChip";
 import keysGhost from "@/images/keys-ghost.svg";
 import lionfishLock from "@/images/lionfish-lock.svg";
 import MainLayout from "@/layouts/MainLayout";
@@ -77,6 +78,11 @@ function AccountOverviewContent({ accountName }: { accountName: string }) {
       <Box>
         <HStack mb={4} gap={4}>
           <Heading>{accountData.name}</Heading>
+          {accountData.status.viewOnly && (
+            <Box transform="translateY(0.25em)">
+              <ViewOnlyChip />
+            </Box>
+          )}
           <CopyAddress
             address={accountData.address}
             transform="translateY(0.4em)"
@@ -111,7 +117,9 @@ function AccountOverviewContent({ accountName }: { accountName: string }) {
                 imgSrc={keysGhost}
               >
                 <VStack gap={8} alignItems="stretch">
-                  <AccountMnemonicView accountName={accountName} />
+                  {!accountData.status.viewOnly && (
+                    <AccountMnemonicView accountName={accountName} />
+                  )}
                   <AccountKeyExport accountName={accountName} />
                 </VStack>
               </WithExplanatorySidebar>
