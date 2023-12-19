@@ -13,7 +13,7 @@ import {
 } from "@chakra-ui/react";
 import { useRouter } from "next/router";
 import { useRef, useState } from "react";
-import { FormattedMessage } from "react-intl";
+import { defineMessages, useIntl } from "react-intl";
 
 import { trpcReact } from "@/providers/TRPCProvider";
 import { TextInput } from "@/ui/Forms/TextInput/TextInput";
@@ -23,9 +23,38 @@ type Props = {
   accountName: string;
 };
 
+const messages = defineMessages({
+  accountName: {
+    defaultMessage: "Account name",
+  },
+  enterName: {
+    defaultMessage: "Please enter a name for this account",
+  },
+  saveChanges: {
+    defaultMessage: "Save Changes",
+  },
+  deleteAccount: {
+    defaultMessage: "Delete Account",
+  },
+  deleteAccountTitle: {
+    defaultMessage: "Delete Account",
+  },
+  deleteAccountConfirmation: {
+    defaultMessage:
+      "Are you sure? You'll have to re-import this account if you want to use it again.",
+  },
+  cancel: {
+    defaultMessage: "Cancel",
+  },
+  delete: {
+    defaultMessage: "Delete",
+  },
+});
+
 export function AccountSettings({ accountName }: Props) {
   const router = useRouter();
   const toast = useToast();
+  const { formatMessage } = useIntl();
 
   const [newName, setNewName] = useState(accountName);
 
@@ -69,12 +98,8 @@ export function AccountSettings({ accountName }: Props) {
           onChange={(e) => {
             setNewName(e.target.value);
           }}
-          label="Account name"
-          error={
-            hasValidName ? undefined : (
-              <FormattedMessage defaultMessage="Please enter a name for this account" />
-            )
-          }
+          label={formatMessage(messages.accountName)}
+          error={hasValidName ? undefined : formatMessage(messages.enterName)}
         />
         <HStack>
           <PillButton
@@ -88,7 +113,7 @@ export function AccountSettings({ accountName }: Props) {
               })
             }
           >
-            <FormattedMessage defaultMessage="Save Changes" />
+            {formatMessage(messages.saveChanges)}
           </PillButton>
           <PillButton
             isDisabled={isRenameLoading}
@@ -98,7 +123,7 @@ export function AccountSettings({ accountName }: Props) {
             px={8}
             border={0}
           >
-            <FormattedMessage defaultMessage="Delete Account" />
+            {formatMessage(messages.deleteAccount)}
           </PillButton>
         </HStack>
       </VStack>
@@ -110,16 +135,16 @@ export function AccountSettings({ accountName }: Props) {
         <AlertDialogOverlay>
           <AlertDialogContent>
             <AlertDialogHeader fontSize="lg" fontWeight="bold">
-              <FormattedMessage defaultMessage="Delete Account" />
+              {formatMessage(messages.deleteAccountTitle)}
             </AlertDialogHeader>
 
             <AlertDialogBody>
-              <FormattedMessage defaultMessage="Are you sure? You'll have to re-import this account if you want to use it again." />
+              {formatMessage(messages.deleteAccountConfirmation)}
             </AlertDialogBody>
 
             <AlertDialogFooter>
               <Button ref={cancelDeleteRef} onClick={onDeleteModalClose}>
-                <FormattedMessage defaultMessage="Cancel" />
+                {formatMessage(messages.cancel)}
               </Button>
               <Button
                 isDisabled={isDeleteLoading}
@@ -129,7 +154,7 @@ export function AccountSettings({ accountName }: Props) {
                 }}
                 ml={3}
               >
-                <FormattedMessage defaultMessage="Delete" />
+                {formatMessage(messages.delete)}
               </Button>
             </AlertDialogFooter>
           </AlertDialogContent>

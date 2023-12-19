@@ -27,9 +27,6 @@
   "3euoRJ": {
     "message": "Recovery Phrase"
   },
-  "43FmnD": {
-    "message": "Safeguarding your mnemonic phrase and encoded keys is essential to maintain full ownership, control, and security over your digital assets."
-  },
   "47FYwb": {
     "message": "Cancel"
   },
@@ -54,8 +51,11 @@
   "6T+v0W": {
     "message": "Account imported"
   },
-  "6yYqh0": {
-    "message": "Telemetry"
+  "8GvVWZ": {
+    "message": "Something went wrong, please try again."
+  },
+  "9IVf3z": {
+    "message": "Account Overview"
   },
   "9uOFF3": {
     "message": "Overview"
@@ -66,11 +66,17 @@
   "Arxl88": {
     "message": "Outgoing"
   },
+  "BxM6mJ": {
+    "message": "Lowest to highest balance"
+  },
   "D3idYv": {
     "message": "Settings"
   },
   "Gcv5yj": {
     "message": "Heap Used"
+  },
+  "Gcv7QB": {
+    "message": "Account name"
   },
   "H56oje": {
     "message": "Node Workers"
@@ -89,6 +95,9 @@
   },
   "Ld49Lh": {
     "message": "What would you like to name this account? This name is only visible to you."
+  },
+  "MFUhla": {
+    "message": "Highest to lowest balance"
   },
   "N0KGQj": {
     "message": "Block Graffiti"
@@ -114,11 +123,11 @@
   "Pq25uf": {
     "message": "Reset Node"
   },
+  "QS9NTE": {
+    "message": "Account name — A to Z"
+  },
   "R2OqnW": {
     "message": "Delete Account"
-  },
-  "RAL4T2": {
-    "message": "Keep your keys safe by only revealing their contents when you're sure nobody is peering. These are used to access your accounts and are the primary security measure against non-solicited user access."
   },
   "RLGujF": {
     "message": "Connected Peers"
@@ -159,9 +168,6 @@
   "ZhUW3G": {
     "message": "Heap Total"
   },
-  "aAyZzA": {
-    "message": "You can remove and reimport your accounts at your convenience, provided that you possess the necessary account keys. To ensure a seamless experience, it is highly recommended to maintain a backup of your account keys in a secure location."
-  },
   "acrOoz": {
     "message": "Continue"
   },
@@ -176,6 +182,9 @@
   },
   "fF376U": {
     "message": "Current"
+  },
+  "fKN5VY": {
+    "message": "Create Contact"
   },
   "flxGnZ": {
     "message": "Telemetry enabled"
@@ -213,6 +222,9 @@
   "vNT9Ip": {
     "message": "Mnemonic Phrase"
   },
+  "wsALI4": {
+    "message": "Enter Encoded Key"
+  },
   "xkLxAx": {
     "message": "Account Created"
   },
@@ -221,5 +233,8 @@
   },
   "yjpdGo": {
     "message": "You don't have any contacts"
+  },
+  "zAPy5e": {
+    "message": "Account name — Z to A"
   }
 }

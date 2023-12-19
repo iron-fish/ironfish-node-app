@@ -10,6 +10,7 @@ import { TextInput } from "@/ui/Forms/TextInput/TextInput";
 import { PillButton } from "@/ui/PillButton/PillButton";
 import { hexToUTF16String } from "@/utils/hexToUTF16String";
 import { formatOre, parseIron } from "@/utils/ironUtils";
+import { asQueryString } from "@/utils/parseRouteQuery";
 
 import { ConfirmTransactionModal } from "./ConfirmTransactionModal/ConfirmTransactionModal";
 import {
@@ -21,9 +22,11 @@ import {
 export function SendAssetsFormContent({
   accountsData,
   estimatedFeesData,
+  defaultToAddress,
 }: {
   accountsData: TRPCRouterOutputs["getAccounts"];
   estimatedFeesData: TRPCRouterOutputs["getEstimatedFees"];
+  defaultToAddress?: string | null;
 }) {
   const router = useRouter();
 
@@ -56,6 +59,7 @@ export function SendAssetsFormContent({
     resolver: zodResolver(transactionSchema),
     defaultValues: {
       fromAccount: defaultAccount,
+      toAccount: defaultToAddress ?? "",
       assetId: accountsData[0].balances.iron.asset.id,
       fee: "average",
     },
@@ -183,8 +187,10 @@ export function SendAssetsFormContent({
 }
 
 export function SendAssetsForm() {
+  const router = useRouter();
   const { data: accountsData } = trpcReact.getAccounts.useQuery();
   const { data: estimatedFeesData } = trpcReact.getEstimatedFees.useQuery();
+  const defaultToAddress = asQueryString(router.query.to);
 
   if (!accountsData || !estimatedFeesData) {
     return null;
@@ -194,6 +200,7 @@ export function SendAssetsForm() {
     <SendAssetsFormContent
       accountsData={accountsData}
       estimatedFeesData={estimatedFeesData}
+      defaultToAddress={defaultToAddress}
     />
   );
 }

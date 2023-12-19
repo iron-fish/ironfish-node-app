@@ -9,10 +9,26 @@ import {
 } from "@chakra-ui/react";
 import { useRouter } from "next/router";
 import { useCallback } from "react";
-import { FormattedMessage } from "react-intl";
+import { defineMessages, useIntl } from "react-intl";
 
 import { trpcReact } from "@/providers/TRPCProvider";
 import { PillButton } from "@/ui/PillButton/PillButton";
+
+const messages = defineMessages({
+  telemetry: {
+    defaultMessage:
+      "We'd like to collect anonymous telemetry data in order to continually improve your experience. This data includes node performance, block information, and other health metrics. You can enable or disable this at any time in the node settings page.",
+  },
+  telemetryEnabled: {
+    defaultMessage: "Telemetry enabled",
+  },
+  telemetryDisabled: {
+    defaultMessage: "Telemetry disabled",
+  },
+  continue: {
+    defaultMessage: "Continue",
+  },
+});
 
 export function TelemetryPrompt() {
   const router = useRouter();
@@ -20,6 +36,7 @@ export function TelemetryPrompt() {
     name: "enableTelemetry",
   });
   const { mutate: setConfig } = trpcReact.setConfig.useMutation();
+  const { formatMessage } = useIntl();
 
   const isTelemetryEnabled = configData?.enableTelemetry ?? false;
 
@@ -36,11 +53,11 @@ export function TelemetryPrompt() {
   return (
     <Box>
       <Heading mt={24} mb={8}>
-        <FormattedMessage defaultMessage="Telemetry" />
+        {formatMessage(messages.telemetry)}
       </Heading>
 
       <Text mb={4} fontSize="md">
-        <FormattedMessage defaultMessage=" We'd like to collect anonymous telemetry data in order to continually improve your experience. This data includes node performance, block information, and other health metrics. You can enable or disable this at any time in the node settings page." />
+        {formatMessage(messages.telemetry)}
       </Text>
 
       <FormControl display="flex" alignItems="center" mb={8}>
@@ -52,11 +69,9 @@ export function TelemetryPrompt() {
           }}
         />
         <FormLabel mb={0}>
-          {isTelemetryEnabled ? (
-            <FormattedMessage defaultMessage="Telemetry enabled" />
-          ) : (
-            <FormattedMessage defaultMessage="Telemetry disabled" />
-          )}
+          {isTelemetryEnabled
+            ? formatMessage(messages.telemetryEnabled)
+            : formatMessage(messages.telemetryDisabled)}
         </FormLabel>
       </FormControl>
 
@@ -68,7 +83,7 @@ export function TelemetryPrompt() {
             router.push("/onboarding/snapshot-download");
           }}
         >
-          <FormattedMessage defaultMessage="Continue" />
+          {formatMessage(messages.continue)}
         </PillButton>
       </HStack>
     </Box>
