@@ -40,6 +40,7 @@ const defaultFormat: FormatTypes = "Bech32";
 const messages = defineMessages({
   exportAccount: {
     defaultMessage: "Export Account",
+    description: "Button to export account in the specified format",
   },
   exportFormat: {
     defaultMessage: "Export Format:",
