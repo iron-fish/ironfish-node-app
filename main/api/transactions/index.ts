@@ -31,6 +31,8 @@ export const transactionRouter = t.router({
     .input(
       z.object({
         accountName: z.string(),
+        cursor: z.number().optional(),
+        limit: z.number().min(1).max(100).optional(),
       }),
     )
     .query(async (opts) => {

@@ -8,7 +8,7 @@ import {
   Flex,
 } from "@chakra-ui/react";
 import { useRouter } from "next/router";
-import { ReactNode } from "react";
+import { createContext, ReactNode, useContext, useState } from "react";
 
 import { BackButton } from "@/components/BackButton/BackButton";
 import { StatusIndicator } from "@/components/StatusIndicator/StatusIndicator";
@@ -143,7 +143,17 @@ type Props = {
   };
 };
 
+const ScrollElementContext = createContext<HTMLDivElement | null>(null);
+
+export function useScrollElementContext() {
+  return useContext(ScrollElementContext);
+}
+
 export default function MainLayout({ children, backLinkProps }: Props) {
+  const [scrollElement, setScrollElement] = useState<HTMLDivElement | null>(
+    null,
+  );
+
   return (
     <WithDraggableArea
       bg="white"
@@ -166,25 +176,34 @@ export default function MainLayout({ children, backLinkProps }: Props) {
         >
           <Sidebar />
         </GridItem>
-        <GridItem px={6} pt={10} pb={8} h="100%" overflow="auto">
-          <Box
-            mx="auto"
-            maxWidth={{
-              base: "100%",
-              sm: "597px",
-              lg: "825px",
-              xl: "1048px",
-              "2xl": "1280px",
-            }}
-          >
-            {backLinkProps && (
-              <BackButton
-                href={backLinkProps.href}
-                label={backLinkProps.label}
-              />
-            )}
-            {children}
-          </Box>
+        <GridItem
+          px={6}
+          pt={10}
+          pb={8}
+          h="100%"
+          overflow="auto"
+          ref={(r) => setScrollElement(r)}
+        >
+          <ScrollElementContext.Provider value={scrollElement}>
+            <Box
+              mx="auto"
+              maxWidth={{
+                base: "100%",
+                sm: "597px",
+                lg: "825px",
+                xl: "1048px",
+                "2xl": "1280px",
+              }}
+            >
+              {backLinkProps && (
+                <BackButton
+                  href={backLinkProps.href}
+                  label={backLinkProps.label}
+                />
+              )}
+              {children}
+            </Box>
+          </ScrollElementContext.Provider>
         </GridItem>
       </Grid>
     </WithDraggableArea>

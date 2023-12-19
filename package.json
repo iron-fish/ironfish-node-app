@@ -82,6 +82,7 @@
     "react-icons": "^4.11.0",
     "react-intl": "^6.5.5",
     "react-markdown": "9.0.1",
+    "react-virtuoso": "^4.6.2",
     "tar": "^6.2.0",
     "tsx": "^4.6.2",
     "type-fest": "^4.6.0",
