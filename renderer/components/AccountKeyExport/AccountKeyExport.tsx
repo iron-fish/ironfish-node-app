@@ -74,11 +74,11 @@ export function AccountKeyExport({ accountName }: { accountName: string }) {
     }
   }, [accountData?.status.viewOnly]);
 
-  const formatOptionsMap = [
+  const formatOptionsEntries = [
     ...(viewOnlyChecked ? viewOnlyFormatOptions : formatOptions).entries(),
   ];
   const exportFormatDisplay =
-    formatOptionsMap.find((m) => m[1] === exportFormat)?.[0] ?? "";
+    formatOptionsEntries.find((m) => m[1] === exportFormat)?.[0] ?? "";
 
   const exportQuery = trpcReact.useUtils().exportAccount;
 
@@ -95,7 +95,7 @@ export function AccountKeyExport({ accountName }: { accountName: string }) {
             </HStack>
           </MenuButton>
           <MenuList>
-            {formatOptionsMap.map(([k, v]) => (
+            {formatOptionsEntries.map(([k, v]) => (
               <MenuItem key={v} onClick={() => setExportFormat(v)}>
                 {k}
               </MenuItem>
