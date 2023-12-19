@@ -1,4 +1,4 @@
-import type { TransactionType } from "@ironfish/sdk";
+import type { TransactionStatus, TransactionType } from "@ironfish/sdk";
 
 export type TransactionNote = {
   assetName: string;
@@ -8,6 +8,7 @@ export type TransactionNote = {
   to: string;
   transactionHash: string;
   type: TransactionType;
+  status: TransactionStatus;
   memo: string;
   noteHash: string;
   accountName: string;

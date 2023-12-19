@@ -115,7 +115,7 @@ function AccountOverviewContent({ accountName }: { accountName: string }) {
             <TabPanel p={0}>
               <AccountAssets accountName={accountName} />
               <NotesList
-                linkToTransaction
+                asTransactions
                 isLoading={isLoading}
                 isError={isError}
                 notes={transactionsData?.transactions ?? []}
