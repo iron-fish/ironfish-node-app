@@ -11,7 +11,7 @@ export function CreateImportAccount() {
   return (
     <Box>
       <LogoLg />
-      <Heading mt={24} mb={8}>
+      <Heading mt={16} mb={8}>
         Iron Fish Wallet
       </Heading>
       <ShadowCard contentContainerProps={{ p: 8 }} mb={8}>

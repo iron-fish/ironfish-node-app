@@ -29,6 +29,9 @@ import { PillButton } from "@/ui/PillButton/PillButton";
 import { asQueryString } from "@/utils/parseRouteQuery";
 
 const messages = defineMessages({
+  backToAccounts: {
+    defaultMessage: "Back to all accounts",
+  },
   accountOverview: {
     defaultMessage: "Account Overview",
   },
@@ -82,7 +85,7 @@ function AccountOverviewContent({ accountName }: { accountName: string }) {
     <MainLayout
       backLinkProps={{
         href: "/accounts",
-        label: formatMessage(messages.accountOverview),
+        label: formatMessage(messages.backToAccounts),
       }}
     >
       <Box>
