@@ -132,7 +132,7 @@ export function ConfirmTransactionModal({
                 Transaction Error
               </Heading>
               <Text fontSize="md">
-                Something went wrong. please review your transaction and try
+                Something went wrong. Please review your transaction and try
                 again.
               </Text>
 
