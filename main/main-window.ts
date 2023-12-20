@@ -120,6 +120,7 @@ class MainWindow {
 
     this.window = createWindow("main", {
       icon,
+      minWidth: 750,
       show: false,
       title: "Iron Fish Node App",
       titleBarStyle: "hidden",
