@@ -21,11 +21,9 @@ import {
 
 export function SendAssetsFormContent({
   accountsData,
-  estimatedFeesData,
   defaultToAddress,
 }: {
   accountsData: TRPCRouterOutputs["getAccounts"];
-  estimatedFeesData: TRPCRouterOutputs["getEstimatedFees"];
   defaultToAddress?: string | null;
 }) {
   const router = useRouter();
@@ -58,6 +56,7 @@ export function SendAssetsFormContent({
   } = useForm<TransactionFormData>({
     resolver: zodResolver(transactionSchema),
     defaultValues: {
+      amount: 0,
       fromAccount: defaultAccount,
       toAccount: defaultToAddress ?? "",
       assetId: accountsData[0]?.balances.iron.asset.id,
@@ -68,6 +67,32 @@ export function SendAssetsFormContent({
   const fromAccountValue = watch("fromAccount");
   const assetValue = watch("assetId");
   const feeValue = watch("fee");
+  const amountValue = watch("amount");
+  const toAccountValue = watch("toAccount");
+  const memoValue = watch("memo");
+
+  console.log(amountValue, parseIron(amountValue));
+
+  const { data: estimatedFeesData } = trpcReact.getEstimatedFees.useQuery(
+    {
+      accountName: fromAccountValue,
+      output: {
+        amount: parseIron(amountValue),
+        assetId: assetValue,
+        memo: memoValue ?? "",
+        publicAddress: toAccountValue,
+      },
+    },
+    {
+      retry: false,
+      enabled:
+        amountValue > 0 &&
+        !errors.memo &&
+        !errors.amount &&
+        !errors.toAccount &&
+        !errors.assetId,
+    },
+  );
 
   const assetOptions = useMemo(() => {
     const selectedAccount = accountsData?.find(
@@ -95,13 +120,18 @@ export function SendAssetsFormContent({
     <>
       <chakra.form
         onSubmit={handleSubmit((data) => {
+          // @todo: Try marking the form as invalid or disabling the button
+          if (!estimatedFeesData) {
+            return;
+          }
+
           const fee = estimatedFeesData[data.fee];
           setPendingTransaction({
             fromAccount: data.fromAccount,
             toAccount: data.toAccount,
             assetId: data.assetId,
             amount: parseIron(data.amount),
-            fee: parseInt(fee, 10),
+            fee: fee,
             memo: data.memo ?? "",
           });
         })}
@@ -141,17 +171,27 @@ export function SendAssetsFormContent({
             label="Fee ($IRON)"
             options={[
               {
-                label: `Slow (${formatOre(estimatedFeesData.slow)} $IRON)`,
+                label: `Slow${
+                  estimatedFeesData
+                    ? ` (${formatOre(estimatedFeesData.slow)} $IRON)`
+                    : ""
+                }`,
                 value: "slow",
               },
               {
-                label: `Average (${formatOre(
-                  estimatedFeesData.average,
-                )} $IRON)`,
+                label: `Average${
+                  estimatedFeesData
+                    ? ` (${formatOre(estimatedFeesData.average)} $IRON)`
+                    : ""
+                }`,
                 value: "average",
               },
               {
-                label: `Fast (${formatOre(estimatedFeesData.fast)} $IRON)`,
+                label: `Fast${
+                  estimatedFeesData
+                    ? ` (${formatOre(estimatedFeesData.fast)} $IRON)`
+                    : ""
+                }`,
                 value: "fast",
               },
             ]}
@@ -190,17 +230,15 @@ export function SendAssetsForm() {
   const router = useRouter();
   const { data: accountsData } = trpcReact.getAccounts.useQuery();
   const filteredAccounts = accountsData?.filter((a) => !a.status.viewOnly);
-  const { data: estimatedFeesData } = trpcReact.getEstimatedFees.useQuery();
   const defaultToAddress = asQueryString(router.query.to);
 
-  if (!filteredAccounts || !estimatedFeesData) {
+  if (!filteredAccounts) {
     return null;
   }
 
   return (
     <SendAssetsFormContent
       accountsData={filteredAccounts}
-      estimatedFeesData={estimatedFeesData}
       defaultToAddress={defaultToAddress}
     />
   );
