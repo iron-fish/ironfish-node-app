@@ -65,7 +65,7 @@ function SingleContactContent({ address }: { address: string }) {
           <TabPanels>
             <TabPanel p={0}>
               <NotesList
-                linkToTransaction
+                asTransactions
                 notes={transactionsData}
                 heading="Transactions"
               />

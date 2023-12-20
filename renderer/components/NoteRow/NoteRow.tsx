@@ -1,6 +1,7 @@
 import { ChevronRightIcon } from "@chakra-ui/icons";
 import { Box, Grid, GridItem, HStack, Text } from "@chakra-ui/react";
-import type { TransactionType } from "@ironfish/sdk";
+import type { TransactionStatus, TransactionType } from "@ironfish/sdk";
+import { ReactNode } from "react";
 
 import { MaybeLink } from "@/ui/ChakraLink/ChakraLink";
 import { COLORS } from "@/ui/colors";
@@ -10,10 +11,12 @@ import { hexToUTF16String } from "@/utils/hexToUTF16String";
 import { formatOre } from "@/utils/ironUtils";
 import { truncateString } from "@/utils/truncateString";
 
+import { ExpiredIcon } from "./icons/ExpiredIcon";
+import { PendingIcon } from "./icons/PendingIcon";
 import { ReceivedIcon } from "./icons/ReceivedIcon";
 import { SentIcon } from "./icons/SentIcon";
 
-export function TransactionsHeadings() {
+export function NotesHeadings() {
   return (
     <Grid
       templateColumns={{
@@ -42,7 +45,37 @@ export function TransactionsHeadings() {
   );
 }
 
-export function TransactionRow({
+function getNoteStatusDisplay(
+  type: TransactionType,
+  status: TransactionStatus,
+  asTransaction: boolean,
+): { icon: ReactNode; text: string } {
+  if (asTransaction || status === "confirmed") {
+    if (type === "send") {
+      return { icon: <SentIcon />, text: "Sent" };
+    } else if (type === "receive" || type === "miner") {
+      return { icon: <ReceivedIcon />, text: "Received" };
+    }
+
+    const unhandledType: never = type;
+    console.error("Unhandled transaction type", unhandledType);
+    return { icon: <ReceivedIcon />, text: "Received" };
+  } else if (
+    status === "pending" ||
+    status === "unknown" ||
+    status === "unconfirmed"
+  ) {
+    return { icon: <PendingIcon />, text: "Pending" };
+  } else if (status === "expired") {
+    return { icon: <ExpiredIcon />, text: "Expired" };
+  }
+
+  const unhandledStatus: never = status;
+  console.error("Unhandled transaction status", unhandledStatus);
+  return { icon: <PendingIcon />, text: "Pending" };
+}
+
+export function NoteRow({
   accountName,
   assetName,
   value,
@@ -50,9 +83,10 @@ export function TransactionRow({
   from,
   to,
   type,
+  status,
   memo,
   transactionHash,
-  linkToTransaction,
+  asTransaction = false,
 }: {
   accountName: string;
   assetName: string;
@@ -61,14 +95,21 @@ export function TransactionRow({
   from: string;
   to: string;
   type: TransactionType;
+  status: TransactionStatus;
   memo: string;
   transactionHash: string;
-  linkToTransaction?: boolean;
+  /**
+   * Render the row as if it were a transaction (link it to the transaction details page,
+   * show the status as the transaction's status)
+   */
+  asTransaction?: boolean;
 }) {
+  const statusDisplay = getNoteStatusDisplay(type, status, asTransaction);
+
   return (
     <MaybeLink
       href={
-        linkToTransaction
+        asTransaction
           ? `/accounts/${accountName}/transaction/${transactionHash}`
           : undefined
       }
@@ -76,7 +117,7 @@ export function TransactionRow({
     >
       <Box py={2}>
         <ShadowCard
-          hoverable={linkToTransaction}
+          hoverable={asTransaction}
           height="86px"
           contentContainerProps={{
             display: "flex",
@@ -87,7 +128,7 @@ export function TransactionRow({
           <Grid
             templateColumns={{
               base: `repeat(5, 1fr)`,
-              md: linkToTransaction ? `repeat(5, 1fr) 55px` : `repeat(5, 1fr)`,
+              md: asTransaction ? `repeat(5, 1fr) 55px` : `repeat(5, 1fr)`,
             }}
             opacity="0.8"
             w="100%"
@@ -95,8 +136,8 @@ export function TransactionRow({
           >
             <GridItem display="flex" alignItems="center" pl={8}>
               <HStack gap={4}>
-                {type === "send" ? <SentIcon /> : <ReceivedIcon />}
-                <Text as="span">{type === "send" ? "Sent" : "Received"}</Text>
+                {statusDisplay.icon}
+                <Text as="span">{statusDisplay.text}</Text>
               </HStack>
             </GridItem>
             <GridItem display="flex" alignItems="center">
@@ -115,7 +156,7 @@ export function TransactionRow({
             <GridItem display="flex" alignItems="center">
               <Text as="span">{memo || "—"}</Text>
             </GridItem>
-            {linkToTransaction && (
+            {asTransaction && (
               <GridItem
                 alignItems="center"
                 display={{
