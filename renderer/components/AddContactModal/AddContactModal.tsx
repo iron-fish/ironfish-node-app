@@ -115,23 +115,21 @@ export function AddContactModal({ isOpen, onClose }: Props) {
           )}
         </ModalBody>
 
-        <ModalFooter display="flex" gap={2} py={8}>
+        <ModalFooter display="flex" gap={2} px={16} py={8}>
           {(isIdle || isLoading) && (
             <>
               <PillButton
+                size="sm"
                 isDisabled={isLoading}
                 onClick={handleClose}
                 variant="inverted"
-                height="60px"
-                px={8}
                 border={0}
               >
                 Cancel
               </PillButton>
               <PillButton
+                size="sm"
                 isDisabled={isLoading}
-                height="60px"
-                px={8}
                 onClick={() => {
                   handleSubmit((values) => {
                     addContact(values);
@@ -145,19 +143,17 @@ export function AddContactModal({ isOpen, onClose }: Props) {
           {isError && (
             <>
               <PillButton
+                size="sm"
                 isDisabled={isLoading}
                 onClick={onClose}
                 variant="inverted"
-                height="60px"
-                px={8}
                 border={0}
               >
                 Close
               </PillButton>
               <PillButton
+                size="sm"
                 isDisabled={isLoading}
-                height="60px"
-                px={8}
                 onClick={() => {
                   resetForm();
                   resetMutation();

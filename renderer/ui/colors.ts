@@ -26,3 +26,45 @@ export const COLORS = {
     YELLOW_DARK: "#4B4608",
   } as const,
 } as const;
+
+export const GRADIENTS = {
+  violet: {
+    from: "#F4BFFF",
+    to: "#DE83F0",
+  },
+  green: {
+    from: "#E1FFB0",
+    to: "#C7F182",
+  },
+  lightBlue: {
+    from: "#BFF6FF",
+    to: "#8AE1EF",
+  },
+  orange: {
+    from: "#FFE2B9",
+    to: "#FFCD85",
+  },
+  pink: {
+    from: "#FFD7F0",
+    to: "#FFC2E8",
+  },
+  yellow: {
+    from: "#FFF698",
+    to: "#FFEC1F",
+  },
+  blue: {
+    from: "#85ADFD",
+    to: "#4B87FF",
+  },
+  cream: {
+    from: "#FFF5EB",
+    to: "#FBEADA",
+  },
+};
+
+const GRADIENTS_ARRAY = Object.values(GRADIENTS);
+
+export function getGradientByOrder(order: number) {
+  const gradient = GRADIENTS_ARRAY[order % GRADIENTS_ARRAY.length];
+  return `linear-gradient(90deg, ${gradient.from} 0%, ${gradient.to} 100%)`;
+}
