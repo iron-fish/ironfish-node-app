@@ -36,7 +36,7 @@ const messages = defineMessages({
   },
   description: {
     defaultMessage:
-      "The Iron Fish Node app supports X languages. If your preferred language isn't listed, please reach out and let us know!",
+      "The Iron Fish Node app supports {languageCount} languages. If your preferred language isn't listed, please reach out and let us know!",
   },
   close: {
     defaultMessage: "Close",
@@ -144,7 +144,11 @@ function LanguageSelectorModal({
           <Heading fontSize="2xl" mb={4}>
             {formatMessage(messages.chooseLanguage)}
           </Heading>
-          <Text mb={8}>{formatMessage(messages.description)}</Text>
+          <Text mb={8}>
+            {formatMessage(messages.description, {
+              languageCount: sortOptions.length,
+            })}
+          </Text>
 
           <Select
             {...register("language", {
