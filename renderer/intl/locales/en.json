@@ -60,6 +60,9 @@
   "8GvVWZ": {
     "message": "Something went wrong, please try again."
   },
+  "8WtyrD": {
+    "message": "Spanish"
+  },
   "9IVf3z": {
     "message": "Account Overview"
   },
@@ -159,6 +162,9 @@
   "WWEwrn": {
     "message": "Node Settings"
   },
+  "WkrNSk": {
+    "message": "English"
+  },
   "WsssxH": {
     "message": "Select your JSON or Bech32 file to import your account."
   },
@@ -182,6 +188,9 @@
   },
   "baVA6q": {
     "message": "Head Sequence"
+  },
+  "bcOwoF": {
+    "message": "Choose your language"
   },
   "c/KktL": {
     "message": "Resources"
@@ -224,6 +233,9 @@
   },
   "tf1lIh": {
     "message": "Free"
+  },
+  "u8X7S9": {
+    "message": "The Iron Fish Node app supports X languages. If your preferred language isn't listed, please reach out and let us know!"
   },
   "uCgp+K": {
     "message": "Blocks Per message"

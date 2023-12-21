@@ -6,6 +6,7 @@ export type UserSettings = {
   enabled: boolean;
   dataDir: string;
   theme: "light" | "dark" | "system";
+  locale: string | null;
 };
 
 export const PartialUserSettingsSchema: z.ZodType<Partial<UserSettings>> = z
@@ -13,6 +14,7 @@ export const PartialUserSettingsSchema: z.ZodType<Partial<UserSettings>> = z
     enabled: z.boolean(),
     dataDir: z.string(),
     theme: z.enum(["light", "dark", "system"]),
+    locale: z.string().nullable(),
   })
   .partial();
 
@@ -44,6 +46,7 @@ export async function loadUserSettings(): Promise<UserSettingsStore> {
       dataDir: fileSystem.resolve(DEFAULT_DATA_DIR),
       enabled: false,
       theme: "system",
+      locale: null,
     },
   });
 
