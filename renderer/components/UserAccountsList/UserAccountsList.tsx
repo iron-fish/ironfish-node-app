@@ -13,8 +13,10 @@ import { defineMessages, useIntl } from "react-intl";
 import { TRPCRouterOutputs, trpcReact } from "@/providers/TRPCProvider";
 import { gradientOptions } from "@/ui/ShadowCard/ShadowCard";
 import { parseOre } from "@/utils/ironUtils";
+import { useSyncStatus } from "@/utils/useSyncStatus";
 
 import { AccountRow } from "../AccountRow/AccountRow";
+import { ChainSyncingMessage } from "../ChainSyncingMessage/ChainSyncingMessage";
 import { DropdownTrigger } from "../DropdownTrigger/DropdownTrigger";
 import { SearchInput } from "../SearchInput/SearchInput";
 
@@ -81,8 +83,12 @@ export function UserAccountsList() {
   const { data } = trpcReact.getAccounts.useQuery();
   const { formatMessage } = useIntl();
 
+  const { status } = useSyncStatus();
+  const isSynced = status === "SYNCED";
+
   return (
     <VStack>
+      <ChainSyncingMessage mb={4} />
       <Grid w="100%" templateColumns="3fr 1fr" gap={4} mb={4}>
         <GridItem>
           <SearchInput onChange={(e) => setSearchInput(e.target.value)} />
@@ -123,6 +129,7 @@ export function UserAccountsList() {
               balance={account.balances.iron.confirmed}
               address={account.address}
               viewOnly={account.status.viewOnly}
+              isSyncing={!isSynced}
             />
           );
         })}

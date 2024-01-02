@@ -11,6 +11,7 @@ import { PillButton } from "@/ui/PillButton/PillButton";
 import { hexToUTF16String } from "@/utils/hexToUTF16String";
 import { formatOre, parseIron } from "@/utils/ironUtils";
 import { asQueryString } from "@/utils/parseRouteQuery";
+import { useSyncStatus } from "@/utils/useSyncStatus";
 
 import { ConfirmTransactionModal } from "./ConfirmTransactionModal/ConfirmTransactionModal";
 import {
@@ -18,6 +19,7 @@ import {
   TransactionFormData,
   transactionSchema,
 } from "./transactionSchema";
+import { ChainSyncingMessage } from "../ChainSyncingMessage/ChainSyncingMessage";
 
 export function SendAssetsFormContent({
   accountsData,
@@ -91,8 +93,11 @@ export function SendAssetsFormContent({
     return assets;
   }, [accountsData, fromAccountValue]);
 
+  const { status } = useSyncStatus();
+
   return (
     <>
+      <ChainSyncingMessage mb={4} />
       <chakra.form
         onSubmit={handleSubmit((data) => {
           const fee = estimatedFeesData[data.fee];
@@ -166,7 +171,12 @@ export function SendAssetsFormContent({
         </VStack>
 
         <HStack mt={8} justifyContent="flex-end">
-          <PillButton type="submit" height="60px" px={8}>
+          <PillButton
+            type="submit"
+            height="60px"
+            px={8}
+            isDisabled={status !== "SYNCED"}
+          >
             Send Asset
           </PillButton>
         </HStack>

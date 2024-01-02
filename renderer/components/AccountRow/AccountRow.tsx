@@ -1,6 +1,15 @@
 import { ChevronRightIcon } from "@chakra-ui/icons";
-import { Box, Flex, Heading, HStack, Text, VStack } from "@chakra-ui/react";
+import {
+  Box,
+  Flex,
+  Heading,
+  HStack,
+  Text,
+  Tooltip,
+  VStack,
+} from "@chakra-ui/react";
 import { useRouter } from "next/router";
+import { defineMessages, useIntl } from "react-intl";
 
 import { ChakraLink } from "@/ui/ChakraLink/ChakraLink";
 import { COLORS } from "@/ui/colors";
@@ -14,12 +23,23 @@ import { formatOre } from "@/utils/ironUtils";
 import { CopyAddress } from "../CopyAddress/CopyAddress";
 import { ViewOnlyChip } from "../ViewOnlyChip/ViewOnlyChip";
 
+const messages = defineMessages({
+  viewOnlySendDisabled: {
+    defaultMessage: "View only accounts cannot send transactions",
+  },
+  syncingSendDisabled: {
+    defaultMessage:
+      "You cannot send transactions while the blockchain is syncing",
+  },
+});
+
 type AccountRowProps = {
   color: GradientOptions;
   name: string;
   balance: string;
   address: string;
   viewOnly: boolean;
+  isSyncing: boolean;
 };
 
 export function AccountRow({
@@ -28,8 +48,10 @@ export function AccountRow({
   balance,
   address,
   viewOnly,
+  isSyncing,
 }: AccountRowProps) {
   const router = useRouter();
+  const { formatMessage } = useIntl();
   return (
     <ChakraLink href={`/accounts/${name}`} w="100%">
       <ShadowCard hoverable>
@@ -63,18 +85,37 @@ export function AccountRow({
             <CopyAddress address={address} />
           </VStack>
 
-          <VStack alignItems="stretch" justifyContent="center">
-            <PillButton
-              size="sm"
-              isDisabled={viewOnly}
-              onClick={(e) => {
-                e.preventDefault();
-                router.push(`/send?account=${name}`);
-              }}
+          <VStack
+            alignItems="stretch"
+            justifyContent="center"
+            position="relative"
+          >
+            <Tooltip
+              label={
+                viewOnly
+                  ? formatMessage(messages.viewOnlySendDisabled)
+                  : isSyncing
+                  ? formatMessage(messages.syncingSendDisabled)
+                  : null
+              }
+              placement="top"
             >
-              <ArrowSend transform="scale(0.8)" />
-              Send
-            </PillButton>
+              <VStack w="100%" alignItems="stretch">
+                <PillButton
+                  size="sm"
+                  isDisabled={viewOnly || isSyncing}
+                  onClick={(e) => {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    if (viewOnly || isSyncing) return;
+                    router.push(`/send?account=${name}`);
+                  }}
+                >
+                  <ArrowSend transform="scale(0.8)" />
+                  Send
+                </PillButton>
+              </VStack>
+            </Tooltip>
             <PillButton
               size="sm"
               onClick={(e) => {

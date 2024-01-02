@@ -87,6 +87,7 @@ export function PillButton({
       alignItems="center"
       gap={2}
       disabled={isDisabled}
+      isDisabled={isDisabled}
       type={type}
       cursor="pointer"
       {...VARIANT_PROPS[variant].light}
