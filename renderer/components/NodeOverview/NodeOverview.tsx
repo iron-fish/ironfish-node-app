@@ -86,7 +86,10 @@ export function NodeOverview() {
           contentContainerProps={{
             bg: "#FFCD85",
             p: 8,
-            pt: "120px",
+            pt: {
+              base: 8,
+              lg: "120px",
+            },
             overflow: "hidden",
             position: "relative",
           }}
