@@ -15,14 +15,18 @@ import { useRouter } from "next/router";
 
 import { CopyAddress } from "@/components/CopyAddress/CopyAddress";
 import { EditContactForm } from "@/components/EditContactForm/EditContactForm";
+import { FishIcon } from "@/components/FishIcon/FishIcon";
 import { NotesList } from "@/components/NotesList/NotesList";
 import octopus from "@/images/octopus.svg";
 import MainLayout from "@/layouts/MainLayout";
 import { trpcReact } from "@/providers/TRPCProvider";
-import { COLORS } from "@/ui/colors";
+import { COLORS, getGradientByOrder } from "@/ui/colors";
+import { PillButton } from "@/ui/PillButton/PillButton";
+import { ArrowSend } from "@/ui/SVGs/ArrowSend";
 import { asQueryString } from "@/utils/parseRouteQuery";
 
 function SingleContactContent({ address }: { address: string }) {
+  const router = useRouter();
   const { data: transactionsData } =
     trpcReact.getTransactionsForContact.useQuery({
       contactAddress: address,
@@ -45,12 +49,23 @@ function SingleContactContent({ address }: { address: string }) {
       }}
     >
       <Box>
-        <HStack mb={4} gap={4}>
+        <HStack mb={4} gap={4} alignItems="center">
+          <FishIcon bg={getGradientByOrder(contactData.order ?? 0)} mr={2} />
           <Heading>{contactData.name}</Heading>
           <CopyAddress
             address={contactData.address}
             transform="translateY(0.4em)"
           />
+          <PillButton
+            size="sm"
+            onClick={(e) => {
+              e.preventDefault();
+              router.push(`/send?to=${address}`);
+            }}
+          >
+            <ArrowSend transform="scale(0.8)" />
+            Send
+          </PillButton>
         </HStack>
         <Tabs isLazy>
           <TabList mb={8}>
