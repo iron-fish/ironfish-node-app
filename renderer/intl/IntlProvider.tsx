@@ -44,8 +44,10 @@ function getLocaleFromNavigator() {
 }
 
 export function IntlProvider({ children }: { children: React.ReactNode }) {
-  const { data: storedLocale, isFetched } = trpcReact.getLocale.useQuery();
-  const { mutate: setLocale } = trpcReact.setLocale.useMutation();
+  const { data: storedLocale, isFetched } = trpcReact.getUserSetting.useQuery({
+    key: "locale",
+  });
+  const { mutate: setUserSettings } = trpcReact.setUserSettings.useMutation();
   const [selectedLocale, setSelectedLocale] = useState<Locales | null>(null);
 
   useEffect(() => {
@@ -80,10 +82,10 @@ export function IntlProvider({ children }: { children: React.ReactNode }) {
       return;
     }
 
-    setLocale({
+    setUserSettings({
       locale: selectedLocale,
     });
-  }, [selectedLocale, setLocale]);
+  }, [selectedLocale, setUserSettings]);
 
   return (
     <SelectedLocaleContext.Provider

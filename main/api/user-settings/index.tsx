@@ -1,17 +1,34 @@
+import { nativeTheme } from "electron";
+import { z } from "zod";
+
 import { PartialUserSettingsSchema } from "./userSettings";
-import { manager } from "../manager";
+import { grabbyUserSettings, settingsKeys } from "./userSettingsAlt";
 import { t } from "../trpc";
 
 export const userSettingsRouter = t.router({
-  getUserSetting: t.procedure.query(async () => {
-    const settings = await manager.getUserSettings();
-    return settings.config;
+  getUserSetting: t.procedure
+    .input(
+      z.object({
+        key: z.enum(settingsKeys),
+      }),
+    )
+    .query(async (opts) => {
+      const settings = await grabbyUserSettings();
+      return settings.get(opts.input.key);
+    }),
+  getUserSettings: t.procedure.query(async () => {
+    const settings = await grabbyUserSettings();
+    return settings;
   }),
-  setUserSetting: t.procedure
+  setUserSettings: t.procedure
     .input(PartialUserSettingsSchema)
     .mutation(async (opts) => {
-      const settings = await manager.getUserSettings();
-      settings.setMany(opts.input);
-      await settings.save();
+      if (Object.hasOwn(opts.input, "theme") && opts.input.theme) {
+        const themeValue = opts.input.theme;
+        nativeTheme.themeSource = themeValue;
+      }
+
+      const settings = await grabbyUserSettings();
+      settings.set(opts.input);
     }),
 });

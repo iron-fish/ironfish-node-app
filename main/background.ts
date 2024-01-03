@@ -44,18 +44,6 @@ async function createWindow(handler: ReturnType<typeof createIPCHandler>) {
   }
 }
 
-async function createConfigChangeHandler() {
-  const userSettings = await manager.getUserSettings();
-
-  nativeTheme.themeSource = userSettings.get("theme");
-
-  userSettings.onConfigChange.on((key) => {
-    if (key === "theme") {
-      nativeTheme.themeSource = userSettings.get(key);
-    }
-  });
-}
-
 async function createThemeChangeHandler() {
   const updateTitleBarOverlay = () => {
     mainWindow.getMainWindow().then((mw) => {
@@ -85,7 +73,6 @@ app.whenReady().then(() => {
   }
 
   createThemeChangeHandler();
-  createConfigChangeHandler();
 
   const handler = createIPCHandler({ router });
 
