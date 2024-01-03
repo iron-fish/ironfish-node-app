@@ -45,7 +45,7 @@ async function createWindow(handler: ReturnType<typeof createIPCHandler>) {
   }
 }
 
-async function setNativeTheme() {
+async function setNativeThemeSource() {
   const userSettings = await getUserSettings();
   nativeTheme.themeSource = userSettings.get("theme");
 }
@@ -79,7 +79,7 @@ app.whenReady().then(() => {
   }
 
   createThemeChangeHandler();
-  setNativeTheme();
+  setNativeThemeSource();
 
   const handler = createIPCHandler({ router });
 
