@@ -77,7 +77,7 @@ const sortOptions: Array<SortOption> = [
 
 export function UserAccountsList() {
   const [searchInput, setSearchInput] = useState("");
-  const [sortOption, setSortOption] = useState<SortOption>(sortOptions[0]);
+  const [sortOption, setSortOption] = useState<SortOption>(sortOptions[2]);
   const { data } = trpcReact.getAccounts.useQuery();
   const { formatMessage } = useIntl();
 
