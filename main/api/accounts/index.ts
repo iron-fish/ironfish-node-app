@@ -77,4 +77,26 @@ export const accountRouter = t.router({
 
       return response.content;
     }),
+  isAccountSynced: t.procedure
+    .input(
+      z.object({
+        account: z.string(),
+      }),
+    )
+    .query(async (opts) => {
+      const ironfish = await manager.getIronfish();
+      const rpcClient = await ironfish.rpcClient();
+      const nodeStatus = await rpcClient.node.getStatus();
+      const isBlockchainSynced = nodeStatus.content.blockchain.synced;
+      if (!isBlockchainSynced) {
+        return false;
+      }
+      const accountStatus = await rpcClient.wallet.getAccountStatus({
+        account: opts.input.account,
+      });
+      return (
+        accountStatus.content.account.head?.hash ===
+        nodeStatus.content.accounts.head.hash
+      );
+    }),
 });

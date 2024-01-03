@@ -11,6 +11,7 @@ import {
 import { useRouter } from "next/router";
 import { defineMessages, useIntl } from "react-intl";
 
+import { trpcReact } from "@/providers/TRPCProvider";
 import { ChakraLink } from "@/ui/ChakraLink/ChakraLink";
 import { COLORS } from "@/ui/colors";
 import { PillButton } from "@/ui/PillButton/PillButton";
@@ -39,7 +40,6 @@ type AccountRowProps = {
   balance: string;
   address: string;
   viewOnly: boolean;
-  isSyncing: boolean;
 };
 
 export function AccountRow({
@@ -48,10 +48,17 @@ export function AccountRow({
   balance,
   address,
   viewOnly,
-  isSyncing,
 }: AccountRowProps) {
   const router = useRouter();
   const { formatMessage } = useIntl();
+  const { data: isSynced } = trpcReact.isAccountSynced.useQuery(
+    {
+      account: name,
+    },
+    {
+      refetchInterval: 5000,
+    },
+  );
   return (
     <ChakraLink href={`/accounts/${name}`} w="100%">
       <ShadowCard hoverable>
@@ -94,7 +101,7 @@ export function AccountRow({
               label={
                 viewOnly
                   ? formatMessage(messages.viewOnlySendDisabled)
-                  : isSyncing
+                  : !isSynced
                   ? formatMessage(messages.syncingSendDisabled)
                   : null
               }
@@ -103,11 +110,11 @@ export function AccountRow({
               <VStack w="100%" alignItems="stretch">
                 <PillButton
                   size="sm"
-                  isDisabled={viewOnly || isSyncing}
+                  isDisabled={viewOnly || !isSynced}
                   onClick={(e) => {
                     e.preventDefault();
                     e.stopPropagation();
-                    if (viewOnly || isSyncing) return;
+                    if (viewOnly || !isSynced) return;
                     router.push(`/send?account=${name}`);
                   }}
                 >

@@ -11,7 +11,6 @@ import { PillButton } from "@/ui/PillButton/PillButton";
 import { hexToUTF16String } from "@/utils/hexToUTF16String";
 import { formatOre, parseIron } from "@/utils/ironUtils";
 import { asQueryString } from "@/utils/parseRouteQuery";
-import { useSyncStatus } from "@/utils/useSyncStatus";
 
 import { ConfirmTransactionModal } from "./ConfirmTransactionModal/ConfirmTransactionModal";
 import {
@@ -19,7 +18,10 @@ import {
   TransactionFormData,
   transactionSchema,
 } from "./transactionSchema";
-import { ChainSyncingMessage } from "../ChainSyncingMessage/ChainSyncingMessage";
+import {
+  AccountSyncingMessage,
+  ChainSyncingMessage,
+} from "../SyncingMessages/SyncingMessages";
 
 export function SendAssetsFormContent({
   accountsData,
@@ -93,11 +95,30 @@ export function SendAssetsFormContent({
     return assets;
   }, [accountsData, fromAccountValue]);
 
-  const { status } = useSyncStatus();
+  const { data: isAccountSynced } = trpcReact.isAccountSynced.useQuery(
+    {
+      account: fromAccountValue,
+    },
+    {
+      refetchInterval: 5000,
+    },
+  );
+  const { data: nodeStatusData } = trpcReact.getStatus.useQuery(undefined, {
+    refetchInterval: 5000,
+  });
+  const syncingMessage = useMemo(() => {
+    if (nodeStatusData?.blockchain.synced === false) {
+      return <ChainSyncingMessage mb={4} />;
+    }
+    if (isAccountSynced === false) {
+      return <AccountSyncingMessage mb={4} />;
+    }
+    return null;
+  }, [isAccountSynced, nodeStatusData?.blockchain.synced]);
 
   return (
     <>
-      <ChainSyncingMessage mb={4} />
+      {syncingMessage}
       <chakra.form
         onSubmit={handleSubmit((data) => {
           const fee = estimatedFeesData[data.fee];
@@ -175,7 +196,7 @@ export function SendAssetsFormContent({
             type="submit"
             height="60px"
             px={8}
-            isDisabled={status !== "SYNCED"}
+            isDisabled={!isAccountSynced}
           >
             Send Asset
           </PillButton>

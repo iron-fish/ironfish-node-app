@@ -2,21 +2,20 @@ import { Box, BoxProps, Text } from "@chakra-ui/react";
 import { defineMessages, useIntl } from "react-intl";
 
 import { COLORS } from "@/ui/colors";
-import { useSyncStatus } from "@/utils/useSyncStatus";
 
 const messages = defineMessages({
-  syncingMessage: {
+  chainSyncingMessage: {
     defaultMessage:
       "The blockchain is syncing. Your balance may be inaccurate and sending transactions will be disabled until the sync is complete.",
+  },
+  accountSyncingMessage: {
+    defaultMessage:
+      "The selected account is syncing. Your balance may be inaccurate and sending transactions will be disabled until the sync is complete.",
   },
 });
 
 export function ChainSyncingMessage(props: BoxProps) {
   const { formatMessage } = useIntl();
-  const { status } = useSyncStatus();
-  const isSynced = status === "SYNCED";
-
-  if (isSynced) return null;
 
   return (
     <Box
@@ -37,10 +36,36 @@ export function ChainSyncingMessage(props: BoxProps) {
           color: COLORS.DARK_MODE.YELLOW_LIGHT,
         }}
       >
-        {formatMessage(messages.syncingMessage)}
+        {formatMessage(messages.chainSyncingMessage)}
       </Text>
     </Box>
   );
+}
 
-  return null;
+export function AccountSyncingMessage(props: BoxProps) {
+  const { formatMessage } = useIntl();
+
+  return (
+    <Box
+      w="100%"
+      px={6}
+      py={4}
+      borderRadius={8}
+      bg={COLORS.YELLOW_LIGHT}
+      _dark={{
+        bg: COLORS.DARK_MODE.YELLOW_DARK,
+      }}
+      {...props}
+    >
+      <Text
+        fontSize="md"
+        color={COLORS.YELLOW_DARK}
+        _dark={{
+          color: COLORS.DARK_MODE.YELLOW_LIGHT,
+        }}
+      >
+        {formatMessage(messages.chainSyncingMessage)}
+      </Text>
+    </Box>
+  );
 }
