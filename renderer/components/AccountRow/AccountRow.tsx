@@ -30,7 +30,7 @@ const messages = defineMessages({
   },
   syncingSendDisabled: {
     defaultMessage:
-      "You cannot send transactions while the blockchain is syncing",
+      "This account is syncing. Please wait until the sync is complete before sending transactions.",
   },
 });
 
