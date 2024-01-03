@@ -1,5 +1,5 @@
 import { Ironfish } from "./ironfish/Ironfish";
-import { grabbyUserSettings } from "./user-settings/userSettingsAlt";
+import { getUserSettings } from "./user-settings/userSettings";
 
 export type InitialState =
   | "onboarding"
@@ -13,7 +13,7 @@ export class Manager {
   async getIronfish(): Promise<Ironfish> {
     if (this._ironfish) return this._ironfish;
 
-    const userSettings = await grabbyUserSettings();
+    const userSettings = await getUserSettings();
 
     const dataDir = userSettings.get("dataDir");
     this._ironfish = new Ironfish(dataDir);
