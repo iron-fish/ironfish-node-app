@@ -54,9 +54,6 @@
   "6P/bTL": {
     "message": "Connection Type"
   },
-  "6T+v0W": {
-    "message": "Account imported"
-  },
   "8GvVWZ": {
     "message": "Something went wrong, please try again."
   },
@@ -186,6 +183,9 @@
   "YFT4rG": {
     "message": "Keys"
   },
+  "Z4i3fh": {
+    "message": "The Iron Fish Node app supports {languageCount} languages. If your preferred language isn't listed, please reach out and let us know!"
+  },
   "ZhUW3G": {
     "message": "Heap Total"
   },
@@ -203,6 +203,9 @@
   },
   "e6Ph5+": {
     "message": "Address"
+  },
+  "eVlu1R": {
+    "message": "Select language"
   },
   "fF376U": {
     "message": "Current"
@@ -239,9 +242,6 @@
   },
   "tf1lIh": {
     "message": "Free"
-  },
-  "u8X7S9": {
-    "message": "The Iron Fish Node app supports X languages. If your preferred language isn't listed, please reach out and let us know!"
   },
   "uCgp+K": {
     "message": "Blocks Per message"
