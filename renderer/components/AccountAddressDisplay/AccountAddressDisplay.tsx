@@ -1,10 +1,11 @@
 import { CopyIcon } from "@chakra-ui/icons";
-import { Text, Flex, HStack, Input, useToast } from "@chakra-ui/react";
+import { Text, Flex, HStack, Input } from "@chakra-ui/react";
 import { useCallback } from "react";
 import { useCopyToClipboard } from "usehooks-ts";
 
 import { COLORS } from "@/ui/colors";
 import { FormField, FormFieldProps } from "@/ui/Forms/FormField/FormField";
+import { useIFToast } from "@/ui/Toast/Toast";
 
 type Props = {
   address: string;
@@ -12,14 +13,12 @@ type Props = {
 
 export function AccountAddressDisplay({ address }: Props) {
   const [_, copyToClipboard] = useCopyToClipboard();
-  const toast = useToast();
+  const toast = useIFToast();
 
   const handleCopy = useCallback(() => {
     copyToClipboard(address);
     toast({
-      description: "Address copied to clipboard",
-      status: "success",
-      duration: 2000,
+      message: "Address copied to clipboard",
     });
   }, [address, copyToClipboard, toast]);
   return (

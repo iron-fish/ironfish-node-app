@@ -13,7 +13,6 @@ import {
   HStack,
   Switch,
   useDisclosure,
-  useToast,
 } from "@chakra-ui/react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useRef } from "react";
@@ -24,6 +23,7 @@ import { z } from "zod";
 import { trpcReact } from "@/providers/TRPCProvider";
 import { TextInput } from "@/ui/Forms/TextInput/TextInput";
 import { PillButton } from "@/ui/PillButton/PillButton";
+import { useIFToast } from "@/ui/Toast/Toast";
 
 const settingsSchema = z.object({
   nodeName: z.string(),
@@ -93,7 +93,7 @@ function NodeSettingsContent({
   initialEnableTelemetry?: boolean;
 }) {
   const { formatMessage } = useIntl();
-  const toast = useToast();
+  const toast = useIFToast();
 
   const { mutate: resetNode, isLoading: isResetLoading } =
     trpcReact.resetNode.useMutation();
@@ -101,10 +101,7 @@ function NodeSettingsContent({
     trpcReact.setConfig.useMutation({
       onSuccess: () => {
         toast({
-          title: formatMessage(messages.settingsSaved),
-          status: "success",
-          isClosable: true,
-          duration: 2000,
+          message: formatMessage(messages.settingsSaved),
         });
       },
     });

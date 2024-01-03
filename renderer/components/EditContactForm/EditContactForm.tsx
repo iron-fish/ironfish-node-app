@@ -9,7 +9,6 @@ import {
   HStack,
   VStack,
   useDisclosure,
-  useToast,
 } from "@chakra-ui/react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useRouter } from "next/router";
@@ -20,6 +19,7 @@ import { z } from "zod";
 import { getTrpcVanillaClient, trpcReact } from "@/providers/TRPCProvider";
 import { TextInput } from "@/ui/Forms/TextInput/TextInput";
 import { PillButton } from "@/ui/PillButton/PillButton";
+import { useIFToast } from "@/ui/Toast/Toast";
 
 const contactSchema = z.object({
   name: z.string().min(1),
@@ -43,7 +43,7 @@ type Props = {
 
 export function EditContactForm({ id, name, address }: Props) {
   const router = useRouter();
-  const toast = useToast();
+  const toast = useIFToast();
 
   const {
     isOpen: isDeleteModalOpen,
@@ -56,10 +56,8 @@ export function EditContactForm({ id, name, address }: Props) {
     trpcReact.editContact.useMutation({
       onSuccess: () => {
         toast({
-          title: "Contact updated",
-          status: "success",
+          message: "Contact updated",
           duration: 5000,
-          isClosable: true,
         });
       },
     });

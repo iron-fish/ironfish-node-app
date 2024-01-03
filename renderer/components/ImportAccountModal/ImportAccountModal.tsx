@@ -10,22 +10,19 @@ import {
   ModalContent,
   ModalBody,
   Heading,
-  useToast,
 } from "@chakra-ui/react";
 import { useCallback, useMemo, useState } from "react";
 import { defineMessages, useIntl } from "react-intl";
 
 import { trpcReact } from "@/providers/TRPCProvider";
+import { useIFToast } from "@/ui/Toast/Toast";
 
 import { EncodedKeyImport } from "./EncodedKeyImport";
 import { FileImport } from "./FileImport";
 import { MnemonicImport } from "./MnemonicImport";
 
 const messages = defineMessages({
-  successTitle: {
-    defaultMessage: "Account imported",
-  },
-  successDescription: {
+  successMessage: {
     defaultMessage: "Your account was successfully imported",
   },
   mnemonicPhrase: {
@@ -73,7 +70,7 @@ export function ImportAccountModal({ isOpen, onClose }: Props) {
   const handleClose = useCallback(() => {
     onClose();
   }, [onClose]);
-  const toast = useToast();
+  const toast = useIFToast();
   const { formatMessage } = useIntl();
 
   const [activeTab, setActiveTab] = useState(0);
@@ -86,11 +83,8 @@ export function ImportAccountModal({ isOpen, onClose }: Props) {
   } = trpcReact.importAccount.useMutation({
     onSuccess: () => {
       toast({
-        title: formatMessage(messages.successTitle),
-        description: formatMessage(messages.successDescription),
-        status: "success",
+        message: formatMessage(messages.successMessage),
         duration: 5000,
-        isClosable: true,
       });
       onClose();
     },
