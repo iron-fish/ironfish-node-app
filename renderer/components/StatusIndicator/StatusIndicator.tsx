@@ -15,11 +15,13 @@ function useStatus() {
   return useMemo<{
     status: Status;
     label: string;
+    shortLabel: string;
   }>(() => {
     if (!data || !data.peerNetwork.isReady) {
       return {
         status: "CONNECTING",
         label: "Connecting",
+        shortLabel: "--%",
       };
     }
     if (data.blockSyncer.status === "syncing") {
@@ -30,29 +32,37 @@ function useStatus() {
               data.blockSyncer.syncing.progress * 100
             ).toFixed(2)}%`
           : "Syncing blocks",
+        shortLabel: data.blockSyncer.syncing
+          ? `${Math.floor(data.blockSyncer.syncing.progress * 100)}%`
+          : "--%",
       };
     }
     if (!data.blockchain.synced) {
       return {
         status: "SYNCING",
         label: "Waiting for peers to sync from",
+        shortLabel: "--%",
       };
     }
     if (data.accounts.head.hash !== data.blockchain.head.hash) {
       return {
         status: "SCANNING",
         label: `Scanning blocks: ${data.accounts.head.sequence} / ${data.blockchain.head.sequence}`,
+        shortLabel: `${Math.floor(
+          100 * (data.accounts.head.sequence / data.blockchain.head.sequence),
+        )}%`,
       };
     }
     return {
       status: "SYNCED",
       label: "Synced",
+      shortLabel: "",
     };
   }, [data]);
 }
 
 export function StatusIndicator() {
-  const { status, label } = useStatus();
+  const { status, label, shortLabel } = useStatus();
 
   return (
     <Flex
@@ -94,7 +104,16 @@ export function StatusIndicator() {
           sm: "none",
         }}
       >
-        <IoMdCheckmark size="1.25em" />
+        <Text
+          as="span"
+          color="inherit"
+          _dark={{
+            color: "inherit",
+          }}
+        >
+          {shortLabel}
+        </Text>
+        {status === "SYNCED" && <IoMdCheckmark size="1.25em" />}
       </Box>
     </Flex>
   );
