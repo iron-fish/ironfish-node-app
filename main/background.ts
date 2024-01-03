@@ -5,6 +5,7 @@ import { createIPCHandler } from "electron-trpc/main";
 
 import { router } from "./api";
 import { manager } from "./api/manager";
+import { getUserSettings } from "./api/user-settings/userSettings";
 import { mainWindow } from "./main-window";
 import { updater } from "./updater";
 
@@ -44,6 +45,11 @@ async function createWindow(handler: ReturnType<typeof createIPCHandler>) {
   }
 }
 
+async function setNativeTheme() {
+  const userSettings = await getUserSettings();
+  nativeTheme.themeSource = userSettings.get("theme");
+}
+
 async function createThemeChangeHandler() {
   const updateTitleBarOverlay = () => {
     mainWindow.getMainWindow().then((mw) => {
@@ -73,6 +79,7 @@ app.whenReady().then(() => {
   }
 
   createThemeChangeHandler();
+  setNativeTheme();
 
   const handler = createIPCHandler({ router });
 
