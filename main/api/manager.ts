@@ -14,7 +14,6 @@ export class Manager {
     if (this._ironfish) return this._ironfish;
 
     const userSettings = await getUserSettings();
-
     const dataDir = userSettings.get("dataDir");
     this._ironfish = new Ironfish(dataDir);
     return this._ironfish;

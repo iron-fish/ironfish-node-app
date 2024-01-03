@@ -26,7 +26,7 @@ export const settingsSchema: Schema<SchemaDefinition> = {
 
 let settingsStore: Store<SchemaDefinition>;
 
-export async function grabbyUserSettings() {
+export async function getUserSettings() {
   if (settingsStore) return settingsStore;
 
   const fileSystem = new NodeFileProvider();
