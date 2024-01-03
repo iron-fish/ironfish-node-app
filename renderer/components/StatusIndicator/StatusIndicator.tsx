@@ -61,7 +61,6 @@ export function StatusIndicator() {
       borderRadius={4}
       color={status === "SYNCED" ? COLORS.GREEN_DARK : COLORS.YELLOW_DARK}
       justifyContent="center"
-      my={4}
       py={3}
       textAlign="center"
       _dark={{
