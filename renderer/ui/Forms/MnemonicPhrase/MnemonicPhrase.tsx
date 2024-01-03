@@ -179,9 +179,6 @@ export function MnemonicPhrase({
                   onPaste={handlePaste}
                   borderColor={hasBlur && !value ? COLORS.RED : COLORS.BLACK}
                   placeholder="Empty"
-                  _placeholder={{
-                    color: COLORS.GRAY_MEDIUM,
-                  }}
                   _dark={{
                     borderColor:
                       hasBlur && !value
