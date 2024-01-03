@@ -61,8 +61,9 @@ export function StatusIndicator() {
       borderRadius={4}
       color={status === "SYNCED" ? COLORS.GREEN_DARK : COLORS.YELLOW_DARK}
       justifyContent="center"
-      py={3}
+      py={2}
       textAlign="center"
+      lineHeight="1.25em"
       _dark={{
         bg:
           status === "SYNCED"
@@ -77,6 +78,9 @@ export function StatusIndicator() {
       <Text
         as="span"
         color="inherit"
+        _dark={{
+          color: "inherit",
+        }}
         display={{
           base: "none",
           sm: "block",
