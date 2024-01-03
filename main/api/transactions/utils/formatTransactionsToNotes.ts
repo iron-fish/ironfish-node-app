@@ -48,6 +48,7 @@ export async function getTransactionNotes(
           to: note.owner,
           transactionHash: transaction.hash,
           type: transaction.type,
+          status: transaction.status,
           memo: note.memo,
           noteHash: note.noteHash,
           accountName,

@@ -1,5 +1,5 @@
 import { ChevronRightIcon } from "@chakra-ui/icons";
-import { Box, Flex, Heading, Text, VStack } from "@chakra-ui/react";
+import { Box, Flex, Heading, HStack, Text, VStack } from "@chakra-ui/react";
 import { useRouter } from "next/router";
 
 import { ChakraLink } from "@/ui/ChakraLink/ChakraLink";
@@ -12,15 +12,23 @@ import { LogoSm } from "@/ui/SVGs/LogoSm";
 import { formatOre } from "@/utils/ironUtils";
 
 import { CopyAddress } from "../CopyAddress/CopyAddress";
+import { ViewOnlyChip } from "../ViewOnlyChip/ViewOnlyChip";
 
 type AccountRowProps = {
   color: GradientOptions;
   name: string;
   balance: string;
   address: string;
+  viewOnly: boolean;
 };
 
-export function AccountRow({ color, name, balance, address }: AccountRowProps) {
+export function AccountRow({
+  color,
+  name,
+  balance,
+  address,
+  viewOnly,
+}: AccountRowProps) {
   const router = useRouter();
   return (
     <ChakraLink href={`/accounts/${name}`} w="100%">
@@ -45,7 +53,10 @@ export function AccountRow({ color, name, balance, address }: AccountRowProps) {
             </Flex>
           </ShadowCard>
           <VStack alignItems="flex-start" justifyContent="center" flexGrow={1}>
-            <Text as="h3">{name}</Text>
+            <HStack>
+              <Text as="h3">{name}</Text>
+              {viewOnly && <ViewOnlyChip />}
+            </HStack>
             <Heading as="span" fontWeight="regular" fontSize="2xl">
               {formatOre(balance)} $IRON
             </Heading>
@@ -55,6 +66,7 @@ export function AccountRow({ color, name, balance, address }: AccountRowProps) {
           <VStack alignItems="stretch" justifyContent="center">
             <PillButton
               size="sm"
+              isDisabled={viewOnly}
               onClick={(e) => {
                 e.preventDefault();
                 router.push(`/send?account=${name}`);

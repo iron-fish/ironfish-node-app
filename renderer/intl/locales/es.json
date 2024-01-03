@@ -1,0 +1,298 @@
+{
+  "+02x3X": {
+    "message": "Tu libreta de direcciones es donde puedes administrar todos tus contactos, sus nombres y sus direcciones públicas.",
+    "description": "Your address book is where you can manage all of your contacts, their names, and their public addresses."
+  },
+  "+gH1Ai": {
+    "message": "Nombre del Nodo",
+    "description": "Node Name"
+  },
+  "/km2Zu": {
+    "message": "Importar Cuenta",
+    "description": "Import Account"
+  },
+  "/tbC+S": {
+    "message": "Exportar Cuenta",
+    "description": "Export Account"
+  },
+  "2G6Qs7": {
+    "message": "Configuraciones guardadas",
+    "description": "Settings saved"
+  },
+  "2qzbcD": {
+    "message": "Mínimo de Pares",
+    "description": "Min Peers"
+  },
+  "3VI9mt": {
+    "message": "Guardar Cambios",
+    "description": "Save Changes"
+  },
+  "3WkdVP": {
+    "message": "Nombre de la Cuenta",
+    "description": "Account Name"
+  },
+  "3euoRJ": {
+    "message": "Frase de Recuperación",
+    "description": "Recovery Phrase"
+  },
+  "43FmnD": {
+    "message": "Proteger tu frase mnemónica y llaves codificadas es esencial para mantener plena propiedad, control y seguridad sobre tus activos digitales.",
+    "description": "Safeguarding your mnemonic phrase and encoded keys is essential to maintain full ownership, control, and security over your digital assets."
+  },
+  "47FYwb": {
+    "message": "Cancelar",
+    "description": "Cancel"
+  },
+  "5JcXdV": {
+    "message": "Crear Cuenta",
+    "description": "Create Account"
+  },
+  "5c3Wrw": {
+    "message": "Balance total de cuentas",
+    "description": "Total accounts balance"
+  },
+  "5jeq8P": {
+    "message": "Desconocido",
+    "description": "Unknown"
+  },
+  "6AhQlk": {
+    "message": "¿Estás seguro de que quieres restablecer el nodo a su estado inicial?",
+    "description": "Are you sure you want to reset the node to its initial state?"
+  },
+  "6Ior7i": {
+    "message": "Guardé mi frase de recuperación",
+    "description": "I saved my recovery phrase"
+  },
+  "6P/bTL": {
+    "message": "Tipo de Conexión",
+    "description": "Connection Type"
+  },
+  "6T+v0W": {
+    "message": "Cuenta importada",
+    "description": "Account imported"
+  },
+  "6yYqh0": {
+    "message": "Telemetría",
+    "description": "Telemetry"
+  },
+  "9uOFF3": {
+    "message": "Resumen",
+    "description": "Overview"
+  },
+  "AetNAD": {
+    "message": "Buscar",
+    "description": "Browse"
+  },
+  "Arxl88": {
+    "message": "Saliente",
+    "description": "Outgoing"
+  },
+  "D3idYv": {
+    "message": "Configuración",
+    "description": "Settings"
+  },
+  "Gcv5yj": {
+    "message": "Uso del Montón",
+    "description": "Heap Used"
+  },
+  "H56oje": {
+    "message": "Trabajadores del Nodo",
+    "description": "Node Workers"
+  },
+  "HAlOn1": {
+    "message": "Nombre",
+    "description": "Name"
+  },
+  "JoB2Ml": {
+    "message": "Tu cuenta fue importada exitosamente",
+    "description": "Your account was successfully imported"
+  },
+  "K3r6DQ": {
+    "message": "Eliminar",
+    "description": "Delete"
+  },
+  "L4MaM3": {
+    "message": "Núcleos",
+    "description": "Cores"
+  },
+  "Ld49Lh": {
+    "message": "¿Cómo te gustaría nombrar esta cuenta? Este nombre solo será visible para ti.",
+    "description": "What would you like to name this account? This name is only visible to you."
+  },
+  "N0KGQj": {
+    "message": "Graffiti del Bloque",
+    "description": "Block Graffiti"
+  },
+  "NDtjP8": {
+    "message": "¿Estás seguro? Tendrás que volver a importar esta cuenta si quieres usarla de nuevo.",
+    "description": "Are you sure? You'll have to re-import this account if you want to use it again."
+  },
+  "NX/nQR": {
+    "message": "Cambiar la configuración del nodo puede optimizar el rendimiento, mejorar la conectividad, mejorar la seguridad y administrar los recursos de manera efectiva.",
+    "description": "Changing node settings can optimize performance, improve connectivity, enhance security, and manage resources effectively."
+  },
+  "Nw8+4i": {
+    "message": "ID del Par",
+    "description": "Peer ID"
+  },
+  "OfA95/": {
+    "message": "Archivo seleccionado: {fileName}",
+    "description": "Selected file: {fileName}"
+  },
+  "Og5CP/": {
+    "message": "Máximo del Montón",
+    "description": "Heap Max"
+  },
+  "Ohn4yX": {
+    "message": "Telemetría deshabilitada",
+    "description": "Telemetry disabled"
+  },
+  "Pq25uf": {
+    "message": "Restablecer Nodo",
+    "description": "Reset Node"
+  },
+  "R2OqnW": {
+    "message": "Eliminar Cuenta",
+    "description": "Delete Account"
+  },
+  "RAL4T2": {
+    "message": "Mantén tus claves seguras revelando su contenido solo cuando estés seguro de que nadie está mirando. Estos se utilizan para acceder a tus cuentas y son la principal medida de seguridad contra el acceso no solicitado de usuarios.",
+    "description": "Keep your keys safe by only revealing their contents when you're sure nobody is peering. These are used to access your accounts and are the primary security measure against non-solicited user access."
+  },
+  "RLGujF": {
+    "message": "Pares Conectados",
+    "description": "Connected Peers"
+  },
+  "SaPa2h": {
+    "message": "Clave Codificada",
+    "description": "Encoded Key"
+  },
+  "T2yddR": {
+    "message": "Tu Nodo",
+    "description": "Your Node"
+  },
+  "Te4gbw": {
+    "message": "Formato de Exportación:",
+    "description": "Export Format:"
+  },
+  "TebMku": {
+    "message": "No tienes ninguna transacción",
+    "description": "You don't have any transactions"
+  },
+  "TenpoO": {
+    "message": "Nos gustaría recoger datos telemétricos anónimos con el fin de mejorar continuamente tu experiencia. Estos datos incluyen el rendimiento del nodo, la información del bloque y otras métricas de salud. Puedes habilitar o deshabilitar esto en cualquier momento en la página de ajustes del nodo.",
+    "description": "We'd like to collect anonymous telemetry data in order to continually improve your experience. This data includes node performance, block information, and other health metrics. You can enable or disable this at any time in the node settings page."
+  },
+  "WWEwrn": {
+    "message": "Ajustes del Nodo",
+    "description": "Node Settings"
+  },
+  "WsssxH": {
+    "message": "Selecciona tu archivo JSON o Bech32 para importar tu cuenta.",
+    "description": "Select your JSON or Bech32 file to import your account."
+  },
+  "XLvNHQ": {
+    "message": "Por favor, anota esta frase de recuperación y guárdala en un lugar seguro. La necesitarás para recuperar tu cuenta.",
+    "description": "Please write down this recovery phrase and keep it in a safe place. You will need it to recover your account."
+  },
+  "Xvk80E": {
+    "message": "Por favor, introduce un nombre para esta cuenta",
+    "description": "Please enter a name for this account"
+  },
+  "YDkqMJ": {
+    "message": "Entrante",
+    "description": "Incoming"
+  },
+  "YFT4rG": {
+    "message": "Claves",
+    "description": "Keys"
+  },
+  "ZhUW3G": {
+    "message": "Total del Montón",
+    "description": "Heap Total"
+  },
+  "aAyZzA": {
+    "message": "Puedes eliminar y volver a importar tus cuentas a tu conveniencia, siempre que poseas las claves de cuenta necesarias. Para garantizar una experiencia sin problemas, se recomienda encarecidamente mantener una copia de seguridad de las claves de tu cuenta en un lugar seguro.",
+    "description": "You can remove and reimport your accounts at your convenience, provided that you possess the necessary account keys. To ensure a seamless experience, it is highly recommended to maintain a backup of your account keys in a secure location."
+  },
+  "acrOoz": {
+    "message": "Continuar",
+    "description": "Continue"
+  },
+  "baVA6q": {
+    "message": "Secuencia de Cabeza",
+    "description": "Head Sequence"
+  },
+  "c/KktL": {
+    "message": "Recursos",
+    "description": "Resources"
+  },
+  "e6Ph5+": {
+    "message": "Dirección",
+    "description": "Address"
+  },
+  "fF376U": {
+    "message": "Actual",
+    "description": "Current"
+  },
+  "flxGnZ": {
+    "message": "Telemetría habilitada",
+    "description": "Telemetry enabled"
+  },
+  "gyrIEl": {
+    "message": "Archivo",
+    "description": "File"
+  },
+  "hR0flV": {
+    "message": "Todas tus transacciones, ya sean en $IRON u otros activos personalizados, se mostrarán en esta sección. Para iniciar una transacción, simplemente haz clic en las pestañas 'Enviar' o 'Recibir'.",
+    "description": "All your transactions, whether in $IRON or other custom assets, will be displayed in this section. To start a transaction, simply click on the 'Send' or 'Receive' tabs."
+  },
+  "j2AFTQ": {
+    "message": "Estado del Nodo",
+    "description": "Node Status"
+  },
+  "nkeKcx": {
+    "message": "Hash de Cabeza",
+    "description": "Head Hash"
+  },
+  "pbdvze": {
+    "message": "Por favor, introduce tu frase mnemotécnica. Si has copiado la frase completa en tu portapapeles, puedes pegarla en cualquier entrada y se dividirá automáticamente en el número correcto de palabras.",
+    "description": "Please enter your mnemonic phrase. If you've copied the full phrase to your clipboard, you can paste it in any input and it will automatically be split into the correct number of words."
+  },
+  "q0qMyV": {
+    "message": "RSS",
+    "description": "RSS"
+  },
+  "qDYGja": {
+    "message": "Guardar configuraciones",
+    "description": "Save Settings"
+  },
+  "rbrahO": {
+    "message": "Cerrar",
+    "description": "Close"
+  },
+  "tf1lIh": {
+    "message": "Gratis",
+    "description": "Free"
+  },
+  "uCgp+K": {
+    "message": "Bloques por mensaje",
+    "description": "Blocks Per message"
+  },
+  "vNT9Ip": {
+    "message": "Frase Mnemotécnica",
+    "description": "Mnemonic Phrase"
+  },
+  "xkLxAx": {
+    "message": "Cuenta creada",
+    "description": "Account Created"
+  },
+  "y3LzSM": {
+    "message": "Max de pares",
+    "description": "Max Peers"
+  },
+  "yjpdGo": {
+    "message": "No tienes ningún contacto",
+    "description": "You don't have any contacts"
+  }
+}

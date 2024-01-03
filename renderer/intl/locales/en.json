@@ -1,81 +1,258 @@
 {
-  "+02x3X": "Your address book is where you can manage all of your contacts, their names, and their public addresses.",
-  "+gH1Ai": "Node Name",
-  "/km2Zu": "Import Account",
-  "2G6Qs7": "Settings saved",
-  "2qzbcD": "Min Peers",
-  "3VI9mt": "Save Changes",
-  "3WkdVP": "Account Name",
-  "3euoRJ": "Recovery Phrase",
-  "47FYwb": "Cancel",
-  "5JcXdV": "Create Account",
-  "5c3Wrw": "Total accounts balance",
-  "5jeq8P": "Unknown",
-  "6AhQlk": "Are you sure you want to reset the node to its initial state?",
-  "6Ior7i": "I saved my recovery phrase",
-  "6P/bTL": "Connection Type",
-  "6T+v0W": "Account imported",
-  "8GvVWZ": "Something went wrong, please try again.",
-  "9IVf3z": "Account Overview",
-  "9uOFF3": "Overview",
-  "AetNAD": "Browse",
-  "Arxl88": "Outgoing",
-  "BxM6mJ": "Lowest to highest balance",
-  "D3idYv": "Settings",
-  "Gcv5yj": "Heap Used",
-  "Gcv7QB": "Account name",
-  "H56oje": "Node Workers",
-  "HAlOn1": "Name",
-  "JoB2Ml": "Your account was successfully imported",
-  "K3r6DQ": "Delete",
-  "KtDXZW": "Export Account",
-  "L4MaM3": "Cores",
-  "Ld49Lh": "What would you like to name this account? This name is only visible to you.",
-  "MFUhla": "Highest to lowest balance",
-  "N0KGQj": "Block Graffiti",
-  "NDtjP8": "Are you sure? You'll have to re-import this account if you want to use it again.",
-  "NX/nQR": "Changing node settings can optimize performance, improve connectivity, enhance security, and manage resources effectively.",
-  "Nw8+4i": "Peer ID",
-  "OfA95/": "Selected file: {fileName}",
-  "Og5CP/": "Heap Max",
-  "Ohn4yX": "Telemetry disabled",
-  "Pq25uf": "Reset Node",
-  "QS9NTE": "Account name — A to Z",
-  "R2OqnW": "Delete Account",
-  "RLGujF": "Connected Peers",
-  "SaPa2h": "Encoded Key",
-  "T2yddR": "Your Node",
-  "Te4gbw": "Export Format:",
-  "TebMku": "You don't have any transactions",
-  "TenpoO": "We'd like to collect anonymous telemetry data in order to continually improve your experience. This data includes node performance, block information, and other health metrics. You can enable or disable this at any time in the node settings page.",
-  "WWEwrn": "Node Settings",
-  "WsssxH": "Select your JSON or Bech32 file to import your account.",
-  "XLvNHQ": "Please write down this recovery phrase and keep it in a safe place. You will need it to recover your account.",
-  "Xvk80E": "Please enter a name for this account",
-  "YDkqMJ": "Incoming",
-  "YFT4rG": "Keys",
-  "ZhUW3G": "Heap Total",
-  "acrOoz": "Continue",
-  "baVA6q": "Head Sequence",
-  "c/KktL": "Resources",
-  "e6Ph5+": "Address",
-  "fF376U": "Current",
-  "fKN5VY": "Create Contact",
-  "flxGnZ": "Telemetry enabled",
-  "gyrIEl": "File",
-  "hR0flV": "All your transactions, whether in $IRON or other custom assets, will be displayed in this section. To start a transaction, simply click on the 'Send' or 'Receive' tabs.",
-  "j2AFTQ": "Node Status",
-  "nkeKcx": "Head Hash",
-  "pbdvze": "Please enter your mnemonic phrase. If you've copied the full phrase to your clipboard, you can paste it in any input and it will automatically be split into the correct number of words.",
-  "q0qMyV": "RSS",
-  "qDYGja": "Save Settings",
-  "rbrahO": "Close",
-  "tf1lIh": "Free",
-  "uCgp+K": "Blocks Per message",
-  "vNT9Ip": "Mnemonic Phrase",
-  "wsALI4": "Enter Encoded Key",
-  "xkLxAx": "Account Created",
-  "y3LzSM": "Max Peers",
-  "yjpdGo": "You don't have any contacts",
-  "zAPy5e": "Account name — Z to A"
+  "+02x3X": {
+    "message": "Your address book is where you can manage all of your contacts, their names, and their public addresses."
+  },
+  "+gH1Ai": {
+    "message": "Node Name"
+  },
+  "/km2Zu": {
+    "message": "Import Account"
+  },
+  "/tbC+S": {
+    "description": "Button to export account in the specified format",
+    "message": "Export Account"
+  },
+  "/zn2B0": {
+    "message": "View only accounts cannot initiate transactions"
+  },
+  "2G6Qs7": {
+    "message": "Settings saved"
+  },
+  "2qzbcD": {
+    "message": "Min Peers"
+  },
+  "3VI9mt": {
+    "message": "Save Changes"
+  },
+  "3WkdVP": {
+    "message": "Account Name"
+  },
+  "3euoRJ": {
+    "message": "Recovery Phrase"
+  },
+  "47FYwb": {
+    "message": "Cancel"
+  },
+  "551bXe": {
+    "message": "View Only"
+  },
+  "5JcXdV": {
+    "message": "Create Account"
+  },
+  "5c3Wrw": {
+    "message": "Total accounts balance"
+  },
+  "5jeq8P": {
+    "message": "Unknown"
+  },
+  "6AhQlk": {
+    "message": "Are you sure you want to reset the node to its initial state?"
+  },
+  "6Ior7i": {
+    "message": "I saved my recovery phrase"
+  },
+  "6P/bTL": {
+    "message": "Connection Type"
+  },
+  "6T+v0W": {
+    "message": "Account imported"
+  },
+  "8GvVWZ": {
+    "message": "Something went wrong, please try again."
+  },
+  "9IVf3z": {
+    "message": "Account Overview"
+  },
+  "9uOFF3": {
+    "message": "Overview"
+  },
+  "AetNAD": {
+    "message": "Browse"
+  },
+  "Arxl88": {
+    "message": "Outgoing"
+  },
+  "BxM6mJ": {
+    "message": "Lowest to highest balance"
+  },
+  "D3idYv": {
+    "message": "Settings"
+  },
+  "Fn/FTS": {
+    "message": "An error occurred while loading your transactions. If this happens several times, please let us know on Discord."
+  },
+  "Gcv5yj": {
+    "message": "Heap Used"
+  },
+  "Gcv7QB": {
+    "message": "Account name"
+  },
+  "H56oje": {
+    "message": "Node Workers"
+  },
+  "HAlOn1": {
+    "message": "Name"
+  },
+  "JoB2Ml": {
+    "message": "Your account was successfully imported"
+  },
+  "K3r6DQ": {
+    "message": "Delete"
+  },
+  "L4MaM3": {
+    "message": "Cores"
+  },
+  "Ld49Lh": {
+    "message": "What would you like to name this account? This name is only visible to you."
+  },
+  "MFUhla": {
+    "message": "Highest to lowest balance"
+  },
+  "N0KGQj": {
+    "message": "Block Graffiti"
+  },
+  "NDtjP8": {
+    "message": "Are you sure? You'll have to re-import this account if you want to use it again."
+  },
+  "NX/nQR": {
+    "message": "Changing node settings can optimize performance, improve connectivity, enhance security, and manage resources effectively."
+  },
+  "Nw8+4i": {
+    "message": "Peer ID"
+  },
+  "OfA95/": {
+    "message": "Selected file: {fileName}"
+  },
+  "Og5CP/": {
+    "message": "Heap Max"
+  },
+  "Ohn4yX": {
+    "message": "Telemetry disabled"
+  },
+  "Pq25uf": {
+    "message": "Reset Node"
+  },
+  "QS9NTE": {
+    "message": "Account name — A to Z"
+  },
+  "R2OqnW": {
+    "message": "Delete Account"
+  },
+  "RLGujF": {
+    "message": "Connected Peers"
+  },
+  "SaPa2h": {
+    "message": "Encoded Key"
+  },
+  "T2yddR": {
+    "message": "Your Node"
+  },
+  "Te4gbw": {
+    "message": "Export Format:"
+  },
+  "TebMku": {
+    "message": "You don't have any transactions"
+  },
+  "TenpoO": {
+    "message": "We'd like to collect anonymous telemetry data in order to continually improve your experience. This data includes node performance, block information, and other health metrics. You can enable or disable this at any time in the node settings page."
+  },
+  "ThbkST": {
+    "message": "Unable to load your transactions"
+  },
+  "UTOugV": {
+    "message": "Your Assets"
+  },
+  "WWEwrn": {
+    "message": "Node Settings"
+  },
+  "WsssxH": {
+    "message": "Select your JSON or Bech32 file to import your account."
+  },
+  "XLvNHQ": {
+    "message": "Please write down this recovery phrase and keep it in a safe place. You will need it to recover your account."
+  },
+  "Xvk80E": {
+    "message": "Please enter a name for this account"
+  },
+  "YDkqMJ": {
+    "message": "Incoming"
+  },
+  "YFT4rG": {
+    "message": "Keys"
+  },
+  "ZhUW3G": {
+    "message": "Heap Total"
+  },
+  "acrOoz": {
+    "message": "Continue"
+  },
+  "baVA6q": {
+    "message": "Head Sequence"
+  },
+  "c/KktL": {
+    "message": "Resources"
+  },
+  "e6Ph5+": {
+    "message": "Address"
+  },
+  "fF376U": {
+    "message": "Current"
+  },
+  "fKN5VY": {
+    "message": "Create Contact"
+  },
+  "flxGnZ": {
+    "message": "Telemetry enabled"
+  },
+  "gyrIEl": {
+    "message": "File"
+  },
+  "hR0flV": {
+    "message": "All your transactions, whether in $IRON or other custom assets, will be displayed in this section. To start a transaction, simply click on the 'Send' or 'Receive' tabs."
+  },
+  "j2AFTQ": {
+    "message": "Node Status"
+  },
+  "nkeKcx": {
+    "message": "Head Hash"
+  },
+  "pbdvze": {
+    "message": "Please enter your mnemonic phrase. If you've copied the full phrase to your clipboard, you can paste it in any input and it will automatically be split into the correct number of words."
+  },
+  "q0qMyV": {
+    "message": "RSS"
+  },
+  "qDYGja": {
+    "message": "Save Settings"
+  },
+  "rbrahO": {
+    "message": "Close"
+  },
+  "tf1lIh": {
+    "message": "Free"
+  },
+  "uCgp+K": {
+    "message": "Blocks Per message"
+  },
+  "vNT9Ip": {
+    "message": "Mnemonic Phrase"
+  },
+  "wsALI4": {
+    "message": "Enter Encoded Key"
+  },
+  "xkLxAx": {
+    "message": "Account Created"
+  },
+  "y3LzSM": {
+    "message": "Max Peers"
+  },
+  "yjpdGo": {
+    "message": "You don't have any contacts"
+  },
+  "ytT37i": {
+    "message": "Back to all accounts"
+  },
+  "zAPy5e": {
+    "message": "Account name — Z to A"
+  }
 }

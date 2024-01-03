@@ -2,7 +2,7 @@ import { useMemo } from "react";
 import { IntlProvider as ReactIntlProvider } from "react-intl";
 
 import English from "./compiled-locales/en.json";
-import Russian from "./compiled-locales/ru.json";
+import Spanish from "./compiled-locales/es.json";
 
 type Props = {
   children: React.ReactNode;
@@ -22,8 +22,8 @@ export function IntlProvider({ children }: Props) {
     switch (shortLocale) {
       case "en":
         return English;
-      case "ru":
-        return Russian;
+      case "es":
+        return Spanish;
       default:
         return English;
     }

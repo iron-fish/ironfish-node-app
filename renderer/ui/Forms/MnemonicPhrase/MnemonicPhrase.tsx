@@ -88,7 +88,6 @@ export function MnemonicPhrase({
       const index = parseInt(number, 10) - 1;
 
       if (words.length === PHRASE_ITEM_COUNT) {
-        console.log("match", words.length, PHRASE_ITEM_COUNT);
         onChange(words);
         return;
       }
@@ -107,13 +106,14 @@ export function MnemonicPhrase({
       {...rest}
       error={hasBlur && error ? error : undefined}
       label={
-        <HStack flexGrow={1}>
+        <HStack>
           <Text fontSize="sm" color={COLORS.GRAY_MEDIUM}>
             Mnemonic Phrase
           </Text>
           {readOnly && (
             <Box
-              as="button"
+              cursor="pointer"
+              padding={2}
               onClick={() => {
                 copyToClipboard(phrase.join(" "));
                 toast({
@@ -133,7 +133,8 @@ export function MnemonicPhrase({
       actions={
         <HStack>
           <Box
-            as="button"
+            padding={2}
+            cursor="pointer"
             onClick={() => {
               toggleIsHidden();
             }}
@@ -156,7 +157,7 @@ export function MnemonicPhrase({
       >
         {EMPTY_PHRASE_ARRAY.map((_, i) => {
           const num = i + 1;
-          const value = phrase[i] ?? "";
+          const value = isHidden ? "••••••••" : phrase[i] ?? "";
           return (
             <GridItem key={i}>
               <InputGroup>
@@ -182,6 +183,9 @@ export function MnemonicPhrase({
                   onPaste={handlePaste}
                   borderColor={hasBlur && !value ? COLORS.RED : COLORS.BLACK}
                   placeholder="Empty"
+                  _placeholder={{
+                    color: COLORS.GRAY_MEDIUM,
+                  }}
                   _dark={{
                     borderColor:
                       hasBlur && !value
