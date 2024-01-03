@@ -6,7 +6,7 @@
   "author": "IF Labs <engineering@iflabs.network> (https://iflabs.network)",
   "main": "app/background.js",
   "scripts": {
-    "dev": "nextron",
+    "dev": "npm run i18n && nextron",
     "build-check": "npm run i18n && nextron build --no-pack",
     "build": "npm run i18n && nextron build",
     "lint": "eslint --fix --config .eslintrc.js .",
