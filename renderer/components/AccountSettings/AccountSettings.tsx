@@ -9,7 +9,6 @@ import {
   AlertDialogHeader,
   AlertDialogBody,
   Button,
-  useToast,
 } from "@chakra-ui/react";
 import { useRouter } from "next/router";
 import { useRef, useState } from "react";
@@ -18,6 +17,7 @@ import { defineMessages, useIntl } from "react-intl";
 import { trpcReact } from "@/providers/TRPCProvider";
 import { TextInput } from "@/ui/Forms/TextInput/TextInput";
 import { PillButton } from "@/ui/PillButton/PillButton";
+import { useIFToast } from "@/ui/Toast/Toast";
 
 type Props = {
   accountName: string;
@@ -53,7 +53,7 @@ const messages = defineMessages({
 
 export function AccountSettings({ accountName }: Props) {
   const router = useRouter();
-  const toast = useToast();
+  const toast = useIFToast();
   const { formatMessage } = useIntl();
 
   const [newName, setNewName] = useState(accountName);
@@ -66,10 +66,8 @@ export function AccountSettings({ accountName }: Props) {
       onSuccess: () => {
         router.replace(`/accounts/${newName}?tab=settings`);
         toast({
-          title: `Renamed account ${accountName} to ${newName}`,
-          status: "success",
+          message: `Renamed account ${accountName} to ${newName}`,
           duration: 5000,
-          isClosable: true,
         });
       },
     });

@@ -1,8 +1,9 @@
 import { CopyIcon } from "@chakra-ui/icons";
-import { Text, TextProps, useToast } from "@chakra-ui/react";
+import { Text, TextProps } from "@chakra-ui/react";
 import { useCopyToClipboard } from "usehooks-ts";
 
 import { COLORS } from "@/ui/colors";
+import { useIFToast } from "@/ui/Toast/Toast";
 import { truncateString } from "@/utils/truncateString";
 
 type Props = TextProps & {
@@ -11,7 +12,7 @@ type Props = TextProps & {
 
 export function CopyAddress({ address, ...rest }: Props) {
   const [_, copyToClipboard] = useCopyToClipboard();
-  const toast = useToast();
+  const toast = useIFToast();
   return (
     <Text
       as="button"
@@ -19,9 +20,7 @@ export function CopyAddress({ address, ...rest }: Props) {
         e.preventDefault();
         copyToClipboard(address);
         toast({
-          description: "Address copied to clipboard",
-          status: "success",
-          duration: 2000,
+          message: "Address copied to clipboard",
         });
       }}
       color={COLORS.GRAY_MEDIUM}

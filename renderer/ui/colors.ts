@@ -5,6 +5,7 @@ export const COLORS = {
   GRAY_MEDIUM: "#7F7F7F",
 
   VIOLET: "#DE83F0",
+  LIGHT_BLUE: "#2C72FF",
   DEEP_BLUE: "#1D0070",
   RED: "#F15929",
 
