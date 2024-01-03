@@ -38,7 +38,7 @@ export function WithExplanatorySidebar({
           {heading}
         </Heading>
         {description}
-        <Box mt={16}>
+        <Box mt={4}>
           <Image src={imgSrc} alt="" />
         </Box>
       </Box>
