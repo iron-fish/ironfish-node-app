@@ -2,10 +2,7 @@ import { Box, Heading, Skeleton } from "@chakra-ui/react";
 import { defineMessages, useIntl } from "react-intl";
 import { Virtuoso } from "react-virtuoso";
 
-import {
-  TransactionRow,
-  TransactionsHeadings,
-} from "@/components/TransactionRow/TransactionRow";
+import { NoteRow, NotesHeadings } from "@/components/NoteRow/NoteRow";
 import { useScrollElementContext } from "@/layouts/MainLayout";
 
 import { TransactionNote } from "../../../shared/types";
@@ -31,15 +28,16 @@ const messages = defineMessages({
 type Props = {
   notes: TransactionNote[];
   heading?: string;
-  linkToTransaction?: boolean;
+  asTransactions?: boolean;
   isError?: boolean;
   isLoading?: boolean;
+  combineTypeAndStatus?: boolean;
 };
 
 export function NotesList({
   notes,
   heading = "Transaction Notes",
-  linkToTransaction = false,
+  asTransactions = false,
   isError,
   isLoading,
 }: Props) {
@@ -71,7 +69,7 @@ export function NotesList({
       <Heading as="h2" fontSize="2xl" mb={8}>
         {heading}
       </Heading>
-      <TransactionsHeadings />
+      <NotesHeadings />
       {isLoading && <Skeleton height="600px" />}
       {!isLoading && customScrollElement && (
         <Virtuoso
@@ -79,7 +77,7 @@ export function NotesList({
           data={notes}
           itemContent={(_, note) => {
             return (
-              <TransactionRow
+              <NoteRow
                 key={note.noteHash}
                 accountName={note.accountName}
                 assetName={note.assetName}
@@ -89,8 +87,9 @@ export function NotesList({
                 to={note.to}
                 transactionHash={note.transactionHash}
                 type={note.type}
+                status={note.status}
                 memo={note.memo}
-                linkToTransaction={linkToTransaction}
+                asTransaction={asTransactions}
               />
             );
           }}
