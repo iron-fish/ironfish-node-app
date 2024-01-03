@@ -20,7 +20,7 @@ export const settingsSchema: Schema<SchemaDefinition> = {
     enum: ["light", "dark", "system"],
   },
   locale: {
-    type: "string",
+    type: ["string", "null"],
   },
 };
 
