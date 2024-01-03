@@ -8,14 +8,14 @@ import { COLORS } from "../colors";
 
 export const DarkModeSwitch = () => {
   const { colorMode } = useColorMode();
-  const { mutate: setUserSetting } = trpcReact.setUserSetting.useMutation();
+  const { mutate: setUserSettings } = trpcReact.setUserSettings.useMutation();
   const isDark = colorMode === "dark";
 
   const toggleColorMode = useCallback(() => {
     colorMode === "dark"
-      ? setUserSetting({ theme: "light" })
-      : setUserSetting({ theme: "dark" });
-  }, [setUserSetting, colorMode]);
+      ? setUserSettings({ theme: "light" })
+      : setUserSettings({ theme: "dark" });
+  }, [setUserSettings, colorMode]);
 
   return (
     <Stack
