@@ -9,6 +9,7 @@ const contactDefinition = z.object({
   id: z.string(),
   name: z.string(),
   address: z.string(),
+  order: z.number(),
   note: z.string().optional(),
 });
 
@@ -25,6 +26,7 @@ const schema: Schema<{
         id: { type: "string" },
         name: { type: "string" },
         address: { type: "string" },
+        order: { type: "number" },
         note: { type: "string" },
       },
       required: ["id", "name", "address"],
@@ -57,12 +59,15 @@ export const contactsRouter = t.router({
     const contacts = await store.get("contacts", []);
     const addressLookup = new Set(contacts.map((contact) => contact.address));
 
+    let order = 0;
+
     for (const contact of betaContacts) {
       if (!addressLookup.has(contact.address)) {
         contacts.push({
           id: uuidv4(),
           name: contact.name,
           address: contact.address,
+          order: order++,
         });
       }
     }
@@ -83,6 +88,7 @@ export const contactsRouter = t.router({
         id: uuidv4(),
         name: opts.input.name,
         address: opts.input.address,
+        order: contacts.length,
       });
       store.set("contacts", contacts);
       return contacts;
@@ -106,6 +112,7 @@ export const contactsRouter = t.router({
           id: opts.input.id,
           name: opts.input.name,
           address: opts.input.address,
+          order: contacts[index].order,
         };
         store.set("contacts", contacts);
       }

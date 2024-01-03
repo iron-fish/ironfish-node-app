@@ -17,7 +17,6 @@ import { trpcReact } from "@/providers/TRPCProvider";
 import { COLORS } from "@/ui/colors";
 import { PillButton } from "@/ui/PillButton/PillButton";
 import { formatOre } from "@/utils/ironUtils";
-import { truncateString } from "@/utils/truncateString";
 
 import { TransactionData } from "../transactionSchema";
 
@@ -77,9 +76,7 @@ export function ConfirmTransactionModal({
 
                 <Box py={4} borderBottom="1.5px dashed #DEDFE2">
                   <Text color={COLORS.GRAY_MEDIUM}>To:</Text>
-                  <Text fontSize="md">
-                    {truncateString(transactionData?.toAccount ?? "")}
-                  </Text>
+                  <Text fontSize="md">{transactionData?.toAccount ?? ""}</Text>
                 </Box>
 
                 <Box py={4} borderBottom="1.5px dashed #DEDFE2">
@@ -144,23 +141,21 @@ export function ConfirmTransactionModal({
           )}
         </ModalBody>
 
-        <ModalFooter display="flex" gap={2} py={8}>
+        <ModalFooter display="flex" gap={2} px={16} py={8}>
           {(isIdle || isLoading) && (
             <>
               <PillButton
+                size="sm"
                 isDisabled={isLoading}
                 onClick={handleClose}
                 variant="inverted"
-                height="60px"
-                px={8}
                 border={0}
               >
                 Cancel Transaction
               </PillButton>
               <PillButton
+                size="sm"
                 isDisabled={isLoading}
-                height="60px"
-                px={8}
                 onClick={handleSubmit}
               >
                 Confirm &amp; Send
@@ -170,8 +165,7 @@ export function ConfirmTransactionModal({
           {isSuccess && (
             <>
               <PillButton
-                height="60px"
-                px={8}
+                size="sm"
                 onClick={() => {
                   const account = transactionData?.fromAccount;
                   if (!account) {
@@ -184,8 +178,7 @@ export function ConfirmTransactionModal({
                 View Account Activity
               </PillButton>
               <PillButton
-                height="60px"
-                px={8}
+                size="sm"
                 onClick={() => {
                   const account = transactionData?.fromAccount;
                   const transactionHash = sentTransactionData?.hash;
@@ -205,19 +198,17 @@ export function ConfirmTransactionModal({
           {isError && (
             <>
               <PillButton
+                size="sm"
                 isDisabled={isLoading}
                 onClick={handleClose}
                 variant="inverted"
-                height="60px"
-                px={8}
                 border={0}
               >
                 Cancel
               </PillButton>
               <PillButton
+                size="sm"
                 isDisabled={isLoading}
-                height="60px"
-                px={8}
                 onClick={handleSubmit}
               >
                 Try Again

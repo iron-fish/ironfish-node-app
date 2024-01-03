@@ -3,7 +3,7 @@ import { Grid, GridItem, Text } from "@chakra-ui/react";
 import { useRouter } from "next/router";
 
 import { ChakraLink } from "@/ui/ChakraLink/ChakraLink";
-import { COLORS } from "@/ui/colors";
+import { COLORS, getGradientByOrder } from "@/ui/colors";
 import { PillButton } from "@/ui/PillButton/PillButton";
 import { ShadowCard } from "@/ui/ShadowCard/ShadowCard";
 import { ArrowSend } from "@/ui/SVGs/ArrowSend";
@@ -34,9 +34,10 @@ export function ContactHeadings() {
 type Props = {
   name: string;
   address: string;
+  order: number;
 };
 
-export function ContactRow({ name, address }: Props) {
+export function ContactRow({ name, address, order }: Props) {
   const router = useRouter();
   return (
     <ChakraLink w="100%" href={`/address-book/${address}`}>
@@ -58,7 +59,7 @@ export function ContactRow({ name, address }: Props) {
           gap={4}
         >
           <GridItem display="flex" alignItems="center" pl={8}>
-            <FishIcon bg="pink" mr={4} />
+            <FishIcon bg={getGradientByOrder(order)} mr={4} />
             <Text as="span">{name}</Text>
           </GridItem>
           <GridItem display="flex">
@@ -66,6 +67,7 @@ export function ContactRow({ name, address }: Props) {
           </GridItem>
           <GridItem display="flex" alignItems="center" mr={4}>
             <PillButton
+              size="sm"
               onClick={(e) => {
                 e.preventDefault();
                 router.push(`/send?to=${address}`);

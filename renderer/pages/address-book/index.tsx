@@ -1,4 +1,4 @@
-import { HStack, Heading, Skeleton, Stack } from "@chakra-ui/react";
+import { HStack, Heading, Skeleton, Stack, VStack } from "@chakra-ui/react";
 import { useMemo, useState } from "react";
 import { defineMessages, useIntl } from "react-intl";
 import { useToggle } from "usehooks-ts";
@@ -75,15 +75,18 @@ export default function AddressBookPage() {
             <SearchInput onChange={(e) => setSearchInput(e.target.value)} />
           </HStack>
           <ContactHeadings />
-          {filteredData?.map((contact) => {
-            return (
-              <ContactRow
-                key={contact.id}
-                name={contact.name}
-                address={contact.address}
-              />
-            );
-          })}
+          <VStack>
+            {filteredData?.map((contact, i) => {
+              return (
+                <ContactRow
+                  key={contact.id}
+                  name={contact.name}
+                  address={contact.address}
+                  order={contact.order ?? i}
+                />
+              );
+            })}
+          </VStack>
         </>
       )}
       <AddContactModal

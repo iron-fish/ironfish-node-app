@@ -5,14 +5,24 @@ type Props = ComponentProps<typeof chakra.svg> & {
   bg: string;
 };
 
+const size = 46;
+
 export function FishIcon({ bg, ...rest }: Props) {
   return (
-    <chakra.svg width={46} height={46} fill="none" {...rest}>
+    <chakra.svg
+      width={size}
+      height={size}
+      minWidth={size}
+      minHeight={size}
+      fill="none"
+      borderRadius="full"
+      bg={bg}
+      {...rest}
+    >
       <chakra.circle
         cx={23}
         cy={23}
         r={22.5}
-        fill={bg}
         stroke="#000"
         _dark={{
           stroke: "#fff",
