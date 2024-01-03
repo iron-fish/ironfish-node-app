@@ -14,8 +14,8 @@ export function SentIcon() {
       }}
     >
       <circle cx={13} cy={13} r={13} fill="currentColor" />
-      <path d="M11.5 9H17V14.5" stroke={foregroundColor} stroke-width="1.5" />
-      <path d="M17 9L9 17" stroke={foregroundColor} stroke-width="1.5" />
+      <path d="M11.5 9H17V14.5" stroke={foregroundColor} strokeWidth="1.5" />
+      <path d="M17 9L9 17" stroke={foregroundColor} strokeWidth="1.5" />
     </chakra.svg>
   );
 }

@@ -22,9 +22,9 @@ export function ReceivedIcon() {
       <path
         d="M17 11.5L17 17L11.5 17"
         stroke={foregroundColor}
-        stroke-width="1.5"
+        strokeWidth="1.5"
       />
-      <path d="M17 17L9 9" stroke={foregroundColor} stroke-width="1.5" />
+      <path d="M17 17L9 9" stroke={foregroundColor} strokeWidth="1.5" />
     </chakra.svg>
   );
 }
