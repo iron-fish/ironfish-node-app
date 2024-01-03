@@ -94,7 +94,9 @@
   "lint-staged": {
     "*.{js,ts,tsx}": [
       "eslint --fix",
-      "prettier --write"
+      "prettier --write",
+      "npm run extract:i18n",
+      "git add renderer/intl/locales/en.json"
     ]
   }
 }
