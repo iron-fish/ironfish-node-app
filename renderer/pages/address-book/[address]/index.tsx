@@ -112,7 +112,7 @@ function SingleContactContent({ address }: { address: string }) {
                   <Text
                     fontSize="sm"
                     maxW="340px"
-                    mb={4}
+                    mb={8}
                     color={COLORS.GRAY_MEDIUM}
                   >
                     With contact names being associated with public addresses,
