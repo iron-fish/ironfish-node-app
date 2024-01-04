@@ -160,6 +160,7 @@ export function SendAssetsFormContent({
         retry: false,
         enabled:
           amountValue > 0 &&
+          !errors.memo &&
           !errors.amount &&
           !errors.toAccount &&
           !errors.assetId,
