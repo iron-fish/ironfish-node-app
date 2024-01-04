@@ -89,7 +89,7 @@ function AccountOverviewContent({ accountName }: { accountName: string }) {
       }}
     >
       <Box>
-        <HStack mb={4} gap={4}>
+        <VStack mb={6} gap={0} alignItems="flex-start">
           <Heading>{accountData.name}</Heading>
           {accountData.status.viewOnly && (
             <Box transform="translateY(0.25em)">
@@ -98,9 +98,10 @@ function AccountOverviewContent({ accountName }: { accountName: string }) {
           )}
           <CopyAddress
             address={accountData.address}
+            truncate={false}
             transform="translateY(0.4em)"
           />
-        </HStack>
+        </VStack>
         <Tabs isLazy defaultIndex={initialTabIndex}>
           <TabList mb={8}>
             <Tab py={2} px={4} mr={4}>
