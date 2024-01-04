@@ -90,7 +90,7 @@ export function AccountRow({
   return (
     <ChakraLink href={`/accounts/${name}`} w="100%">
       <ShadowCard hoverable>
-        <VStack alignItems="stretch">
+        <VStack alignItems="stretch" gap={3}>
           {!isSynced.synced && <SyncingProgress progress={isSynced.progress} />}
 
           <Flex>
