@@ -45,6 +45,14 @@ const theme = extendTheme({
     }),
     Modal: modalTheme,
   },
+  semanticTokens: {
+    colors: {
+      ["chakra-placeholder-color"]: {
+        _dark: COLORS.DARK_MODE.GRAY_LIGHT,
+        _light: COLORS.GRAY_MEDIUM,
+      },
+    },
+  },
 });
 
 export { createBreakpointArray };
