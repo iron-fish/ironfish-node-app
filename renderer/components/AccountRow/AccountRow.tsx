@@ -1,7 +1,17 @@
 import { ChevronRightIcon } from "@chakra-ui/icons";
-import { Box, Flex, Heading, HStack, Text, VStack } from "@chakra-ui/react";
+import {
+  Box,
+  Flex,
+  Heading,
+  HStack,
+  Text,
+  Tooltip,
+  VStack,
+} from "@chakra-ui/react";
 import { useRouter } from "next/router";
+import { defineMessages, useIntl } from "react-intl";
 
+import { trpcReact } from "@/providers/TRPCProvider";
 import { ChakraLink } from "@/ui/ChakraLink/ChakraLink";
 import { COLORS } from "@/ui/colors";
 import { PillButton } from "@/ui/PillButton/PillButton";
@@ -13,6 +23,16 @@ import { formatOre } from "@/utils/ironUtils";
 
 import { CopyAddress } from "../CopyAddress/CopyAddress";
 import { ViewOnlyChip } from "../ViewOnlyChip/ViewOnlyChip";
+
+const messages = defineMessages({
+  viewOnlySendDisabled: {
+    defaultMessage: "View only accounts cannot send transactions",
+  },
+  syncingSendDisabled: {
+    defaultMessage:
+      "This account is syncing. Please wait until the sync is complete before sending transactions.",
+  },
+});
 
 type AccountRowProps = {
   color: GradientOptions;
@@ -30,6 +50,15 @@ export function AccountRow({
   viewOnly,
 }: AccountRowProps) {
   const router = useRouter();
+  const { formatMessage } = useIntl();
+  const { data: isSynced } = trpcReact.isAccountSynced.useQuery(
+    {
+      account: name,
+    },
+    {
+      refetchInterval: 5000,
+    },
+  );
   return (
     <ChakraLink href={`/accounts/${name}`} w="100%">
       <ShadowCard hoverable>
@@ -63,18 +92,37 @@ export function AccountRow({
             <CopyAddress address={address} />
           </VStack>
 
-          <VStack alignItems="stretch" justifyContent="center">
-            <PillButton
-              size="sm"
-              isDisabled={viewOnly}
-              onClick={(e) => {
-                e.preventDefault();
-                router.push(`/send?account=${name}`);
-              }}
+          <VStack
+            alignItems="stretch"
+            justifyContent="center"
+            position="relative"
+          >
+            <Tooltip
+              label={
+                viewOnly
+                  ? formatMessage(messages.viewOnlySendDisabled)
+                  : !isSynced
+                  ? formatMessage(messages.syncingSendDisabled)
+                  : null
+              }
+              placement="top"
             >
-              <ArrowSend transform="scale(0.8)" />
-              Send
-            </PillButton>
+              <VStack w="100%" alignItems="stretch">
+                <PillButton
+                  size="sm"
+                  isDisabled={viewOnly || !isSynced}
+                  onClick={(e) => {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    if (viewOnly || !isSynced) return;
+                    router.push(`/send?account=${name}`);
+                  }}
+                >
+                  <ArrowSend transform="scale(0.8)" />
+                  Send
+                </PillButton>
+              </VStack>
+            </Tooltip>
             <PillButton
               size="sm"
               onClick={(e) => {

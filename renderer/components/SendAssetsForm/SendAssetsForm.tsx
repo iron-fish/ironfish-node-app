@@ -18,6 +18,10 @@ import {
   TransactionFormData,
   transactionSchema,
 } from "./transactionSchema";
+import {
+  AccountSyncingMessage,
+  ChainSyncingMessage,
+} from "../SyncingMessages/SyncingMessages";
 
 export function SendAssetsFormContent({
   accountsData,
@@ -114,8 +118,30 @@ export function SendAssetsFormContent({
     return assets;
   }, [accountsData, fromAccountValue]);
 
+  const { data: isAccountSynced } = trpcReact.isAccountSynced.useQuery(
+    {
+      account: fromAccountValue,
+    },
+    {
+      refetchInterval: 5000,
+    },
+  );
+  const { data: nodeStatusData } = trpcReact.getStatus.useQuery(undefined, {
+    refetchInterval: 5000,
+  });
+  const syncingMessage = useMemo(() => {
+    if (nodeStatusData?.blockchain.synced === false) {
+      return <ChainSyncingMessage mb={4} />;
+    }
+    if (isAccountSynced === false) {
+      return <AccountSyncingMessage mb={4} />;
+    }
+    return null;
+  }, [isAccountSynced, nodeStatusData?.blockchain.synced]);
+
   return (
     <>
+      {syncingMessage}
       <chakra.form
         onSubmit={handleSubmit((data) => {
           // @todo: Try marking the form as invalid or disabling the button
@@ -204,7 +230,12 @@ export function SendAssetsFormContent({
         </VStack>
 
         <HStack mt={8} justifyContent="flex-end">
-          <PillButton type="submit" height="60px" px={8}>
+          <PillButton
+            type="submit"
+            height="60px"
+            px={8}
+            isDisabled={!isAccountSynced}
+          >
             Send Asset
           </PillButton>
         </HStack>

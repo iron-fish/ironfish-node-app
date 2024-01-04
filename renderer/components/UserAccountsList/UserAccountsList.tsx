@@ -17,6 +17,7 @@ import { parseOre } from "@/utils/ironUtils";
 import { AccountRow } from "../AccountRow/AccountRow";
 import { DropdownTrigger } from "../DropdownTrigger/DropdownTrigger";
 import { SearchInput } from "../SearchInput/SearchInput";
+import { ChainSyncingMessage } from "../SyncingMessages/SyncingMessages";
 
 const messages = defineMessages({
   accountName: {
@@ -76,13 +77,19 @@ const sortOptions: Array<SortOption> = [
 ];
 
 export function UserAccountsList() {
-  const [searchInput, setSearchInput] = useState("");
-  const [sortOption, setSortOption] = useState<SortOption>(sortOptions[2]);
-  const { data } = trpcReact.getAccounts.useQuery();
   const { formatMessage } = useIntl();
+  const [searchInput, setSearchInput] = useState("");
+  const { data: accountsData } = trpcReact.getAccounts.useQuery();
+  const { data: nodeStatusData } = trpcReact.getStatus.useQuery(undefined, {
+    refetchInterval: 5000,
+  });
+  const [sortOption, setSortOption] = useState<SortOption>(sortOptions[2]);
 
   return (
     <VStack>
+      {nodeStatusData?.blockchain.synced === false ? (
+        <ChainSyncingMessage mb={4} />
+      ) : null}
       <Grid w="100%" templateColumns="3fr 1fr" gap={4} mb={4}>
         <GridItem>
           <SearchInput onChange={(e) => setSearchInput(e.target.value)} />
@@ -109,7 +116,7 @@ export function UserAccountsList() {
           </Menu>
         </GridItem>
       </Grid>
-      {data
+      {accountsData
         ?.filter((item) => {
           return item.name.toLowerCase().includes(searchInput.toLowerCase());
         })
