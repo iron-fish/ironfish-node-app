@@ -18,7 +18,7 @@ export default function Send() {
           <Heading fontSize="2xl" mb={4}>
             About Fees
           </Heading>
-          <Text fontSize="sm" maxW="340px" mb={16} color={COLORS.GRAY_MEDIUM}>
+          <Text fontSize="sm" maxW="340px" mb={8} color={COLORS.GRAY_MEDIUM}>
             You can change the fee amount you&apos;d like to pay. However, that
             will directly correlate with the speed with which your transaction
             is picked up by the blockchain.
