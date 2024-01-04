@@ -84,6 +84,9 @@
   "Fn/FTS": {
     "message": "An error occurred while loading your transactions. If this happens several times, please let us know on Discord."
   },
+  "GHoUMq": {
+    "message": "Account Syncing: {progress}%"
+  },
   "Gcv5yj": {
     "message": "Heap Used"
   },
@@ -167,6 +170,9 @@
   },
   "UTOugV": {
     "message": "Your Assets"
+  },
+  "VBDJ/l": {
+    "message": "Your balance might not be accurate while you're syncing"
   },
   "VzzYJk": {
     "message": "Create"
