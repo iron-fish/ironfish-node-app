@@ -27,10 +27,10 @@ import { formatOre } from "@/utils/ironUtils";
 
 const messages = defineMessages({
   createAccount: {
-    defaultMessage: "Create Account",
+    defaultMessage: "Create",
   },
   importAccount: {
-    defaultMessage: "Import Account",
+    defaultMessage: "Import",
   },
   totalAccountsBalance: {
     defaultMessage: "Total accounts balance",
