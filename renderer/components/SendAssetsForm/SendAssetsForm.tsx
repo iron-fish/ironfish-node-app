@@ -1,7 +1,7 @@
-import { VStack, chakra, HStack } from "@chakra-ui/react";
+import { VStack, chakra, HStack, Text } from "@chakra-ui/react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useRouter } from "next/router";
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { useForm } from "react-hook-form";
 
 import { TRPCRouterOutputs, trpcReact } from "@/providers/TRPCProvider";
@@ -22,6 +22,24 @@ import {
   AccountSyncingMessage,
   ChainSyncingMessage,
 } from "../SyncingMessages/SyncingMessages";
+
+type AccountType = TRPCRouterOutputs["getAccounts"][number];
+type BalanceType = AccountType["balances"]["iron"];
+
+function getAccountBalances(account: AccountType): {
+  [key: string]: BalanceType;
+} {
+  const customAssets = account.balances.custom?.reduce((acc, customAsset) => {
+    return {
+      ...acc,
+      [customAsset.asset.id]: customAsset,
+    };
+  }, {});
+  return {
+    [account.balances.iron.asset.id]: account.balances.iron,
+    ...customAssets,
+  };
+}
 
 export function SendAssetsFormContent({
   accountsData,
@@ -48,22 +66,25 @@ export function SendAssetsFormContent({
     const queryMatch = accountOptions.find(
       (option) => option.value === router.query.account,
     );
-
     return queryMatch ? queryMatch.value : accountOptions[0]?.value;
   }, [accountOptions, router.query.account]);
+
+  const defaultAssetId = accountsData[0]?.balances.iron.asset.id;
 
   const {
     register,
     handleSubmit,
     formState: { errors },
     watch,
+    setError,
+    resetField,
   } = useForm<TransactionFormData>({
     resolver: zodResolver(transactionSchema),
     defaultValues: {
       amount: 0,
       fromAccount: defaultAccount,
       toAccount: defaultToAddress ?? "",
-      assetId: accountsData[0]?.balances.iron.asset.id,
+      assetId: defaultAssetId,
       fee: "average",
     },
   });
@@ -89,7 +110,6 @@ export function SendAssetsFormContent({
       retry: false,
       enabled:
         amountValue > 0 &&
-        !errors.memo &&
         !errors.amount &&
         !errors.toAccount &&
         !errors.assetId,
@@ -139,11 +159,46 @@ export function SendAssetsFormContent({
     return null;
   }, [isAccountSynced, nodeStatusData?.blockchain.synced]);
 
+  const selectedAccount = useMemo(() => {
+    const match = accountsData?.find(
+      (account) => account.name === fromAccountValue,
+    );
+    if (!match) {
+      throw new Error("Non-existent account selected");
+    }
+    return match;
+  }, [accountsData, fromAccountValue]);
+
+  const accountBalances = useMemo(() => {
+    return getAccountBalances(selectedAccount);
+  }, [selectedAccount]);
+
+  // Resets asset field to $IRON if a newly selected account does not have the selected asset
+  useEffect(() => {
+    if (!Object.hasOwn(accountBalances, assetValue)) {
+      resetField("assetId");
+    }
+  }, [assetValue, resetField, selectedAccount, accountBalances]);
+
   return (
     <>
       {syncingMessage}
       <chakra.form
-        onSubmit={handleSubmit((data) => {
+        onSubmit={handleSubmit(async (data) => {
+          const currentBalance = Number(
+            accountBalances[data.assetId].confirmed,
+          );
+          const amountAsIron = parseIron(data.amount);
+
+          if (currentBalance < amountAsIron) {
+            setError("amount", {
+              type: "custom",
+              message:
+                "The selected account does not have enough funds to send this transaction.",
+            });
+            return;
+          }
+
           // @todo: Try marking the form as invalid or disabling the button
           if (!estimatedFeesData) {
             return;
@@ -182,6 +237,11 @@ export function SendAssetsFormContent({
             options={assetOptions}
             error={errors.assetId?.message}
           />
+
+          <Text>
+            Current balance:{" "}
+            {formatOre(accountBalances[assetValue]?.confirmed ?? 0)}
+          </Text>
 
           <TextInput
             {...register("amount")}
