@@ -76,6 +76,12 @@ const sortOptions: Array<SortOption> = [
   },
 ];
 
+function getGradientColor(address: string) {
+  const bigAddress = BigInt(`0x${address}`);
+  const bigLength = BigInt(gradientOptions.length);
+  return gradientOptions[Number(bigAddress % bigLength)];
+}
+
 export function UserAccountsList() {
   const { formatMessage } = useIntl();
   const [searchInput, setSearchInput] = useState("");
@@ -121,11 +127,11 @@ export function UserAccountsList() {
           return item.name.toLowerCase().includes(searchInput.toLowerCase());
         })
         .toSorted(sortOption.sort)
-        .map((account, i) => {
+        .map((account) => {
           return (
             <AccountRow
               key={account.address}
-              color={gradientOptions[i % gradientOptions.length]}
+              color={getGradientColor(account.address)}
               name={account.name}
               balance={account.balances.iron.confirmed}
               address={account.address}

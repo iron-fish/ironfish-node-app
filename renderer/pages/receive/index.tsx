@@ -85,7 +85,7 @@ export function ReceiveAccountsContent({
           <Heading fontSize="2xl" mb={4}>
             Transaction Details
           </Heading>
-          <Text fontSize="sm" maxW="340px" mb={16} color={COLORS.GRAY_MEDIUM}>
+          <Text fontSize="sm" maxW="340px" mb={8} color={COLORS.GRAY_MEDIUM}>
             You can share your public address with whomever you choose to
             receive payments. Your account will remain completely private, and
             individuals with this public address will not be able to see any of

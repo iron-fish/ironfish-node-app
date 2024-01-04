@@ -8,9 +8,10 @@ import { truncateString } from "@/utils/truncateString";
 
 type Props = TextProps & {
   address: string;
+  truncate?: boolean;
 };
 
-export function CopyAddress({ address, ...rest }: Props) {
+export function CopyAddress({ address, truncate = true, ...rest }: Props) {
   const [_, copyToClipboard] = useCopyToClipboard();
   const toast = useIFToast();
   return (
@@ -32,7 +33,7 @@ export function CopyAddress({ address, ...rest }: Props) {
       }}
       {...rest}
     >
-      {truncateString(address)}
+      {truncate ? truncateString(address) : address}
       <CopyIcon ml={1} transform="translateY(-1px)" />
     </Text>
   );
