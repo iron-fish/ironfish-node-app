@@ -84,6 +84,9 @@
   "BxM6mJ": {
     "message": "Lowest to highest balance"
   },
+  "D31nQ7": {
+    "message": "An error occurred while estimating the transaction fee"
+  },
   "D3idYv": {
     "message": "Settings"
   },
@@ -164,9 +167,6 @@
   },
   "T2yddR": {
     "message": "Your Node"
-  },
-  "TRUFZF": {
-    "message": "The selected account does not have enough funds to send this transaction."
   },
   "Te4gbw": {
     "message": "Export Format:"
@@ -257,6 +257,9 @@
   },
   "j2AFTQ": {
     "message": "Node Status"
+  },
+  "jwIURF": {
+    "message": "The selected account does not have enough funds to send this transaction"
   },
   "lu5YPq": {
     "message": "unknown asset"

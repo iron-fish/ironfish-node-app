@@ -6,6 +6,7 @@ import { useForm } from "react-hook-form";
 import { useIntl, defineMessages } from "react-intl";
 
 import { TRPCRouterOutputs, trpcReact } from "@/providers/TRPCProvider";
+import { RenderError } from "@/ui/Forms/FormField/FormField";
 import { Select } from "@/ui/Forms/Select/Select";
 import { TextInput } from "@/ui/Forms/TextInput/TextInput";
 import { PillButton } from "@/ui/PillButton/PillButton";
@@ -48,7 +49,7 @@ const messages = defineMessages({
   },
   insufficientFundsError: {
     defaultMessage:
-      "The selected account does not have enough funds to send this transaction.",
+      "The selected account does not have enough funds to send this transaction",
   },
   currentBalanceText: {
     defaultMessage: "Current balance: {balance}",
@@ -64,6 +65,9 @@ const messages = defineMessages({
   },
   unknownAsset: {
     defaultMessage: "unknown asset",
+  },
+  estimatedFeeDefaultError: {
+    defaultMessage: "An error occurred while estimating the transaction fee",
   },
 });
 
@@ -141,25 +145,26 @@ export function SendAssetsFormContent({
   const toAccountValue = watch("toAccount");
   const memoValue = watch("memo");
 
-  const { data: estimatedFeesData } = trpcReact.getEstimatedFees.useQuery(
-    {
-      accountName: fromAccountValue,
-      output: {
-        amount: parseIron(amountValue),
-        assetId: assetValue,
-        memo: memoValue ?? "",
-        publicAddress: toAccountValue,
+  const { data: estimatedFeesData, error: estimatedFeesError } =
+    trpcReact.getEstimatedFees.useQuery(
+      {
+        accountName: fromAccountValue,
+        output: {
+          amount: parseIron(amountValue),
+          assetId: assetValue,
+          memo: memoValue ?? "",
+          publicAddress: toAccountValue,
+        },
       },
-    },
-    {
-      retry: false,
-      enabled:
-        amountValue > 0 &&
-        !errors.amount &&
-        !errors.toAccount &&
-        !errors.assetId,
-    },
-  );
+      {
+        retry: false,
+        enabled:
+          amountValue > 0 &&
+          !errors.amount &&
+          !errors.toAccount &&
+          !errors.assetId,
+      },
+    );
 
   const assetOptions = useMemo(() => {
     const selectedAccount = accountsData?.find(
@@ -243,8 +248,12 @@ export function SendAssetsFormContent({
             return;
           }
 
-          // @todo: Try marking the form as invalid or disabling the button
           if (!estimatedFeesData) {
+            setError("root.serverError", {
+              message:
+                estimatedFeesError?.message ??
+                formatMessage(messages.estimatedFeeDefaultError),
+            });
             return;
           }
 
@@ -331,6 +340,14 @@ export function SendAssetsFormContent({
             {...register("memo")}
             label={formatMessage(messages.memoLabel)}
             error={errors.memo?.message}
+          />
+
+          <RenderError
+            error={
+              errors.root?.serverError
+                ? errors.root?.serverError?.message
+                : null
+            }
           />
         </VStack>
 
