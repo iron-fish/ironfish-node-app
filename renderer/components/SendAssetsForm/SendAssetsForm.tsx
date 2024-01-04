@@ -126,6 +126,7 @@ export function SendAssetsFormContent({
     formState: { errors },
     watch,
     setError,
+    clearErrors,
     resetField,
   } = useForm<TransactionFormData>({
     resolver: zodResolver(transactionSchema),
@@ -299,7 +300,11 @@ export function SendAssetsFormContent({
           </Text>
 
           <TextInput
-            {...register("amount")}
+            {...register("amount", {
+              onChange: () => {
+                clearErrors("root.serverError");
+              },
+            })}
             label={formatMessage(messages.amountLabel)}
             error={errors.amount?.message}
           />
