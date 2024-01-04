@@ -5,6 +5,7 @@ import { createIPCHandler } from "electron-trpc/main";
 
 import { router } from "./api";
 import { manager } from "./api/manager";
+import { getUserSettings } from "./api/user-settings/userSettings";
 import { mainWindow } from "./main-window";
 import { updater } from "./updater";
 
@@ -44,16 +45,9 @@ async function createWindow(handler: ReturnType<typeof createIPCHandler>) {
   }
 }
 
-async function createConfigChangeHandler() {
-  const userSettings = await manager.getUserSettings();
-
+async function setNativeThemeSource() {
+  const userSettings = await getUserSettings();
   nativeTheme.themeSource = userSettings.get("theme");
-
-  userSettings.onConfigChange.on((key) => {
-    if (key === "theme") {
-      nativeTheme.themeSource = userSettings.get(key);
-    }
-  });
 }
 
 async function createThemeChangeHandler() {
@@ -85,7 +79,7 @@ app.whenReady().then(() => {
   }
 
   createThemeChangeHandler();
-  createConfigChangeHandler();
+  setNativeThemeSource();
 
   const handler = createIPCHandler({ router });
 

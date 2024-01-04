@@ -86,7 +86,10 @@ export function NodeOverview() {
           contentContainerProps={{
             bg: "#FFCD85",
             p: 8,
-            pt: "120px",
+            pt: {
+              base: 8,
+              lg: "120px",
+            },
             overflow: "hidden",
             position: "relative",
           }}
@@ -114,8 +117,8 @@ export function NodeOverview() {
           <Grid
             position="relative"
             templateColumns={{
-              base: "repeat(1, min-content)",
-              md: "repeat(2, min-content)",
+              base: "repeat(1, 1fr)",
+              md: "repeat(2, 1fr)",
               lg: "repeat(3, min-content)",
             }}
             gap={8}

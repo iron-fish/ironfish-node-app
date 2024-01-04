@@ -1,41 +1,108 @@
-import { useMemo } from "react";
+import {
+  createContext,
+  useCallback,
+  useContext,
+  useEffect,
+  useMemo,
+  useState,
+} from "react";
 import { IntlProvider as ReactIntlProvider } from "react-intl";
+
+import { trpcReact } from "@/providers/TRPCProvider";
 
 import English from "./compiled-locales/en.json";
 import Spanish from "./compiled-locales/es.json";
 
-type Props = {
-  children: React.ReactNode;
-};
-
 const DEFAULT_LOCALE = "en-US";
+export const LOCALES = ["en-US", "es-MX"] as const;
+export type Locales = (typeof LOCALES)[number];
 
-function getLocale() {
-  const locale = navigator.language ?? DEFAULT_LOCALE;
-  return { locale, shortLocale: locale.split("-")[0] };
+const SelectedLocaleContext = createContext<{
+  locale: Locales;
+  setLocale: (locale: Locales) => void;
+}>({
+  locale: "en-US",
+  setLocale: (_locale: Locales) => {},
+});
+
+export function useSelectedLocaleContext() {
+  return useContext(SelectedLocaleContext);
 }
 
-export function IntlProvider({ children }: Props) {
-  const { shortLocale, locale } = getLocale();
+function getLocaleFromNavigator() {
+  const language = navigator.language;
+  if (LOCALES.includes(language as Locales)) {
+    return language;
+  }
+
+  const shortLanguage = language.split("-")[0];
+  const match = LOCALES.find((locale) =>
+    locale.startsWith(shortLanguage + "-"),
+  );
+
+  return match ?? DEFAULT_LOCALE;
+}
+
+export function IntlProvider({ children }: { children: React.ReactNode }) {
+  const { data: storedLocale, isFetched } = trpcReact.getUserSetting.useQuery({
+    key: "locale",
+  });
+  const { mutate: setUserSettings } = trpcReact.setUserSettings.useMutation();
+  const [selectedLocale, setSelectedLocale] = useState<Locales | null>(null);
+
+  useEffect(() => {
+    if (!isFetched) {
+      return;
+    }
+
+    const locale = (storedLocale ?? getLocaleFromNavigator()) as Locales;
+    setSelectedLocale(locale);
+  }, [isFetched, storedLocale]);
 
   const messages = useMemo(() => {
-    switch (shortLocale) {
-      case "en":
+    switch (selectedLocale) {
+      case "en-US":
         return English;
-      case "es":
+      case "es-MX":
         return Spanish;
       default:
         return English;
     }
-  }, [shortLocale]);
+  }, [selectedLocale]);
+
+  const handleSetLocale = useCallback(
+    (locale: Locales) => {
+      setSelectedLocale(locale);
+    },
+    [setSelectedLocale],
+  );
+
+  useEffect(() => {
+    if (!selectedLocale) {
+      return;
+    }
+
+    setUserSettings({
+      locale: selectedLocale,
+    });
+  }, [selectedLocale, setUserSettings]);
 
   return (
-    <ReactIntlProvider
-      locale={locale}
-      defaultLocale={DEFAULT_LOCALE}
-      messages={messages}
+    <SelectedLocaleContext.Provider
+      value={{
+        locale: selectedLocale ?? DEFAULT_LOCALE,
+        setLocale: handleSetLocale,
+      }}
     >
-      {children}
-    </ReactIntlProvider>
+      {selectedLocale && (
+        <ReactIntlProvider
+          locale={selectedLocale}
+          defaultLocale={DEFAULT_LOCALE}
+          messages={messages}
+        >
+          {children}
+        </ReactIntlProvider>
+      )}
+    </SelectedLocaleContext.Provider>
   );
 }

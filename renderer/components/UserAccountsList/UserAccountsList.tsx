@@ -79,11 +79,11 @@ const sortOptions: Array<SortOption> = [
 export function UserAccountsList() {
   const { formatMessage } = useIntl();
   const [searchInput, setSearchInput] = useState("");
-  const [sortOption, setSortOption] = useState<SortOption>(sortOptions[0]);
   const { data: accountsData } = trpcReact.getAccounts.useQuery();
   const { data: nodeStatusData } = trpcReact.getStatus.useQuery(undefined, {
     refetchInterval: 5000,
   });
+  const [sortOption, setSortOption] = useState<SortOption>(sortOptions[2]);
 
   return (
     <VStack>

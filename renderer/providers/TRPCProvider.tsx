@@ -1,5 +1,9 @@
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { CreateTRPCProxyClient, createTRPCProxyClient } from "@trpc/client";
+import {
+  CreateTRPCProxyClient,
+  createTRPCProxyClient,
+  loggerLink,
+} from "@trpc/client";
 import { createTRPCReact } from "@trpc/react-query";
 import { inferRouterInputs, inferRouterOutputs } from "@trpc/server";
 import { ipcLink } from "electron-trpc/renderer";
@@ -35,7 +39,13 @@ export function TRPCProvider({ children }: { children: ReactNode }) {
   );
   const [trpcClient] = useState(() =>
     trpcReact.createClient({
-      links: [ipcLink()],
+      links: [
+        loggerLink({
+          enabled: (opts) =>
+            opts.direction === "down" && opts.result instanceof Error,
+        }),
+        ipcLink(),
+      ],
     }),
   );
 
@@ -51,7 +61,13 @@ let vanillaClient: CreateTRPCProxyClient<AppRouter>;
 export function getTrpcVanillaClient() {
   if (!vanillaClient) {
     vanillaClient = createTRPCProxyClient<AppRouter>({
-      links: [ipcLink()],
+      links: [
+        loggerLink({
+          enabled: (opts) =>
+            opts.direction === "down" && opts.result instanceof Error,
+        }),
+        ipcLink(),
+      ],
     });
   }
   return vanillaClient;

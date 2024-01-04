@@ -1,8 +1,13 @@
-import { chakra } from "@chakra-ui/react";
+import { chakra, useColorModeValue } from "@chakra-ui/react";
 
 import { COLORS } from "@/ui/colors";
 
 export function ReceivedIcon() {
+  const foregroundColor = useColorModeValue(
+    COLORS.GREEN_DARK,
+    COLORS.DARK_MODE.GREEN_LIGHT,
+  );
+
   return (
     <chakra.svg
       width={26}
@@ -10,11 +15,16 @@ export function ReceivedIcon() {
       fill="none"
       color={COLORS.GREEN_LIGHT}
       _dark={{
-        color: COLORS.DARK_MODE.GREEN_DARK,
+        color: "#2B351D",
       }}
     >
       <circle cx={13} cy={13} r={13} fill="currentColor" />
-      <path stroke="#6A991C" strokeWidth={1.5} d="M14.5 17H9v-5.5M9 17l8-8" />
+      <path
+        d="M17 11.5L17 17L11.5 17"
+        stroke={foregroundColor}
+        stroke-width="1.5"
+      />
+      <path d="M17 17L9 9" stroke={foregroundColor} stroke-width="1.5" />
     </chakra.svg>
   );
 }

@@ -54,11 +54,11 @@
   "6P/bTL": {
     "message": "Connection Type"
   },
-  "6T+v0W": {
-    "message": "Account imported"
-  },
   "8GvVWZ": {
     "message": "Something went wrong, please try again."
+  },
+  "8WtyrD": {
+    "message": "Spanish"
   },
   "9IVf3z": {
     "message": "Account Overview"
@@ -135,6 +135,9 @@
   "QS9NTE": {
     "message": "Account name — A to Z"
   },
+  "Qu9LpU": {
+    "message": "The selected account is syncing. Your balance may be inaccurate and sending transactions will be disabled until the sync is complete."
+  },
   "R2OqnW": {
     "message": "Delete Account"
   },
@@ -165,6 +168,9 @@
   "WWEwrn": {
     "message": "Node Settings"
   },
+  "WkrNSk": {
+    "message": "English"
+  },
   "WsssxH": {
     "message": "Select your JSON or Bech32 file to import your account."
   },
@@ -180,6 +186,9 @@
   "YFT4rG": {
     "message": "Keys"
   },
+  "Z4i3fh": {
+    "message": "The Iron Fish Node app supports {languageCount} languages. If your preferred language isn't listed, please reach out and let us know!"
+  },
   "ZhUW3G": {
     "message": "Heap Total"
   },
@@ -189,11 +198,17 @@
   "baVA6q": {
     "message": "Head Sequence"
   },
+  "bcOwoF": {
+    "message": "Choose your language"
+  },
   "c/KktL": {
     "message": "Resources"
   },
   "e6Ph5+": {
     "message": "Address"
+  },
+  "eVlu1R": {
+    "message": "Select language"
   },
   "fF376U": {
     "message": "Current"
@@ -210,8 +225,14 @@
   "hR0flV": {
     "message": "All your transactions, whether in $IRON or other custom assets, will be displayed in this section. To start a transaction, simply click on the 'Send' or 'Receive' tabs."
   },
+  "iWiHY7": {
+    "message": "The blockchain is syncing. Your balance may be inaccurate and sending transactions will be disabled until the sync is complete."
+  },
   "j2AFTQ": {
     "message": "Node Status"
+  },
+  "ml3Hqe": {
+    "message": "This account is syncing. Please wait until the sync is complete before sending transactions."
   },
   "nkeKcx": {
     "message": "Head Hash"
@@ -254,5 +275,8 @@
   },
   "zAPy5e": {
     "message": "Account name — Z to A"
+  },
+  "zCTaQX": {
+    "message": "View only accounts cannot send transactions"
   }
 }

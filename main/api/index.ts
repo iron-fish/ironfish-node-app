@@ -1,5 +1,6 @@
 import { accountRouter } from "./accounts";
 import { contactsRouter } from "./contacts";
+import { intlRouter } from "./intl";
 import { ironfishRouter } from "./ironfish";
 import { snapshotRouter } from "./snapshot";
 import { transactionRouter } from "./transactions";
@@ -17,6 +18,7 @@ export const router = t.mergeRouters(
   windowRouter,
   contactsRouter,
   updateRouter,
+  intlRouter,
 );
 
 export type AppRouter = typeof router;

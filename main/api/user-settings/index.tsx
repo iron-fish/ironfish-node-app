@@ -1,17 +1,33 @@
-import { PartialUserSettingsSchema } from "./userSettings";
-import { manager } from "../manager";
+import { nativeTheme } from "electron";
+import { z } from "zod";
+
+import { getUserSettings, settingsZodSchema } from "./userSettings";
 import { t } from "../trpc";
 
 export const userSettingsRouter = t.router({
-  getUserSetting: t.procedure.query(async () => {
-    const settings = await manager.getUserSettings();
-    return settings.config;
+  getUserSetting: t.procedure
+    .input(
+      z.object({
+        key: settingsZodSchema.keyof(),
+      }),
+    )
+    .query(async (opts) => {
+      const settings = await getUserSettings();
+      return settings.get(opts.input.key);
+    }),
+  getUserSettings: t.procedure.query(async () => {
+    const settings = await getUserSettings();
+    return settings;
   }),
-  setUserSetting: t.procedure
-    .input(PartialUserSettingsSchema)
+  setUserSettings: t.procedure
+    .input(settingsZodSchema.partial())
     .mutation(async (opts) => {
-      const settings = await manager.getUserSettings();
-      settings.setMany(opts.input);
-      await settings.save();
+      if (Object.hasOwn(opts.input, "theme") && opts.input.theme) {
+        const themeValue = opts.input.theme;
+        nativeTheme.themeSource = themeValue;
+      }
+
+      const settings = await getUserSettings();
+      settings.set(opts.input);
     }),
 });

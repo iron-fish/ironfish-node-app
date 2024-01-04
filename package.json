@@ -6,7 +6,7 @@
   "author": "IF Labs <engineering@iflabs.network> (https://iflabs.network)",
   "main": "app/background.js",
   "scripts": {
-    "dev": "nextron",
+    "dev": "npm run i18n && nextron",
     "build-check": "npm run i18n && nextron build --no-pack",
     "build": "npm run i18n && nextron build",
     "lint": "eslint --fix --config .eslintrc.js .",
@@ -21,7 +21,7 @@
   },
   "license": "MPL-2.0",
   "dependencies": {
-    "@ironfish/sdk": "1.14.0",
+    "@ironfish/sdk": "1.15.0",
     "electron-serve": "^1.1.0"
   },
   "devDependencies": {
@@ -94,7 +94,9 @@
   "lint-staged": {
     "*.{js,ts,tsx}": [
       "eslint --fix",
-      "prettier --write"
+      "prettier --write",
+      "npm run extract:i18n",
+      "git add renderer/intl/locales/en.json"
     ]
   }
 }

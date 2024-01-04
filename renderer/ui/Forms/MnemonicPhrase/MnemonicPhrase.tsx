@@ -8,7 +8,6 @@ import {
   InputGroup,
   InputLeftElement,
   Text,
-  useToast,
 } from "@chakra-ui/react";
 import { get } from "lodash-es";
 import { useCallback, type ClipboardEvent, ChangeEvent } from "react";
@@ -16,6 +15,7 @@ import { RiEyeCloseLine, RiEyeLine, RiFileCopyLine } from "react-icons/ri";
 import { useCopyToClipboard, useToggle } from "usehooks-ts";
 
 import { COLORS } from "@/ui/colors";
+import { useIFToast } from "@/ui/Toast/Toast";
 import { useHasGroupBlur } from "@/utils/formUtils";
 import { MergeProps } from "@/utils/react";
 
@@ -53,7 +53,7 @@ export function MnemonicPhrase({
   const { hasBlur, handleGroupFocus, handleGroupBlur } = useHasGroupBlur();
   const [isHidden, toggleIsHidden] = useToggle(defaultVisible ? false : true);
   const [_, copyToClipboard] = useCopyToClipboard();
-  const toast = useToast();
+  const toast = useIFToast();
 
   const handleChange = useCallback(
     (e: ChangeEvent<HTMLInputElement>) => {
@@ -117,11 +117,7 @@ export function MnemonicPhrase({
               onClick={() => {
                 copyToClipboard(phrase.join(" "));
                 toast({
-                  title: "Mnemonic phrase copied to clipboard!",
-                  status: "info",
-                  position: "bottom-left",
-                  duration: 4000,
-                  isClosable: true,
+                  message: "Mnemonic phrase copied to clipboard!",
                 });
               }}
             >

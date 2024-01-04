@@ -1,27 +1,12 @@
 import { Box, BoxProps } from "@chakra-ui/react";
 
-import { COLORS } from "../colors";
+import { COLORS, GRADIENTS } from "../colors";
 
 const SPACING = "4px";
 
 const SHARED_PROPS = {
   border: "1px solid black",
   borderRadius: SPACING,
-};
-
-const GRADIENTS = {
-  pink: {
-    from: "#F4BFFF",
-    to: "#DE83F0",
-  },
-  green: {
-    from: "#E1FFB0",
-    to: "#C7F182",
-  },
-  blue: {
-    from: "#BFF6FF",
-    to: "#8AE1EF",
-  },
 };
 
 export type GradientOptions = keyof typeof GRADIENTS;

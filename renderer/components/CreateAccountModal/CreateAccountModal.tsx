@@ -178,23 +178,21 @@ export function CreateAccountModal({
           )}
         </ModalBody>
 
-        <ModalFooter display="flex" gap={2} py={8}>
+        <ModalFooter display="flex" gap={2} px={16} py={8}>
           {!isSuccess && (
             <>
               <PillButton
+                size="sm"
                 isDisabled={isLoading}
                 onClick={handleClose}
                 variant="inverted"
-                height="60px"
-                px={8}
                 border={0}
               >
                 {formatMessage(messages.cancel)}
               </PillButton>
               <PillButton
+                size="sm"
                 isDisabled={isLoading}
-                height="60px"
-                px={8}
                 onClick={handleSubmit((values) => {
                   createAccount(values);
                 })}
@@ -205,9 +203,8 @@ export function CreateAccountModal({
           )}
           {isSuccess && (
             <PillButton
+              size="sm"
               isDisabled={!isSavedChecked}
-              height="60px"
-              px={8}
               onClick={handleClose}
             >
               {formatMessage(messages.close)}
