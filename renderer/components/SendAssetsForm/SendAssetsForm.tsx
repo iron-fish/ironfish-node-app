@@ -1,4 +1,4 @@
-import { VStack, chakra, HStack, Text } from "@chakra-ui/react";
+import { VStack, chakra, HStack } from "@chakra-ui/react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useRouter } from "next/router";
 import { useEffect, useMemo, useState } from "react";
@@ -50,9 +50,6 @@ const messages = defineMessages({
   insufficientFundsError: {
     defaultMessage:
       "The selected account does not have enough funds to send this transaction",
-  },
-  currentBalanceText: {
-    defaultMessage: "Current balance: {balance}",
   },
   slowFeeLabel: {
     defaultMessage: "Slow",
@@ -168,28 +165,6 @@ export function SendAssetsFormContent({
       },
     );
 
-  const assetOptions = useMemo(() => {
-    const selectedAccount = accountsData?.find(
-      (account) => account.name === fromAccountValue,
-    );
-    if (!selectedAccount) {
-      return [];
-    }
-    const assets = [
-      {
-        label: hexToUTF16String(selectedAccount.balances.iron.asset.name),
-        value: selectedAccount.balances.iron.asset.id,
-      },
-    ];
-    selectedAccount.balances.custom?.forEach((customAsset) => {
-      assets.push({
-        label: hexToUTF16String(customAsset.asset.name),
-        value: customAsset.asset.id,
-      });
-    });
-    return assets;
-  }, [accountsData, fromAccountValue]);
-
   const { data: isAccountSynced } = trpcReact.isAccountSynced.useQuery(
     {
       account: fromAccountValue,
@@ -224,6 +199,15 @@ export function SendAssetsFormContent({
   const accountBalances = useMemo(() => {
     return getAccountBalances(selectedAccount);
   }, [selectedAccount]);
+
+  const assetOptions = useMemo(() => {
+    return Object.values(accountBalances).map((balance) => ({
+      label:
+        hexToUTF16String(balance.asset.name) +
+        ` (${formatOre(balance.confirmed)})`,
+      value: balance.asset.id,
+    }));
+  }, [accountBalances]);
 
   // Resets asset field to $IRON if a newly selected account does not have the selected asset
   useEffect(() => {
@@ -292,12 +276,6 @@ export function SendAssetsFormContent({
             options={assetOptions}
             error={errors.assetId?.message}
           />
-
-          <Text>
-            {formatMessage(messages.currentBalanceText, {
-              balance: formatOre(accountBalances[assetValue]?.confirmed ?? 0),
-            })}
-          </Text>
 
           <TextInput
             {...register("amount", {
