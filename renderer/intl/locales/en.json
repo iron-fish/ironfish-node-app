@@ -5,6 +5,9 @@
   "+gH1Ai": {
     "message": "Node Name"
   },
+  "/0TOL5": {
+    "message": "Amount"
+  },
   "/km2Zu": {
     "message": "Import Account"
   },
@@ -39,6 +42,9 @@
   "5JcXdV": {
     "message": "Create Account"
   },
+  "5MiM5y": {
+    "message": "Send Asset"
+  },
   "5c3Wrw": {
     "message": "Total accounts balance"
   },
@@ -63,6 +69,9 @@
   "9IVf3z": {
     "message": "Account Overview"
   },
+  "9j3hXO": {
+    "message": "To"
+  },
   "9uOFF3": {
     "message": "Overview"
   },
@@ -81,6 +90,9 @@
   "Fn/FTS": {
     "message": "An error occurred while loading your transactions. If this happens several times, please let us know on Discord."
   },
+  "FnRTEV": {
+    "message": "Average"
+  },
   "Gcv5yj": {
     "message": "Heap Used"
   },
@@ -92,6 +104,9 @@
   },
   "HAlOn1": {
     "message": "Name"
+  },
+  "HkADqs": {
+    "message": "Fee ($IRON)"
   },
   "JoB2Ml": {
     "message": "Your account was successfully imported"
@@ -150,6 +165,9 @@
   "T2yddR": {
     "message": "Your Node"
   },
+  "TRUFZF": {
+    "message": "The selected account does not have enough funds to send this transaction."
+  },
   "Te4gbw": {
     "message": "Export Format:"
   },
@@ -164,6 +182,9 @@
   },
   "UTOugV": {
     "message": "Your Assets"
+  },
+  "WKCp0D": {
+    "message": "Asset"
   },
   "WWEwrn": {
     "message": "Node Settings"
@@ -204,6 +225,9 @@
   "c/KktL": {
     "message": "Resources"
   },
+  "dM+p3/": {
+    "message": "From"
+  },
   "e6Ph5+": {
     "message": "Address"
   },
@@ -225,11 +249,17 @@
   "hR0flV": {
     "message": "All your transactions, whether in $IRON or other custom assets, will be displayed in this section. To start a transaction, simply click on the 'Send' or 'Receive' tabs."
   },
+  "hi6vHa": {
+    "message": "Current balance: {balance}"
+  },
   "iWiHY7": {
     "message": "The blockchain is syncing. Your balance may be inaccurate and sending transactions will be disabled until the sync is complete."
   },
   "j2AFTQ": {
     "message": "Node Status"
+  },
+  "lu5YPq": {
+    "message": "unknown asset"
   },
   "ml3Hqe": {
     "message": "This account is syncing. Please wait until the sync is complete before sending transactions."
@@ -240,14 +270,23 @@
   "pbdvze": {
     "message": "Please enter your mnemonic phrase. If you've copied the full phrase to your clipboard, you can paste it in any input and it will automatically be split into the correct number of words."
   },
+  "pqKz+h": {
+    "message": "Slow"
+  },
   "q0qMyV": {
     "message": "RSS"
   },
   "qDYGja": {
     "message": "Save Settings"
   },
+  "qVtJd7": {
+    "message": "Memo (32 characters max)"
+  },
   "rbrahO": {
     "message": "Close"
+  },
+  "tf+yHL": {
+    "message": "Fast"
   },
   "tf1lIh": {
     "message": "Free"

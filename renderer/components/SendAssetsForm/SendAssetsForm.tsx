@@ -3,6 +3,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useRouter } from "next/router";
 import { useEffect, useMemo, useState } from "react";
 import { useForm } from "react-hook-form";
+import { useIntl, defineMessages } from "react-intl";
 
 import { TRPCRouterOutputs, trpcReact } from "@/providers/TRPCProvider";
 import { Select } from "@/ui/Forms/Select/Select";
@@ -22,6 +23,49 @@ import {
   AccountSyncingMessage,
   ChainSyncingMessage,
 } from "../SyncingMessages/SyncingMessages";
+
+const messages = defineMessages({
+  fromLabel: {
+    defaultMessage: "From",
+  },
+  toLabel: {
+    defaultMessage: "To",
+  },
+  assetLabel: {
+    defaultMessage: "Asset",
+  },
+  amountLabel: {
+    defaultMessage: "Amount",
+  },
+  feeLabel: {
+    defaultMessage: "Fee ($IRON)",
+  },
+  memoLabel: {
+    defaultMessage: "Memo (32 characters max)",
+  },
+  sendAssetButton: {
+    defaultMessage: "Send Asset",
+  },
+  insufficientFundsError: {
+    defaultMessage:
+      "The selected account does not have enough funds to send this transaction.",
+  },
+  currentBalanceText: {
+    defaultMessage: "Current balance: {balance}",
+  },
+  slowFeeLabel: {
+    defaultMessage: "Slow",
+  },
+  averageFeeLabel: {
+    defaultMessage: "Average",
+  },
+  fastFeeLabel: {
+    defaultMessage: "Fast",
+  },
+  unknownAsset: {
+    defaultMessage: "unknown asset",
+  },
+});
 
 type AccountType = TRPCRouterOutputs["getAccounts"][number];
 type BalanceType = AccountType["balances"]["iron"];
@@ -49,6 +93,7 @@ export function SendAssetsFormContent({
   defaultToAddress?: string | null;
 }) {
   const router = useRouter();
+  const { formatMessage } = useIntl();
 
   const [pendingTransaction, setPendingTransaction] =
     useState<TransactionData | null>(null);
@@ -193,8 +238,7 @@ export function SendAssetsFormContent({
           if (currentBalance < amountAsIron) {
             setError("amount", {
               type: "custom",
-              message:
-                "The selected account does not have enough funds to send this transaction.",
+              message: formatMessage(messages.insufficientFundsError),
             });
             return;
           }
@@ -219,63 +263,64 @@ export function SendAssetsFormContent({
           <Select
             {...register("fromAccount")}
             value={fromAccountValue}
-            label="From"
+            label={formatMessage(messages.fromLabel)}
             options={accountOptions}
             error={errors.fromAccount?.message}
           />
 
           <TextInput
             {...register("toAccount")}
-            label="To"
+            label={formatMessage(messages.toLabel)}
             error={errors.toAccount?.message}
           />
 
           <Select
             {...register("assetId")}
             value={assetValue}
-            label="Asset"
+            label={formatMessage(messages.assetLabel)}
             options={assetOptions}
             error={errors.assetId?.message}
           />
 
           <Text>
-            Current balance:{" "}
-            {formatOre(accountBalances[assetValue]?.confirmed ?? 0)}
+            {formatMessage(messages.currentBalanceText, {
+              balance: formatOre(accountBalances[assetValue]?.confirmed ?? 0),
+            })}
           </Text>
 
           <TextInput
             {...register("amount")}
-            label="Amount"
+            label={formatMessage(messages.amountLabel)}
             error={errors.amount?.message}
           />
 
           <Select
             {...register("fee")}
             value={feeValue}
-            label="Fee ($IRON)"
+            label={formatMessage(messages.feeLabel)}
             options={[
               {
-                label: `Slow${
-                  estimatedFeesData
+                label:
+                  formatMessage(messages.slowFeeLabel) +
+                  (estimatedFeesData
                     ? ` (${formatOre(estimatedFeesData.slow)} $IRON)`
-                    : ""
-                }`,
+                    : ""),
                 value: "slow",
               },
               {
-                label: `Average${
-                  estimatedFeesData
+                label:
+                  formatMessage(messages.averageFeeLabel) +
+                  (estimatedFeesData
                     ? ` (${formatOre(estimatedFeesData.average)} $IRON)`
-                    : ""
-                }`,
+                    : ""),
                 value: "average",
               },
               {
-                label: `Fast${
-                  estimatedFeesData
+                label:
+                  formatMessage(messages.fastFeeLabel) +
+                  (estimatedFeesData
                     ? ` (${formatOre(estimatedFeesData.fast)} $IRON)`
-                    : ""
-                }`,
+                    : ""),
                 value: "fast",
               },
             ]}
@@ -284,7 +329,7 @@ export function SendAssetsFormContent({
 
           <TextInput
             {...register("memo")}
-            label="Memo (32 characters max)"
+            label={formatMessage(messages.memoLabel)}
             error={errors.memo?.message}
           />
         </VStack>
@@ -296,7 +341,7 @@ export function SendAssetsFormContent({
             px={8}
             isDisabled={!isAccountSynced}
           >
-            Send Asset
+            {formatMessage(messages.sendAssetButton)}
           </PillButton>
         </HStack>
       </chakra.form>
@@ -305,7 +350,7 @@ export function SendAssetsFormContent({
         transactionData={pendingTransaction}
         selectedAssetName={
           assetOptions.find(({ value }) => value === assetValue)?.label ??
-          "unknown asset"
+          formatMessage(messages.unknownAsset)
         }
         onCancel={() => {
           setPendingTransaction(null);
