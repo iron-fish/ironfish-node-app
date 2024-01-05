@@ -59,6 +59,7 @@ function CreateImportActions() {
           base: "none",
           lg: "flex",
         }}
+        gap={4}
       >
         <PillButton size="sm" variant="inverted" onClick={onCreateOpen}>
           <CreateAccount />
