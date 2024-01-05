@@ -6,6 +6,7 @@ import {
   Tab,
   TabPanels,
   TabPanel,
+  Text,
 } from "@chakra-ui/react";
 import { useRouter } from "next/router";
 
@@ -28,13 +29,13 @@ export function ImportAccount() {
   return (
     <Box>
       <BackButton />
-      <Heading mt={16} mb={8}>
+      <Heading mt={4} mb={8}>
         Import Account
       </Heading>
 
-      <Heading fontSize="2xl" mb={4}>
-        Import Using
-      </Heading>
+      <Text fontSize="2xl" mb={2}>
+        Import With
+      </Text>
 
       <Tabs>
         <TabList mb={8}>

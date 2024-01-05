@@ -1,6 +1,7 @@
 import { Box, Text } from "@chakra-ui/react";
 import { useMemo, useState } from "react";
 
+import { COLORS } from "@/ui/colors";
 import {
   EMPTY_PHRASE_ARRAY,
   MnemonicPhrase,
@@ -45,7 +46,12 @@ export function MnemonicImport({ handleImport, isLoading, error }: Props) {
           setIsAccountNameDirty(true);
         }}
       />
-      <Text mt={8} mb={4}>
+      <Text
+        mt={8}
+        mb={4}
+        color={COLORS.GRAY_MEDIUM}
+        _dark={{ color: COLORS.DARK_MODE.GRAY_LIGHT }}
+      >
         Please enter your mnemonic phrase. If you&apos;ve copied the full phrase
         to your clipboard, you can paste it in any input and it will
         automatically be split into the correct number of words.
@@ -75,7 +81,7 @@ export function MnemonicImport({ handleImport, isLoading, error }: Props) {
           });
         }}
       >
-        Continue
+        Import Account
       </PillButton>
     </Box>
   );
