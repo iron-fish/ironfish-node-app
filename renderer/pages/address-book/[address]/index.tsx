@@ -17,7 +17,7 @@ import { CopyAddress } from "@/components/CopyAddress/CopyAddress";
 import { EditContactForm } from "@/components/EditContactForm/EditContactForm";
 import { FishIcon } from "@/components/FishIcon/FishIcon";
 import { NotesList } from "@/components/NotesList/NotesList";
-import octopus from "@/images/octopus.svg";
+import contactSettingsFish from "@/images/contact-settings-fish.svg";
 import MainLayout from "@/layouts/MainLayout";
 import { trpcReact } from "@/providers/TRPCProvider";
 import { COLORS, getGradientByOrder } from "@/ui/colors";
@@ -119,7 +119,7 @@ function SingleContactContent({ address }: { address: string }) {
                     you have the freedom to customize how you identify your
                     contacts without affecting their underlying address.
                   </Text>
-                  <Image src={octopus} alt="" />
+                  <Image src={contactSettingsFish} alt="" />
                 </Box>
               </Flex>
             </TabPanel>
