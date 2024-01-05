@@ -34,7 +34,12 @@ export function CopyAddress({ address, truncate = true, ...rest }: Props) {
       {...rest}
     >
       {truncate ? truncateString(address) : address}
-      <CopyIcon ml={1} transform="translateY(-1px)" />
+      <CopyIcon
+        color={COLORS.GRAY_MEDIUM}
+        _dark={{ color: COLORS.DARK_MODE.GRAY_LIGHT }}
+        ml={1}
+        transform="translateY(-1px)"
+      />
     </Text>
   );
 }
