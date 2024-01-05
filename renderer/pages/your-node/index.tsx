@@ -45,15 +45,9 @@ export default function YourNode() {
       <Heading>{formatMessage(messages.yourNode)}</Heading>
       <Tabs isLazy>
         <TabList mb={8}>
-          <Tab py={2} px={4} mr={4}>
-            {formatMessage(messages.overview)}
-          </Tab>
-          <Tab py={2} px={4} mr={4}>
-            {formatMessage(messages.settings)}
-          </Tab>
-          <Tab py={2} px={4} mr={4}>
-            {formatMessage(messages.resources)}
-          </Tab>
+          <Tab>{formatMessage(messages.overview)}</Tab>
+          <Tab>{formatMessage(messages.settings)}</Tab>
+          <Tab>{formatMessage(messages.resources)}</Tab>
         </TabList>
 
         <TabPanels>

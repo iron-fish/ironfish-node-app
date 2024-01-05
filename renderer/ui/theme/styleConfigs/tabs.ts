@@ -9,6 +9,19 @@ const { definePartsStyle, defineMultiStyleConfig } =
 export const tabsTheme = defineMultiStyleConfig({
   variants: {
     line: definePartsStyle({
+      tab: {
+        fontSize: "xs",
+        color: COLORS.GRAY_MEDIUM,
+        _dark: {
+          color: COLORS.DARK_MODE.GRAY_LIGHT,
+        },
+        _selected: {
+          color: COLORS.BLACK,
+          _dark: {
+            color: COLORS.WHITE,
+          },
+        },
+      },
       tablist: {
         borderColor: "#DEDFE2",
         _dark: {
@@ -16,6 +29,17 @@ export const tabsTheme = defineMultiStyleConfig({
         },
       },
     }),
+  },
+  sizes: {
+    sm: {
+      tab: {
+        lineHeight: "160%",
+        pt: 2,
+        pb: "7px",
+        px: 0,
+        mr: 8,
+      },
+    },
   },
   defaultProps: {
     colorScheme: "muted",
