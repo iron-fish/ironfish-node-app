@@ -21,6 +21,7 @@ import { ArrowSend } from "@/ui/SVGs/ArrowSend";
 import { LogoSm } from "@/ui/SVGs/LogoSm";
 import { formatOre } from "@/utils/ironUtils";
 
+import { AccountSyncingProgress } from "../AccountSyncingProgress/AccountSyncingProgress";
 import { CopyAddress } from "../CopyAddress/CopyAddress";
 import { ViewOnlyChip } from "../ViewOnlyChip/ViewOnlyChip";
 
@@ -32,12 +33,6 @@ const messages = defineMessages({
     defaultMessage:
       "This account is syncing. Please wait until the sync is complete before sending transactions.",
   },
-  syncingProgressMessage: {
-    defaultMessage: "Account Syncing: {progress}%",
-  },
-  syncingBalanceMessage: {
-    defaultMessage: "Your balance might not be accurate while you're syncing",
-  },
 });
 
 type AccountRowProps = {
@@ -47,27 +42,6 @@ type AccountRowProps = {
   address: string;
   viewOnly: boolean;
 };
-
-function SyncingProgress({ progress }: { progress: number }) {
-  const { formatMessage } = useIntl();
-
-  return (
-    <Box
-      borderRadius="4px"
-      bg={COLORS.YELLOW_LIGHT}
-      color={COLORS.YELLOW_DARK}
-      _dark={{
-        bg: COLORS.DARK_MODE.YELLOW_DARK,
-        color: COLORS.DARK_MODE.YELLOW_LIGHT,
-      }}
-      fontSize="sm"
-      textAlign="center"
-      p={1}
-    >{`${formatMessage(messages.syncingProgressMessage, {
-      progress: parseFloat((progress * 100).toFixed(2)),
-    })} | ${formatMessage(messages.syncingBalanceMessage)}`}</Box>
-  );
-}
 
 export function AccountRow({
   color,
@@ -91,7 +65,9 @@ export function AccountRow({
     <ChakraLink href={`/accounts/${name}`} w="100%">
       <ShadowCard hoverable>
         <VStack alignItems="stretch" gap={3}>
-          {!isSynced.synced && <SyncingProgress progress={isSynced.progress} />}
+          {!isSynced.synced && (
+            <AccountSyncingProgress progress={isSynced.progress} />
+          )}
 
           <Flex>
             <ShadowCard
