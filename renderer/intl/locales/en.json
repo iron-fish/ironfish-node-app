@@ -5,6 +5,9 @@
   "+gH1Ai": {
     "message": "Node Name"
   },
+  "/0TOL5": {
+    "message": "Amount"
+  },
   "/km2Zu": {
     "message": "Import Account"
   },
@@ -39,6 +42,9 @@
   "5JcXdV": {
     "message": "Create Account"
   },
+  "5MiM5y": {
+    "message": "Send Asset"
+  },
   "5c3Wrw": {
     "message": "Total accounts balance"
   },
@@ -66,6 +72,9 @@
   "9XUYQt": {
     "message": "Import"
   },
+  "9j3hXO": {
+    "message": "To"
+  },
   "9uOFF3": {
     "message": "Overview"
   },
@@ -78,11 +87,17 @@
   "BxM6mJ": {
     "message": "Lowest to highest balance"
   },
+  "D31nQ7": {
+    "message": "An error occurred while estimating the transaction fee"
+  },
   "D3idYv": {
     "message": "Settings"
   },
   "Fn/FTS": {
     "message": "An error occurred while loading your transactions. If this happens several times, please let us know on Discord."
+  },
+  "FnRTEV": {
+    "message": "Average"
   },
   "Gcv5yj": {
     "message": "Heap Used"
@@ -95,6 +110,9 @@
   },
   "HAlOn1": {
     "message": "Name"
+  },
+  "HkADqs": {
+    "message": "Fee ($IRON)"
   },
   "JoB2Ml": {
     "message": "Your account was successfully imported"
@@ -171,6 +189,9 @@
   "VzzYJk": {
     "message": "Create"
   },
+  "WKCp0D": {
+    "message": "Asset"
+  },
   "WWEwrn": {
     "message": "Node Settings"
   },
@@ -210,6 +231,9 @@
   "c/KktL": {
     "message": "Resources"
   },
+  "dM+p3/": {
+    "message": "From"
+  },
   "e6Ph5+": {
     "message": "Address"
   },
@@ -237,6 +261,12 @@
   "j2AFTQ": {
     "message": "Node Status"
   },
+  "jwIURF": {
+    "message": "The selected account does not have enough funds to send this transaction"
+  },
+  "lu5YPq": {
+    "message": "unknown asset"
+  },
   "ml3Hqe": {
     "message": "This account is syncing. Please wait until the sync is complete before sending transactions."
   },
@@ -246,14 +276,23 @@
   "pbdvze": {
     "message": "Please enter your mnemonic phrase. If you've copied the full phrase to your clipboard, you can paste it in any input and it will automatically be split into the correct number of words."
   },
+  "pqKz+h": {
+    "message": "Slow"
+  },
   "q0qMyV": {
     "message": "RSS"
   },
   "qDYGja": {
     "message": "Save Settings"
   },
+  "qVtJd7": {
+    "message": "Memo (32 characters max)"
+  },
   "rbrahO": {
     "message": "Close"
+  },
+  "tf+yHL": {
+    "message": "Fast"
   },
   "tf1lIh": {
     "message": "Free"
