@@ -56,11 +56,9 @@ function useStatus() {
               progress: (data.blockSyncer.syncing.progress * 100).toFixed(2),
             })
           : formatMessage(messages.syncingBlocksShort),
-        shortLabel: formatMessage(messages.syncingBlocks, {
-          progress: data.blockSyncer.syncing
-            ? Math.floor(data.blockSyncer.syncing.progress * 100)
-            : "--%",
-        }),
+        shortLabel: data.blockSyncer.syncing
+          ? `${Math.floor(data.blockSyncer.syncing.progress * 100)}%`
+          : "--%",
       };
     }
     if (!data.blockchain.synced) {
@@ -77,12 +75,9 @@ function useStatus() {
           sequence: data.accounts.head.sequence,
           totalSequence: data.blockchain.head.sequence,
         }),
-        shortLabel: formatMessage(messages.scanningBlocks, {
-          sequence: Math.floor(
-            100 * (data.accounts.head.sequence / data.blockchain.head.sequence),
-          ),
-          totalSequence: "%",
-        }),
+        shortLabel: `${Math.floor(
+          100 * (data.accounts.head.sequence / data.blockchain.head.sequence),
+        )}%`,
       };
     }
     return {
