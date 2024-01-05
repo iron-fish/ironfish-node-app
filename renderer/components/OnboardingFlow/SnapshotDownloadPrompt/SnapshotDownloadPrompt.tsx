@@ -6,6 +6,8 @@ import { useCountdown } from "usehooks-ts";
 
 import { trpcReact } from "@/providers/TRPCProvider";
 import { PillButton } from "@/ui/PillButton/PillButton";
+import { LogoLg } from "@/ui/SVGs/LogoLg";
+import { NodeAppLogo } from "@/ui/SVGs/NodeAppLogo";
 
 import { SnapshotUpdate } from "../../../../shared/types";
 
@@ -154,12 +156,11 @@ function Prompt({
 }) {
   return (
     <Box>
-      <Heading mt={24} mb={8}>
-        Syncing your chain
-      </Heading>
-      <Heading mb={4} fontSize="2xl">
-        Choose how to sync your node with the network
-      </Heading>
+      <HStack alignItems="flex-start" mb={16}>
+        <LogoLg />
+        <NodeAppLogo />
+      </HStack>
+      <Heading mb={8}>Choose how to sync your chain</Heading>
       <Text mb={4}>
         Download Snapshot: Fast and centralized. Get a complete copy of the
         blockchain quickly from a central source.
@@ -169,7 +170,7 @@ function Prompt({
         other users, contributing to network decentralization. While it may take
         longer, it strengthens the network&apos;s resilience.
       </Text>
-      <HStack>
+      <HStack gap={8}>
         <PillButton onClick={onSnapshot}>Download Snapshot</PillButton>
         <PillButton onClick={onPeers}>Sync from Peers</PillButton>
       </HStack>
