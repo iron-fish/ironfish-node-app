@@ -2,6 +2,7 @@ import { ChevronLeftIcon } from "@chakra-ui/icons";
 import { Box, HStack, Text } from "@chakra-ui/react";
 import { useRouter } from "next/router";
 import { ReactNode } from "react";
+import { defineMessages, useIntl } from "react-intl";
 
 import { MaybeLink } from "@/ui/ChakraLink/ChakraLink";
 import { COLORS } from "@/ui/colors";
@@ -12,8 +13,15 @@ type Props = {
   onClick?: () => void;
 };
 
-export function BackButton({ href, label = "Go Back", onClick }: Props) {
+const messages = defineMessages({
+  goBack: {
+    defaultMessage: "Go Back",
+  },
+});
+
+export function BackButton({ href, label = null, onClick }: Props) {
   const router = useRouter();
+  const { formatMessage } = useIntl();
 
   return (
     <MaybeLink
@@ -50,7 +58,7 @@ export function BackButton({ href, label = "Go Back", onClick }: Props) {
           color={COLORS.GRAY_MEDIUM}
           _dark={{ color: COLORS.DARK_MODE.GRAY_LIGHT }}
         >
-          {label}
+          {label || formatMessage(messages.goBack)}
         </Text>
       </HStack>
     </MaybeLink>

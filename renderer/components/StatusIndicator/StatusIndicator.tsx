@@ -1,16 +1,40 @@
 import { Box, Flex, Text } from "@chakra-ui/react";
 import { useMemo } from "react";
 import { IoMdCheckmark } from "react-icons/io";
+import { useIntl, defineMessages } from "react-intl";
 
 import { trpcReact } from "@/providers/TRPCProvider";
 import { COLORS } from "@/ui/colors";
 
 type Status = "CONNECTING" | "SYNCING" | "SCANNING" | "SYNCED";
 
+const messages = defineMessages({
+  connecting: {
+    defaultMessage: "Connecting",
+  },
+  syncingBlocks: {
+    defaultMessage: "Syncing blocks: {progress}%",
+  },
+  syncingBlocksShort: {
+    defaultMessage: "Syncing blocks",
+  },
+  waitingForPeers: {
+    defaultMessage: "Waiting for peers to sync from",
+  },
+  scanningBlocks: {
+    defaultMessage: "Scanning blocks: {sequence} / {totalSequence}",
+  },
+  synced: {
+    defaultMessage: "Synced",
+  },
+});
+
 function useStatus() {
   const { data } = trpcReact.getStatus.useQuery(undefined, {
     refetchInterval: 1000,
   });
+
+  const { formatMessage } = useIntl();
 
   return useMemo<{
     status: Status;
@@ -20,7 +44,7 @@ function useStatus() {
     if (!data || !data.peerNetwork.isReady) {
       return {
         status: "CONNECTING",
-        label: "Connecting",
+        label: formatMessage(messages.connecting),
         shortLabel: "--%",
       };
     }
@@ -28,10 +52,10 @@ function useStatus() {
       return {
         status: "SYNCING",
         label: data.blockSyncer.syncing
-          ? `Syncing blocks: ${(
-              data.blockSyncer.syncing.progress * 100
-            ).toFixed(2)}%`
-          : "Syncing blocks",
+          ? formatMessage(messages.syncingBlocks, {
+              progress: (data.blockSyncer.syncing.progress * 100).toFixed(2),
+            })
+          : formatMessage(messages.syncingBlocksShort),
         shortLabel: data.blockSyncer.syncing
           ? `${Math.floor(data.blockSyncer.syncing.progress * 100)}%`
           : "--%",
@@ -40,7 +64,7 @@ function useStatus() {
     if (!data.blockchain.synced) {
       return {
         status: "SYNCING",
-        label: "Waiting for peers to sync from",
+        label: formatMessage(messages.waitingForPeers),
         shortLabel: "--%",
       };
     }
@@ -58,7 +82,10 @@ function useStatus() {
     if (data.accounts.head.hash !== data.blockchain.head.hash) {
       return {
         status: "SCANNING",
-        label: `Scanning blocks: ${data.accounts.head.sequence} / ${data.blockchain.head.sequence}`,
+        label: formatMessage(messages.scanningBlocks, {
+          sequence: data.accounts.head.sequence,
+          totalSequence: data.blockchain.head.sequence,
+        }),
         shortLabel: `${Math.floor(
           100 * (data.accounts.head.sequence / data.blockchain.head.sequence),
         )}%`,
@@ -66,10 +93,10 @@ function useStatus() {
     }
     return {
       status: "SYNCED",
-      label: "Synced",
+      label: formatMessage(messages.synced),
       shortLabel: "",
     };
-  }, [data]);
+  }, [data, formatMessage]);
 }
 
 export function StatusIndicator() {

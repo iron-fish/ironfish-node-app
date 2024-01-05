@@ -76,7 +76,7 @@ export function FormField({
   );
 }
 
-function RenderError({
+export function RenderError({
   error,
 }: {
   error?: string | FieldError | FieldErrorsImpl | null;
