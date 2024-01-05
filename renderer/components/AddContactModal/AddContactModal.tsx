@@ -80,7 +80,7 @@ export function AddContactModal({ isOpen, onClose }: Props) {
                 Add Contact
               </Heading>
 
-              <Text fontSize="md" mb={4}>
+              <Text fontSize="md" mb={6}>
                 This contact&apos;s name is only visible to you.
               </Text>
 
