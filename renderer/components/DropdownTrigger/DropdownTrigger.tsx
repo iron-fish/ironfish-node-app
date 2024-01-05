@@ -19,17 +19,7 @@ export const DropdownTrigger = forwardRef<Props, "div">(
   function DropdownTrigger({ label, value, ...rest }: Props, ref) {
     return (
       <InputGroup ref={ref} {...rest}>
-        <Input
-          as="button"
-          borderColor="black"
-          _hover={{ borderColor: "black" }}
-          _dark={{
-            borderColor: "white",
-            _hover: {
-              borderColor: "white",
-            },
-          }}
-        >
+        <Input as="button">
           <HStack whiteSpace="nowrap">
             <Text opacity="0.8">{label}:</Text>
             <Text>{value}</Text>

@@ -1,10 +1,12 @@
 import { VStack, chakra, HStack } from "@chakra-ui/react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useRouter } from "next/router";
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { useForm } from "react-hook-form";
+import { useIntl, defineMessages } from "react-intl";
 
 import { TRPCRouterOutputs, trpcReact } from "@/providers/TRPCProvider";
+import { RenderError } from "@/ui/Forms/FormField/FormField";
 import { Select } from "@/ui/Forms/Select/Select";
 import { TextInput } from "@/ui/Forms/TextInput/TextInput";
 import { PillButton } from "@/ui/PillButton/PillButton";
@@ -23,6 +25,67 @@ import {
   ChainSyncingMessage,
 } from "../SyncingMessages/SyncingMessages";
 
+const messages = defineMessages({
+  fromLabel: {
+    defaultMessage: "From",
+  },
+  toLabel: {
+    defaultMessage: "To",
+  },
+  assetLabel: {
+    defaultMessage: "Asset",
+  },
+  amountLabel: {
+    defaultMessage: "Amount",
+  },
+  feeLabel: {
+    defaultMessage: "Fee ($IRON)",
+  },
+  memoLabel: {
+    defaultMessage: "Memo (32 characters max)",
+  },
+  sendAssetButton: {
+    defaultMessage: "Send Asset",
+  },
+  insufficientFundsError: {
+    defaultMessage:
+      "The selected account does not have enough funds to send this transaction",
+  },
+  slowFeeLabel: {
+    defaultMessage: "Slow",
+  },
+  averageFeeLabel: {
+    defaultMessage: "Average",
+  },
+  fastFeeLabel: {
+    defaultMessage: "Fast",
+  },
+  unknownAsset: {
+    defaultMessage: "unknown asset",
+  },
+  estimatedFeeDefaultError: {
+    defaultMessage: "An error occurred while estimating the transaction fee",
+  },
+});
+
+type AccountType = TRPCRouterOutputs["getAccounts"][number];
+type BalanceType = AccountType["balances"]["iron"];
+
+function getAccountBalances(account: AccountType): {
+  [key: string]: BalanceType;
+} {
+  const customAssets = account.balances.custom?.reduce((acc, customAsset) => {
+    return {
+      ...acc,
+      [customAsset.asset.id]: customAsset,
+    };
+  }, {});
+  return {
+    [account.balances.iron.asset.id]: account.balances.iron,
+    ...customAssets,
+  };
+}
+
 export function SendAssetsFormContent({
   accountsData,
   defaultToAddress,
@@ -31,6 +94,7 @@ export function SendAssetsFormContent({
   defaultToAddress?: string | null;
 }) {
   const router = useRouter();
+  const { formatMessage } = useIntl();
 
   const [pendingTransaction, setPendingTransaction] =
     useState<TransactionData | null>(null);
@@ -48,22 +112,26 @@ export function SendAssetsFormContent({
     const queryMatch = accountOptions.find(
       (option) => option.value === router.query.account,
     );
-
     return queryMatch ? queryMatch.value : accountOptions[0]?.value;
   }, [accountOptions, router.query.account]);
+
+  const defaultAssetId = accountsData[0]?.balances.iron.asset.id;
 
   const {
     register,
     handleSubmit,
     formState: { errors },
     watch,
+    setError,
+    clearErrors,
+    resetField,
   } = useForm<TransactionFormData>({
     resolver: zodResolver(transactionSchema),
     defaultValues: {
       amount: 0,
       fromAccount: defaultAccount,
       toAccount: defaultToAddress ?? "",
-      assetId: accountsData[0]?.balances.iron.asset.id,
+      assetId: defaultAssetId,
       fee: "average",
     },
   });
@@ -75,48 +143,27 @@ export function SendAssetsFormContent({
   const toAccountValue = watch("toAccount");
   const memoValue = watch("memo");
 
-  const { data: estimatedFeesData } = trpcReact.getEstimatedFees.useQuery(
-    {
-      accountName: fromAccountValue,
-      output: {
-        amount: parseIron(amountValue),
-        assetId: assetValue,
-        memo: memoValue ?? "",
-        publicAddress: toAccountValue,
-      },
-    },
-    {
-      retry: false,
-      enabled:
-        amountValue > 0 &&
-        !errors.memo &&
-        !errors.amount &&
-        !errors.toAccount &&
-        !errors.assetId,
-    },
-  );
-
-  const assetOptions = useMemo(() => {
-    const selectedAccount = accountsData?.find(
-      (account) => account.name === fromAccountValue,
-    );
-    if (!selectedAccount) {
-      return [];
-    }
-    const assets = [
+  const { data: estimatedFeesData, error: estimatedFeesError } =
+    trpcReact.getEstimatedFees.useQuery(
       {
-        label: hexToUTF16String(selectedAccount.balances.iron.asset.name),
-        value: selectedAccount.balances.iron.asset.id,
+        accountName: fromAccountValue,
+        output: {
+          amount: parseIron(amountValue),
+          assetId: assetValue,
+          memo: memoValue ?? "",
+          publicAddress: toAccountValue,
+        },
       },
-    ];
-    selectedAccount.balances.custom?.forEach((customAsset) => {
-      assets.push({
-        label: hexToUTF16String(customAsset.asset.name),
-        value: customAsset.asset.id,
-      });
-    });
-    return assets;
-  }, [accountsData, fromAccountValue]);
+      {
+        retry: false,
+        enabled:
+          amountValue > 0 &&
+          !errors.memo &&
+          !errors.amount &&
+          !errors.toAccount &&
+          !errors.assetId,
+      },
+    );
 
   const { data: isAccountSynced } = trpcReact.isAccountSynced.useQuery(
     {
@@ -139,13 +186,60 @@ export function SendAssetsFormContent({
     return null;
   }, [isAccountSynced, nodeStatusData?.blockchain.synced]);
 
+  const selectedAccount = useMemo(() => {
+    const match = accountsData?.find(
+      (account) => account.name === fromAccountValue,
+    );
+    if (!match) {
+      throw new Error("Non-existent account selected");
+    }
+    return match;
+  }, [accountsData, fromAccountValue]);
+
+  const accountBalances = useMemo(() => {
+    return getAccountBalances(selectedAccount);
+  }, [selectedAccount]);
+
+  const assetOptions = useMemo(() => {
+    return Object.values(accountBalances).map((balance) => ({
+      label:
+        hexToUTF16String(balance.asset.name) +
+        ` (${formatOre(balance.confirmed)})`,
+      value: balance.asset.id,
+    }));
+  }, [accountBalances]);
+
+  // Resets asset field to $IRON if a newly selected account does not have the selected asset
+  useEffect(() => {
+    if (!Object.hasOwn(accountBalances, assetValue)) {
+      resetField("assetId");
+    }
+  }, [assetValue, resetField, selectedAccount, accountBalances]);
+
   return (
     <>
       {syncingMessage}
       <chakra.form
-        onSubmit={handleSubmit((data) => {
-          // @todo: Try marking the form as invalid or disabling the button
+        onSubmit={handleSubmit(async (data) => {
+          const currentBalance = Number(
+            accountBalances[data.assetId].confirmed,
+          );
+          const amountAsIron = parseIron(data.amount);
+
+          if (currentBalance < amountAsIron) {
+            setError("amount", {
+              type: "custom",
+              message: formatMessage(messages.insufficientFundsError),
+            });
+            return;
+          }
+
           if (!estimatedFeesData) {
+            setError("root.serverError", {
+              message:
+                estimatedFeesError?.message ??
+                formatMessage(messages.estimatedFeeDefaultError),
+            });
             return;
           }
 
@@ -164,58 +258,62 @@ export function SendAssetsFormContent({
           <Select
             {...register("fromAccount")}
             value={fromAccountValue}
-            label="From"
+            label={formatMessage(messages.fromLabel)}
             options={accountOptions}
             error={errors.fromAccount?.message}
           />
 
           <TextInput
             {...register("toAccount")}
-            label="To"
+            label={formatMessage(messages.toLabel)}
             error={errors.toAccount?.message}
           />
 
           <Select
             {...register("assetId")}
             value={assetValue}
-            label="Asset"
+            label={formatMessage(messages.assetLabel)}
             options={assetOptions}
             error={errors.assetId?.message}
           />
 
           <TextInput
-            {...register("amount")}
-            label="Amount"
+            {...register("amount", {
+              onChange: () => {
+                clearErrors("root.serverError");
+              },
+            })}
+            label={formatMessage(messages.amountLabel)}
             error={errors.amount?.message}
           />
 
           <Select
             {...register("fee")}
             value={feeValue}
-            label="Fee ($IRON)"
+            label={formatMessage(messages.feeLabel)}
             options={[
               {
-                label: `Slow${
-                  estimatedFeesData
+                label:
+                  formatMessage(messages.slowFeeLabel) +
+                  (estimatedFeesData
                     ? ` (${formatOre(estimatedFeesData.slow)} $IRON)`
-                    : ""
-                }`,
+                    : ""),
                 value: "slow",
               },
               {
-                label: `Average${
-                  estimatedFeesData
+                label:
+                  formatMessage(messages.averageFeeLabel) +
+                  (estimatedFeesData
                     ? ` (${formatOre(estimatedFeesData.average)} $IRON)`
-                    : ""
-                }`,
+                    : ""),
                 value: "average",
               },
               {
-                label: `Fast${
-                  estimatedFeesData
+                label:
+                  formatMessage(messages.fastFeeLabel) +
+                  (estimatedFeesData
                     ? ` (${formatOre(estimatedFeesData.fast)} $IRON)`
-                    : ""
-                }`,
+                    : ""),
                 value: "fast",
               },
             ]}
@@ -224,8 +322,16 @@ export function SendAssetsFormContent({
 
           <TextInput
             {...register("memo")}
-            label="Memo (32 characters max)"
+            label={formatMessage(messages.memoLabel)}
             error={errors.memo?.message}
+          />
+
+          <RenderError
+            error={
+              errors.root?.serverError
+                ? errors.root?.serverError?.message
+                : null
+            }
           />
         </VStack>
 
@@ -236,7 +342,7 @@ export function SendAssetsFormContent({
             px={8}
             isDisabled={!isAccountSynced}
           >
-            Send Asset
+            {formatMessage(messages.sendAssetButton)}
           </PillButton>
         </HStack>
       </chakra.form>
@@ -245,7 +351,7 @@ export function SendAssetsFormContent({
         transactionData={pendingTransaction}
         selectedAssetName={
           assetOptions.find(({ value }) => value === assetValue)?.label ??
-          "unknown asset"
+          formatMessage(messages.unknownAsset)
         }
         onCancel={() => {
           setPendingTransaction(null);

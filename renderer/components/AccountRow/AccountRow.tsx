@@ -32,6 +32,12 @@ const messages = defineMessages({
     defaultMessage:
       "This account is syncing. Please wait until the sync is complete before sending transactions.",
   },
+  sendButton: {
+    defaultMessage: "Send",
+  },
+  receiveButton: {
+    defaultMessage: "Receive",
+  },
 });
 
 type AccountRowProps = {
@@ -119,7 +125,7 @@ export function AccountRow({
                   }}
                 >
                   <ArrowSend transform="scale(0.8)" />
-                  Send
+                  {formatMessage(messages.sendButton)}
                 </PillButton>
               </VStack>
             </Tooltip>
@@ -131,7 +137,7 @@ export function AccountRow({
               }}
             >
               <ArrowReceive transform="scale(0.8)" />
-              Receive
+              {formatMessage(messages.receiveButton)}
             </PillButton>
           </VStack>
 

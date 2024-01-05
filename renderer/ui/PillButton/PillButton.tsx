@@ -47,11 +47,12 @@ const VARIANT_PROPS = {
     dark: {
       bg: COLORS.DARK_MODE.BG,
       color: "white",
-      borderColor: "white",
+      borderColor: COLORS.DARK_MODE.GRAY_MEDIUM,
       borderRightWidth: "3px",
       borderBottomWidth: "3px",
       _hover: {
         bg: "rgba(255, 255, 255, 0.1)",
+        borderColor: COLORS.WHITE,
       },
     },
   },
@@ -87,7 +88,6 @@ export function PillButton({
       alignItems="center"
       gap={2}
       disabled={isDisabled}
-      isDisabled={isDisabled}
       type={type}
       cursor="pointer"
       {...VARIANT_PROPS[variant].light}

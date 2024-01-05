@@ -1,8 +1,12 @@
 import { defineStyleConfig, extendTheme } from "@chakra-ui/react";
 
 import { breakpoints, createBreakpointArray } from "./breakpoints";
+import { inputTheme } from "./styleConfigs/input";
 import { modalTheme } from "./styleConfigs/modal";
 import { COLORS } from "../colors";
+
+// To extend the theme, look through baseTheme from chakra-ui/react,
+// as well as the docs here: https://chakra-ui.com/docs/components/input/theming
 
 const theme = extendTheme({
   config: {
@@ -28,6 +32,8 @@ const theme = extendTheme({
         fontWeight: "regular",
       },
     }),
+    Input: inputTheme,
+    Modal: modalTheme,
     Text: defineStyleConfig({
       baseStyle: {
         color: COLORS.BLACK,
@@ -43,13 +49,16 @@ const theme = extendTheme({
         size: "sm",
       },
     }),
-    Modal: modalTheme,
   },
   semanticTokens: {
     colors: {
       ["chakra-placeholder-color"]: {
         _dark: COLORS.DARK_MODE.GRAY_LIGHT,
         _light: COLORS.GRAY_MEDIUM,
+      },
+      ["chakra-border-color"]: {
+        _dark: COLORS.DARK_MODE.GRAY_MEDIUM,
+        _light: COLORS.BLACK,
       },
     },
   },

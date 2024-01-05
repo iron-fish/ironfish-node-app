@@ -8,6 +8,7 @@ import {
   TabPanel,
 } from "@chakra-ui/react";
 import { useRouter } from "next/router";
+import { defineMessages, useIntl } from "react-intl";
 
 import { BackButton } from "@/components/BackButton/BackButton";
 import { trpcReact } from "@/providers/TRPCProvider";
@@ -16,8 +17,27 @@ import { EncodedKeyImport } from "./EncodedKeyImport";
 import { FileImport } from "./FileImport";
 import { MnemonicImport } from "./MnemonicImport";
 
+const messages = defineMessages({
+  importAccount: {
+    defaultMessage: "Import Account",
+  },
+  importUsing: {
+    defaultMessage: "Import Using",
+  },
+  mnemonicPhrase: {
+    defaultMessage: "Mnemonic Phrase",
+  },
+  encodedKey: {
+    defaultMessage: "Encoded Key",
+  },
+  file: {
+    defaultMessage: "File",
+  },
+});
+
 export function ImportAccount() {
   const router = useRouter();
+  const { formatMessage } = useIntl();
 
   const {
     mutate: importAccount,
@@ -29,23 +49,23 @@ export function ImportAccount() {
     <Box>
       <BackButton />
       <Heading mt={16} mb={8}>
-        Import Account
+        {formatMessage(messages.importAccount)}
       </Heading>
 
       <Heading fontSize="2xl" mb={4}>
-        Import Using
+        {formatMessage(messages.importUsing)}
       </Heading>
 
       <Tabs>
         <TabList mb={8}>
           <Tab py={2} px={4} mr={4}>
-            Mnemonic Phrase
+            {formatMessage(messages.mnemonicPhrase)}
           </Tab>
           <Tab py={2} px={4} mr={4}>
-            Encoded Key
+            {formatMessage(messages.encodedKey)}
           </Tab>
           <Tab py={2} px={4} mr={4}>
-            File
+            {formatMessage(messages.file)}
           </Tab>
         </TabList>
 
