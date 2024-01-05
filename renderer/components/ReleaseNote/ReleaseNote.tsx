@@ -1,6 +1,7 @@
 import { Box, Heading, Text } from "@chakra-ui/react";
 import { compareVersions } from "compare-versions";
 import { useMemo } from "react";
+import { defineMessages, useIntl } from "react-intl";
 import Markdown from "react-markdown";
 
 import { COLORS } from "@/ui/colors";
@@ -9,7 +10,15 @@ import { PartialGithubRelease } from "../../../shared/types";
 
 const stripLeadingV = (str: string) => str.replace(/^v/, "");
 
+const messages = defineMessages({
+  new: {
+    defaultMessage: "New",
+  },
+});
+
 function New() {
+  const { formatMessage } = useIntl();
+
   return (
     <Box
       background={COLORS.GREEN_LIGHT}
@@ -24,7 +33,7 @@ function New() {
         color={COLORS.GREEN_DARK}
         _dark={{ color: COLORS.DARK_MODE.GREEN_DARK }}
       >
-        New
+        {formatMessage(messages.new)}
       </Text>
     </Box>
   );

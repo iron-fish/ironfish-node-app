@@ -2,6 +2,7 @@ import { Text, Progress, Box, HStack, Heading } from "@chakra-ui/react";
 import { formatDuration } from "date-fns";
 import { useRouter } from "next/router";
 import { useEffect, useState, useCallback, useMemo } from "react";
+import { useIntl, defineMessages } from "react-intl";
 import { useCountdown } from "usehooks-ts";
 
 import { trpcReact } from "@/providers/TRPCProvider";
@@ -12,6 +13,55 @@ import { NodeAppLogo } from "@/ui/SVGs/NodeAppLogo";
 import { SnapshotUpdate } from "../../../../shared/types";
 
 type ProgressSteps = "prompt" | "download" | "complete";
+
+const messages = defineMessages({
+  downloadInProgress: {
+    defaultMessage: "Download in progress...",
+  },
+  downloadDescription: {
+    defaultMessage:
+      "Downloading a snapshot is the fastest way to sync with the network.",
+  },
+  mbDownloaded: {
+    defaultMessage: "{currMb} / {totalMb} mb downloaded",
+  },
+  unzipping: {
+    defaultMessage: "Unzipping...",
+  },
+  redirectDescription: {
+    defaultMessage:
+      "You'll automatically be redirected to your accounts page once the snapshot is applied.",
+  },
+  unzipProgress: {
+    defaultMessage: "Unzip progress: {progress}%",
+  },
+  errorOccurred: {
+    defaultMessage: "An error occurred while downloading the snapshot:",
+  },
+  retryingIn: {
+    defaultMessage: "Retrying in {duration}...",
+  },
+  retryNow: {
+    defaultMessage: "Retry now",
+  },
+  chooseHowToSync: {
+    defaultMessage: "Choose how to sync your chain",
+  },
+  downloadSnapshot: {
+    defaultMessage: "Download Snapshot",
+  },
+  syncFromPeers: {
+    defaultMessage: "Sync from Peers",
+  },
+  snapshotPrompt: {
+    defaultMessage:
+      "Download Snapshot: Fast and centralized. Get a complete copy of the blockchain quickly from a central source.",
+  },
+  peersPrompt: {
+    defaultMessage:
+      "Sync from peers: Slower but decentralized. Retrieve the blockchain from other users, contributing to network decentralization. While it may take longer, it strengthens the network's resilience.",
+  },
+});
 
 function percent(num: number, total: number) {
   return Math.floor((num / total) * 100);
@@ -47,6 +97,7 @@ function useBackoff() {
 }
 
 function DownloadProgress({ onSuccess }: { onSuccess: () => void }) {
+  const { formatMessage } = useIntl();
   const [snapshotState, setSnapshotState] = useState<SnapshotUpdate>();
   const { mutate: downloadSnapshot } = trpcReact.downloadSnapshot.useMutation();
   const [error, setError] = useState<string>();
@@ -95,28 +146,25 @@ function DownloadProgress({ onSuccess }: { onSuccess: () => void }) {
     <Box>
       {snapshotState?.step === "download" && (
         <Box>
-          <Heading mb={8}>Download in progress...</Heading>
-          <Text mb={8}>
-            Downloading a snapshot is the fastest way to sync with the network.
-          </Text>
+          <Heading mb={8}>{formatMessage(messages.downloadInProgress)}</Heading>
+          <Text mb={8}>{formatMessage(messages.downloadDescription)}</Text>
           <Progress
             value={percent(snapshotState.currBytes, snapshotState.totalBytes)}
           />
           <HStack mt={4}>
             <Text>
-              {bytesToMb(snapshotState.currBytes)} /{" "}
-              {bytesToMb(snapshotState.totalBytes)} mb downloaded
+              {formatMessage(messages.mbDownloaded, {
+                currMb: bytesToMb(snapshotState.currBytes),
+                totalMb: bytesToMb(snapshotState.totalBytes),
+              })}
             </Text>
           </HStack>
         </Box>
       )}
       {snapshotState?.step === "unzip" && (
         <Box>
-          <Heading mb={8}>Unzipping...</Heading>
-          <Text mb={8}>
-            You&apos;ll automatically be redirected to your accounts page once
-            the snapshot is applied.
-          </Text>
+          <Heading mb={8}>{formatMessage(messages.unzipping)}</Heading>
+          <Text mb={8}>{formatMessage(messages.redirectDescription)}</Text>
           <Progress
             value={percent(
               snapshotState.currEntries,
@@ -124,20 +172,28 @@ function DownloadProgress({ onSuccess }: { onSuccess: () => void }) {
             )}
           />
           <Text textAlign="right">
-            Unzip progress:{" "}
-            {percent(snapshotState.currEntries, snapshotState.totalEntries)}%
+            {formatMessage(messages.unzipProgress, {
+              progress: percent(
+                snapshotState.currEntries,
+                snapshotState.totalEntries,
+              ),
+            })}
           </Text>
         </Box>
       )}
       {error && (
         <Box mt={8}>
-          <Text>An error occurred while downloading the snapshot:</Text>
+          <Text>{formatMessage(messages.errorOccurred)}</Text>
           <Text>{error}</Text>
           {count > 0 && (
             <Box mt={4}>
-              <Text mb={2}>Retrying in {retryDuration}...</Text>
+              <Text mb={2}>
+                {formatMessage(messages.retryingIn, {
+                  duration: retryDuration,
+                })}
+              </Text>
               <PillButton onClick={downloadAndResubscribe}>
-                Retry now
+                {formatMessage(messages.retryNow)}
               </PillButton>
             </Box>
           )}
@@ -154,25 +210,23 @@ function Prompt({
   onPeers: () => void;
   onSnapshot: () => void;
 }) {
+  const { formatMessage } = useIntl();
   return (
     <Box>
       <HStack alignItems="flex-start" mb={16}>
         <LogoLg />
         <NodeAppLogo />
       </HStack>
-      <Heading mb={8}>Choose how to sync your chain</Heading>
-      <Text mb={4}>
-        Download Snapshot: Fast and centralized. Get a complete copy of the
-        blockchain quickly from a central source.
-      </Text>
-      <Text mb={8}>
-        Sync from peers: Slower but decentralized. Retrieve the blockchain from
-        other users, contributing to network decentralization. While it may take
-        longer, it strengthens the network&apos;s resilience.
-      </Text>
+      <Heading mb={8}>{formatMessage(messages.chooseHowToSync)}</Heading>
+      <Text mb={4}>{formatMessage(messages.snapshotPrompt)}</Text>
+      <Text mb={8}>{formatMessage(messages.peersPrompt)}</Text>
       <HStack gap={8}>
-        <PillButton onClick={onSnapshot}>Download Snapshot</PillButton>
-        <PillButton onClick={onPeers}>Sync from Peers</PillButton>
+        <PillButton onClick={onSnapshot}>
+          {formatMessage(messages.downloadSnapshot)}
+        </PillButton>
+        <PillButton onClick={onPeers}>
+          {formatMessage(messages.syncFromPeers)}
+        </PillButton>
       </HStack>
     </Box>
   );
