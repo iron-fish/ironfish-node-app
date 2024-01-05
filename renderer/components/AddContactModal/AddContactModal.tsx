@@ -13,11 +13,48 @@ import {
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useCallback, useEffect } from "react";
 import { useForm } from "react-hook-form";
+import { defineMessages, useIntl } from "react-intl";
 import * as z from "zod";
 
 import { getTrpcVanillaClient, trpcReact } from "@/providers/TRPCProvider";
 import { TextInput } from "@/ui/Forms/TextInput/TextInput";
 import { PillButton } from "@/ui/PillButton/PillButton";
+
+const messages = defineMessages({
+  addContact: {
+    defaultMessage: "Add Contact",
+  },
+  contactName: {
+    defaultMessage: "This contact's name is only visible to you.",
+  },
+  loading: {
+    defaultMessage: "Loading...",
+  },
+  addContactError: {
+    defaultMessage: "Add Contact Error",
+  },
+  tryAgain: {
+    defaultMessage: "Try Again",
+  },
+  somethingWentWrong: {
+    defaultMessage: "Something went wrong, please try again.",
+  },
+  cancel: {
+    defaultMessage: "Cancel",
+  },
+  addContactButton: {
+    defaultMessage: "Add Contact",
+  },
+  closeButton: {
+    defaultMessage: "Close",
+  },
+  name: {
+    defaultMessage: "Name",
+  },
+  address: {
+    defaultMessage: "Address",
+  },
+});
 
 type Props = {
   isOpen: boolean;
@@ -57,6 +94,8 @@ export function AddContactModal({ isOpen, onClose }: Props) {
     resolver: zodResolver(contactSchema),
   });
 
+  const { formatMessage } = useIntl();
+
   const handleClose = useCallback(() => {
     resetMutation();
     onClose();
@@ -77,11 +116,11 @@ export function AddContactModal({ isOpen, onClose }: Props) {
           {!isError && (
             <>
               <Heading fontSize="2xl" mb={4}>
-                Add Contact
+                {formatMessage(messages.addContact)}
               </Heading>
 
               <Text fontSize="md" mb={6}>
-                This contact&apos;s name is only visible to you.
+                {formatMessage(messages.contactName)}
               </Text>
 
               {isLoading ? (
@@ -92,12 +131,12 @@ export function AddContactModal({ isOpen, onClose }: Props) {
                 <VStack gap={4} alignItems="stretch">
                   <TextInput
                     {...register("name")}
-                    label="Name"
+                    label={formatMessage(messages.name)}
                     error={errors.name?.message}
                   />
                   <TextInput
                     {...register("address")}
-                    label="Address"
+                    label={formatMessage(messages.address)}
                     error={errors.address?.message}
                   />
                 </VStack>
@@ -108,9 +147,11 @@ export function AddContactModal({ isOpen, onClose }: Props) {
           {isError && (
             <>
               <Heading fontSize="2xl" mb={8}>
-                Add Contact Error
+                {formatMessage(messages.addContactError)}
               </Heading>
-              <Text fontSize="md">Something went wrong, please try again.</Text>
+              <Text fontSize="md">
+                {formatMessage(messages.somethingWentWrong)}
+              </Text>
             </>
           )}
         </ModalBody>
@@ -125,7 +166,7 @@ export function AddContactModal({ isOpen, onClose }: Props) {
                 variant="inverted"
                 border={0}
               >
-                Cancel
+                {formatMessage(messages.cancel)}
               </PillButton>
               <PillButton
                 size="sm"
@@ -136,7 +177,7 @@ export function AddContactModal({ isOpen, onClose }: Props) {
                   })();
                 }}
               >
-                Add Contact
+                {formatMessage(messages.addContactButton)}
               </PillButton>
             </>
           )}
@@ -149,7 +190,7 @@ export function AddContactModal({ isOpen, onClose }: Props) {
                 variant="inverted"
                 border={0}
               >
-                Close
+                {formatMessage(messages.closeButton)}
               </PillButton>
               <PillButton
                 size="sm"
@@ -159,7 +200,7 @@ export function AddContactModal({ isOpen, onClose }: Props) {
                   resetMutation();
                 }}
               >
-                Try Again
+                {formatMessage(messages.tryAgain)}
               </PillButton>
             </>
           )}

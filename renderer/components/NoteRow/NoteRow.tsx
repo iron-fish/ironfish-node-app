@@ -2,6 +2,7 @@ import { ChevronRightIcon } from "@chakra-ui/icons";
 import { Box, Grid, GridItem, HStack, Text } from "@chakra-ui/react";
 import type { TransactionStatus, TransactionType } from "@ironfish/sdk";
 import { ReactNode } from "react";
+import { defineMessages, MessageDescriptor, useIntl } from "react-intl";
 
 import { MaybeLink } from "@/ui/ChakraLink/ChakraLink";
 import { COLORS } from "@/ui/colors";
@@ -16,7 +17,39 @@ import { PendingIcon } from "./icons/PendingIcon";
 import { ReceivedIcon } from "./icons/ReceivedIcon";
 import { SentIcon } from "./icons/SentIcon";
 
+const messages = defineMessages({
+  action: {
+    defaultMessage: "Action",
+  },
+  amount: {
+    defaultMessage: "Amount",
+  },
+  fromTo: {
+    defaultMessage: "From/To",
+  },
+  date: {
+    defaultMessage: "Date",
+  },
+  memo: {
+    defaultMessage: "Memo",
+  },
+  sent: {
+    defaultMessage: "Sent",
+  },
+  received: {
+    defaultMessage: "Received",
+  },
+  pending: {
+    defaultMessage: "Pending",
+  },
+  expired: {
+    defaultMessage: "Expired",
+  },
+});
+
 export function NotesHeadings() {
+  const { formatMessage } = useIntl();
+
   return (
     <Grid
       templateColumns={{
@@ -27,19 +60,19 @@ export function NotesHeadings() {
       mb={4}
     >
       <GridItem pl={8}>
-        <Text as="span">Action</Text>
+        <Text as="span">{formatMessage(messages.action)}</Text>
       </GridItem>
       <GridItem>
-        <Text as="span">Amount</Text>
+        <Text as="span">{formatMessage(messages.amount)}</Text>
       </GridItem>
       <GridItem>
-        <Text as="span">From/To</Text>
+        <Text as="span">{formatMessage(messages.fromTo)}</Text>
       </GridItem>
       <GridItem>
-        <Text as="span">Date</Text>
+        <Text as="span">{formatMessage(messages.date)}</Text>
       </GridItem>
       <GridItem>
-        <Text as="span">Memo</Text>
+        <Text as="span">{formatMessage(messages.memo)}</Text>
       </GridItem>
     </Grid>
   );
@@ -49,30 +82,30 @@ function getNoteStatusDisplay(
   type: TransactionType,
   status: TransactionStatus,
   asTransaction: boolean,
-): { icon: ReactNode; text: string } {
+): { icon: ReactNode; message: MessageDescriptor } {
   if (asTransaction || status === "confirmed") {
     if (type === "send") {
-      return { icon: <SentIcon />, text: "Sent" };
+      return { icon: <SentIcon />, message: messages.sent };
     } else if (type === "receive" || type === "miner") {
-      return { icon: <ReceivedIcon />, text: "Received" };
+      return { icon: <ReceivedIcon />, message: messages.received };
     }
 
     const unhandledType: never = type;
     console.error("Unhandled transaction type", unhandledType);
-    return { icon: <ReceivedIcon />, text: "Received" };
+    return { icon: <ReceivedIcon />, message: messages.received };
   } else if (
     status === "pending" ||
     status === "unknown" ||
     status === "unconfirmed"
   ) {
-    return { icon: <PendingIcon />, text: "Pending" };
+    return { icon: <PendingIcon />, message: messages.pending };
   } else if (status === "expired") {
-    return { icon: <ExpiredIcon />, text: "Expired" };
+    return { icon: <ExpiredIcon />, message: messages.expired };
   }
 
   const unhandledStatus: never = status;
   console.error("Unhandled transaction status", unhandledStatus);
-  return { icon: <PendingIcon />, text: "Pending" };
+  return { icon: <PendingIcon />, message: messages.pending };
 }
 
 export function NoteRow({
@@ -104,6 +137,7 @@ export function NoteRow({
    */
   asTransaction?: boolean;
 }) {
+  const { formatMessage } = useIntl();
   const statusDisplay = getNoteStatusDisplay(type, status, asTransaction);
 
   return (
@@ -137,7 +171,7 @@ export function NoteRow({
             <GridItem display="flex" alignItems="center" pl={8}>
               <HStack gap={4}>
                 {statusDisplay.icon}
-                <Text as="span">{statusDisplay.text}</Text>
+                <Text as="span">{formatMessage(statusDisplay.message)}</Text>
               </HStack>
             </GridItem>
             <GridItem display="flex" alignItems="center">
