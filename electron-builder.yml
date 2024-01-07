@@ -8,6 +8,7 @@ extraMetadata:
 directories:
   output: dist
   buildResources: resources
+afterPack: "./build/after-pack.js"
 files:
   - from: .
     filter:
