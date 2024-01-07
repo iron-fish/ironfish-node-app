@@ -29,6 +29,9 @@ dmg:
 
 win:
   sign: "./build/sign-windows.js"
+nsis:
+  uninstallDisplayName: ${productName}
+
 linux:
   target: AppImage
   asarUnpack: "**/*.node"

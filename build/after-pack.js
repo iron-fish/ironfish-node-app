@@ -4,7 +4,7 @@ const fs = require("fs/promises");
 const path = require("path");
 
 exports.default = async function (context) {
-  if (context.platform.buildConfigurationKey !== "win") {
+  if (context.electronPlatformName !== "win32") {
     return;
   }
 
@@ -14,7 +14,7 @@ exports.default = async function (context) {
     const stat = await fs.stat(filePath);
     const sizeInMB = stat.size / (1024 * 1024);
     // If it's more than 20MB and has been updated within 7 days, skip redownload.
-    // More accurate way would be to check etag on the response.
+    // More accurate would be to check etag on the response.
     if (sizeInMB > 20 && differenceInDays(Date.now(), stat.mtime) < 7) {
       return;
     }
