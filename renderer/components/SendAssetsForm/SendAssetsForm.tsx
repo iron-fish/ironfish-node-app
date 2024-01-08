@@ -143,8 +143,6 @@ export function SendAssetsFormContent({
   const toAccountValue = watch("toAccount");
   const memoValue = watch("memo");
 
-  console.log({ amountValue });
-
   const { data: estimatedFeesData, error: estimatedFeesError } =
     trpcReact.getEstimatedFees.useQuery(
       {
