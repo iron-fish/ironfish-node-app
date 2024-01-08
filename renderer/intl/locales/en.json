@@ -66,6 +66,9 @@
   "551bXe": {
     "message": "View Only"
   },
+  "59UOUq": {
+    "message": "You don't have any accounts"
+  },
   "5JcXdV": {
     "message": "Create Account"
   },
@@ -503,6 +506,9 @@
   },
   "qkf/DE": {
     "message": "Cancel Transaction"
+  },
+  "r1Z23X": {
+    "message": "All your accounts will be displayed in this section. To create or import an account, simply click one of the buttons above."
   },
   "rbrahO": {
     "message": "Close"
