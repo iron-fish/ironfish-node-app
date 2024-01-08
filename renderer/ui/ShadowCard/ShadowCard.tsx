@@ -2,11 +2,9 @@ import { Box, BoxProps } from "@chakra-ui/react";
 
 import { COLORS, GRADIENTS } from "../colors";
 
-const SPACING = "4px";
-
 const SHARED_PROPS = {
   border: "1px solid black",
-  borderRadius: SPACING,
+  borderRadius: "4px",
 };
 
 export type GradientOptions = keyof typeof GRADIENTS;
@@ -24,6 +22,7 @@ type Props = BoxProps & {
   contentContainerProps?: BoxProps;
   gradient?: GradientOptions;
   hoverable?: boolean;
+  cardOffset?: string;
 };
 
 const SHADOW_HOVER_STYLES = {
@@ -44,12 +43,13 @@ export function ShadowCard({
   contentContainerProps,
   gradient,
   hoverable = false,
+  cardOffset = "4px",
   ...rest
 }: Props) {
   return (
     <Box
-      pr={SPACING}
-      pb={SPACING}
+      pr={cardOffset}
+      pb={cardOffset}
       position="relative"
       display="flex"
       alignItems="stretch"
@@ -60,8 +60,8 @@ export function ShadowCard({
         data-is-shadow="true"
         position="absolute"
         bg={gradient ? makeGradient(gradient, true) : "white"}
-        top={SPACING}
-        left={SPACING}
+        top={cardOffset}
+        left={cardOffset}
         bottom={0}
         right={0}
         pointerEvents="none"

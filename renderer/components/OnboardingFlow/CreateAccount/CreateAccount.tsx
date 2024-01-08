@@ -30,7 +30,7 @@ function useMaybeNewAccount() {
     if (accountsData.length === 0) {
       createAccount(
         {
-          name: "default",
+          name: "New Account",
         },
         {
           onSuccess: () => {

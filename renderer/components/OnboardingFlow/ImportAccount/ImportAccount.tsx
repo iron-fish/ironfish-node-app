@@ -6,6 +6,7 @@ import {
   Tab,
   TabPanels,
   TabPanel,
+  Text,
 } from "@chakra-ui/react";
 import { useRouter } from "next/router";
 import { defineMessages, useIntl } from "react-intl";
@@ -21,8 +22,8 @@ const messages = defineMessages({
   importAccount: {
     defaultMessage: "Import Account",
   },
-  importUsing: {
-    defaultMessage: "Import Using",
+  importWith: {
+    defaultMessage: "Import With",
   },
   mnemonicPhrase: {
     defaultMessage: "Mnemonic Phrase",
@@ -48,13 +49,13 @@ export function ImportAccount() {
   return (
     <Box>
       <BackButton />
-      <Heading mt={16} mb={8}>
+      <Heading mt={4} mb={8}>
         {formatMessage(messages.importAccount)}
       </Heading>
 
-      <Heading fontSize="2xl" mb={4}>
-        {formatMessage(messages.importUsing)}
-      </Heading>
+      <Text fontSize="2xl" mb={2}>
+        {formatMessage(messages.importWith)}
+      </Text>
 
       <Tabs>
         <TabList mb={8}>

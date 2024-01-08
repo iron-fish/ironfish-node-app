@@ -54,9 +54,6 @@
   "47FYwb": {
     "message": "Cancel"
   },
-  "4fKeh1": {
-    "message": "Import Using"
-  },
   "4l6vz1": {
     "message": "Copy"
   },
@@ -74,6 +71,9 @@
   },
   "5MiM5y": {
     "message": "Send Asset"
+  },
+  "5UdRx1": {
+    "message": "Import With"
   },
   "5c3Wrw": {
     "message": "Total accounts balance"
@@ -135,9 +135,6 @@
   "Arxl88": {
     "message": "Outgoing"
   },
-  "BBITym": {
-    "message": "Choose how to sync your node with the network"
-  },
   "BwRLcj": {
     "message": "Your transaction has been submitted. It may take a few minutes until it is confirmed. This transaction will appear in your activity as pending until it is confirmed."
   },
@@ -155,6 +152,9 @@
   },
   "D5NqQO": {
     "message": "Memo"
+  },
+  "FM2S9I": {
+    "message": "Set up your node"
   },
   "Fn/FTS": {
     "message": "An error occurred while loading your transactions. If this happens several times, please let us know on Discord."
@@ -285,6 +285,9 @@
   "TRfaIL": {
     "message": "Synced"
   },
+  "TTpGX5": {
+    "message": "Choose how to sync your chain"
+  },
   "Te4gbw": {
     "message": "Export Format:"
   },
@@ -326,9 +329,6 @@
   },
   "WsssxH": {
     "message": "Select your JSON or Bech32 file to import your account."
-  },
-  "WvNP+W": {
-    "message": "Syncing your chain"
   },
   "XLvNHQ": {
     "message": "Please write down this recovery phrase and keep it in a safe place. You will need it to recover your account."

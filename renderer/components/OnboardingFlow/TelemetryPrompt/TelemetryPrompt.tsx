@@ -13,11 +13,16 @@ import { defineMessages, useIntl } from "react-intl";
 
 import { trpcReact } from "@/providers/TRPCProvider";
 import { PillButton } from "@/ui/PillButton/PillButton";
+import { LogoLg } from "@/ui/SVGs/LogoLg";
+import { NodeAppLogo } from "@/ui/SVGs/NodeAppLogo";
 
 const messages = defineMessages({
   telemetry: {
     defaultMessage:
       "We'd like to collect anonymous telemetry data in order to continually improve your experience. This data includes node performance, block information, and other health metrics. You can enable or disable this at any time in the node settings page.",
+  },
+  telemetryHeading: {
+    defaultMessage: "Set up your node",
   },
   telemetryEnabled: {
     defaultMessage: "Telemetry enabled",
@@ -52,9 +57,11 @@ export function TelemetryPrompt() {
 
   return (
     <Box>
-      <Heading mt={24} mb={8}>
-        {formatMessage(messages.telemetry)}
-      </Heading>
+      <HStack alignItems="flex-start" mb={16}>
+        <LogoLg />
+        <NodeAppLogo />
+      </HStack>
+      <Heading mb={8}>{formatMessage(messages.telemetryHeading)}</Heading>
 
       <Text mb={4} fontSize="md">
         {formatMessage(messages.telemetry)}

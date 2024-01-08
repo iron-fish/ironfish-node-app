@@ -1,13 +1,30 @@
-import { Box, LightMode, useColorMode } from "@chakra-ui/react";
+import {
+  Box,
+  Flex,
+  HStack,
+  LightMode,
+  Text,
+  VStack,
+  useColorMode,
+} from "@chakra-ui/react";
 import Image from "next/image";
 import { ReactNode, useEffect } from "react";
+import { defineMessages, useIntl } from "react-intl";
 
 import bigOnboardingFish from "@/images/big-onboarding-fish.svg";
+import discord from "@/images/discord.png";
 
 import { WithDraggableArea, draggableAreaHeight } from "./WithDraggableArea";
 
+const messages = defineMessages({
+  needHelp: {
+    defaultMessage: "Need Help? Find us on Discord",
+  },
+});
+
 export function OnboardingLayout({ children }: { children: ReactNode }) {
   const { colorMode, toggleColorMode } = useColorMode();
+  const { formatMessage } = useIntl();
 
   useEffect(() => {
     if (colorMode === "dark") {
@@ -36,7 +53,8 @@ export function OnboardingLayout({ children }: { children: ReactNode }) {
             />
           </Box>
         </Box>
-        <Box
+        <VStack
+          gap={0}
           bg="white"
           h="100%"
           maxW={{
@@ -57,19 +75,39 @@ export function OnboardingLayout({ children }: { children: ReactNode }) {
             w="100%"
             transform="translateY(-100%)"
           />
-          <Box
-            h="100%"
+          <Flex
+            flex={1}
             overflow="auto"
             px={{
-              base: "32px",
-              sm: "64px",
+              base: "64px",
               "2xl": "152px",
             }}
-            py="95px"
+            py={16}
           >
             {children}
-          </Box>
-        </Box>
+          </Flex>
+          <Flex
+            borderTop="1px solid #DEDFE2"
+            py={3}
+            alignSelf="stretch"
+            justifyContent="center"
+          >
+            <Box
+              as="a"
+              target="_blank"
+              display="inline"
+              href="https://discord.ironfish.network/"
+              _hover={{ textDecor: "underline" }}
+            >
+              <HStack py={1} px={1}>
+                <Text fontSize="xs" lineHeight="160%">
+                  {formatMessage(messages.needHelp)}
+                </Text>
+                <Image src={discord} alt="Discord" width={18} height={18} />
+              </HStack>
+            </Box>
+          </Flex>
+        </VStack>
       </WithDraggableArea>
     </LightMode>
   );
