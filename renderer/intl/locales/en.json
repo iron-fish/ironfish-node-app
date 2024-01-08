@@ -159,6 +159,9 @@
   "FnRTEV": {
     "message": "Average"
   },
+  "GHoUMq": {
+    "message": "Account Syncing: {progress}%"
+  },
   "GKzO/A": {
     "message": "Fee:"
   },
@@ -296,6 +299,9 @@
   },
   "UTOugV": {
     "message": "Your Assets"
+  },
+  "VBDJ/l": {
+    "message": "Your balance might not be accurate while you're syncing"
   },
   "VqP8r/": {
     "message": "Memo:"

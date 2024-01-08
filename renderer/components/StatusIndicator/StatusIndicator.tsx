@@ -68,6 +68,17 @@ function useStatus() {
         shortLabel: "--%",
       };
     }
+    if (data.accounts.scanning) {
+      return {
+        status: "SCANNING",
+        label: `Scanning blocks: ${data.accounts.scanning.sequence} / ${data.accounts.scanning.endSequence}`,
+        shortLabel: `${Math.floor(
+          100 *
+            (data.accounts.scanning.sequence /
+              data.accounts.scanning.endSequence),
+        )}%`,
+      };
+    }
     if (data.accounts.head.hash !== data.blockchain.head.hash) {
       return {
         status: "SCANNING",
