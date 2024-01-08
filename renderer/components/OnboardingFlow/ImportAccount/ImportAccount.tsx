@@ -58,13 +58,13 @@ export function ImportAccount() {
 
       <Tabs>
         <TabList mb={8}>
-          <Tab py={2} px={4} mr={4}>
+          <Tab>
             {formatMessage(messages.mnemonicPhrase)}
           </Tab>
-          <Tab py={2} px={4} mr={4}>
+          <Tab>
             {formatMessage(messages.encodedKey)}
           </Tab>
-          <Tab py={2} px={4} mr={4}>
+          <Tab>
             {formatMessage(messages.file)}
           </Tab>
         </TabList>
