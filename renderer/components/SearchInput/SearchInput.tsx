@@ -16,19 +16,7 @@ export function SearchInput({ onChange }: Props) {
       <InputLeftElement pointerEvents="none">
         <SearchIcon color="black" _dark={{ color: "white" }} />
       </InputLeftElement>
-      <Input
-        type="text"
-        placeholder="Search"
-        borderColor="black"
-        onChange={onChange}
-        _hover={{ borderColor: "black" }}
-        _dark={{
-          borderColor: "white",
-          _hover: {
-            borderColor: "white",
-          },
-        }}
-      />
+      <Input type="text" placeholder="Search" onChange={onChange} />
     </InputGroup>
   );
 }

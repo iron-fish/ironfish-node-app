@@ -1,4 +1,5 @@
 import { VStack, Heading, HStack, Box, Text } from "@chakra-ui/react";
+import { defineMessages, useIntl } from "react-intl";
 
 import { ReleaseNote } from "@/components/ReleaseNote/ReleaseNote";
 import MainLayout from "@/layouts/MainLayout";
@@ -6,6 +7,21 @@ import { trpcReact } from "@/providers/TRPCProvider";
 import { COLORS } from "@/ui/colors";
 
 import { PartialGithubRelease } from "../../../shared/types";
+
+const messages = defineMessages({
+  releaseNotes: {
+    defaultMessage: "Release Notes",
+  },
+  version: {
+    defaultMessage: "Version {currentVersion}",
+  },
+  loading: {
+    defaultMessage: "Loading...",
+  },
+  downloadError: {
+    defaultMessage: "We're not able to download release notes right now.",
+  },
+});
 
 function ReleaseNotesList({
   currentVersion,
@@ -30,6 +46,7 @@ function ReleaseNotesList({
 }
 
 export default function ReleaseNotes() {
+  const { formatMessage } = useIntl();
   const { data: currentVersion } = trpcReact.getCurrentVersion.useQuery();
 
   const { isLoading, isError, isSuccess, data } =
@@ -38,7 +55,7 @@ export default function ReleaseNotes() {
   return (
     <MainLayout>
       <HStack alignItems="center" mb={10} gap={6}>
-        <Heading>Release Notes</Heading>
+        <Heading>{formatMessage(messages.releaseNotes)}</Heading>
         <Box
           background={COLORS.GRAY_LIGHT}
           borderRadius="5px"
@@ -50,14 +67,14 @@ export default function ReleaseNotes() {
             color={COLORS.GRAY_MEDIUM}
             _dark={{ color: COLORS.DARK_MODE.GRAY_MEDIUM }}
           >
-            Version {currentVersion || 0}
+            {formatMessage(messages.version, {
+              currentVersion: currentVersion || 0,
+            })}
           </Text>
         </Box>
       </HStack>
-      {isLoading && <div>Loading...</div>}
-      {isError && (
-        <div>We&apos;re not able to download release notes right now.</div>
-      )}
+      {isLoading && <div>{formatMessage(messages.loading)}</div>}
+      {isError && <div>{formatMessage(messages.downloadError)}</div>}
       {isSuccess && (
         <ReleaseNotesList currentVersion={currentVersion} releases={data} />
       )}

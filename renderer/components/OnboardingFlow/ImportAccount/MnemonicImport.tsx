@@ -1,5 +1,6 @@
 import { Box, Text } from "@chakra-ui/react";
 import { useMemo, useState } from "react";
+import { defineMessages, useIntl } from "react-intl";
 
 import {
   EMPTY_PHRASE_ARRAY,
@@ -9,6 +10,22 @@ import { TextInput } from "@/ui/Forms/TextInput/TextInput";
 import { PillButton } from "@/ui/PillButton/PillButton";
 import { validateMnemonic } from "@/utils/mnemonic";
 
+const messages = defineMessages({
+  accountNameLabel: {
+    defaultMessage: "Account Name",
+  },
+  accountNameError: {
+    defaultMessage: "Please enter a name for this account",
+  },
+  mnemonicPhraseLabel: {
+    defaultMessage:
+      "Please enter your mnemonic phrase. If you've copied the full phrase to your clipboard, you can paste it in any input and it will automatically be split into the correct number of words.",
+  },
+  continueButton: {
+    defaultMessage: "Continue",
+  },
+});
+
 type Props = {
   handleImport: (args: { name: string; account: string }) => void;
   isLoading: boolean;
@@ -16,6 +33,8 @@ type Props = {
 };
 
 export function MnemonicImport({ handleImport, isLoading, error }: Props) {
+  const { formatMessage } = useIntl();
+
   const [accountName, setAccountName] = useState("");
   const [isAccountNameDirty, setIsAccountNameDirty] = useState(false);
   const [phraseValues, setPhraseValues] =
@@ -31,11 +50,11 @@ export function MnemonicImport({ handleImport, isLoading, error }: Props) {
   return (
     <Box>
       <TextInput
-        label="Account Name"
+        label={formatMessage(messages.accountNameLabel)}
         value={accountName}
         error={
           isAccountNameDirty && !hasValidName
-            ? "Please enter a name for this account"
+            ? formatMessage(messages.accountNameError)
             : null
         }
         onChange={(e) => {
@@ -46,9 +65,7 @@ export function MnemonicImport({ handleImport, isLoading, error }: Props) {
         }}
       />
       <Text mt={8} mb={4}>
-        Please enter your mnemonic phrase. If you&apos;ve copied the full phrase
-        to your clipboard, you can paste it in any input and it will
-        automatically be split into the correct number of words.
+        {formatMessage(messages.mnemonicPhraseLabel)}
       </Text>
       <MnemonicPhrase
         defaultVisible
@@ -75,7 +92,7 @@ export function MnemonicImport({ handleImport, isLoading, error }: Props) {
           });
         }}
       >
-        Continue
+        {formatMessage(messages.continueButton)}
       </PillButton>
     </Box>
   );

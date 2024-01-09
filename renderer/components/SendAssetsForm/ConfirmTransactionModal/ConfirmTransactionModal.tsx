@@ -12,6 +12,7 @@ import {
 } from "@chakra-ui/react";
 import { useRouter } from "next/router";
 import { useCallback } from "react";
+import { defineMessages, useIntl } from "react-intl";
 
 import { trpcReact } from "@/providers/TRPCProvider";
 import { COLORS } from "@/ui/colors";
@@ -19,6 +20,65 @@ import { PillButton } from "@/ui/PillButton/PillButton";
 import { formatOre } from "@/utils/ironUtils";
 
 import { TransactionData } from "../transactionSchema";
+
+const messages = defineMessages({
+  confirmTransactionDetails: {
+    defaultMessage: "Confirm Transaction Details",
+  },
+  from: {
+    defaultMessage: "From:",
+  },
+  to: {
+    defaultMessage: "To:",
+  },
+  amount: {
+    defaultMessage: "Amount:",
+  },
+  fee: {
+    defaultMessage: "Fee:",
+  },
+  memo: {
+    defaultMessage: "Memo:",
+  },
+  submittingTransaction: {
+    defaultMessage: "Submitting Transaction",
+  },
+  transactionSubmitted: {
+    defaultMessage: "Transaction Submitted",
+  },
+  transactionSubmittedText: {
+    defaultMessage:
+      "Your transaction has been submitted. It may take a few minutes until it is confirmed. This transaction will appear in your activity as pending until it is confirmed.",
+  },
+  transactionError: {
+    defaultMessage: "Transaction Error",
+  },
+  transactionErrorText: {
+    defaultMessage:
+      "Something went wrong. Please review your transaction and try again.",
+  },
+  error: {
+    defaultMessage: "Error",
+  },
+  cancelTransaction: {
+    defaultMessage: "Cancel Transaction",
+  },
+  confirmAndSend: {
+    defaultMessage: "Confirm & Send",
+  },
+  viewAccountActivity: {
+    defaultMessage: "View Account Activity",
+  },
+  viewTransaction: {
+    defaultMessage: "View Transaction",
+  },
+  tryAgain: {
+    defaultMessage: "Try Again",
+  },
+  cancel: {
+    defaultMessage: "Cancel",
+  },
+});
 
 type Props = {
   isOpen: boolean;
@@ -44,6 +104,7 @@ export function ConfirmTransactionModal({
     error,
   } = trpcReact.sendTransaction.useMutation();
   const router = useRouter();
+  const { formatMessage } = useIntl();
 
   const handleClose = useCallback(() => {
     reset();
@@ -65,22 +126,28 @@ export function ConfirmTransactionModal({
           {isIdle && (
             <>
               <Heading fontSize="2xl" mb={8}>
-                Confirm Transaction Details
+                {formatMessage(messages.confirmTransactionDetails)}
               </Heading>
 
               <VStack alignItems="stretch">
                 <Box py={4} borderBottom="1.5px dashed #DEDFE2">
-                  <Text color={COLORS.GRAY_MEDIUM}>From:</Text>
+                  <Text color={COLORS.GRAY_MEDIUM}>
+                    {formatMessage(messages.from)}
+                  </Text>
                   <Text fontSize="md">{transactionData?.fromAccount}</Text>
                 </Box>
 
                 <Box py={4} borderBottom="1.5px dashed #DEDFE2">
-                  <Text color={COLORS.GRAY_MEDIUM}>To:</Text>
+                  <Text color={COLORS.GRAY_MEDIUM}>
+                    {formatMessage(messages.to)}
+                  </Text>
                   <Text fontSize="md">{transactionData?.toAccount ?? ""}</Text>
                 </Box>
 
                 <Box py={4} borderBottom="1.5px dashed #DEDFE2">
-                  <Text color={COLORS.GRAY_MEDIUM}>Amount:</Text>
+                  <Text color={COLORS.GRAY_MEDIUM}>
+                    {formatMessage(messages.amount)}
+                  </Text>
                   <Text fontSize="md">
                     {formatOre(transactionData?.amount ?? 0)}{" "}
                     {selectedAssetName}
@@ -88,14 +155,18 @@ export function ConfirmTransactionModal({
                 </Box>
 
                 <Box py={4} borderBottom="1.5px dashed #DEDFE2">
-                  <Text color={COLORS.GRAY_MEDIUM}>Fee:</Text>
+                  <Text color={COLORS.GRAY_MEDIUM}>
+                    {formatMessage(messages.fee)}
+                  </Text>
                   <Text fontSize="md">
                     {formatOre(transactionData?.fee ?? 0)} $IRON
                   </Text>
                 </Box>
 
                 <Box py={4} borderBottom="1.5px dashed #DEDFE2">
-                  <Text color={COLORS.GRAY_MEDIUM}>Memo:</Text>
+                  <Text color={COLORS.GRAY_MEDIUM}>
+                    {formatMessage(messages.memo)}
+                  </Text>
                   <Text fontSize="md">{transactionData?.memo}</Text>
                 </Box>
               </VStack>
@@ -104,7 +175,7 @@ export function ConfirmTransactionModal({
           {isLoading && (
             <>
               <Heading fontSize="2xl" mb={8}>
-                Submitting Transaction
+                {formatMessage(messages.submittingTransaction)}
               </Heading>
               <Box py={8}>
                 <Progress size="sm" isIndeterminate />
@@ -114,27 +185,24 @@ export function ConfirmTransactionModal({
           {isSuccess && (
             <>
               <Heading fontSize="2xl" mb={8}>
-                Transaction Submitted
+                {formatMessage(messages.transactionSubmitted)}
               </Heading>
               <Text fontSize="md">
-                Your transaction has been submitted. It may take a few minutes
-                until it is confirmed. This transaction will appear in your
-                activity as pending until it is confirmed.
+                {formatMessage(messages.transactionSubmittedText)}
               </Text>
             </>
           )}
           {isError && (
             <>
               <Heading fontSize="2xl" mb={8}>
-                Transaction Error
+                {formatMessage(messages.transactionError)}
               </Heading>
               <Text fontSize="md">
-                Something went wrong. Please review your transaction and try
-                again.
+                {formatMessage(messages.transactionErrorText)}
               </Text>
 
               <Heading fontSize="lg" mt={8} mb={2}>
-                Error
+                {formatMessage(messages.error)}
               </Heading>
               <code>{error.message}</code>
             </>
@@ -151,14 +219,14 @@ export function ConfirmTransactionModal({
                 variant="inverted"
                 border={0}
               >
-                Cancel Transaction
+                {formatMessage(messages.cancelTransaction)}
               </PillButton>
               <PillButton
                 size="sm"
                 isDisabled={isLoading}
                 onClick={handleSubmit}
               >
-                Confirm &amp; Send
+                {formatMessage(messages.confirmAndSend)}
               </PillButton>
             </>
           )}
@@ -175,7 +243,7 @@ export function ConfirmTransactionModal({
                   router.push(`/accounts/${account}`);
                 }}
               >
-                View Account Activity
+                {formatMessage(messages.viewAccountActivity)}
               </PillButton>
               <PillButton
                 size="sm"
@@ -191,7 +259,7 @@ export function ConfirmTransactionModal({
                   );
                 }}
               >
-                View Transaction
+                {formatMessage(messages.viewTransaction)}
               </PillButton>
             </>
           )}
@@ -204,14 +272,14 @@ export function ConfirmTransactionModal({
                 variant="inverted"
                 border={0}
               >
-                Cancel
+                {formatMessage(messages.cancel)}
               </PillButton>
               <PillButton
                 size="sm"
                 isDisabled={isLoading}
                 onClick={handleSubmit}
               >
-                Try Again
+                {formatMessage(messages.tryAgain)}
               </PillButton>
             </>
           )}
