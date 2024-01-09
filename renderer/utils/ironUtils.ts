@@ -29,7 +29,6 @@ export function parseIron(value: string | number) {
  * Converts a string or number value in Ore to a formatted localized string in $IRON.
  */
 export function formatOre(value: string | number) {
-  console.log({ value });
   return ORE_FORMATTER.format(parseOre(value));
 }
 
