@@ -8,7 +8,7 @@ import {
   RpcClient,
   RpcMemoryClient,
   getPackageFrom,
-  DatabaseOpenError,
+  DatabaseIsLockedError,
 } from "@ironfish/sdk";
 import log from "electron-log";
 import { v4 as uuid } from "uuid";
@@ -88,10 +88,12 @@ export class Ironfish {
         try {
           await node.openDB();
         } catch (err) {
-          if (err instanceof DatabaseOpenError) {
+          if (err instanceof DatabaseIsLockedError) {
             throw new Error(
               "Another instance of Iron Fish is already running. Please close it and try again.",
             );
+          } else {
+            throw err;
           }
         }
       }
