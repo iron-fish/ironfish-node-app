@@ -10,6 +10,7 @@ import {
 } from "@chakra-ui/react";
 import { upperFirst } from "lodash-es";
 import Image from "next/image";
+import { defineMessages, useIntl } from "react-intl";
 
 import pinkClock from "@/images/pink-clock.svg";
 import pinkCompass from "@/images/pink-compass.svg";
@@ -30,48 +31,78 @@ type Props = BoxProps & {
   transaction: Transaction;
 };
 
+const messages = defineMessages({
+  status: {
+    defaultMessage: "Status",
+  },
+  transactionHash: {
+    defaultMessage: "Transaction Hash",
+  },
+  timestamp: {
+    defaultMessage: "Timestamp",
+  },
+  fee: {
+    defaultMessage: "Fee",
+  },
+  submittedSequence: {
+    defaultMessage: "Submitted Sequence",
+  },
+  blockSequence: {
+    defaultMessage: "Block Sequence",
+  },
+  transactionInformation: {
+    defaultMessage: "Transaction Information",
+  },
+});
+
 const ITEMS = [
   {
-    label: "Status",
+    label: messages.status,
     icon: <Image src={pinkInformation} alt="" />,
     render: (transaction: Transaction) => upperFirst(transaction.status),
   },
   {
-    label: "Transaction Hash",
+    label: messages.transactionHash,
     icon: <Image src={pinkHash} alt="" />,
     render: (transaction: Transaction) => truncateString(transaction.hash, 2),
   },
   {
-    label: "Timestamp",
+    label: messages.timestamp,
     icon: <Image src={pinkClock} alt="" />,
     render: (transaction: Transaction) => formatDate(transaction.timestamp),
   },
   {
-    label: "Fee",
+    label: messages.fee,
     icon: <Image src={pinkCompass} alt="" />,
     render: (transaction: Transaction) => formatOre(transaction.fee) + " $IRON",
   },
   {
-    label: "Submitted Sequence",
+    label: messages.submittedSequence,
     icon: <Image src={pinkSquareStack} alt="" />,
     render: (transaction: Transaction) => transaction.submittedSequence,
   },
   {
-    label: "Block Sequence",
+    label: messages.blockSequence,
     icon: <Image src={pinkCube} alt="" />,
     render: (transaction: Transaction) => transaction.blockSequence ?? "—",
   },
 ];
 
 export function TransactionInformation({ transaction, ...rest }: Props) {
+  const { formatMessage } = useIntl();
+
   return (
     <Box {...rest}>
       <Heading as="h3" fontSize="2xl" mb={8}>
-        Transaction Information
+        {formatMessage(messages.transactionInformation)}
       </Heading>
       <Grid templateColumns="repeat(3, 1fr)" gap={5}>
         {ITEMS.map(({ label, icon, render }) => (
-          <GridItem key={label} display="flex" alignItems="stretch">
+          <GridItem
+            key={label.defaultMessage}
+            display="flex"
+            alignItems="stretch"
+          >
             <ShadowCard
               contentContainerProps={{
                 p: 8,
@@ -89,7 +120,7 @@ export function TransactionInformation({ transaction, ...rest }: Props) {
                       color: COLORS.DARK_MODE.GRAY_LIGHT,
                     }}
                   >
-                    {label}
+                    {formatMessage(label)}
                   </Text>
                   <Text fontSize="md">{render(transaction)}</Text>
                 </VStack>

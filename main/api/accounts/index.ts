@@ -89,14 +89,21 @@ export const accountRouter = t.router({
       const nodeStatus = await rpcClient.node.getStatus();
       const isBlockchainSynced = nodeStatus.content.blockchain.synced;
       if (!isBlockchainSynced) {
-        return false;
+        return {
+          synced: false,
+          progress: 0,
+        };
       }
       const accountStatus = await rpcClient.wallet.getAccountStatus({
         account: opts.input.account,
       });
-      return (
-        accountStatus.content.account.head?.hash ===
-        nodeStatus.content.accounts.head.hash
-      );
+      return {
+        synced:
+          accountStatus.content.account.head?.hash ===
+          nodeStatus.content.accounts.head.hash,
+        progress:
+          (accountStatus.content.account.head?.sequence ?? 0) /
+          nodeStatus.content.accounts.head.sequence,
+      };
     }),
 });

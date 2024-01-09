@@ -32,6 +32,18 @@ const messages = defineMessages({
     defaultMessage:
       "This account is syncing. Please wait until the sync is complete before sending transactions.",
   },
+  syncingProgressMessage: {
+    defaultMessage: "Account Syncing: {progress}%",
+  },
+  syncingBalanceMessage: {
+    defaultMessage: "Your balance might not be accurate while you're syncing",
+  },
+  sendButton: {
+    defaultMessage: "Send",
+  },
+  receiveButton: {
+    defaultMessage: "Receive",
+  },
 });
 
 type AccountRowProps = {
@@ -42,6 +54,27 @@ type AccountRowProps = {
   viewOnly: boolean;
 };
 
+function SyncingProgress({ progress }: { progress: number }) {
+  const { formatMessage } = useIntl();
+
+  return (
+    <Box
+      borderRadius="4px"
+      bg={COLORS.YELLOW_LIGHT}
+      color={COLORS.YELLOW_DARK}
+      _dark={{
+        bg: COLORS.DARK_MODE.YELLOW_DARK,
+        color: COLORS.DARK_MODE.YELLOW_LIGHT,
+      }}
+      fontSize="sm"
+      textAlign="center"
+      p={1}
+    >{`${formatMessage(messages.syncingProgressMessage, {
+      progress: parseFloat((progress * 100).toFixed(2)),
+    })} | ${formatMessage(messages.syncingBalanceMessage)}`}</Box>
+  );
+}
+
 export function AccountRow({
   color,
   name,
@@ -51,98 +84,107 @@ export function AccountRow({
 }: AccountRowProps) {
   const router = useRouter();
   const { formatMessage } = useIntl();
-  const { data: isSynced } = trpcReact.isAccountSynced.useQuery(
-    {
-      account: name,
-    },
-    {
-      refetchInterval: 5000,
-    },
-  );
+  const { data: isSynced = { synced: false, progress: 0 } } =
+    trpcReact.isAccountSynced.useQuery(
+      {
+        account: name,
+      },
+      {
+        refetchInterval: 5000,
+      },
+    );
   return (
     <ChakraLink href={`/accounts/${name}`} w="100%">
       <ShadowCard hoverable>
-        <Flex>
-          <ShadowCard
-            h="110px"
-            w="110px"
-            gradient={color || "pink"}
-            mr={8}
-            position="relative"
-          >
-            <Flex
-              position="absolute"
-              inset={0}
+        <VStack alignItems="stretch" gap={3}>
+          {!isSynced.synced && <SyncingProgress progress={isSynced.progress} />}
+
+          <Flex>
+            <ShadowCard
+              h="110px"
+              w="110px"
+              gradient={color || "pink"}
+              mr={8}
+              position="relative"
+            >
+              <Flex
+                position="absolute"
+                inset={0}
+                justifyContent="center"
+                alignItems="center"
+              >
+                <Box transform="scale(1.5)" color="black">
+                  <LogoSm />
+                </Box>
+              </Flex>
+            </ShadowCard>
+            <VStack
+              alignItems="flex-start"
               justifyContent="center"
-              alignItems="center"
+              flexGrow={1}
             >
-              <Box transform="scale(1.5)" color="black">
-                <LogoSm />
-              </Box>
-            </Flex>
-          </ShadowCard>
-          <VStack alignItems="flex-start" justifyContent="center" flexGrow={1}>
-            <HStack>
-              <Text as="h3">{name}</Text>
-              {viewOnly && <ViewOnlyChip />}
-            </HStack>
-            <Heading as="span" fontWeight="regular" fontSize="2xl">
-              {formatOre(balance)} $IRON
-            </Heading>
-            <CopyAddress address={address} />
-          </VStack>
+              <HStack>
+                <Text as="h3">{name}</Text>
+                {viewOnly && <ViewOnlyChip />}
+              </HStack>
+              <Heading as="span" fontWeight="regular" fontSize="2xl">
+                {formatOre(balance)} $IRON
+              </Heading>
+              <CopyAddress address={address} />
+            </VStack>
 
-          <VStack
-            alignItems="stretch"
-            justifyContent="center"
-            position="relative"
-          >
-            <Tooltip
-              label={
-                viewOnly
-                  ? formatMessage(messages.viewOnlySendDisabled)
-                  : !isSynced
-                  ? formatMessage(messages.syncingSendDisabled)
-                  : null
-              }
-              placement="top"
+            <VStack
+              alignItems="stretch"
+              justifyContent="center"
+              position="relative"
             >
-              <VStack w="100%" alignItems="stretch">
-                <PillButton
-                  size="sm"
-                  isDisabled={viewOnly || !isSynced}
-                  onClick={(e) => {
-                    e.preventDefault();
-                    e.stopPropagation();
-                    if (viewOnly || !isSynced) return;
-                    router.push(`/send?account=${name}`);
-                  }}
-                >
-                  <ArrowSend transform="scale(0.8)" />
-                  Send
-                </PillButton>
-              </VStack>
-            </Tooltip>
-            <PillButton
-              size="sm"
-              onClick={(e) => {
-                e.preventDefault();
-                router.push(`/receive?account=${name}`);
-              }}
-            >
-              <ArrowReceive transform="scale(0.8)" />
-              Receive
-            </PillButton>
-          </VStack>
+              <Tooltip
+                label={
+                  viewOnly
+                    ? formatMessage(messages.viewOnlySendDisabled)
+                    : !isSynced.synced
+                    ? formatMessage(messages.syncingSendDisabled)
+                    : null
+                }
+                placement="top"
+              >
+                <VStack w="100%" alignItems="stretch">
+                  <PillButton
+                    size="sm"
+                    isDisabled={viewOnly || !isSynced.synced}
+                    onClick={(e) => {
+                      e.preventDefault();
+                      e.stopPropagation();
+                      if (viewOnly || !isSynced.synced) return;
+                      router.push(`/send?account=${name}`);
+                    }}
+                  >
+                    <ArrowSend transform="scale(0.8)" />
+                    {formatMessage(messages.sendButton)}
+                  </PillButton>
+                </VStack>
+              </Tooltip>
+              <PillButton
+                size="sm"
+                onClick={(e) => {
+                  e.preventDefault();
+                  router.push(`/receive?account=${name}`);
+                }}
+              >
+                <ArrowReceive transform="scale(0.8)" />
+                {formatMessage(messages.receiveButton)}
+              </PillButton>
+            </VStack>
 
-          <VStack pl={8} pr={4} justifyContent="center">
-            <ChevronRightIcon
-              boxSize={5}
-              color={COLORS.GRAY_MEDIUM}
-              _dark={{ color: COLORS.DARK_MODE.GRAY_LIGHT }}
-            />
-          </VStack>
-        </Flex>
+            <VStack pl={8} pr={4} justifyContent="center">
+              <ChevronRightIcon
+                boxSize={5}
+                color={COLORS.GRAY_MEDIUM}
+                _dark={{ color: COLORS.DARK_MODE.GRAY_LIGHT }}
+              />
+            </VStack>
+          </Flex>
+        </VStack>
       </ShadowCard>
     </ChakraLink>
   );

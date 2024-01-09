@@ -2,6 +2,7 @@ import { Box, Checkbox, Heading, Text } from "@chakra-ui/react";
 import { useState } from "react";
 
 import { BackButton } from "@/components/BackButton/BackButton";
+import { COLORS } from "@/ui/colors";
 import {
   MnemonicPhrase,
   splitMnemonicPhrase,
@@ -26,13 +27,13 @@ export function CreateAccountStep({
   return (
     <Box>
       <BackButton />
-      <Heading mt={24} mb={4}>
+      <Heading mt={4} mb={8}>
         Create Account
       </Heading>
-      <Heading fontSize="2xl" mb={4}>
+      <Text fontSize="2xl" mb={1}>
         Internal Account Name
-      </Heading>
-      <Text mb={4}>
+      </Text>
+      <Text color={COLORS.GRAY_MEDIUM} mb={4}>
         This name is how we will refer to your account internally. It is not
         visible to anyone else.
       </Text>
@@ -46,10 +47,10 @@ export function CreateAccountStep({
           onNameChange(e.target.value);
         }}
       />
-      <Heading fontSize="2xl" mt={8} mb={4}>
+      <Text fontSize="2xl" mt={8} mb={1}>
         Recovery Phrase
-      </Heading>
-      <Text mb={4}>
+      </Text>
+      <Text color={COLORS.GRAY_MEDIUM} mb={4}>
         Please keep this phrase stored somewhere safe. We will ask you to
         re-enter this.
       </Text>

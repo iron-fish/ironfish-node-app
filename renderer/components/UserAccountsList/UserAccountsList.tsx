@@ -16,6 +16,7 @@ import { parseOre } from "@/utils/ironUtils";
 
 import { AccountRow } from "../AccountRow/AccountRow";
 import { DropdownTrigger } from "../DropdownTrigger/DropdownTrigger";
+import { EmptyStateMessage } from "../EmptyStateMessage/EmptyStateMessage";
 import { SearchInput } from "../SearchInput/SearchInput";
 import { ChainSyncingMessage } from "../SyncingMessages/SyncingMessages";
 
@@ -31,6 +32,13 @@ const messages = defineMessages({
   },
   lowestToHighest: {
     defaultMessage: "Lowest to highest balance",
+  },
+  emptyStateHeading: {
+    defaultMessage: "You don't have any accounts",
+  },
+  emptyStateDescription: {
+    defaultMessage:
+      "All your accounts will be displayed in this section. To create or import an account, simply click one of the buttons above.",
   },
 });
 
@@ -122,6 +130,15 @@ export function UserAccountsList() {
           </Menu>
         </GridItem>
       </Grid>
+      {/* You can reach the empty state by starting from a clean data dir, creating an account
+          through onboarding, then deleting it. */}
+      {accountsData && accountsData.length === 0 && (
+        <EmptyStateMessage
+          py={8}
+          heading={formatMessage(messages.emptyStateHeading)}
+          description={formatMessage(messages.emptyStateDescription)}
+        />
+      )}
       {accountsData
         ?.filter((item) => {
           return item.name.toLowerCase().includes(searchInput.toLowerCase());

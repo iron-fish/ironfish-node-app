@@ -12,6 +12,7 @@ import {
 } from "@chakra-ui/react";
 import Image from "next/image";
 import { useRouter } from "next/router";
+import { defineMessages, useIntl } from "react-intl";
 
 import { CopyAddress } from "@/components/CopyAddress/CopyAddress";
 import { EditContactForm } from "@/components/EditContactForm/EditContactForm";
@@ -25,8 +26,31 @@ import { PillButton } from "@/ui/PillButton/PillButton";
 import { ArrowSend } from "@/ui/SVGs/ArrowSend";
 import { asQueryString } from "@/utils/parseRouteQuery";
 
+const messages = defineMessages({
+  backToAddressBook: {
+    defaultMessage: "Back to Address Book",
+  },
+  send: {
+    defaultMessage: "Send",
+  },
+  transactions: {
+    defaultMessage: "Transactions",
+  },
+  contactSettings: {
+    defaultMessage: "Contact Settings",
+  },
+  contactSettingsHeading: {
+    defaultMessage: "Contact Settings",
+  },
+  contactSettingsDescription: {
+    defaultMessage:
+      "With contact names being associated with public addresses, you have the freedom to customize how you identify your contacts without affecting their underlying address.",
+  },
+});
+
 function SingleContactContent({ address }: { address: string }) {
   const router = useRouter();
+  const { formatMessage } = useIntl();
   const { data: transactionsData } =
     trpcReact.getTransactionsForContact.useQuery({
       contactAddress: address,
@@ -45,7 +69,7 @@ function SingleContactContent({ address }: { address: string }) {
     <MainLayout
       backLinkProps={{
         href: "/address-book",
-        label: "Back to Address Book",
+        label: formatMessage(messages.backToAddressBook),
       }}
     >
       <Box>
@@ -64,17 +88,13 @@ function SingleContactContent({ address }: { address: string }) {
             }}
           >
             <ArrowSend transform="scale(0.8)" />
-            Send
+            {formatMessage(messages.send)}
           </PillButton>
         </HStack>
         <Tabs isLazy>
           <TabList mb={8}>
-            <Tab py={2} px={4} mr={4}>
-              Transactions
-            </Tab>
-            <Tab py={2} px={4} mr={4}>
-              Contact Settings
-            </Tab>
+            <Tab>{formatMessage(messages.transactions)}</Tab>
+            <Tab>{formatMessage(messages.contactSettings)}</Tab>
           </TabList>
 
           <TabPanels>
@@ -82,7 +102,7 @@ function SingleContactContent({ address }: { address: string }) {
               <NotesList
                 asTransactions
                 notes={transactionsData}
-                heading="Transactions"
+                heading={formatMessage(messages.transactions)}
               />
             </TabPanel>
             <TabPanel p={0}>
@@ -107,7 +127,7 @@ function SingleContactContent({ address }: { address: string }) {
                   }}
                 >
                   <Heading fontSize="2xl" mb={4}>
-                    Contact Settings
+                    {formatMessage(messages.contactSettingsHeading)}
                   </Heading>
                   <Text
                     fontSize="sm"
@@ -115,9 +135,7 @@ function SingleContactContent({ address }: { address: string }) {
                     mb={8}
                     color={COLORS.GRAY_MEDIUM}
                   >
-                    With contact names being associated with public addresses,
-                    you have the freedom to customize how you identify your
-                    contacts without affecting their underlying address.
+                    {formatMessage(messages.contactSettingsDescription)}
                   </Text>
                   <Image src={contactSettingsFish} alt="" />
                 </Box>

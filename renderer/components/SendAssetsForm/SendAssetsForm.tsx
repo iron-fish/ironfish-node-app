@@ -180,7 +180,7 @@ export function SendAssetsFormContent({
     if (nodeStatusData?.blockchain.synced === false) {
       return <ChainSyncingMessage mb={4} />;
     }
-    if (isAccountSynced === false) {
+    if (isAccountSynced?.synced === false) {
       return <AccountSyncingMessage mb={4} />;
     }
     return null;

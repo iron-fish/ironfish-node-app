@@ -4,6 +4,7 @@ import Image from "next/image";
 import { useRouter } from "next/router";
 import { useMemo } from "react";
 import { useForm } from "react-hook-form";
+import { defineMessages, useIntl } from "react-intl";
 import * as z from "zod";
 
 import { AccountAddressDisplay } from "@/components/AccountAddressDisplay/AccountAddressDisplay";
@@ -12,6 +13,22 @@ import MainLayout from "@/layouts/MainLayout";
 import { TRPCRouterOutputs, trpcReact } from "@/providers/TRPCProvider";
 import { COLORS } from "@/ui/colors";
 import { Select } from "@/ui/Forms/Select/Select";
+
+const messages = defineMessages({
+  receiveHeading: {
+    defaultMessage: "Receive",
+  },
+  transactionDetailsHeading: {
+    defaultMessage: "Transaction Details",
+  },
+  transactionDetailsText: {
+    defaultMessage:
+      "You can share your public address with whomever you choose to receive payments. Your account will remain completely private, and individuals with this public address will not be able to see any of your other transfers or balances.",
+  },
+  fromLabel: {
+    defaultMessage: "From",
+  },
+});
 
 const dataSchema = z.object({
   account: z.string().min(1),
@@ -22,6 +39,7 @@ export function ReceiveAccountsContent({
 }: {
   accountsData: TRPCRouterOutputs["getAccounts"];
 }) {
+  const { formatMessage } = useIntl();
   const router = useRouter();
   const accountOptions = useMemo(() => {
     return accountsData?.map((account) => {
@@ -55,7 +73,7 @@ export function ReceiveAccountsContent({
 
   return (
     <MainLayout>
-      <Heading>Receive</Heading>
+      <Heading>{formatMessage(messages.receiveHeading)}</Heading>
 
       <Flex gap={16}>
         <Box
@@ -69,7 +87,7 @@ export function ReceiveAccountsContent({
             <Select
               {...register("account")}
               value={addressValue}
-              label="From"
+              label={formatMessage(messages.fromLabel)}
               options={accountOptions}
               error={errors.account?.message}
             />
@@ -83,13 +101,10 @@ export function ReceiveAccountsContent({
           }}
         >
           <Heading fontSize="2xl" mb={4}>
-            Transaction Details
+            {formatMessage(messages.transactionDetailsHeading)}
           </Heading>
           <Text fontSize="sm" maxW="340px" mb={8} color={COLORS.GRAY_MEDIUM}>
-            You can share your public address with whomever you choose to
-            receive payments. Your account will remain completely private, and
-            individuals with this public address will not be able to see any of
-            your other transfers or balances.
+            {formatMessage(messages.transactionDetailsText)}
           </Text>
           <Image src={octopus} alt="" />
         </Box>

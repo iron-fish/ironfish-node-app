@@ -3,6 +3,7 @@ import { defineStyleConfig, extendTheme } from "@chakra-ui/react";
 import { breakpoints, createBreakpointArray } from "./breakpoints";
 import { inputTheme } from "./styleConfigs/input";
 import { modalTheme } from "./styleConfigs/modal";
+import { tabsTheme } from "./styleConfigs/tabs";
 import { COLORS } from "../colors";
 
 // To extend the theme, look through baseTheme from chakra-ui/react,
@@ -43,12 +44,7 @@ const theme = extendTheme({
         },
       },
     }),
-    Tabs: defineStyleConfig({
-      defaultProps: {
-        colorScheme: "muted",
-        size: "sm",
-      },
-    }),
+    Tabs: tabsTheme,
   },
   semanticTokens: {
     colors: {

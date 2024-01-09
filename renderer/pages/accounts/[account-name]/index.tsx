@@ -104,15 +104,9 @@ function AccountOverviewContent({ accountName }: { accountName: string }) {
         </VStack>
         <Tabs isLazy defaultIndex={initialTabIndex}>
           <TabList mb={8}>
-            <Tab py={2} px={4} mr={4}>
-              {formatMessage(messages.accountOverview)}
-            </Tab>
-            <Tab py={2} px={4} mr={4}>
-              {formatMessage(messages.keys)}
-            </Tab>
-            <Tab py={2} px={4} mr={4}>
-              {formatMessage(messages.settings)}
-            </Tab>
+            <Tab>{formatMessage(messages.accountOverview)}</Tab>
+            <Tab>{formatMessage(messages.keys)}</Tab>
+            <Tab>{formatMessage(messages.settings)}</Tab>
           </TabList>
 
           <TabPanels>
