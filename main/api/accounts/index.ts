@@ -86,6 +86,7 @@ export const accountRouter = t.router({
     .query(async (opts) => {
       const ironfish = await manager.getIronfish();
       const rpcClient = await ironfish.rpcClient();
+
       const nodeStatus = await rpcClient.node.getStatus();
       const isBlockchainSynced = nodeStatus.content.blockchain.synced;
       if (!isBlockchainSynced) {
@@ -94,16 +95,33 @@ export const accountRouter = t.router({
           progress: 0,
         };
       }
+
+      const config = await rpcClient.config.getConfig({
+        name: "confirmations",
+      });
+
+      if (config.content.confirmations === undefined) {
+        throw new Error("confirmations should always be defined");
+      }
+
       const accountStatus = await rpcClient.wallet.getAccountStatus({
         account: opts.input.account,
       });
+
+      // Treat the account as synced if the blockchain is synced and the account has scanned all confirmed blocks
+      const maxConfirmedSequence = Math.max(
+        nodeStatus.content.blockchain.head.sequence -
+          config.content.confirmations,
+        1,
+      );
+
       return {
         synced:
-          accountStatus.content.account.head?.hash ===
-          nodeStatus.content.accounts.head.hash,
+          (accountStatus.content.account.head?.sequence ?? 0) >=
+          maxConfirmedSequence,
         progress:
           (accountStatus.content.account.head?.sequence ?? 0) /
-          nodeStatus.content.accounts.head.sequence,
+          nodeStatus.content.blockchain.head.sequence,
       };
     }),
 });
