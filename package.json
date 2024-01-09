@@ -21,8 +21,8 @@
   },
   "license": "MPL-2.0",
   "dependencies": {
+    "@ethersproject/bignumber": "^5.7.0",
     "@ironfish/sdk": "1.15.0",
-    "big.js": "^6.2.1",
     "electron-serve": "^1.1.0"
   },
   "devDependencies": {
@@ -40,7 +40,6 @@
     "@trpc/client": "^10.38.5",
     "@trpc/react-query": "^10.38.5",
     "@trpc/server": "^10.38.5",
-    "@types/big.js": "^6.2.2",
     "@types/lodash-es": "^4.17.9",
     "@types/nedb": "^1.8.14",
     "@types/node": "^18.0.0",

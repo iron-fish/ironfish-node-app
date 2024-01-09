@@ -1,4 +1,4 @@
-import Big from "big.js";
+import { parseFixed } from "@ethersproject/bignumber";
 
 import { ASSET_DECIMALS } from "../../shared/constants";
 
@@ -18,11 +18,7 @@ export function parseOre(value: string | number) {
  * Converts a number value in $IRON to a value in Ore.
  */
 export function parseIron(value: string | number) {
-  const asBig = new Big(value);
-  return asBig
-    .times(10 ** ASSET_DECIMALS)
-    .round()
-    .toNumber();
+  return parseFixed(String(value), ASSET_DECIMALS).toNumber();
 }
 
 /**
