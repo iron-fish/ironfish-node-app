@@ -93,12 +93,8 @@ function SingleContactContent({ address }: { address: string }) {
         </HStack>
         <Tabs isLazy>
           <TabList mb={8}>
-            <Tab>
-              {formatMessage(messages.transactions)}
-            </Tab>
-            <Tab>
-              {formatMessage(messages.contactSettings)}
-            </Tab>
+            <Tab>{formatMessage(messages.transactions)}</Tab>
+            <Tab>{formatMessage(messages.contactSettings)}</Tab>
           </TabList>
 
           <TabPanels>

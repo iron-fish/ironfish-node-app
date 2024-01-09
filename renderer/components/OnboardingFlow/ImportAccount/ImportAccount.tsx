@@ -59,15 +59,9 @@ export function ImportAccount() {
 
       <Tabs>
         <TabList mb={8}>
-          <Tab>
-            {formatMessage(messages.mnemonicPhrase)}
-          </Tab>
-          <Tab>
-            {formatMessage(messages.encodedKey)}
-          </Tab>
-          <Tab>
-            {formatMessage(messages.file)}
-          </Tab>
+          <Tab>{formatMessage(messages.mnemonicPhrase)}</Tab>
+          <Tab>{formatMessage(messages.encodedKey)}</Tab>
+          <Tab>{formatMessage(messages.file)}</Tab>
         </TabList>
 
         <TabPanels>
