@@ -163,7 +163,7 @@ function SingleContactLoader() {
         <HStack gap={4} alignItems="center">
           <FishIcon bg={getGradientByOrder(0)} mr={2} />
           <Skeleton>
-            <Heading>Loading...</Heading>
+            <Heading w="10ch">&nbsp;</Heading>
           </Skeleton>
         </HStack>
       </Box>
@@ -173,8 +173,8 @@ function SingleContactLoader() {
       </HStack>
       <Flex mb={16}>
         <Skeleton>
-          <Heading as="h2" fontSize="2xl">
-            Heading Skeleton
+          <Heading fontSize="2xl" w="12ch">
+            &nbsp;
           </Heading>
         </Skeleton>
       </Flex>
