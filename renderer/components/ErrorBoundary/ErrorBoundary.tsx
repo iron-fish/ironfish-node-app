@@ -5,6 +5,7 @@ import { Component, ErrorInfo, ReactNode } from "react";
 import { defineMessages, useIntl } from "react-intl";
 import { useCopyToClipboard } from "usehooks-ts";
 
+import { WithDraggableArea } from "@/layouts/WithDraggableArea";
 import { COLORS } from "@/ui/colors";
 import { useIFToast } from "@/ui/Toast/Toast";
 
@@ -64,48 +65,50 @@ function DefaultFallback({ error }: { error: Error }) {
   const [_, copyToClipboard] = useCopyToClipboard();
   const toast = useIFToast();
   return (
-    <Flex h="100vh" alignItems="center" justifyContent="center" p={4}>
-      <Box maxW="100%" w="800px">
-        <Heading as="h1" textAlign="center" mb={4}>
-          {formatMessage(messages.errorStateHeading)}
-        </Heading>
-        <Text textAlign="center" fontSize="md" mb={6}>
-          {formatMessage(messages.errorStateDescription)}
-        </Text>
-
-        <HStack>
-          <Text
-            as="button"
-            fontWeight="bold"
-            mb={2}
-            onClick={() => {
-              copyToClipboard(error.message);
-              toast({
-                message: formatMessage(messages.errorCopied),
-              });
-            }}
-          >
-            {formatMessage(messages.errorMessage)}
-            <CopyIcon
-              color={COLORS.GRAY_MEDIUM}
-              _dark={{ color: COLORS.DARK_MODE.GRAY_LIGHT }}
-              ml={1}
-              transform="translateY(-1px)"
-            />
+    <WithDraggableArea>
+      <Flex h="100%" alignItems="center" justifyContent="center" p={4}>
+        <Box maxW="100%" w="800px">
+          <Heading as="h1" textAlign="center" mb={4}>
+            {formatMessage(messages.errorStateHeading)}
+          </Heading>
+          <Text textAlign="center" fontSize="md" mb={6}>
+            {formatMessage(messages.errorStateDescription)}
           </Text>
-        </HStack>
 
-        <Code
-          colorScheme="red"
-          p={4}
-          maxH="400px"
-          maxW="100%"
-          w="100%"
-          overflow="auto"
-        >
-          <Text as="pre">{error.message}</Text>
-        </Code>
-      </Box>
-    </Flex>
+          <HStack>
+            <Text
+              as="button"
+              fontWeight="bold"
+              mb={2}
+              onClick={() => {
+                copyToClipboard(error.message);
+                toast({
+                  message: formatMessage(messages.errorCopied),
+                });
+              }}
+            >
+              {formatMessage(messages.errorMessage)}
+              <CopyIcon
+                color={COLORS.GRAY_MEDIUM}
+                _dark={{ color: COLORS.DARK_MODE.GRAY_LIGHT }}
+                ml={1}
+                transform="translateY(-1px)"
+              />
+            </Text>
+          </HStack>
+
+          <Code
+            colorScheme="red"
+            p={4}
+            maxH="400px"
+            maxW="100%"
+            w="100%"
+            overflow="auto"
+          >
+            <Text as="pre">{error.message}</Text>
+          </Code>
+        </Box>
+      </Flex>
+    </WithDraggableArea>
   );
 }
