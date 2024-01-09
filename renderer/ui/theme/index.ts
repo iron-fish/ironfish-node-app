@@ -1,4 +1,5 @@
 import { defineStyleConfig, extendTheme } from "@chakra-ui/react";
+import { StyleFunctionProps, mode } from "@chakra-ui/theme-tools";
 
 import { breakpoints, createBreakpointArray } from "./breakpoints";
 import { inputTheme } from "./styleConfigs/input";
@@ -21,6 +22,13 @@ const theme = extendTheme({
         500: "white",
       },
     },
+  },
+  styles: {
+    global: (props: StyleFunctionProps) => ({
+      body: {
+        bg: mode("white", COLORS.DARK_MODE.BG)(props),
+      },
+    }),
   },
   breakpoints,
   fonts: {

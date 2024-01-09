@@ -11,9 +11,15 @@ import { LogoLg } from "@/ui/SVGs/LogoLg";
  */
 export default function Home() {
   const router = useRouter();
+  const {
+    data: initialStateData,
+    error: initialStateError,
+    isLoading: isInitialStateLoading,
+  } = trpcReact.getInitialState.useQuery(undefined, {
+    retry: false,
+    useErrorBoundary: true,
+  });
 
-  const { data: initialStateData, isLoading: isInitialStateLoading } =
-    trpcReact.getInitialState.useQuery();
   const { mutate: startNode } = trpcReact.startNode.useMutation();
 
   // If user has no accounts, go to onboarding
@@ -37,6 +43,8 @@ export default function Home() {
       router.replace("/accounts");
     }
   }, [router, startNode, initialStateData, isInitialStateLoading]);
+
+  console.log({ initialStateData, initialStateError, isInitialStateLoading });
 
   return (
     <Flex h="100vh" justifyContent="center" alignItems="center">

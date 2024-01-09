@@ -5,10 +5,10 @@ import {
   FullNode,
   PEER_STORE_FILE_NAME,
   IronfishSdk,
-  NodeUtils,
   RpcClient,
   RpcMemoryClient,
   getPackageFrom,
+  DatabaseOpenError,
 } from "@ironfish/sdk";
 import log from "electron-log";
 import { v4 as uuid } from "uuid";
@@ -84,7 +84,17 @@ export class Ironfish {
 
       this._fullNode = node;
 
-      await NodeUtils.waitForOpen(node);
+      if (!node.started) {
+        try {
+          await node.openDB();
+        } catch (err) {
+          if (err instanceof DatabaseOpenError) {
+            throw new Error(
+              "Another instance of Iron Fish is already running. Please close it and try again.",
+            );
+          }
+        }
+      }
 
       const newSecretKey = Buffer.from(
         node.peerNetwork.localPeer.privateIdentity.secretKey,
@@ -108,6 +118,8 @@ export class Ironfish {
       this.rpcClientPromise.resolve(rpcClient);
     } catch (e) {
       log.log(e);
+      this._initialized = false;
+      throw e;
     }
   }
 
