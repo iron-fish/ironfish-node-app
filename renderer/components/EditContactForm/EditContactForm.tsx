@@ -81,6 +81,21 @@ export function EditContactForm({ id, name, address }: Props) {
   } = useDisclosure();
   const cancelDeleteRef = useRef(null);
 
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+    watch,
+  } = useForm<z.infer<typeof contactSchema>>({
+    resolver: zodResolver(contactSchema),
+    defaultValues: {
+      name,
+      address,
+    },
+  });
+
+  const addressValue = watch("address");
+
   const { mutate: editContact, isLoading: isEditLoading } =
     trpcReact.editContact.useMutation({
       onSuccess: () => {
@@ -88,6 +103,9 @@ export function EditContactForm({ id, name, address }: Props) {
           message: formatMessage(messages.contactUpdated),
           duration: 5000,
         });
+        if (address !== addressValue) {
+          router.replace(`/address-book/${addressValue}`);
+        }
       },
     });
 
@@ -99,18 +117,6 @@ export function EditContactForm({ id, name, address }: Props) {
     });
 
   const isLoading = isEditLoading || isDeleteLoading;
-
-  const {
-    register,
-    handleSubmit,
-    formState: { errors },
-  } = useForm<z.infer<typeof contactSchema>>({
-    resolver: zodResolver(contactSchema),
-    defaultValues: {
-      name,
-      address,
-    },
-  });
 
   return (
     <>
