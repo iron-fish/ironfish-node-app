@@ -8,6 +8,7 @@ extraMetadata:
 directories:
   output: dist
   buildResources: resources
+afterPack: "./build/after-pack.js"
 files:
   - from: .
     filter:
@@ -28,6 +29,9 @@ dmg:
 
 win:
   sign: "./build/sign-windows.js"
+nsis:
+  uninstallDisplayName: ${productName}
+
 linux:
   target: AppImage
   asarUnpack: "**/*.node"
