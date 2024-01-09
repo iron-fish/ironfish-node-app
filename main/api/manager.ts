@@ -25,12 +25,7 @@ export class Manager {
     const ironfish = await this.getIronfish();
 
     if (!ironfish.isStarted()) {
-      try {
-        await ironfish.init();
-      } catch (err) {
-        console.log("what");
-        throw err;
-      }
+      await ironfish.init();
     }
 
     const rpcClient = await ironfish.rpcClient();
