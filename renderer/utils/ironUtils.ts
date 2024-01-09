@@ -18,7 +18,12 @@ export function parseOre(value: string | number) {
  * Converts a number value in $IRON to a value in Ore.
  */
 export function parseIron(value: string | number) {
-  return parseFixed(String(value), ASSET_DECIMALS).toNumber();
+  const asString = String(value);
+  try {
+    return parseFixed(asString, ASSET_DECIMALS).toNumber();
+  } catch {
+    return 0;
+  }
 }
 
 /**
