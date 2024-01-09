@@ -36,6 +36,15 @@ const messages = defineMessages({
   yourAssets: {
     defaultMessage: "Your Assets",
   },
+  otherAssets: {
+    defaultMessage: "Other Assets",
+  },
+  sendButton: {
+    defaultMessage: "Send",
+  },
+  receiveButton: {
+    defaultMessage: "Receive",
+  },
 });
 
 export function AccountAssets({ accountName }: { accountName: string }) {
@@ -116,7 +125,7 @@ export function AccountAssets({ accountName }: { accountName: string }) {
                           isDisabled={data.status.viewOnly || !isSynced.synced}
                         >
                           <ArrowSend transform="scale(0.8)" />
-                          Send
+                          {formatMessage(messages.sendButton)}
                         </PillButton>
                       </Box>
                     </Tooltip>
@@ -125,7 +134,7 @@ export function AccountAssets({ accountName }: { accountName: string }) {
                     <Box>
                       <PillButton size="sm" as="div">
                         <ArrowReceive transform="scale(0.8)" />
-                        Receive
+                        {formatMessage(messages.receiveButton)}
                       </PillButton>
                     </Box>
                   </NextLink>
@@ -143,7 +152,7 @@ export function AccountAssets({ accountName }: { accountName: string }) {
                 justifyContent="space-between"
               >
                 <Text fontSize="lg" mb={4}>
-                  Other Assets
+                  {formatMessage(messages.otherAssets)}
                 </Text>
                 <Grid
                   gap={4}
