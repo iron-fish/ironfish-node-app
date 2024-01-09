@@ -7,6 +7,8 @@ import { useCountdown } from "usehooks-ts";
 
 import { trpcReact } from "@/providers/TRPCProvider";
 import { PillButton } from "@/ui/PillButton/PillButton";
+import { LogoLg } from "@/ui/SVGs/LogoLg";
+import { NodeAppLogo } from "@/ui/SVGs/NodeAppLogo";
 
 import { SnapshotUpdate } from "../../../../shared/types";
 
@@ -42,11 +44,8 @@ const messages = defineMessages({
   retryNow: {
     defaultMessage: "Retry now",
   },
-  syncingChain: {
-    defaultMessage: "Syncing your chain",
-  },
-  chooseSyncMethod: {
-    defaultMessage: "Choose how to sync your node with the network",
+  chooseHowToSync: {
+    defaultMessage: "Choose how to sync your chain",
   },
   downloadSnapshot: {
     defaultMessage: "Download Snapshot",
@@ -214,15 +213,14 @@ function Prompt({
   const { formatMessage } = useIntl();
   return (
     <Box>
-      <Heading mt={24} mb={8}>
-        {formatMessage(messages.syncingChain)}
-      </Heading>
-      <Heading mb={4} fontSize="2xl">
-        {formatMessage(messages.chooseSyncMethod)}
-      </Heading>
+      <HStack alignItems="flex-start" mb={16}>
+        <LogoLg />
+        <NodeAppLogo />
+      </HStack>
+      <Heading mb={8}>{formatMessage(messages.chooseHowToSync)}</Heading>
       <Text mb={4}>{formatMessage(messages.snapshotPrompt)}</Text>
       <Text mb={8}>{formatMessage(messages.peersPrompt)}</Text>
-      <HStack>
+      <HStack gap={8}>
         <PillButton onClick={onSnapshot}>
           {formatMessage(messages.downloadSnapshot)}
         </PillButton>

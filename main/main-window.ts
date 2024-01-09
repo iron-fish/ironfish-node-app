@@ -8,7 +8,9 @@ import {
   BrowserWindow,
   BrowserWindowConstructorOptions,
   Rectangle,
+  shell,
 } from "electron";
+import log from "electron-log";
 import Store from "electron-store";
 
 const createWindow = (
@@ -129,6 +131,13 @@ class MainWindow {
         preload: path.join(__dirname, "preload.js"),
         nodeIntegration: true,
       },
+    });
+
+    // If a link attempts to open a new window, open it in an external browser instead.
+    this.window.webContents.setWindowOpenHandler(({ url }) => {
+      log.log("Opening URL:", url);
+      shell.openExternal(url);
+      return { action: "deny" };
     });
 
     this.window.on("closed", () => {

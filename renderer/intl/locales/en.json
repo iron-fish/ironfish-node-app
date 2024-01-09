@@ -54,9 +54,6 @@
   "47FYwb": {
     "message": "Cancel"
   },
-  "4fKeh1": {
-    "message": "Import Using"
-  },
   "4l6vz1": {
     "message": "Copy"
   },
@@ -66,11 +63,17 @@
   "551bXe": {
     "message": "View Only"
   },
+  "59UOUq": {
+    "message": "You don't have any accounts"
+  },
   "5JcXdV": {
     "message": "Create Account"
   },
   "5MiM5y": {
     "message": "Send Asset"
+  },
+  "5UdRx1": {
+    "message": "Import With"
   },
   "5c3Wrw": {
     "message": "Total accounts balance"
@@ -123,6 +126,9 @@
   "9j3hXO": {
     "message": "To"
   },
+  "9pwT3E": {
+    "message": "Need Help? Find us on Discord"
+  },
   "9uOFF3": {
     "message": "Overview"
   },
@@ -131,9 +137,6 @@
   },
   "Arxl88": {
     "message": "Outgoing"
-  },
-  "BBITym": {
-    "message": "Choose how to sync your node with the network"
   },
   "BwRLcj": {
     "message": "Your transaction has been submitted. It may take a few minutes until it is confirmed. This transaction will appear in your activity as pending until it is confirmed."
@@ -152,6 +155,9 @@
   },
   "D5NqQO": {
     "message": "Memo"
+  },
+  "FM2S9I": {
+    "message": "Set up your node"
   },
   "Fn/FTS": {
     "message": "An error occurred while loading your transactions. If this happens several times, please let us know on Discord."
@@ -282,6 +288,9 @@
   "TRfaIL": {
     "message": "Synced"
   },
+  "TTpGX5": {
+    "message": "Choose how to sync your chain"
+  },
   "Te4gbw": {
     "message": "Export Format:"
   },
@@ -323,9 +332,6 @@
   },
   "WsssxH": {
     "message": "Select your JSON or Bech32 file to import your account."
-  },
-  "WvNP+W": {
-    "message": "Syncing your chain"
   },
   "X+BJ/8": {
     "message": "Other Assets"
@@ -506,6 +512,9 @@
   },
   "qkf/DE": {
     "message": "Cancel Transaction"
+  },
+  "r1Z23X": {
+    "message": "All your accounts will be displayed in this section. To create or import an account, simply click one of the buttons above."
   },
   "rbrahO": {
     "message": "Close"

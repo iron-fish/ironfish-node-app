@@ -2,6 +2,7 @@ import { Box, Text } from "@chakra-ui/react";
 import { useMemo, useState } from "react";
 import { defineMessages, useIntl } from "react-intl";
 
+import { COLORS } from "@/ui/colors";
 import {
   EMPTY_PHRASE_ARRAY,
   MnemonicPhrase,
@@ -21,8 +22,8 @@ const messages = defineMessages({
     defaultMessage:
       "Please enter your mnemonic phrase. If you've copied the full phrase to your clipboard, you can paste it in any input and it will automatically be split into the correct number of words.",
   },
-  continueButton: {
-    defaultMessage: "Continue",
+  importAccountButton: {
+    defaultMessage: "Import Account",
   },
 });
 
@@ -64,7 +65,12 @@ export function MnemonicImport({ handleImport, isLoading, error }: Props) {
           setIsAccountNameDirty(true);
         }}
       />
-      <Text mt={8} mb={4}>
+      <Text
+        mt={8}
+        mb={4}
+        color={COLORS.GRAY_MEDIUM}
+        _dark={{ color: COLORS.DARK_MODE.GRAY_LIGHT }}
+      >
         {formatMessage(messages.mnemonicPhraseLabel)}
       </Text>
       <MnemonicPhrase
@@ -92,7 +98,7 @@ export function MnemonicImport({ handleImport, isLoading, error }: Props) {
           });
         }}
       >
-        {formatMessage(messages.continueButton)}
+        {formatMessage(messages.importAccountButton)}
       </PillButton>
     </Box>
   );

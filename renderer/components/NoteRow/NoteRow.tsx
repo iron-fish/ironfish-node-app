@@ -10,12 +10,12 @@ import { ShadowCard } from "@/ui/ShadowCard/ShadowCard";
 import { formatDate } from "@/utils/formatDate";
 import { hexToUTF16String } from "@/utils/hexToUTF16String";
 import { formatOre } from "@/utils/ironUtils";
-import { truncateString } from "@/utils/truncateString";
 
 import { ExpiredIcon } from "./icons/ExpiredIcon";
 import { PendingIcon } from "./icons/PendingIcon";
 import { ReceivedIcon } from "./icons/ReceivedIcon";
 import { SentIcon } from "./icons/SentIcon";
+import { CopyAddress } from "../CopyAddress/CopyAddress";
 
 const messages = defineMessages({
   action: {
@@ -181,7 +181,11 @@ export function NoteRow({
             </GridItem>
             <GridItem display="flex" alignItems="center">
               <Text as="span">
-                {truncateString(type === "send" ? to : from)}
+                <CopyAddress
+                  color={COLORS.BLACK}
+                  _dark={{ color: COLORS.WHITE }}
+                  address={type === "send" ? to : from}
+                />
               </Text>
             </GridItem>
             <GridItem display="flex" alignItems="center">

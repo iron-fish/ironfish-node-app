@@ -2,6 +2,7 @@ import { Box, Heading, Text } from "@chakra-ui/react";
 import { useState, useMemo } from "react";
 
 import { BackButton } from "@/components/BackButton/BackButton";
+import { COLORS } from "@/ui/colors";
 import {
   EMPTY_PHRASE_ARRAY,
   MnemonicPhrase,
@@ -33,14 +34,16 @@ export function ConfirmAccountStep({
   return (
     <Box pointerEvents={isLoading ? "none" : undefined}>
       <BackButton onClick={onBack} />
-      <Heading mt={24} mb={8}>
+      <Heading mt={4} mb={8}>
         Create Account
       </Heading>
 
-      <Heading mt={8} mb={4} fontSize="2xl">
+      <Text fontSize="2xl" mb={1}>
         Confirm Your Recovery Phrase
-      </Heading>
-      <Text mb={4}>Please keep this phrase stored somewhere safe.</Text>
+      </Text>
+      <Text color={COLORS.GRAY_MEDIUM} mb={4}>
+        Please keep this phrase stored somewhere safe.
+      </Text>
       <MnemonicPhrase
         defaultVisible
         phrase={confirmValues}

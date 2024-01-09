@@ -3,14 +3,12 @@ import { createMultiStyleConfigHelpers } from "@chakra-ui/react";
 
 import { COLORS } from "@/ui/colors";
 
-const {
-  definePartsStyle: defineInputPartsStyle,
-  defineMultiStyleConfig: defineInputMultiStyleConfig,
-} = createMultiStyleConfigHelpers(inputAnatomy.keys);
+const { definePartsStyle, defineMultiStyleConfig } =
+  createMultiStyleConfigHelpers(inputAnatomy.keys);
 
-export const inputTheme = defineInputMultiStyleConfig({
+export const inputTheme = defineMultiStyleConfig({
   variants: {
-    outline: defineInputPartsStyle({
+    outline: definePartsStyle({
       field: {
         _hover: {
           borderColor: COLORS.DARK_MODE.GRAY_LIGHT,

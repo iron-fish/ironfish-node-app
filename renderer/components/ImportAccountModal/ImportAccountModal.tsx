@@ -111,9 +111,7 @@ export function ImportAccountModal({ isOpen, onClose }: Props) {
             >
               <TabList mb={8}>
                 {tabsComponents.map(({ label }, i) => (
-                  <Tab py={2} px={4} mr={4} key={i}>
-                    {label}
-                  </Tab>
+                  <Tab key={i}>{label}</Tab>
                 ))}
               </TabList>
 
