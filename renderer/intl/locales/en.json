@@ -27,6 +27,9 @@
   "25vn7e": {
     "message": "Unzip progress: {progress}%"
   },
+  "2DcNnd": {
+    "message": "Share your address to receive payments while keeping your account details entirely private."
+  },
   "2G6Qs7": {
     "message": "Settings saved"
   },
@@ -96,9 +99,6 @@
   "6q3tCn": {
     "message": "Connecting"
   },
-  "7GClbc": {
-    "message": "You can share your public address with whomever you choose to receive payments. Your account will remain completely private, and individuals with this public address will not be able to see any of your other transfers or balances."
-  },
   "7JxXKc": {
     "message": "Download Snapshot"
   },
@@ -125,9 +125,6 @@
   },
   "9j3hXO": {
     "message": "To"
-  },
-  "9pwT3E": {
-    "message": "Need Help? Find us on Discord"
   },
   "9uOFF3": {
     "message": "Overview"
@@ -176,6 +173,9 @@
   },
   "Gcv7QB": {
     "message": "Account name"
+  },
+  "Gxw4v5": {
+    "message": "Your keys and mnemonic phrase are essential for accessing your digital assets exclusively. It's important to store them securely."
   },
   "H56oje": {
     "message": "Node Workers"
@@ -302,6 +302,9 @@
   },
   "ThbkST": {
     "message": "Unable to load your transactions"
+  },
+  "TzwzhT": {
+    "message": "You can remove and reimport your accounts whenever you like, provided that you possess the account keys. It is highly recommended to maintain a backup of your account keys in a secure location."
   },
   "ULXFfP": {
     "message": "Receive"
