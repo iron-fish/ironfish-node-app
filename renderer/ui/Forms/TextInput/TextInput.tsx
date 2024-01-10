@@ -8,29 +8,31 @@ type FormFieldPassthrough = Pick<
   "label" | "error" | "icon" | "triggerProps"
 >;
 
-type Props = FormFieldPassthrough &
+export type TextInputProps = FormFieldPassthrough &
   Omit<InputProps, "type" | "placeholder"> & {
     type?: "text" | "number";
   };
 
-export const TextInput = forwardRef<HTMLInputElement, Props>(function TextInput(
-  { label, error, icon, triggerProps, type = "text", ...rest },
-  ref,
-) {
-  return (
-    <FormField
-      label={label}
-      error={error}
-      icon={icon}
-      triggerProps={triggerProps}
-    >
-      <Input
-        type={type}
-        variant="unstyled"
-        placeholder=" "
-        ref={ref}
-        {...rest}
-      />
-    </FormField>
-  );
-});
+export const TextInput = forwardRef<HTMLInputElement, TextInputProps>(
+  function TextInput(
+    { label, error, icon, triggerProps, type = "text", ...rest },
+    ref,
+  ) {
+    return (
+      <FormField
+        label={label}
+        error={error}
+        icon={icon}
+        triggerProps={triggerProps}
+      >
+        <Input
+          type={type}
+          variant="unstyled"
+          placeholder=" "
+          ref={ref}
+          {...rest}
+        />
+      </FormField>
+    );
+  },
+);
