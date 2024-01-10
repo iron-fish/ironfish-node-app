@@ -6,7 +6,7 @@ import { COLORS } from "@/ui/colors";
 
 type Props = {
   heading: ReactNode;
-  description: ReactNode;
+  description: string | string[];
   imgSrc: string;
   children: ReactNode;
 };
@@ -37,7 +37,7 @@ export function WithExplanatorySidebar({
         <Heading fontSize="2xl" mb={4}>
           {heading}
         </Heading>
-        {description}
+        <Description>{description}</Description>
         <Box mt={8}>
           <Image src={imgSrc} alt="" />
         </Box>
@@ -63,5 +63,3 @@ function Description({ children }: { children: ReactNode }) {
 
   return <DescriptionText>{children}</DescriptionText>;
 }
-
-WithExplanatorySidebar.Description = Description;
