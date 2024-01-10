@@ -120,7 +120,7 @@ export function EditContactForm({ id, name, address }: Props) {
 
   return (
     <>
-      <VStack alignItems="stretch" gap={8} mt={5}>
+      <VStack alignItems="stretch" gap={8}>
         <TextInput
           {...register("name")}
           label={formatMessage(messages.name)}

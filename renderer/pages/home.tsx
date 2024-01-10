@@ -11,9 +11,12 @@ import { LogoLg } from "@/ui/SVGs/LogoLg";
  */
 export default function Home() {
   const router = useRouter();
-
   const { data: initialStateData, isLoading: isInitialStateLoading } =
-    trpcReact.getInitialState.useQuery();
+    trpcReact.getInitialState.useQuery(undefined, {
+      retry: false,
+      useErrorBoundary: true,
+    });
+
   const { mutate: startNode } = trpcReact.startNode.useMutation();
 
   // If user has no accounts, go to onboarding

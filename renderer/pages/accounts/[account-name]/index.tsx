@@ -38,8 +38,16 @@ const messages = defineMessages({
   keys: {
     defaultMessage: "Keys",
   },
+  keysDescription: {
+    defaultMessage:
+      "Your keys and mnemonic phrase are essential for accessing your digital assets exclusively. It's important to store them securely.",
+  },
   settings: {
     defaultMessage: "Settings",
+  },
+  settingsDescription: {
+    defaultMessage:
+      "You can remove and reimport your accounts whenever you like, provided that you possess the account keys. It is highly recommended to maintain a backup of your account keys in a secure location.",
   },
 });
 
@@ -141,7 +149,7 @@ function AccountOverviewContent({ accountName }: { accountName: string }) {
             <TabPanel p={0}>
               <WithExplanatorySidebar
                 heading={formatMessage(messages.keys)}
-                description={formatMessage(messages.keys)}
+                description={formatMessage(messages.keysDescription)}
                 imgSrc={keysGhost}
               >
                 <VStack gap={8} alignItems="stretch">
@@ -155,7 +163,7 @@ function AccountOverviewContent({ accountName }: { accountName: string }) {
             <TabPanel p={0}>
               <WithExplanatorySidebar
                 heading={formatMessage(messages.settings)}
-                description={formatMessage(messages.settings)}
+                description={formatMessage(messages.settingsDescription)}
                 imgSrc={lionfishLock}
               >
                 <AccountSettings accountName={accountName} />

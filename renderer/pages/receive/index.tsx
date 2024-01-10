@@ -1,6 +1,5 @@
-import { Heading, Flex, Box, Text, VStack } from "@chakra-ui/react";
+import { Heading, VStack } from "@chakra-ui/react";
 import { zodResolver } from "@hookform/resolvers/zod";
-import Image from "next/image";
 import { useRouter } from "next/router";
 import { useMemo } from "react";
 import { useForm } from "react-hook-form";
@@ -10,8 +9,8 @@ import * as z from "zod";
 import { AccountAddressDisplay } from "@/components/AccountAddressDisplay/AccountAddressDisplay";
 import octopus from "@/images/octopus.svg";
 import MainLayout from "@/layouts/MainLayout";
+import { WithExplanatorySidebar } from "@/layouts/WithExplanatorySidebar";
 import { TRPCRouterOutputs, trpcReact } from "@/providers/TRPCProvider";
-import { COLORS } from "@/ui/colors";
 import { Select } from "@/ui/Forms/Select/Select";
 
 const messages = defineMessages({
@@ -23,7 +22,7 @@ const messages = defineMessages({
   },
   transactionDetailsText: {
     defaultMessage:
-      "You can share your public address with whomever you choose to receive payments. Your account will remain completely private, and individuals with this public address will not be able to see any of your other transfers or balances.",
+      "Share your address to receive payments while keeping your account details entirely private.",
   },
   fromLabel: {
     defaultMessage: "From",
@@ -73,42 +72,24 @@ export function ReceiveAccountsContent({
 
   return (
     <MainLayout>
-      <Heading>{formatMessage(messages.receiveHeading)}</Heading>
+      <Heading mb={5}>{formatMessage(messages.receiveHeading)}</Heading>
 
-      <Flex gap={16}>
-        <Box
-          maxW={{
-            base: "100%",
-            lg: "592px",
-          }}
-          w="100%"
-        >
-          <VStack alignItems="stretch" gap={8} mt={5}>
-            <Select
-              {...register("account")}
-              value={addressValue}
-              label={formatMessage(messages.fromLabel)}
-              options={accountOptions}
-              error={errors.account?.message}
-            />
-            <AccountAddressDisplay address={addressValue} />
-          </VStack>
-        </Box>
-        <Box
-          display={{
-            base: "none",
-            lg: "block",
-          }}
-        >
-          <Heading fontSize="2xl" mb={4}>
-            {formatMessage(messages.transactionDetailsHeading)}
-          </Heading>
-          <Text fontSize="sm" maxW="340px" mb={8} color={COLORS.GRAY_MEDIUM}>
-            {formatMessage(messages.transactionDetailsText)}
-          </Text>
-          <Image src={octopus} alt="" />
-        </Box>
-      </Flex>
+      <WithExplanatorySidebar
+        heading={formatMessage(messages.transactionDetailsHeading)}
+        description={formatMessage(messages.transactionDetailsText)}
+        imgSrc={octopus}
+      >
+        <VStack alignItems="stretch" gap={4}>
+          <Select
+            {...register("account")}
+            value={addressValue}
+            label={formatMessage(messages.fromLabel)}
+            options={accountOptions}
+            error={errors.account?.message}
+          />
+          <AccountAddressDisplay address={addressValue} />
+        </VStack>
+      </WithExplanatorySidebar>
     </MainLayout>
   );
 }
