@@ -15,6 +15,7 @@ import {
   useDisclosure,
 } from "@chakra-ui/react";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { useRouter } from "next/router";
 import { useRef } from "react";
 import { useForm } from "react-hook-form";
 import { defineMessages, useIntl } from "react-intl";
@@ -92,10 +93,11 @@ function NodeSettingsContent({
   initialBlocksPerMessage?: number;
   initialEnableTelemetry?: boolean;
 }) {
+  const router = useRouter();
   const { formatMessage } = useIntl();
   const toast = useIFToast();
 
-  const { mutate: resetNode, isLoading: isResetLoading } =
+  const { mutateAsync: resetNode, isLoading: isResetLoading } =
     trpcReact.resetNode.useMutation();
   const { mutate: setConfig, isLoading: isSetConfigLoading } =
     trpcReact.setConfig.useMutation({
@@ -250,7 +252,9 @@ function NodeSettingsContent({
               <Button
                 colorScheme="red"
                 onClick={() => {
-                  resetNode();
+                  resetNode().then(() => {
+                    router.push("/home");
+                  });
                 }}
                 ml={3}
               >

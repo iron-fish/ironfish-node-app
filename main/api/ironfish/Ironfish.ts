@@ -32,6 +32,24 @@ export class Ironfish {
     this._dataDir = dataDir;
   }
 
+  private constructSdk() {
+    return IronfishSdk.init({
+      dataDir: this._dataDir,
+      logger: logger,
+      pkg: getPackageFrom(packageJson),
+      configOverrides: {
+        databaseMigrate: true,
+      },
+    });
+  }
+
+  private constructNode(sdk: IronfishSdk) {
+    return sdk.node({
+      privateIdentity: sdk.getPrivateIdentity(),
+      autoSeed: true,
+    });
+  }
+
   isStarted(): boolean {
     return this._started;
   }
@@ -68,19 +86,8 @@ export class Ironfish {
     try {
       log.log("Initializing Iron Fish SDK...");
 
-      const sdk = await IronfishSdk.init({
-        dataDir: this._dataDir,
-        logger: logger,
-        pkg: getPackageFrom(packageJson),
-        configOverrides: {
-          databaseMigrate: true,
-        },
-      });
-
-      const node = await sdk.node({
-        privateIdentity: sdk.getPrivateIdentity(),
-        autoSeed: true,
-      });
+      const sdk = await this.constructSdk();
+      const node = await this.constructNode(sdk);
 
       this._fullNode = node;
 
@@ -139,8 +146,7 @@ export class Ironfish {
 
       this._started = true;
 
-      const node = this._fullNode;
-      await node.start();
+      await this._fullNode.start();
       log.log("Started Iron Fish Node.");
     } catch (e) {
       log.log(e);
@@ -187,18 +193,16 @@ export class Ironfish {
       fsAsync.rm(peerStoreFilePath, { recursive: true, force: true }),
     ]);
 
-    await this.init();
-    sdk = await this.sdk();
+    sdk = await this.constructSdk();
+    const node = await this.constructNode(sdk);
 
-    const node = await sdk.node();
-    await node.openDB();
-
+    await node.wallet.open();
     await node.wallet.reset();
-
+    await node.shutdown();
     await node.closeDB();
 
     log.log("Databases deleted successfully");
 
-    await this.start();
+    await this.init();
   }
 }
