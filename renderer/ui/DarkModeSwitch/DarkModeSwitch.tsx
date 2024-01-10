@@ -26,7 +26,7 @@ export const DarkModeSwitch = () => {
       w="100%"
       h={{
         base: "80px",
-        sm: "auto",
+        md: "auto",
       }}
       minWidth="40px"
       p={1}
@@ -41,11 +41,11 @@ export const DarkModeSwitch = () => {
         bg="white"
         w={{
           base: "100%",
-          sm: "50%",
+          md: "50%",
         }}
         h={{
           base: "50%",
-          sm: "auto",
+          md: "auto",
         }}
         borderRadius="2px"
         boxShadow="0px 4px 11px rgba(0, 0, 0, 0.04)"
@@ -58,7 +58,7 @@ export const DarkModeSwitch = () => {
         }}
         transform={{
           base: isDark ? "translateY(100%)" : "translateY(0%)",
-          sm: isDark ? "translateX(100%)" : "translateX(0%)",
+          md: isDark ? "translateX(100%)" : "translateX(0%)",
         }}
         zIndex={1}
       >
@@ -68,7 +68,7 @@ export const DarkModeSwitch = () => {
         <Text
           display={{
             base: "none",
-            sm: "block",
+            md: "block",
           }}
         >
           {isDark ? "Dark" : "Light"}
@@ -78,7 +78,7 @@ export const DarkModeSwitch = () => {
         p={1}
         flexDirection={{
           base: "column",
-          sm: "row",
+          md: "row",
         }}
         position="absolute"
         inset={0}
@@ -89,11 +89,11 @@ export const DarkModeSwitch = () => {
         <HStack
           w={{
             base: "100%",
-            sm: "50%",
+            md: "50%",
           }}
           h={{
             base: "50%",
-            sm: "auto",
+            md: "auto",
           }}
           justifyContent="center"
           gap={1}
@@ -104,7 +104,7 @@ export const DarkModeSwitch = () => {
           <Text
             display={{
               base: "none",
-              sm: "block",
+              md: "block",
             }}
           >
             Light
@@ -113,11 +113,11 @@ export const DarkModeSwitch = () => {
         <HStack
           w={{
             base: "100%",
-            sm: "50%",
+            md: "50%",
           }}
           h={{
             base: "50%",
-            sm: "auto",
+            md: "auto",
           }}
           justifyContent="center"
           gap={1}
@@ -129,7 +129,7 @@ export const DarkModeSwitch = () => {
           <Text
             display={{
               base: "none",
-              sm: "block",
+              md: "block",
             }}
           >
             Dark

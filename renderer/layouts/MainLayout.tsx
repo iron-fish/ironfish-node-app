@@ -66,7 +66,7 @@ function ResponsiveLogo() {
       <Box
         display={{
           base: "none",
-          sm: "block",
+          md: "block",
         }}
       >
         <LogoLg />
@@ -74,7 +74,7 @@ function ResponsiveLogo() {
       <Box
         display={{
           base: "block",
-          sm: "none",
+          md: "none",
         }}
       >
         <LogoSm />
@@ -120,7 +120,7 @@ function Sidebar() {
                 <Text
                   display={{
                     base: "none",
-                    sm: "block",
+                    md: "block",
                   }}
                 >
                   {label}
@@ -171,7 +171,7 @@ export default function MainLayout({ children, backLinkProps }: Props) {
           overflow="auto"
           w={{
             base: "auto",
-            sm: "265px",
+            md: "265px",
           }}
           p={4}
           pt="50px"
@@ -193,8 +193,6 @@ export default function MainLayout({ children, backLinkProps }: Props) {
               mx="auto"
               maxWidth={{
                 base: "100%",
-                sm: "597px",
-                lg: "825px",
                 xl: "1048px",
                 "2xl": "1280px",
               }}
