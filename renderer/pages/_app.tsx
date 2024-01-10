@@ -3,6 +3,7 @@ import { AppProps } from "next/app";
 import Head from "next/head";
 import { useIsClient } from "usehooks-ts";
 
+import { ErrorBoundary } from "@/components/ErrorBoundary/ErrorBoundary";
 import { IntlProvider } from "@/intl/IntlProvider";
 import { TRPCProvider } from "@/providers/TRPCProvider";
 import { LoadFonts } from "@/ui/LoadFonts/LoadFonts";
@@ -63,7 +64,9 @@ export default function MyApp({ Component, pageProps }: AppProps) {
       <TRPCProvider>
         <ChakraProvider theme={theme} colorModeManager={systemColorModeManager}>
           <IntlProvider>
-            <Component {...pageProps} />
+            <ErrorBoundary>
+              <Component {...pageProps} />
+            </ErrorBoundary>
           </IntlProvider>
         </ChakraProvider>
       </TRPCProvider>

@@ -23,6 +23,11 @@ export class Manager {
     if (this._initialState) return this._initialState;
 
     const ironfish = await this.getIronfish();
+
+    if (!ironfish.isStarted()) {
+      await ironfish.init();
+    }
+
     const rpcClient = await ironfish.rpcClient();
 
     const accountsResponse = await rpcClient.wallet.getAccounts();

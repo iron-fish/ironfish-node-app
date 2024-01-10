@@ -135,6 +135,9 @@
   "Arxl88": {
     "message": "Outgoing"
   },
+  "AyGP4T": {
+    "message": "Error Message"
+  },
   "BwRLcj": {
     "message": "Your transaction has been submitted. It may take a few minutes until it is confirmed. This transaction will appear in your activity as pending until it is confirmed."
   },
@@ -192,6 +195,9 @@
   "JoB2Ml": {
     "message": "Your account was successfully imported"
   },
+  "JqiqNj": {
+    "message": "Something went wrong"
+  },
   "K340v+": {
     "message": "An error occurred while downloading the snapshot:"
   },
@@ -221,6 +227,9 @@
   },
   "N0KGQj": {
     "message": "Block Graffiti"
+  },
+  "N0bVvU": {
+    "message": "Error copied to clipboard"
   },
   "NDtjP8": {
     "message": "Are you sure? You'll have to re-import this account if you want to use it again."
@@ -320,6 +329,9 @@
   },
   "VzzYJk": {
     "message": "Create"
+  },
+  "WHjylD": {
+    "message": "Please restart the app and try again. If the issue persists, let us know on Discord so we can help troubleshoot."
   },
   "WKCp0D": {
     "message": "Asset"

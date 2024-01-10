@@ -22,7 +22,6 @@ if (isProd) {
 crashReporter.start({ uploadToServer: false });
 
 const ironfish = await manager.getIronfish();
-ironfish.init();
 
 async function createWindow(handler: ReturnType<typeof createIPCHandler>) {
   const window = mainWindow.init();
