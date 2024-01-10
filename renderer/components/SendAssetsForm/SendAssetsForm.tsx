@@ -277,17 +277,12 @@ export function SendAssetsFormContent({
             error={errors.fromAccount?.message}
           />
 
-          {/* <TextInput
-            {...register("toAccount")}
-            label={formatMessage(messages.toLabel)}
-            error={errors.toAccount?.message}
-          /> */}
-
           <Combobox
             {...register("toAccount")}
             label={formatMessage(messages.toLabel)}
             error={errors.toAccount?.message}
             options={formattedContacts}
+            value={toAccountValue}
             setValue={setValue}
           />
 

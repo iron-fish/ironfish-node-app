@@ -21,20 +21,21 @@ import { COLORS } from "@/ui/colors";
 
 import { TextInput, TextInputProps } from "../TextInput/TextInput";
 
+type Options = Array<{
+  label:
+    | string
+    | {
+        main: string;
+        sub: string;
+      };
+  value: string;
+}>;
+
 type Props = TextInputProps & {
+  value: string;
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   setValue: UseFormSetValue<any>;
-  options:
-    | Array<{
-        label:
-          | string
-          | {
-              main: string;
-              sub: string;
-            };
-        value: string;
-      }>
-    | undefined;
+  options: Options | undefined;
 };
 
 const variants = {
@@ -54,14 +55,36 @@ const variants = {
   },
 };
 
+function filterOptions(options: Options | undefined, value: string) {
+  if (!options) return [];
+
+  const lowercasedValue = value.toLowerCase();
+
+  return options.filter((option) => {
+    if (typeof option.label === "string") {
+      return option.label.toLowerCase().includes(lowercasedValue);
+    }
+    return (
+      option.label.main.toLowerCase().includes(lowercasedValue) ||
+      option.label.sub.toLowerCase().includes(lowercasedValue) ||
+      option.value.toLowerCase().includes(lowercasedValue)
+    );
+  });
+}
+
 export const Combobox = forwardRef<HTMLInputElement, Props>(function Combobox(
-  { options = [], setValue, ...rest },
+  { options = [], value, setValue, ...rest },
   ref,
 ) {
   const [isOpen, setIsOpen] = useState(false);
+  const inputRef = useRef<HTMLInputElement>();
+  const mergedRefs = useMergeRefs(inputRef, ref);
+  const filteredOptions = filterOptions(options, value);
+
   const onFocus = useCallback(() => {
     setIsOpen(true);
   }, []);
+
   const onBlur = useCallback<FocusEventHandler<HTMLInputElement>>(
     (arg) => {
       rest.onBlur?.(arg);
@@ -70,12 +93,10 @@ export const Combobox = forwardRef<HTMLInputElement, Props>(function Combobox(
     [rest],
   );
 
-  const inputRef = useRef<HTMLInputElement>();
-  const mergedRefs = useMergeRefs(inputRef, ref);
   return (
     <Popover
       returnFocusOnClose={false}
-      isOpen={options.length > 0 && isOpen}
+      isOpen={filteredOptions.length > 0 && isOpen}
       placement="bottom"
       closeOnBlur={false}
       gutter={4}
@@ -94,7 +115,7 @@ export const Combobox = forwardRef<HTMLInputElement, Props>(function Combobox(
       </PopoverTrigger>
       <PopoverContent width="100%" overflow="hidden" variants={variants}>
         <PopoverBody p={0}>
-          {options.map((option, i) => (
+          {filteredOptions.map((option, i) => (
             <Box
               as="button"
               type="button"
