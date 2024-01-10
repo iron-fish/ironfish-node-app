@@ -131,7 +131,7 @@ export function StatusIndicator() {
         }}
         display={{
           base: "none",
-          sm: "block",
+          md: "block",
         }}
       >
         Node Status: {label}
@@ -139,7 +139,7 @@ export function StatusIndicator() {
       <Box
         display={{
           base: "block",
-          sm: "none",
+          md: "none",
         }}
       >
         <Text
