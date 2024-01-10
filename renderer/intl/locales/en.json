@@ -27,6 +27,9 @@
   "25vn7e": {
     "message": "Unzip progress: {progress}%"
   },
+  "2AcArH": {
+    "message": "Choose this option if you don't have an existing Iron Fish account or if you'd like to create a new one."
+  },
   "2DcNnd": {
     "message": "Share your address to receive payments while keeping your account details entirely private."
   },
@@ -75,6 +78,9 @@
   "5MiM5y": {
     "message": "Send Asset"
   },
+  "5OJ1yw": {
+    "message": "Internal Account Name"
+  },
   "5UdRx1": {
     "message": "Import With"
   },
@@ -111,6 +117,9 @@
   "8WtyrD": {
     "message": "Spanish"
   },
+  "9+Ddtu": {
+    "message": "Next"
+  },
   "9DI6zl": {
     "message": "You can change the fee amount you'd like to pay. However, that will directly correlate with the speed with which your transaction is picked up by the blockchain."
   },
@@ -120,11 +129,17 @@
   "9WRlF4": {
     "message": "Send"
   },
+  "9WhwsR": {
+    "message": "This name is how we will refer to your account internally. It is not visible to anyone else."
+  },
   "9XUYQt": {
     "message": "Import"
   },
   "9j3hXO": {
     "message": "To"
+  },
+  "9pwT3E": {
+    "message": "Need Help? Find us on Discord"
   },
   "9uOFF3": {
     "message": "Overview"
@@ -221,6 +236,9 @@
   },
   "Ld49Lh": {
     "message": "What would you like to name this account? This name is only visible to you."
+  },
+  "MDZ4hi": {
+    "message": "Already have an account? Enter your recovery credentials and continue using your account as expected."
   },
   "MFUhla": {
     "message": "Highest to lowest balance"
@@ -353,6 +371,9 @@
   },
   "XLvNHQ": {
     "message": "Please write down this recovery phrase and keep it in a safe place. You will need it to recover your account."
+  },
+  "XYgEt1": {
+    "message": "Please keep this phrase stored somewhere safe. We will ask you to re-enter this."
   },
   "Xvk80E": {
     "message": "Please enter a name for this account"

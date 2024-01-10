@@ -9,6 +9,8 @@ import {
   HStack,
   Flex,
   Text,
+  Skeleton,
+  VStack,
 } from "@chakra-ui/react";
 import Image from "next/image";
 import { useRouter } from "next/router";
@@ -62,7 +64,7 @@ function SingleContactContent({ address }: { address: string }) {
 
   if (!transactionsData || !contactData) {
     // @todo: Error handling
-    return null;
+    return <SingleContactLoader />;
   }
 
   return (
@@ -144,6 +146,43 @@ function SingleContactContent({ address }: { address: string }) {
           </TabPanels>
         </Tabs>
       </Box>
+    </MainLayout>
+  );
+}
+
+function SingleContactLoader() {
+  const { formatMessage } = useIntl();
+  return (
+    <MainLayout
+      backLinkProps={{
+        href: "/address-book",
+        label: formatMessage(messages.backToAddressBook),
+      }}
+    >
+      <Box mb={4}>
+        <HStack gap={4} alignItems="center">
+          <FishIcon bg={getGradientByOrder(0)} mr={2} />
+          <Skeleton>
+            <Heading w="10ch">&nbsp;</Heading>
+          </Skeleton>
+        </HStack>
+      </Box>
+      <HStack mb={12}>
+        <Skeleton height="1em" width="5em" />
+        <Skeleton height="1em" width="5em" />
+      </HStack>
+      <Flex mb={16}>
+        <Skeleton>
+          <Heading fontSize="2xl" w="12ch">
+            &nbsp;
+          </Heading>
+        </Skeleton>
+      </Flex>
+      <VStack gap={4}>
+        {Array.from({ length: 5 }).map((_, i) => (
+          <Skeleton key={i} h="80px" w="100%" />
+        ))}
+      </VStack>
     </MainLayout>
   );
 }

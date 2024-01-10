@@ -1,5 +1,6 @@
 import { Box, Heading, HStack, Text } from "@chakra-ui/react";
 import { useRouter } from "next/router";
+import { defineMessages, useIntl } from "react-intl";
 
 import { COLORS } from "@/ui/colors";
 import { PillButton } from "@/ui/PillButton/PillButton";
@@ -7,8 +8,26 @@ import { ShadowCard } from "@/ui/ShadowCard/ShadowCard";
 import { LogoLg } from "@/ui/SVGs/LogoLg";
 import { NodeAppLogo } from "@/ui/SVGs/NodeAppLogo";
 
+const messages = defineMessages({
+  createAccount: {
+    defaultMessage: "Create Account",
+  },
+  createAccountDescription: {
+    defaultMessage:
+      "Choose this option if you don't have an existing Iron Fish account or if you'd like to create a new one.",
+  },
+  importAccount: {
+    defaultMessage: "Import Account",
+  },
+  importAccountDescription: {
+    defaultMessage:
+      "Already have an account? Enter your recovery credentials and continue using your account as expected.",
+  },
+});
+
 export function CreateImportAccount() {
   const router = useRouter();
+  const { formatMessage } = useIntl();
 
   return (
     <Box>
@@ -18,11 +37,10 @@ export function CreateImportAccount() {
       </HStack>
       <ShadowCard contentContainerProps={{ p: 8 }} mb={8} cardOffset="10px">
         <Heading fontSize="2xl" mb={3}>
-          Create Account
+          {formatMessage(messages.createAccount)}
         </Heading>
         <Text color={COLORS.GRAY_MEDIUM} fontSize="sm" mb={4}>
-          Choose this option if you don&apos;t have an existing Iron Fish
-          account or if you&apos;d like to create a new one.
+          {formatMessage(messages.createAccountDescription)}
         </Text>
         <PillButton
           fontSize="sm"
@@ -31,16 +49,15 @@ export function CreateImportAccount() {
             router.push(`/onboarding/create`);
           }}
         >
-          Create Account
+          {formatMessage(messages.createAccount)}
         </PillButton>
       </ShadowCard>
       <ShadowCard contentContainerProps={{ p: 8 }} cardOffset="10px">
         <Heading fontSize="2xl" mb={3}>
-          Import Account
+          {formatMessage(messages.importAccount)}
         </Heading>
         <Text color={COLORS.GRAY_MEDIUM} fontSize="sm" mb={4}>
-          Already have an account? Enter your recovery credentials and continue
-          using your account as expected.
+          {formatMessage(messages.importAccountDescription)}
         </Text>
         <PillButton
           fontSize="sm"
@@ -49,7 +66,7 @@ export function CreateImportAccount() {
             router.push("/onboarding/import");
           }}
         >
-          Import Account
+          {formatMessage(messages.importAccount)}
         </PillButton>
       </ShadowCard>
     </Box>
