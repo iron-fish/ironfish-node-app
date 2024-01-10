@@ -45,6 +45,12 @@ const messages = defineMessages({
   expired: {
     defaultMessage: "Expired",
   },
+  multipleRecipients: {
+    defaultMessage: "Multiple recipients",
+  },
+  multipleMemos: {
+    defaultMessage: "Multiple memos",
+  },
 });
 
 export function NotesHeadings() {
@@ -108,6 +114,30 @@ function getNoteStatusDisplay(
   return { icon: <PendingIcon />, message: messages.pending };
 }
 
+function NoteTo({
+  to,
+  from,
+  type,
+}: {
+  to: string | string[];
+  from: string;
+  type: TransactionType;
+}) {
+  const { formatMessage } = useIntl();
+
+  if (Array.isArray(to)) {
+    return <Text as="span">{formatMessage(messages.multipleRecipients)}</Text>;
+  }
+
+  return (
+    <CopyAddress
+      color={COLORS.BLACK}
+      _dark={{ color: COLORS.WHITE }}
+      address={type === "send" ? to : from}
+    />
+  );
+}
+
 export function NoteRow({
   accountName,
   assetName,
@@ -126,10 +156,10 @@ export function NoteRow({
   value: string;
   timestamp: number;
   from: string;
-  to: string;
+  to: string | string[];
   type: TransactionType;
   status: TransactionStatus;
-  memo: string;
+  memo: string | string[];
   transactionHash: string;
   /**
    * Render the row as if it were a transaction (link it to the transaction details page,
@@ -181,18 +211,20 @@ export function NoteRow({
             </GridItem>
             <GridItem display="flex" alignItems="center">
               <Text as="span">
-                <CopyAddress
-                  color={COLORS.BLACK}
-                  _dark={{ color: COLORS.WHITE }}
-                  address={type === "send" ? to : from}
-                />
+                <NoteTo to={to} from={from} type={type} />
               </Text>
             </GridItem>
             <GridItem display="flex" alignItems="center">
               <Text as="span">{formatDate(timestamp)}</Text>
             </GridItem>
             <GridItem display="flex" alignItems="center">
-              <Text as="span">{memo || "—"}</Text>
+              <Text as="span">
+                {!memo
+                  ? "—"
+                  : Array.isArray(memo)
+                  ? formatMessage(messages.multipleMemos)
+                  : memo}
+              </Text>
             </GridItem>
             {asTransaction && (
               <GridItem
