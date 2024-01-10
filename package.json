@@ -21,7 +21,6 @@
   },
   "license": "MPL-2.0",
   "dependencies": {
-    "@ethersproject/bignumber": "^5.7.0",
     "@ironfish/sdk": "1.15.0",
     "electron-serve": "^1.1.0"
   },
@@ -33,6 +32,7 @@
     "@chakra-ui/theme-tools": "^2.1.1",
     "@emotion/react": "^11.11.1",
     "@emotion/styled": "^11.11.0",
+    "@ethersproject/bignumber": "^5.7.0",
     "@formatjs/cli": "^6.2.4",
     "@hookform/resolvers": "^3.3.2",
     "@radix-ui/react-select": "^2.0.0",
