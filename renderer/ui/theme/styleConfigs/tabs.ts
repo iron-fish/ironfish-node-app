@@ -24,6 +24,7 @@ export const tabsTheme = defineMultiStyleConfig({
       },
       tablist: {
         borderColor: "#DEDFE2",
+        mt: 5,
         _dark: {
           borderColor: COLORS.DARK_MODE.GRAY_DARK,
         },

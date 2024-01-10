@@ -1,3 +1,5 @@
+import { parseFixed } from "@ethersproject/bignumber";
+
 import { ASSET_DECIMALS } from "../../shared/constants";
 
 const ORE_FORMATTER = Intl.NumberFormat(undefined, {
@@ -16,8 +18,12 @@ export function parseOre(value: string | number) {
  * Converts a number value in $IRON to a value in Ore.
  */
 export function parseIron(value: string | number) {
-  const parsedValue = typeof value === "string" ? parseFloat(value) : value;
-  return Math.floor(parsedValue * 10 ** ASSET_DECIMALS);
+  const asString = String(value);
+  try {
+    return parseFixed(asString, ASSET_DECIMALS).toNumber();
+  } catch {
+    return 0;
+  }
 }
 
 /**
