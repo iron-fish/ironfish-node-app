@@ -15,8 +15,7 @@ import { ExpiredIcon } from "./icons/ExpiredIcon";
 import { PendingIcon } from "./icons/PendingIcon";
 import { ReceivedIcon } from "./icons/ReceivedIcon";
 import { SentIcon } from "./icons/SentIcon";
-import { useHeadingsText } from "./NoteHeadings";
-import { messages, CARET_WIDTH } from "./shared";
+import { messages, CARET_WIDTH, useHeadingsText } from "./shared";
 import { CopyAddress } from "../CopyAddress/CopyAddress";
 
 function getNoteStatusDisplay(

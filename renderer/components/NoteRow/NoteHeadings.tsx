@@ -1,18 +1,6 @@
 import { Grid, GridItem, Text } from "@chakra-ui/react";
-import { useIntl } from "react-intl";
 
-import { messages, CARET_WIDTH } from "./shared";
-
-export function useHeadingsText() {
-  const { formatMessage } = useIntl();
-  return [
-    formatMessage(messages.action),
-    formatMessage(messages.amount),
-    formatMessage(messages.fromTo),
-    formatMessage(messages.date),
-    formatMessage(messages.memo),
-  ];
-}
+import { CARET_WIDTH, useHeadingsText } from "./shared";
 
 export function NoteHeadings() {
   const headingsText = useHeadingsText();

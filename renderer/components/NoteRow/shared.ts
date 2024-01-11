@@ -1,4 +1,4 @@
-import { defineMessages } from "react-intl";
+import { defineMessages, useIntl } from "react-intl";
 
 export const CARET_WIDTH = "55px";
 
@@ -37,3 +37,14 @@ export const messages = defineMessages({
     defaultMessage: "Multiple memos",
   },
 });
+
+export function useHeadingsText() {
+  const { formatMessage } = useIntl();
+  return [
+    formatMessage(messages.action),
+    formatMessage(messages.amount),
+    formatMessage(messages.fromTo),
+    formatMessage(messages.date),
+    formatMessage(messages.memo),
+  ];
+}
