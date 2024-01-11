@@ -204,12 +204,14 @@ export function SendAssetsFormContent({
   }, [selectedAccount]);
 
   const assetOptions = useMemo(() => {
-    return Object.values(accountBalances).map((balance) => ({
-      label:
-        hexToUTF16String(balance.asset.name) +
-        ` (${formatOre(balance.confirmed)})`,
-      value: balance.asset.id,
-    }));
+    return Object.values(accountBalances).map((balance) => {
+      const assetName = hexToUTF16String(balance.asset.name);
+      return {
+        assetName: assetName,
+        label: assetName + ` (${formatOre(balance.confirmed)})`,
+        value: balance.asset.id,
+      };
+    });
   }, [accountBalances]);
 
   // Resets asset field to $IRON if a newly selected account does not have the selected asset
@@ -367,7 +369,7 @@ export function SendAssetsFormContent({
         isOpen={!!pendingTransaction}
         transactionData={pendingTransaction}
         selectedAssetName={
-          assetOptions.find(({ value }) => value === assetValue)?.label ??
+          assetOptions.find(({ value }) => value === assetValue)?.assetName ??
           formatMessage(messages.unknownAsset)
         }
         onCancel={() => {
