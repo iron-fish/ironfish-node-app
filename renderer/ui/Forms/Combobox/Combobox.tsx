@@ -9,6 +9,7 @@ import {
   useMergeRefs,
 } from "@chakra-ui/react";
 import {
+  ChangeEventHandler,
   FocusEventHandler,
   forwardRef,
   useCallback,
@@ -79,7 +80,12 @@ export const Combobox = forwardRef<HTMLInputElement, Props>(function Combobox(
   const [isOpen, setIsOpen] = useState(false);
   const inputRef = useRef<HTMLInputElement>();
   const mergedRefs = useMergeRefs(inputRef, ref);
-  const filteredOptions = filterOptions(options, value);
+
+  const [shouldFilterSearch, setShouldFilterSearch] = useState(false);
+  const filteredOptions = filterOptions(
+    options,
+    shouldFilterSearch ? value : "",
+  );
 
   const onFocus = useCallback(() => {
     setIsOpen(true);
@@ -89,6 +95,15 @@ export const Combobox = forwardRef<HTMLInputElement, Props>(function Combobox(
     (arg) => {
       rest.onBlur?.(arg);
       setIsOpen(false);
+      setShouldFilterSearch(false);
+    },
+    [rest],
+  );
+
+  const onChange = useCallback<ChangeEventHandler<HTMLInputElement>>(
+    (e) => {
+      rest.onChange?.(e);
+      setShouldFilterSearch(true);
     },
     [rest],
   );
@@ -110,6 +125,7 @@ export const Combobox = forwardRef<HTMLInputElement, Props>(function Combobox(
             {...rest}
             onFocus={onFocus}
             onBlur={onBlur}
+            onChange={onChange}
           />
         </Box>
       </PopoverTrigger>
