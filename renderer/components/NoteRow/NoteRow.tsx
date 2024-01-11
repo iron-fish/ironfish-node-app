@@ -2,7 +2,7 @@ import { ChevronRightIcon } from "@chakra-ui/icons";
 import { Box, HStack, Text, Flex } from "@chakra-ui/react";
 import type { TransactionStatus, TransactionType } from "@ironfish/sdk";
 import { ReactNode, useMemo } from "react";
-import { defineMessages, MessageDescriptor, useIntl } from "react-intl";
+import { MessageDescriptor, useIntl } from "react-intl";
 
 import { MaybeLink } from "@/ui/ChakraLink/ChakraLink";
 import { COLORS } from "@/ui/colors";
@@ -15,19 +15,9 @@ import { ExpiredIcon } from "./icons/ExpiredIcon";
 import { PendingIcon } from "./icons/PendingIcon";
 import { ReceivedIcon } from "./icons/ReceivedIcon";
 import { SentIcon } from "./icons/SentIcon";
-import { useHeadingsText, headingMessages } from "./NoteHeadings";
+import { useHeadingsText } from "./NoteHeadings";
+import { messages, CARET_WIDTH } from "./shared";
 import { CopyAddress } from "../CopyAddress/CopyAddress";
-
-const CARET_WIDTH = "55px";
-
-const messages = defineMessages({
-  multipleRecipients: {
-    defaultMessage: "Multiple recipients",
-  },
-  multipleMemos: {
-    defaultMessage: "Multiple memos",
-  },
-});
 
 function getNoteStatusDisplay(
   type: TransactionType,
@@ -36,27 +26,27 @@ function getNoteStatusDisplay(
 ): { icon: ReactNode; message: MessageDescriptor } {
   if (asTransaction || status === "confirmed") {
     if (type === "send") {
-      return { icon: <SentIcon />, message: headingMessages.sent };
+      return { icon: <SentIcon />, message: messages.sent };
     } else if (type === "receive" || type === "miner") {
-      return { icon: <ReceivedIcon />, message: headingMessages.received };
+      return { icon: <ReceivedIcon />, message: messages.received };
     }
 
     const unhandledType: never = type;
     console.error("Unhandled transaction type", unhandledType);
-    return { icon: <ReceivedIcon />, message: headingMessages.received };
+    return { icon: <ReceivedIcon />, message: messages.received };
   } else if (
     status === "pending" ||
     status === "unknown" ||
     status === "unconfirmed"
   ) {
-    return { icon: <PendingIcon />, message: headingMessages.pending };
+    return { icon: <PendingIcon />, message: messages.pending };
   } else if (status === "expired") {
-    return { icon: <ExpiredIcon />, message: headingMessages.expired };
+    return { icon: <ExpiredIcon />, message: messages.expired };
   }
 
   const unhandledStatus: never = status;
   console.error("Unhandled transaction status", unhandledStatus);
-  return { icon: <PendingIcon />, message: headingMessages.pending };
+  return { icon: <PendingIcon />, message: messages.pending };
 }
 
 function NoteTo({
@@ -71,9 +61,7 @@ function NoteTo({
   const { formatMessage } = useIntl();
 
   if (Array.isArray(to)) {
-    return (
-      <Text as="span">{formatMessage(headingMessages.multipleRecipients)}</Text>
-    );
+    return <Text as="span">{formatMessage(messages.multipleRecipients)}</Text>;
   }
 
   return (
