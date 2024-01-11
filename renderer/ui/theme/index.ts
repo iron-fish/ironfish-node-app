@@ -27,6 +27,7 @@ const theme = extendTheme({
     global: (props: StyleFunctionProps) => ({
       body: {
         bg: mode("white", COLORS.DARK_MODE.BG)(props),
+        color: mode(COLORS.BLACK, COLORS.WHITE)(props),
       },
     }),
   },
@@ -56,6 +57,10 @@ const theme = extendTheme({
   },
   semanticTokens: {
     colors: {
+      ["chakra-body-text"]: {
+        _dark: COLORS.WHITE,
+        _light: COLORS.BLACK,
+      },
       ["chakra-placeholder-color"]: {
         _dark: COLORS.DARK_MODE.GRAY_LIGHT,
         _light: COLORS.GRAY_MEDIUM,
