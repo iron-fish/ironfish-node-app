@@ -29,6 +29,12 @@ import { PillButton } from "@/ui/PillButton/PillButton";
 import { asQueryString } from "@/utils/parseRouteQuery";
 
 const messages = defineMessages({
+  previousButton: {
+    defaultMessage: "Previous",
+  },
+  nextButton: {
+    defaultMessage: "Next",
+  },
   backToAccounts: {
     defaultMessage: "Back to all accounts",
   },
@@ -137,7 +143,7 @@ function AccountOverviewContent({ accountName }: { accountName: string }) {
                       setCursor((c) => Math.max(c - 10, 0));
                     }}
                   >
-                    Previous
+                    {formatMessage(messages.previousButton)}
                   </PillButton>
                   <PillButton
                     isDisabled={!transactionsData?.hasNextPage}
@@ -145,7 +151,7 @@ function AccountOverviewContent({ accountName }: { accountName: string }) {
                       setCursor((c) => c + 10);
                     }}
                   >
-                    Next
+                    {formatMessage(messages.nextButton)}
                   </PillButton>
                 </HStack>
               )}
