@@ -5,11 +5,11 @@ export type TransactionNote = {
   value: string;
   timestamp: number;
   from: string;
-  to: string;
+  to: string | string[];
   transactionHash: string;
   type: TransactionType;
   status: TransactionStatus;
-  memo: string;
+  memo: string | string[];
   noteHash: string;
   accountName: string;
 };

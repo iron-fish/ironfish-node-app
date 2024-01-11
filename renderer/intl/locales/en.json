@@ -231,6 +231,9 @@
   "LP4H/8": {
     "message": "Scanning blocks: {sequence} / {totalSequence}"
   },
+  "LPlno7": {
+    "message": "Multiple recipients"
+  },
   "LRJJAc": {
     "message": "Transaction Hash"
   },
@@ -299,6 +302,9 @@
   },
   "RahCRH": {
     "message": "Expired"
+  },
+  "Ry+/2j": {
+    "message": "Multiple memos"
   },
   "S+nmcq": {
     "message": "Transaction Information"
