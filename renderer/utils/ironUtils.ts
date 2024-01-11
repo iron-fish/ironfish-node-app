@@ -18,7 +18,9 @@ export function parseOre(value: string | number) {
  * Converts a number value in $IRON to a value in Ore.
  */
 export function parseIron(value: string | number) {
-  const asString = String(value);
+  // Converts scientific notation to fixed decimals
+  const asString =
+    typeof value === "number" ? value.toFixed(ASSET_DECIMALS) : value;
   try {
     return parseFixed(asString, ASSET_DECIMALS).toNumber();
   } catch {
