@@ -1,5 +1,5 @@
 import { ChevronRightIcon } from "@chakra-ui/icons";
-import { Box, Grid, GridItem, HStack, Text } from "@chakra-ui/react";
+import { Box, Grid, GridItem, HStack, Text, Flex } from "@chakra-ui/react";
 import type { TransactionStatus, TransactionType } from "@ironfish/sdk";
 import { ReactNode } from "react";
 import { defineMessages, MessageDescriptor, useIntl } from "react-intl";
@@ -16,6 +16,8 @@ import { PendingIcon } from "./icons/PendingIcon";
 import { ReceivedIcon } from "./icons/ReceivedIcon";
 import { SentIcon } from "./icons/SentIcon";
 import { CopyAddress } from "../CopyAddress/CopyAddress";
+
+const CARET_WIDTH = "55px";
 
 const messages = defineMessages({
   action: {
@@ -53,33 +55,39 @@ const messages = defineMessages({
   },
 });
 
-export function NotesHeadings() {
+export function useHeadingsText() {
   const { formatMessage } = useIntl();
+  return [
+    formatMessage(messages.action),
+    formatMessage(messages.amount),
+    formatMessage(messages.fromTo),
+    formatMessage(messages.date),
+    formatMessage(messages.memo),
+  ];
+}
+
+export function NotesHeadings() {
+  const headingsText = useHeadingsText();
 
   return (
     <Grid
+      display={{
+        base: "none",
+        lg: "grid",
+      }}
       templateColumns={{
         base: `repeat(5, 1fr)`,
-        md: `repeat(5, 1fr) 55px`,
+        lg: `repeat(5, 1fr) ${CARET_WIDTH}`,
       }}
       opacity="0.8"
       mb={4}
+      px={8}
     >
-      <GridItem pl={8}>
-        <Text as="span">{formatMessage(messages.action)}</Text>
-      </GridItem>
-      <GridItem>
-        <Text as="span">{formatMessage(messages.amount)}</Text>
-      </GridItem>
-      <GridItem>
-        <Text as="span">{formatMessage(messages.fromTo)}</Text>
-      </GridItem>
-      <GridItem>
-        <Text as="span">{formatMessage(messages.date)}</Text>
-      </GridItem>
-      <GridItem>
-        <Text as="span">{formatMessage(messages.memo)}</Text>
-      </GridItem>
+      {headingsText.map((heading, i) => (
+        <GridItem key={i}>
+          <Text as="span">{heading}</Text>
+        </GridItem>
+      ))}
     </Grid>
   );
 }
@@ -169,6 +177,7 @@ export function NoteRow({
 }) {
   const { formatMessage } = useIntl();
   const statusDisplay = getNoteStatusDisplay(type, status, asTransaction);
+  const headings = useHeadingsText();
 
   return (
     <MaybeLink
@@ -182,56 +191,173 @@ export function NoteRow({
       <Box py={2}>
         <ShadowCard
           hoverable={asTransaction}
-          height="86px"
+          height={{
+            base: "auto",
+            lg: "86px",
+          }}
           contentContainerProps={{
             display: "flex",
             alignItems: "center",
             p: 0,
           }}
         >
-          <Grid
-            templateColumns={{
-              base: `repeat(5, 1fr)`,
-              md: asTransaction ? `repeat(5, 1fr) 55px` : `repeat(5, 1fr)`,
-            }}
-            opacity="0.8"
+          <Flex
             w="100%"
-            gap={4}
+            px={8}
+            py={{
+              base: 8,
+              lg: 0,
+            }}
+            gap={{
+              base: 0,
+              lg: 4,
+            }}
+            flexWrap={{
+              base: "wrap",
+              lg: "nowrap",
+            }}
           >
-            <GridItem display="flex" alignItems="center" pl={8}>
-              <HStack gap={4}>
-                {statusDisplay.icon}
-                <Text as="span">{formatMessage(statusDisplay.message)}</Text>
-              </HStack>
-            </GridItem>
-            <GridItem display="flex" alignItems="center">
-              <Text as="span">
-                {formatOre(value)} {hexToUTF16String(assetName)}
-              </Text>
-            </GridItem>
-            <GridItem display="flex" alignItems="center">
-              <Text as="span">
-                <NoteTo to={to} from={from} type={type} />
-              </Text>
-            </GridItem>
-            <GridItem display="flex" alignItems="center">
-              <Text as="span">{formatDate(timestamp)}</Text>
-            </GridItem>
-            <GridItem display="flex" alignItems="center">
-              <Text as="span">
-                {!memo
-                  ? "—"
-                  : Array.isArray(memo)
-                  ? formatMessage(messages.multipleMemos)
-                  : memo}
-              </Text>
-            </GridItem>
+            <Flex
+              flexBasis={{
+                base: "calc(33% - 6px)",
+                lg: 0,
+              }}
+              flexGrow={1}
+              alignItems="center"
+            >
+              <Box>
+                <Text
+                  color={COLORS.GRAY_MEDIUM}
+                  mb={2}
+                  display={{
+                    base: "block",
+                    lg: "none",
+                  }}
+                >
+                  {headings[0]}
+                </Text>
+                <HStack gap={4}>
+                  {statusDisplay.icon}
+                  <Text as="span">{formatMessage(statusDisplay.message)}</Text>
+                </HStack>
+              </Box>
+            </Flex>
+            <Flex
+              flexBasis={{
+                base: "calc(33% - 6px)",
+                lg: 0,
+              }}
+              flexGrow={1}
+              alignItems="center"
+            >
+              <Box>
+                <Text
+                  color={COLORS.GRAY_MEDIUM}
+                  mb={2}
+                  display={{
+                    base: "block",
+                    lg: "none",
+                  }}
+                >
+                  {headings[1]}
+                </Text>
+                <Text as="span">
+                  {formatOre(value)} {hexToUTF16String(assetName)}
+                </Text>
+              </Box>
+            </Flex>
+            <Flex
+              flexBasis={{
+                base: "calc(33% - 6px)",
+                lg: 0,
+              }}
+              flexGrow={1}
+              alignItems="center"
+            >
+              <Box>
+                <Text
+                  color={COLORS.GRAY_MEDIUM}
+                  mb={2}
+                  display={{
+                    base: "block",
+                    lg: "none",
+                  }}
+                >
+                  {headings[2]}
+                </Text>
+                <Text as="span">
+                  <NoteTo to={to} from={from} type={type} />
+                </Text>
+              </Box>
+            </Flex>
+            <Flex
+              flexBasis={0}
+              width={{
+                base: "50%",
+                lg: "auto",
+              }}
+              flexGrow={1}
+              alignItems="center"
+              mt={{
+                base: 8,
+                lg: 0,
+              }}
+            >
+              <Box>
+                <Text
+                  color={COLORS.GRAY_MEDIUM}
+                  mb={2}
+                  display={{
+                    base: "block",
+                    lg: "none",
+                  }}
+                >
+                  {headings[3]}
+                </Text>
+                <Text as="span">{formatDate(timestamp)}</Text>
+              </Box>
+            </Flex>
+            <Flex
+              flexBasis={0}
+              width={{
+                base: "50%",
+                lg: "auto",
+              }}
+              flexGrow={1}
+              alignItems="center"
+              mt={{
+                base: 8,
+                lg: 0,
+              }}
+            >
+              <Box>
+                <Text
+                  color={COLORS.GRAY_MEDIUM}
+                  mb={2}
+                  display={{
+                    base: "block",
+                    lg: "none",
+                  }}
+                >
+                  {headings[4]}
+                </Text>
+                <Text as="span">
+                  {!memo
+                    ? "—"
+                    : Array.isArray(memo)
+                    ? formatMessage(messages.multipleMemos)
+                    : memo}
+                </Text>
+              </Box>
+            </Flex>
             {asTransaction && (
-              <GridItem
+              <Flex
+                w={CARET_WIDTH}
+                justifyContent="flex-end"
                 alignItems="center"
                 display={{
                   base: "none",
-                  md: "flex",
+                  lg: "flex",
                 }}
               >
                 <ChevronRightIcon
@@ -239,9 +365,9 @@ export function NoteRow({
                   color={COLORS.GRAY_MEDIUM}
                   _dark={{ color: COLORS.DARK_MODE.GRAY_LIGHT }}
                 />
-              </GridItem>
+              </Flex>
             )}
-          </Grid>
+          </Flex>
         </ShadowCard>
       </Box>
     </MaybeLink>
