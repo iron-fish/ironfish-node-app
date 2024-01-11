@@ -89,7 +89,7 @@ function getNoteStatusDisplay(
   status: TransactionStatus,
   asTransaction: boolean,
 ): { icon: ReactNode; message: MessageDescriptor } {
-  if (asTransaction || status === "confirmed") {
+  if (!asTransaction || status === "confirmed") {
     if (type === "send") {
       return { icon: <SentIcon />, message: messages.sent };
     } else if (type === "receive" || type === "miner") {
