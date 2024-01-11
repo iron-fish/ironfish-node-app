@@ -1,14 +1,14 @@
 import {
   Box,
   Flex,
+  GlobalStyle,
   HStack,
   LightMode,
   Text,
   VStack,
-  useColorMode,
 } from "@chakra-ui/react";
 import Image from "next/image";
-import { ReactNode, useEffect } from "react";
+import { ReactNode } from "react";
 import { defineMessages, useIntl } from "react-intl";
 
 import bigOnboardingFish from "@/images/big-onboarding-fish.svg";
@@ -23,17 +23,11 @@ const messages = defineMessages({
 });
 
 export function OnboardingLayout({ children }: { children: ReactNode }) {
-  const { colorMode, toggleColorMode } = useColorMode();
   const { formatMessage } = useIntl();
-
-  useEffect(() => {
-    if (colorMode === "dark") {
-      toggleColorMode();
-    }
-  }, [colorMode, toggleColorMode]);
 
   return (
     <LightMode>
+      <GlobalStyle />
       <WithDraggableArea>
         <Box position="fixed" inset={0} pointerEvents="none" overflow="hidden">
           <Box
