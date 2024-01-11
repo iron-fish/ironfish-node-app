@@ -84,6 +84,8 @@ function AccountOverviewContent({ accountName }: { accountName: string }) {
     limit: 10,
   });
 
+  const shouldShowPagination = cursor !== 0 || transactionsData?.hasNextPage;
+
   if (!accountData) {
     // @todo: Error handling
     return null;
@@ -127,24 +129,26 @@ function AccountOverviewContent({ accountName }: { accountName: string }) {
                 notes={transactionsData?.transactions ?? []}
                 heading={formatMessage(messages.accountOverview)}
               />
-              <HStack flex={1} justifyContent="center">
-                <PillButton
-                  isDisabled={!transactionsData || cursor <= 0}
-                  onClick={() => {
-                    setCursor((c) => Math.max(c - 10, 0));
-                  }}
-                >
-                  Previous
-                </PillButton>
-                <PillButton
-                  isDisabled={!transactionsData?.hasNextPage}
-                  onClick={() => {
-                    setCursor((c) => c + 10);
-                  }}
-                >
-                  Next
-                </PillButton>
-              </HStack>
+              {shouldShowPagination && (
+                <HStack flex={1} justifyContent="center">
+                  <PillButton
+                    isDisabled={!transactionsData || cursor <= 0}
+                    onClick={() => {
+                      setCursor((c) => Math.max(c - 10, 0));
+                    }}
+                  >
+                    Previous
+                  </PillButton>
+                  <PillButton
+                    isDisabled={!transactionsData?.hasNextPage}
+                    onClick={() => {
+                      setCursor((c) => c + 10);
+                    }}
+                  >
+                    Next
+                  </PillButton>
+                </HStack>
+              )}
             </TabPanel>
             <TabPanel p={0}>
               <WithExplanatorySidebar
