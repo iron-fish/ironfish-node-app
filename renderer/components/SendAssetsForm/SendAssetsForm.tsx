@@ -6,6 +6,7 @@ import { useForm } from "react-hook-form";
 import { useIntl, defineMessages } from "react-intl";
 
 import { TRPCRouterOutputs, trpcReact } from "@/providers/TRPCProvider";
+import { Combobox } from "@/ui/Forms/Combobox/Combobox";
 import { RenderError } from "@/ui/Forms/FormField/FormField";
 import { Select } from "@/ui/Forms/Select/Select";
 import { TextInput } from "@/ui/Forms/TextInput/TextInput";
@@ -13,6 +14,7 @@ import { PillButton } from "@/ui/PillButton/PillButton";
 import { hexToUTF16String } from "@/utils/hexToUTF16String";
 import { formatOre, parseIron } from "@/utils/ironUtils";
 import { asQueryString } from "@/utils/parseRouteQuery";
+import { truncateString } from "@/utils/truncateString";
 
 import { ConfirmTransactionModal } from "./ConfirmTransactionModal/ConfirmTransactionModal";
 import {
@@ -125,6 +127,7 @@ export function SendAssetsFormContent({
     setError,
     clearErrors,
     resetField,
+    setValue,
   } = useForm<TransactionFormData>({
     resolver: zodResolver(transactionSchema),
     defaultValues: {
@@ -216,6 +219,17 @@ export function SendAssetsFormContent({
     }
   }, [assetValue, resetField, selectedAccount, accountBalances]);
 
+  const { data: contactsData } = trpcReact.getContacts.useQuery();
+  const formattedContacts = useMemo(() => {
+    return contactsData?.map((contact) => ({
+      value: contact.address,
+      label: {
+        main: contact.name,
+        sub: truncateString(contact.address, 2),
+      },
+    }));
+  }, [contactsData]);
+
   return (
     <>
       {syncingMessage}
@@ -263,10 +277,13 @@ export function SendAssetsFormContent({
             error={errors.fromAccount?.message}
           />
 
-          <TextInput
+          <Combobox
             {...register("toAccount")}
             label={formatMessage(messages.toLabel)}
             error={errors.toAccount?.message}
+            options={formattedContacts}
+            value={toAccountValue}
+            setValue={setValue}
           />
 
           <Select
