@@ -92,7 +92,7 @@ export const accountRouter = t.router({
       if (!isBlockchainSynced) {
         return {
           synced: false,
-          progress: 0,
+          progress: null,
         };
       }
 

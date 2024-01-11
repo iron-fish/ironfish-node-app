@@ -4,6 +4,9 @@ import { defineMessages, useIntl } from "react-intl";
 import { COLORS } from "@/ui/colors";
 
 const messages = defineMessages({
+  syncingNoProgressMessage: {
+    defaultMessage: "Account Syncing",
+  },
   syncingProgressMessage: {
     defaultMessage: "Account Syncing: {progress}%",
   },
@@ -12,7 +15,11 @@ const messages = defineMessages({
   },
 });
 
-export function AccountSyncingProgress({ progress }: { progress: number }) {
+export function AccountSyncingProgress({
+  progress,
+}: {
+  progress: number | null;
+}) {
   const { formatMessage } = useIntl();
 
   return (
@@ -27,8 +34,12 @@ export function AccountSyncingProgress({ progress }: { progress: number }) {
       fontSize="sm"
       textAlign="center"
       p={1}
-    >{`${formatMessage(messages.syncingProgressMessage, {
-      progress: parseFloat((progress * 100).toFixed(2)),
-    })} | ${formatMessage(messages.syncingBalanceMessage)}`}</Box>
+    >{`${
+      progress === null
+        ? formatMessage(messages.syncingNoProgressMessage)
+        : formatMessage(messages.syncingProgressMessage, {
+            progress: parseFloat((progress * 100).toFixed(2)),
+          })
+    } | ${formatMessage(messages.syncingBalanceMessage)}`}</Box>
   );
 }
