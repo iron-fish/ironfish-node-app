@@ -2,7 +2,8 @@ import { Box, Heading, Skeleton } from "@chakra-ui/react";
 import { defineMessages, useIntl } from "react-intl";
 import { Virtuoso } from "react-virtuoso";
 
-import { NoteRow, NotesHeadings } from "@/components/NoteRow/NoteRow";
+import { NoteHeadings } from "@/components/NoteRow/NoteHeadings";
+import { NoteRow } from "@/components/NoteRow/NoteRow";
 import { useScrollElementContext } from "@/layouts/MainLayout";
 
 import { TransactionNote } from "../../../shared/types";
@@ -69,7 +70,7 @@ export function NotesList({
       <Heading as="h2" fontSize="2xl" mb={8}>
         {heading}
       </Heading>
-      <NotesHeadings />
+      <NoteHeadings />
       {isLoading && <Skeleton height="600px" />}
       {!isLoading && customScrollElement && (
         <Virtuoso

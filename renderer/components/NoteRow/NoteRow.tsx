@@ -1,7 +1,7 @@
 import { ChevronRightIcon } from "@chakra-ui/icons";
-import { Box, Grid, GridItem, HStack, Text, Flex } from "@chakra-ui/react";
+import { Box, HStack, Text, Flex } from "@chakra-ui/react";
 import type { TransactionStatus, TransactionType } from "@ironfish/sdk";
-import { ReactNode } from "react";
+import { ReactNode, useMemo } from "react";
 import { defineMessages, MessageDescriptor, useIntl } from "react-intl";
 
 import { MaybeLink } from "@/ui/ChakraLink/ChakraLink";
@@ -15,38 +15,12 @@ import { ExpiredIcon } from "./icons/ExpiredIcon";
 import { PendingIcon } from "./icons/PendingIcon";
 import { ReceivedIcon } from "./icons/ReceivedIcon";
 import { SentIcon } from "./icons/SentIcon";
+import { useHeadingsText, headingMessages } from "./NoteHeadings";
 import { CopyAddress } from "../CopyAddress/CopyAddress";
 
 const CARET_WIDTH = "55px";
 
 const messages = defineMessages({
-  action: {
-    defaultMessage: "Action",
-  },
-  amount: {
-    defaultMessage: "Amount",
-  },
-  fromTo: {
-    defaultMessage: "From/To",
-  },
-  date: {
-    defaultMessage: "Date",
-  },
-  memo: {
-    defaultMessage: "Memo",
-  },
-  sent: {
-    defaultMessage: "Sent",
-  },
-  received: {
-    defaultMessage: "Received",
-  },
-  pending: {
-    defaultMessage: "Pending",
-  },
-  expired: {
-    defaultMessage: "Expired",
-  },
   multipleRecipients: {
     defaultMessage: "Multiple recipients",
   },
@@ -55,43 +29,6 @@ const messages = defineMessages({
   },
 });
 
-export function useHeadingsText() {
-  const { formatMessage } = useIntl();
-  return [
-    formatMessage(messages.action),
-    formatMessage(messages.amount),
-    formatMessage(messages.fromTo),
-    formatMessage(messages.date),
-    formatMessage(messages.memo),
-  ];
-}
-
-export function NotesHeadings() {
-  const headingsText = useHeadingsText();
-
-  return (
-    <Grid
-      display={{
-        base: "none",
-        lg: "grid",
-      }}
-      templateColumns={{
-        base: `repeat(5, 1fr)`,
-        lg: `repeat(5, 1fr) ${CARET_WIDTH}`,
-      }}
-      opacity="0.8"
-      mb={4}
-      px={8}
-    >
-      {headingsText.map((heading, i) => (
-        <GridItem key={i}>
-          <Text as="span">{heading}</Text>
-        </GridItem>
-      ))}
-    </Grid>
-  );
-}
-
 function getNoteStatusDisplay(
   type: TransactionType,
   status: TransactionStatus,
@@ -99,27 +36,27 @@ function getNoteStatusDisplay(
 ): { icon: ReactNode; message: MessageDescriptor } {
   if (asTransaction || status === "confirmed") {
     if (type === "send") {
-      return { icon: <SentIcon />, message: messages.sent };
+      return { icon: <SentIcon />, message: headingMessages.sent };
     } else if (type === "receive" || type === "miner") {
-      return { icon: <ReceivedIcon />, message: messages.received };
+      return { icon: <ReceivedIcon />, message: headingMessages.received };
     }
 
     const unhandledType: never = type;
     console.error("Unhandled transaction type", unhandledType);
-    return { icon: <ReceivedIcon />, message: messages.received };
+    return { icon: <ReceivedIcon />, message: headingMessages.received };
   } else if (
     status === "pending" ||
     status === "unknown" ||
     status === "unconfirmed"
   ) {
-    return { icon: <PendingIcon />, message: messages.pending };
+    return { icon: <PendingIcon />, message: headingMessages.pending };
   } else if (status === "expired") {
-    return { icon: <ExpiredIcon />, message: messages.expired };
+    return { icon: <ExpiredIcon />, message: headingMessages.expired };
   }
 
   const unhandledStatus: never = status;
   console.error("Unhandled transaction status", unhandledStatus);
-  return { icon: <PendingIcon />, message: messages.pending };
+  return { icon: <PendingIcon />, message: headingMessages.pending };
 }
 
 function NoteTo({
@@ -134,7 +71,9 @@ function NoteTo({
   const { formatMessage } = useIntl();
 
   if (Array.isArray(to)) {
-    return <Text as="span">{formatMessage(messages.multipleRecipients)}</Text>;
+    return (
+      <Text as="span">{formatMessage(headingMessages.multipleRecipients)}</Text>
+    );
   }
 
   return (
@@ -179,6 +118,43 @@ export function NoteRow({
   const statusDisplay = getNoteStatusDisplay(type, status, asTransaction);
   const headings = useHeadingsText();
 
+  const cellContent = useMemo(() => {
+    let key = 0;
+    return [
+      <HStack gap={4} key={key++}>
+        {statusDisplay.icon}
+        <Text as="span">{formatMessage(statusDisplay.message)}</Text>
+      </HStack>,
+      <Text as="span" key={key++}>
+        {formatOre(value)} {hexToUTF16String(assetName)}
+      </Text>,
+      <Text as="span" key={key++}>
+        <NoteTo to={to} from={from} type={type} />
+      </Text>,
+      <Text as="span" key={key++}>
+        {formatDate(timestamp)}
+      </Text>,
+      <Text as="span" key={key++}>
+        {!memo
+          ? "—"
+          : Array.isArray(memo)
+          ? formatMessage(messages.multipleMemos)
+          : memo}
+      </Text>,
+    ];
+  }, [
+    assetName,
+    formatMessage,
+    from,
+    memo,
+    statusDisplay.icon,
+    statusDisplay.message,
+    timestamp,
+    to,
+    type,
+    value,
+  ]);
+
   return (
     <MaybeLink
       href={
@@ -217,139 +193,54 @@ export function NoteRow({
               lg: "nowrap",
             }}
           >
-            <Flex
-              flexBasis={{
-                base: "calc(33% - 6px)",
-                lg: 0,
-              }}
-              flexGrow={1}
-              alignItems="center"
-            >
-              <Box>
-                <Text
-                  color={COLORS.GRAY_MEDIUM}
-                  mb={2}
-                  display={{
-                    base: "block",
-                    lg: "none",
-                  }}
+            {cellContent.map((content, i) => {
+              const isTopRow = i < 3;
+              return (
+                <Flex
+                  key={i}
+                  flexGrow={1}
+                  alignItems="center"
+                  flexBasis={
+                    isTopRow
+                      ? {
+                          base: "calc(33% - 6px)",
+                          lg: 0,
+                        }
+                      : 0
+                  }
+                  width={
+                    isTopRow
+                      ? "auto"
+                      : {
+                          base: "50%",
+                          lg: "auto",
+                        }
+                  }
+                  mt={
+                    isTopRow
+                      ? 0
+                      : {
+                          base: 8,
+                          lg: 0,
+                        }
+                  }
                 >
-                  {headings[0]}
-                </Text>
-                <HStack gap={4}>
-                  {statusDisplay.icon}
-                  <Text as="span">{formatMessage(statusDisplay.message)}</Text>
-                </HStack>
-              </Box>
-            </Flex>
-            <Flex
-              flexBasis={{
-                base: "calc(33% - 6px)",
-                lg: 0,
-              }}
-              flexGrow={1}
-              alignItems="center"
-            >
-              <Box>
-                <Text
-                  color={COLORS.GRAY_MEDIUM}
-                  mb={2}
-                  display={{
-                    base: "block",
-                    lg: "none",
-                  }}
-                >
-                  {headings[1]}
-                </Text>
-                <Text as="span">
-                  {formatOre(value)} {hexToUTF16String(assetName)}
-                </Text>
-              </Box>
-            </Flex>
-            <Flex
-              flexBasis={{
-                base: "calc(33% - 6px)",
-                lg: 0,
-              }}
-              flexGrow={1}
-              alignItems="center"
-            >
-              <Box>
-                <Text
-                  color={COLORS.GRAY_MEDIUM}
-                  mb={2}
-                  display={{
-                    base: "block",
-                    lg: "none",
-                  }}
-                >
-                  {headings[2]}
-                </Text>
-                <Text as="span">
-                  <NoteTo to={to} from={from} type={type} />
-                </Text>
-              </Box>
-            </Flex>
-            <Flex
-              flexBasis={0}
-              width={{
-                base: "50%",
-                lg: "auto",
-              }}
-              flexGrow={1}
-              alignItems="center"
-              mt={{
-                base: 8,
-                lg: 0,
-              }}
-            >
-              <Box>
-                <Text
-                  color={COLORS.GRAY_MEDIUM}
-                  mb={2}
-                  display={{
-                    base: "block",
-                    lg: "none",
-                  }}
-                >
-                  {headings[3]}
-                </Text>
-                <Text as="span">{formatDate(timestamp)}</Text>
-              </Box>
-            </Flex>
-            <Flex
-              flexBasis={0}
-              width={{
-                base: "50%",
-                lg: "auto",
-              }}
-              flexGrow={1}
-              alignItems="center"
-              mt={{
-                base: 8,
-                lg: 0,
-              }}
-            >
-              <Box>
-                <Text
-                  color={COLORS.GRAY_MEDIUM}
-                  mb={2}
-                  display={{
-                    base: "block",
-                    lg: "none",
-                  }}
-                >
-                  {headings[4]}
-                </Text>
-                <Text as="span">
-                  {!memo
-                    ? "—"
-                    : Array.isArray(memo)
-                    ? formatMessage(messages.multipleMemos)
-                    : memo}
-                </Text>
-              </Box>
-            </Flex>
+                  <Box>
+                    <Text
+                      color={COLORS.GRAY_MEDIUM}
+                      mb={2}
+                      display={{
+                        base: "block",
+                        lg: "none",
+                      }}
+                    >
+                      {headings[i]}
+                    </Text>
+                    {content}
+                  </Box>
+                </Flex>
+              );
+            })}
             {asTransaction && (
               <Flex
                 w={CARET_WIDTH}
