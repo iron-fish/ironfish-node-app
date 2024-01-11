@@ -183,6 +183,9 @@
   "FnRTEV": {
     "message": "Average"
   },
+  "FvanT6": {
+    "message": "Accounts"
+  },
   "GHoUMq": {
     "message": "Account Syncing: {progress}%"
   },
@@ -596,6 +599,9 @@
   },
   "wsALI4": {
     "message": "Enter Encoded Key"
+  },
+  "xP64Lw": {
+    "message": "Address Book"
   },
   "xkLxAx": {
     "message": "Account Created"

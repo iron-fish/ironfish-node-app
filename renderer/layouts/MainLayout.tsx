@@ -9,6 +9,7 @@ import {
 } from "@chakra-ui/react";
 import { useRouter } from "next/router";
 import { createContext, ReactNode, useContext, useState } from "react";
+import { defineMessages, useIntl } from "react-intl";
 
 import { BackButton } from "@/components/BackButton/BackButton";
 import { LanguageSelector } from "@/components/LanguageSelector/LanguageSelector";
@@ -27,34 +28,55 @@ import { YourNode } from "@/ui/SVGs/YourNode";
 
 import { WithDraggableArea } from "./WithDraggableArea";
 
+const messages = defineMessages({
+  accounts: {
+    defaultMessage: "Accounts",
+  },
+  send: {
+    defaultMessage: "Send",
+  },
+  receive: {
+    defaultMessage: "Receive",
+  },
+  addressBook: {
+    defaultMessage: "Address Book",
+  },
+  yourNode: {
+    defaultMessage: "Your Node",
+  },
+  releaseNotes: {
+    defaultMessage: "Release Notes",
+  },
+});
+
 const LINKS = [
   {
-    label: "Accounts",
+    label: messages.accounts,
     href: "/accounts",
     icon: <House />,
   },
   {
-    label: "Send $IRON",
+    label: messages.send,
     href: "/send",
     icon: <ArrowSend />,
   },
   {
-    label: "Receive $IRON",
+    label: messages.receive,
     href: "/receive",
     icon: <ArrowReceive />,
   },
   {
-    label: "Address Book",
+    label: messages.addressBook,
     href: "/address-book",
     icon: <AddressBook />,
   },
   {
-    label: "Your Node",
+    label: messages.yourNode,
     href: "/your-node",
     icon: <YourNode />,
   },
   {
-    label: "Release Notes",
+    label: messages.releaseNotes,
     href: "/release-notes",
     icon: <ReleaseNotes />,
   },
@@ -85,6 +107,7 @@ function ResponsiveLogo() {
 
 function Sidebar() {
   const router = useRouter();
+  const { formatMessage } = useIntl();
 
   return (
     <Flex flexDirection="column" alignItems="stretch" w="100%">
@@ -123,7 +146,7 @@ function Sidebar() {
                     md: "block",
                   }}
                 >
-                  {label}
+                  {formatMessage(label)}
                 </Text>
               </HStack>
             </ChakraLink>

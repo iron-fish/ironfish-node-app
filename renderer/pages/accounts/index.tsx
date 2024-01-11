@@ -26,6 +26,9 @@ import { ImportAccount } from "@/ui/SVGs/ImportAccount";
 import { formatOre } from "@/utils/ironUtils";
 
 const messages = defineMessages({
+  accountsHeader: {
+    defaultMessage: "Accounts",
+  },
   createAccount: {
     defaultMessage: "Create",
   },
@@ -125,7 +128,9 @@ export default function Accounts() {
       <MainLayout>
         <VStack mb={10} alignItems="stretch">
           <HStack>
-            <Heading flexGrow={1}>Accounts</Heading>
+            <Heading flexGrow={1}>
+              {formatMessage(messages.accountsHeader)}
+            </Heading>
             <CreateImportActions />
           </HStack>
           <Box>
