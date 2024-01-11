@@ -10,11 +10,11 @@ import {
   Tooltip,
 } from "@chakra-ui/react";
 import Image from "next/image";
-import NextLink from "next/link";
 import { defineMessages, useIntl } from "react-intl";
 
 import treasureChest from "@/images/treasure-chest.svg";
 import { trpcReact } from "@/providers/TRPCProvider";
+import { ChakraLink } from "@/ui/ChakraLink/ChakraLink";
 import { COLORS } from "@/ui/colors";
 import { PillButton } from "@/ui/PillButton/PillButton";
 import { ShadowCard } from "@/ui/ShadowCard/ShadowCard";
@@ -101,7 +101,7 @@ export function AccountAssets({ accountName }: { accountName: string }) {
                   {formatOre(data.balances.iron.confirmed)}
                 </Heading>
                 <HStack alignItems="stretch" justifyContent="center">
-                  <NextLink
+                  <ChakraLink
                     href={
                       data.status.viewOnly
                         ? "#"
@@ -129,15 +129,13 @@ export function AccountAssets({ accountName }: { accountName: string }) {
                         </PillButton>
                       </Box>
                     </Tooltip>
-                  </NextLink>
-                  <NextLink href={`/receive?account=${accountName}`}>
-                    <Box>
-                      <PillButton size="sm" as="div">
-                        <ArrowReceive transform="scale(0.8)" />
-                        {formatMessage(messages.receiveButton)}
-                      </PillButton>
-                    </Box>
-                  </NextLink>
+                  </ChakraLink>
+                  <ChakraLink href={`/receive?account=${accountName}`}>
+                    <PillButton size="sm" as="div">
+                      <ArrowReceive transform="scale(0.8)" />
+                      {formatMessage(messages.receiveButton)}
+                    </PillButton>
+                  </ChakraLink>
                 </HStack>
               </Flex>
               <Image alt="" src={treasureChest} />
