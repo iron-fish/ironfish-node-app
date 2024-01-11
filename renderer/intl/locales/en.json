@@ -114,6 +114,9 @@
   "8GvVWZ": {
     "message": "Something went wrong, please try again."
   },
+  "8JwFP/": {
+    "message": "Custom account name?"
+  },
   "8WtyrD": {
     "message": "Spanish"
   },
@@ -137,6 +140,9 @@
   },
   "9j3hXO": {
     "message": "To"
+  },
+  "9pwT3E": {
+    "message": "Need Help? Find us on Discord"
   },
   "9uOFF3": {
     "message": "Overview"
@@ -203,6 +209,9 @@
   },
   "HkADqs": {
     "message": "Fee ($IRON)"
+  },
+  "HuLdd1": {
+    "message": "Turn this on if you want to specify a custom name for this account. Otherwise, the account name will be inferred from your encoded key."
   },
   "Jjpq7w": {
     "message": "Block Sequence"
