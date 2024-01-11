@@ -97,12 +97,8 @@ export function TransactionInformation({ transaction, ...rest }: Props) {
         {formatMessage(messages.transactionInformation)}
       </Heading>
       <Grid templateColumns="repeat(3, 1fr)" gap={5}>
-        {ITEMS.map(({ label, icon, render }) => (
-          <GridItem
-            key={label.defaultMessage}
-            display="flex"
-            alignItems="stretch"
-          >
+        {ITEMS.map(({ label, icon, render }, i) => (
+          <GridItem key={i} display="flex" alignItems="stretch">
             <ShadowCard
               contentContainerProps={{
                 p: 8,
