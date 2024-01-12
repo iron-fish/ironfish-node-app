@@ -52,35 +52,41 @@ const messages = defineMessages({
   },
 });
 
-const sortOptionsMap: {
+const languageOptionsMap: {
   [K in Locales]: {
-    label: (typeof messages)[keyof typeof messages];
+    message: (typeof messages)[keyof typeof messages];
+    ownLanguageLabel: string;
     value: K;
   };
 } = {
   "en-US": {
-    label: messages.langEnglish,
+    message: messages.langEnglish,
+    ownLanguageLabel: "English",
     value: "en-US",
   },
   "es-MX": {
-    label: messages.langSpanish,
+    message: messages.langSpanish,
+    ownLanguageLabel: "Español",
     value: "es-MX",
   },
   "zh-CN": {
-    label: messages.langChinese,
+    message: messages.langChinese,
+    ownLanguageLabel: "中文",
     value: "zh-CN",
   },
   "ru-RU": {
-    label: messages.langRussian,
+    message: messages.langRussian,
+    ownLanguageLabel: "Русский",
     value: "ru-RU",
   },
   "uk-UA": {
-    label: messages.langUkrainian,
+    message: messages.langUkrainian,
+    ownLanguageLabel: "Українська",
     value: "uk-UA",
   },
 };
 
-const sortOptions = Object.values(sortOptionsMap);
+const languageOptions = Object.values(languageOptionsMap);
 
 const localeSchema = z.object({
   language: z.enum(["en-US", "es-MX", "zh-CN", "ru-RU", "uk-UA"]),
@@ -90,7 +96,7 @@ export function LanguageSelector() {
   const { formatMessage } = useIntl();
   const { isOpen, onOpen, onClose } = useDisclosure();
   const selectedLocaleContext = useSelectedLocaleContext();
-  const selectedLanguage = sortOptionsMap[selectedLocaleContext.locale];
+  const selectedLanguage = languageOptionsMap[selectedLocaleContext.locale];
 
   return (
     <>
@@ -119,7 +125,7 @@ export function LanguageSelector() {
             md: "block",
           }}
         >
-          {formatMessage(selectedLanguage.label)}
+          {formatMessage(selectedLanguage.message)}
         </Text>
         <Box
           display={{
@@ -145,9 +151,9 @@ function LanguageSelectorModal({
   const { formatMessage } = useIntl();
   const selectedLocaleContext = useSelectedLocaleContext();
 
-  const translatedOptions = sortOptions.map((option) => ({
+  const options = languageOptions.map((option) => ({
     ...option,
-    label: formatMessage(option.label),
+    label: option.ownLanguageLabel,
   }));
 
   const { register, watch } = useForm<z.infer<typeof localeSchema>>({
@@ -167,7 +173,7 @@ function LanguageSelectorModal({
           </Heading>
           <Text mb={8}>
             {formatMessage(messages.description, {
-              languageCount: sortOptions.length,
+              languageCount: languageOptions.length,
             })}
           </Text>
 
@@ -178,7 +184,7 @@ function LanguageSelectorModal({
               },
             })}
             label="Language"
-            options={translatedOptions}
+            options={options}
             value={selectedValue}
           />
         </ModalBody>
