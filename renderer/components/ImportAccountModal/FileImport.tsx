@@ -1,9 +1,12 @@
-import { Box, Text, VStack, HStack, chakra } from "@chakra-ui/react";
+import { Box, Text, VStack, HStack, chakra, Switch } from "@chakra-ui/react";
 import { useCallback, useRef, useState } from "react";
 import { defineMessages, useIntl } from "react-intl";
 
 import { COLORS } from "@/ui/colors";
+import { TextInput } from "@/ui/Forms/TextInput/TextInput";
 import { PillButton } from "@/ui/PillButton/PillButton";
+
+import { CustomNameChip } from "../CustomNameChip/CustomNameChip";
 
 type Props = {
   onImport: (args: { name?: string; account: string }) => void;
@@ -28,25 +31,50 @@ const messages = defineMessages({
   continue: {
     defaultMessage: "Continue",
   },
+  accountName: {
+    defaultMessage: "Account Name",
+  },
 });
 
 export function FileImport({ onImport, onCancel, isLoading, error }: Props) {
+  const { formatMessage } = useIntl();
   const [file, setFile] = useState<File | null>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
-  const { formatMessage } = useIntl();
+
+  const [isCustomNameEnabled, setIsCustomNameEnabled] = useState(false);
+  const [customName, setCustomName] = useState("");
 
   const commitImport = useCallback(async () => {
     const fileContent = await file?.text();
     if (!fileContent) return;
     onImport({
       account: fileContent,
+      name: isCustomNameEnabled ? customName : undefined,
     });
-  }, [file, onImport]);
+  }, [customName, file, isCustomNameEnabled, onImport]);
 
   const isDisabled = isLoading || !file;
 
   return (
     <Box>
+      <VStack alignItems="stretch" gap={3} mb={6}>
+        <HStack>
+          <CustomNameChip />
+          <Switch
+            isChecked={isCustomNameEnabled}
+            onChange={(e) => setIsCustomNameEnabled(e.target.checked)}
+          />
+        </HStack>
+        {isCustomNameEnabled && (
+          <TextInput
+            label={formatMessage(messages.accountName)}
+            value={customName}
+            onChange={(e) => {
+              setCustomName(e.target.value);
+            }}
+          />
+        )}
+      </VStack>
       <VStack alignItems="stretch" gap={4}>
         <Text>{formatMessage(messages.selectFile)}</Text>
         <chakra.input

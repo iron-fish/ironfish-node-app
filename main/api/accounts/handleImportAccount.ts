@@ -25,8 +25,11 @@ export async function handleImportAccount({
   } catch (error: unknown) {
     log.error(error);
 
-    throw new Error(
-      "Failed to import account, please verify your inputs and try again.",
-    );
+    const message =
+      error instanceof Error && error.message
+        ? error.message
+        : "Failed to import account, please try again.";
+
+    throw new Error(message);
   }
 }

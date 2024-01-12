@@ -1,9 +1,12 @@
-import { Box, HStack } from "@chakra-ui/react";
+import { Box, HStack, Switch, VStack } from "@chakra-ui/react";
 import { useCallback, useState } from "react";
 import { defineMessages, useIntl } from "react-intl";
 
 import { TextareaInput } from "@/ui/Forms/TextareaInput/TextareaInput";
+import { TextInput } from "@/ui/Forms/TextInput/TextInput";
 import { PillButton } from "@/ui/PillButton/PillButton";
+
+import { CustomNameChip } from "../CustomNameChip/CustomNameChip";
 
 const messages = defineMessages({
   cancel: {
@@ -14,6 +17,9 @@ const messages = defineMessages({
   },
   enterEncodedKey: {
     defaultMessage: "Enter Encoded Key",
+  },
+  accountName: {
+    defaultMessage: "Account Name",
   },
 });
 
@@ -30,27 +36,48 @@ export function EncodedKeyImport({
   isLoading,
   error,
 }: Props) {
-  const [encodedKey, setEncodedKey] = useState("");
   const { formatMessage } = useIntl();
+  const [encodedKey, setEncodedKey] = useState("");
+  const [isCustomNameEnabled, setIsCustomNameEnabled] = useState(false);
+  const [customName, setCustomName] = useState("");
 
   const commitImport = useCallback(() => {
     onImport({
       account: encodedKey,
+      name: isCustomNameEnabled ? customName : undefined,
     });
-  }, [encodedKey, onImport]);
+  }, [customName, encodedKey, isCustomNameEnabled, onImport]);
 
   const isDisabled = isLoading || !encodedKey;
 
   return (
     <Box>
-      <TextareaInput
-        label={formatMessage(messages.enterEncodedKey)}
-        value={encodedKey}
-        error={error}
-        onChange={(e) => {
-          setEncodedKey(e.target.value);
-        }}
-      />
+      <VStack alignItems="stretch" gap={3}>
+        <HStack>
+          <CustomNameChip />
+          <Switch
+            isChecked={isCustomNameEnabled}
+            onChange={(e) => setIsCustomNameEnabled(e.target.checked)}
+          />
+        </HStack>
+        {isCustomNameEnabled && (
+          <TextInput
+            label={formatMessage(messages.accountName)}
+            value={customName}
+            onChange={(e) => {
+              setCustomName(e.target.value);
+            }}
+          />
+        )}
+        <TextareaInput
+          label={formatMessage(messages.enterEncodedKey)}
+          value={encodedKey}
+          error={error}
+          onChange={(e) => {
+            setEncodedKey(e.target.value);
+          }}
+        />
+      </VStack>
       <HStack justifyContent="flex-end" mt={8}>
         <PillButton
           isDisabled={isLoading}
