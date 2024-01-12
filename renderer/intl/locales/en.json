@@ -177,6 +177,9 @@
   "Dh1MGS": {
     "message": "Account Syncing"
   },
+  "DnuK8f": {
+    "message": "Turn this on if you want to specify a custom name for this account. Otherwise, the account name will be inferred from your exported account data."
+  },
   "FM2S9I": {
     "message": "Set up your node"
   },
@@ -209,9 +212,6 @@
   },
   "HkADqs": {
     "message": "Fee ($IRON)"
-  },
-  "HuLdd1": {
-    "message": "Turn this on if you want to specify a custom name for this account. Otherwise, the account name will be inferred from your encoded key."
   },
   "Jjpq7w": {
     "message": "Block Sequence"

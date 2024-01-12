@@ -9,7 +9,7 @@ const messages = defineMessages({
   },
   viewOnlyTooltip: {
     defaultMessage:
-      "Turn this on if you want to specify a custom name for this account. Otherwise, the account name will be inferred from your encoded key.",
+      "Turn this on if you want to specify a custom name for this account. Otherwise, the account name will be inferred from your exported account data.",
   },
 });
 
