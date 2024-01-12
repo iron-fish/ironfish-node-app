@@ -64,10 +64,16 @@ export function AccountAddressDisplay({ address }: Props) {
         borderColor={COLORS.BLACK}
         color={COLORS.LINK}
         _dark={{
-          borderColor: COLORS.WHITE,
+          bg: COLORS.DARK_MODE.GRAY_DARK,
+          borderColor: COLORS.DARK_MODE.GRAY_MEDIUM,
         }}
       >
-        <Text fontSize="md" as="span" color={COLORS.LINK}>
+        <Text
+          fontSize="md"
+          as="span"
+          color={COLORS.LINK}
+          _dark={{ color: COLORS.LINK }}
+        >
           {formatMessage(messages.copyButton)}
         </Text>
         <CopyIcon />
