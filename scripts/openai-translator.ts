@@ -5,7 +5,8 @@ import { config as dotenvConfig } from "dotenv";
 import { isWithinTokenLimit } from "gpt-tokenizer";
 import { OpenAI } from "openai";
 
-import english from "../renderer/intl/locales/en.json";
+import { LOCALES, Locale } from "../renderer/intl/intl-constants";
+import english from "../renderer/intl/locales/en-US.json";
 
 dotenvConfig();
 
@@ -149,25 +150,45 @@ function addOriginalMessageAsDescription(
   });
 }
 
-const languages = ["es-MX"];
+function assertLocale(str: string): asserts str is (typeof LOCALES)[number] {
+  if (!(LOCALES as ReadonlyArray<string>).includes(str)) {
+    throw new Error(`Invalid locale: ${str}`);
+  }
+}
 
+// Translate all locales:
+// npm run translate
+//
+// Translate a specific locales:
+// npm run translate -- --locale=es-MX
 async function main() {
+  let locales: ReadonlyArray<Locale> = LOCALES;
+
+  const args = process.argv.slice(2);
+  const specifiedLocale = args.find((arg) => arg.startsWith("--locale="));
+
+  if (specifiedLocale) {
+    const locale = specifiedLocale.split("=")[1];
+    assertLocale(locale);
+    locales = [locale];
+  }
+
   // Chunk out content to prevent hitting the token limit.
   // Note that the limit is currently far below the actual limit.
   const englishChunks = createContentChunks(english);
 
   // Translate each language and write result to file
-  for (const language of languages) {
-    console.log(`Begin translation to ${language}`);
+  for (const locale of locales) {
+    console.log(`Begin translation to ${locale}`);
     let translatedContent = {};
 
     let currentChunk = 0;
 
     for await (const chunk of englishChunks) {
-      console.log(`Translating chunk ${++currentChunk} of ${language}`);
+      console.log(`Translating chunk ${++currentChunk} of ${locale}`);
       console.time("Translated chunk in: ");
 
-      const translation = await translate(chunk, language);
+      const translation = await translate(chunk, locale);
       translatedContent = {
         ...translatedContent,
         ...translation,
@@ -176,14 +197,13 @@ async function main() {
     }
 
     // Add original message to each translated entry's description
-    addOriginalMessageAsDescription(translatedContent, language);
+    addOriginalMessageAsDescription(translatedContent, locale);
 
     // Write result to file
-    const languageCode = language.split("-")[0];
-    console.log(`Writing translation to ${languageCode}.json`);
+    console.log(`Writing translation to ${locale}.json`);
 
     fs.writeFileSync(
-      path.join(__dirname, `../renderer/intl/locales/${languageCode}.json`),
+      path.join(__dirname, `../renderer/intl/locales/${locale}.json`),
       JSON.stringify(translatedContent, null, 2),
     );
   }

@@ -10,11 +10,10 @@ import { IntlProvider as ReactIntlProvider } from "react-intl";
 
 import { trpcReact } from "@/providers/TRPCProvider";
 
-import English from "./compiled-locales/en.json";
-import Spanish from "./compiled-locales/es.json";
+import English from "./compiled-locales/en-US.json";
+import Spanish from "./compiled-locales/es-MX.json";
+import { LOCALES, DEFAULT_LOCALE } from "./intl-constants";
 
-const DEFAULT_LOCALE = "en-US";
-export const LOCALES = ["en-US", "es-MX"] as const;
 export type Locales = (typeof LOCALES)[number];
 
 const SelectedLocaleContext = createContext<{

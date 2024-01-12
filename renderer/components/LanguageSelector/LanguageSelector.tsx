@@ -28,6 +28,15 @@ const messages = defineMessages({
   langSpanish: {
     defaultMessage: "Spanish",
   },
+  langChinese: {
+    defaultMessage: "Chinese",
+  },
+  langRussian: {
+    defaultMessage: "Russian",
+  },
+  langUkranian: {
+    defaultMessage: "Ukranian",
+  },
   chooseLanguage: {
     defaultMessage: "Choose your language",
   },
@@ -57,12 +66,24 @@ const sortOptionsMap: {
     label: messages.langSpanish,
     value: "es-MX",
   },
+  "zh-CN": {
+    label: messages.langChinese,
+    value: "zh-CN",
+  },
+  "ru-RU": {
+    label: messages.langRussian,
+    value: "ru-RU",
+  },
+  "uk-UA": {
+    label: messages.langUkranian,
+    value: "uk-UA",
+  },
 };
 
 const sortOptions = Object.values(sortOptionsMap);
 
 const localeSchema = z.object({
-  language: z.enum(["en-US", "es-MX"]),
+  language: z.enum(["en-US", "es-MX", "zh-CN", "ru-RU", "uk-UA"]),
 });
 
 export function LanguageSelector() {
