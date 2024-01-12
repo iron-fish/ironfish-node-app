@@ -112,6 +112,14 @@ export function StatusIndicator() {
       py={2}
       textAlign="center"
       lineHeight="1.25em"
+      width={{
+        base: "34px",
+        md: "100%",
+      }}
+      height={{
+        base: "34px",
+        md: "100%",
+      }}
       _dark={{
         bg:
           status === "SYNCED"
