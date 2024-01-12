@@ -16,6 +16,9 @@ import { PillButton } from "@/ui/PillButton/PillButton";
 import { CreateAccount } from "@/ui/SVGs/CreateAccount";
 
 const messages = defineMessages({
+  addressBook: {
+    defaultMessage: "Address Book",
+  },
   noContacts: {
     defaultMessage: "You don't have any contacts",
   },
@@ -42,8 +45,10 @@ export default function AddressBookPage() {
 
   return (
     <MainLayout>
-      <HStack mb={10}>
-        <Heading flexGrow={1}>Address Book</Heading>
+      <HStack mb={8}>
+        <Heading fontSize={28} lineHeight="160%" flexGrow={1}>
+          {formatMessage(messages.addressBook)}
+        </Heading>
         <HStack>
           <PillButton
             size="sm"

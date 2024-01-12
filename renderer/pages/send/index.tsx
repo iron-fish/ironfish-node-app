@@ -25,7 +25,9 @@ export default function Send() {
 
   return (
     <MainLayout>
-      <Heading mb={5}>{formatMessage(messages.heading)}</Heading>
+      <Heading fontSize={28} lineHeight="160%" mb={5}>
+        {formatMessage(messages.heading)}
+      </Heading>
       <Flex gap={16}>
         <Box maxW="592px" w="100%">
           <SendAssetsForm />
@@ -34,7 +36,13 @@ export default function Send() {
           <Heading fontSize="2xl" mb={4}>
             {formatMessage(messages.aboutFees)}
           </Heading>
-          <Text fontSize="sm" maxW="340px" mb={8} color={COLORS.GRAY_MEDIUM}>
+          <Text
+            fontSize="sm"
+            maxW="340px"
+            mb={8}
+            color={COLORS.GRAY_MEDIUM}
+            _dark={{ color: COLORS.DARK_MODE.GRAY_LIGHT }}
+          >
             {formatMessage(messages.feeAmount)}
           </Text>
           <Image src={treasureChest} alt="" />

@@ -55,7 +55,9 @@ export default function ReleaseNotes() {
   return (
     <MainLayout>
       <HStack alignItems="center" mb={10} gap={6}>
-        <Heading>{formatMessage(messages.releaseNotes)}</Heading>
+        <Heading fontSize={28} lineHeight="160%">
+          {formatMessage(messages.releaseNotes)}
+        </Heading>
         <Box
           background={COLORS.GRAY_LIGHT}
           borderRadius="5px"

@@ -42,9 +42,11 @@ export default function YourNode() {
 
   return (
     <MainLayout>
-      <Heading>{formatMessage(messages.yourNode)}</Heading>
+      <Heading fontSize={28} lineHeight="160%">
+        {formatMessage(messages.yourNode)}
+      </Heading>
       <Tabs isLazy>
-        <TabList mb={8}>
+        <TabList mt={3} mb={8}>
           <Tab>{formatMessage(messages.overview)}</Tab>
           <Tab>{formatMessage(messages.settings)}</Tab>
           <Tab>{formatMessage(messages.resources)}</Tab>

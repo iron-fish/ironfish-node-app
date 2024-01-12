@@ -75,14 +75,13 @@ function SingleContactContent({ address }: { address: string }) {
       }}
     >
       <Box>
-        <HStack mb={4} gap={4} alignItems="center">
-          <FishIcon bg={getGradientByOrder(contactData.order ?? 0)} mr={2} />
-          <Heading>{contactData.name}</Heading>
-          <CopyAddress
-            address={contactData.address}
-            transform="translateY(0.4em)"
-          />
+        <HStack mb={3} gap={4} alignItems="center">
+          <FishIcon bg={getGradientByOrder(contactData.order ?? 0)} />
+          <Heading fontSize={28} lineHeight="160%">
+            {contactData.name}
+          </Heading>
           <PillButton
+            ml={4}
             size="sm"
             onClick={(e) => {
               e.preventDefault();
@@ -93,6 +92,7 @@ function SingleContactContent({ address }: { address: string }) {
             {formatMessage(messages.send)}
           </PillButton>
         </HStack>
+        <CopyAddress address={contactData.address} truncate={false} />
         <Tabs isLazy>
           <TabList mb={8}>
             <Tab>{formatMessage(messages.transactions)}</Tab>
