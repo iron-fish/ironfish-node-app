@@ -671,6 +671,10 @@
     "message": "Serás redirigido automáticamente a la página de tus cuentas una vez que se aplique la instantánea.",
     "description": "You'll automatically be redirected to your accounts page once the snapshot is applied."
   },
+  "hDI+JM": {
+    "message": "Ordenar",
+    "description": "Sort by"
+  },
   "hR0flV": {
     "message": "Todas tus transacciones, ya sean en $IRON u otros activos personalizados, se mostrarán en esta sección. Para iniciar una transacción, simplemente haz clic en las pestañas 'Enviar' o 'Recibir'.",
     "description": "All your transactions, whether in $IRON or other custom assets, will be displayed in this section. To start a transaction, simply click on the 'Send' or 'Receive' tabs."
@@ -838,6 +842,10 @@
   "xkLxAx": {
     "message": "Cuenta Creada",
     "description": "Account Created"
+  },
+  "xmcVZ0": {
+    "message": "Buscar",
+    "description": "Search"
   },
   "y3LzSM": {
     "message": "Máximo de compañeros",

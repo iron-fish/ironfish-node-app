@@ -671,6 +671,10 @@
     "message": "Вы автоматически будете перенаправлены на страницу своих аккаунтов после применения снимка.",
     "description": "You'll automatically be redirected to your accounts page once the snapshot is applied."
   },
+  "hDI+JM": {
+    "message": "Сортировать",
+    "description": "Sort by"
+  },
   "hR0flV": {
     "message": "Все ваши транзакции, будь то в $IRON или других пользовательских активах, будут отображаться в этом разделе. Чтобы начать транзакцию, просто нажмите на вкладки 'Отправить' или 'Получить'.",
     "description": "All your transactions, whether in $IRON or other custom assets, will be displayed in this section. To start a transaction, simply click on the 'Send' or 'Receive' tabs."
@@ -838,6 +842,10 @@
   "xkLxAx": {
     "message": "Аккаунт создан",
     "description": "Account Created"
+  },
+  "xmcVZ0": {
+    "message": "Поиск",
+    "description": "Search"
   },
   "y3LzSM": {
     "message": "Максимум пиров",

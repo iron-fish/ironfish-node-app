@@ -671,6 +671,10 @@
     "message": "一旦应用了快照，您将自动被重定向到您的账户页面。",
     "description": "You'll automatically be redirected to your accounts page once the snapshot is applied."
   },
+  "hDI+JM": {
+    "message": "排序",
+    "description": "Sort by"
+  },
   "hR0flV": {
     "message": "您的所有交易，无论是在 $IRON 或其他自定义资产中，都会在此部分显示。要开始交易，只需点击 '发送' 或 '接收' 标签。",
     "description": "All your transactions, whether in $IRON or other custom assets, will be displayed in this section. To start a transaction, simply click on the 'Send' or 'Receive' tabs."
@@ -838,6 +842,10 @@
   "xkLxAx": {
     "message": "账户已创建",
     "description": "Account Created"
+  },
+  "xmcVZ0": {
+    "message": "搜索",
+    "description": "Search"
   },
   "y3LzSM": {
     "message": "最大同伴",

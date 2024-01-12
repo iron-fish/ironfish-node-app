@@ -21,6 +21,9 @@ import { SearchInput } from "../SearchInput/SearchInput";
 import { ChainSyncingMessage } from "../SyncingMessages/SyncingMessages";
 
 const messages = defineMessages({
+  sortBy: {
+    defaultMessage: "Sort by",
+  },
   accountName: {
     defaultMessage: "Account name — A to Z",
   },
@@ -112,7 +115,7 @@ export function UserAccountsList() {
           <Menu>
             <MenuButton
               as={DropdownTrigger}
-              label="Sort by"
+              label={formatMessage(messages.sortBy)}
               value={formatMessage(sortOption.label)}
             />
             <MenuList>

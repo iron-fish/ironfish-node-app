@@ -9,6 +9,9 @@ import { COLORS } from "@/ui/colors";
 type Status = "CONNECTING" | "SYNCING" | "SCANNING" | "SYNCED";
 
 const messages = defineMessages({
+  nodeStatus: {
+    defaultMessage: "Node Status",
+  },
   connecting: {
     defaultMessage: "Connecting",
   },
@@ -101,6 +104,7 @@ function useStatus() {
 
 export function StatusIndicator() {
   const { status, label, shortLabel } = useStatus();
+  const { formatMessage } = useIntl();
 
   return (
     <Flex
@@ -142,7 +146,7 @@ export function StatusIndicator() {
           md: "block",
         }}
       >
-        Node Status: {label}
+        {formatMessage(messages.nodeStatus)}: {label}
       </Text>
       <Box
         display={{
