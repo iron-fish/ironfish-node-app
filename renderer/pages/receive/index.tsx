@@ -72,7 +72,9 @@ export function ReceiveAccountsContent({
 
   return (
     <MainLayout>
-      <Heading mb={5}>{formatMessage(messages.receiveHeading)}</Heading>
+      <Heading fontSize={28} lineHeight="160%" mb={5}>
+        {formatMessage(messages.receiveHeading)}
+      </Heading>
 
       <WithExplanatorySidebar
         heading={formatMessage(messages.transactionDetailsHeading)}
