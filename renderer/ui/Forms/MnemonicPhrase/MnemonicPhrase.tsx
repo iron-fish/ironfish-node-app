@@ -12,6 +12,7 @@ import {
 import { get } from "lodash-es";
 import { useCallback, type ClipboardEvent, ChangeEvent } from "react";
 import { RiEyeCloseLine, RiEyeLine, RiFileCopyLine } from "react-icons/ri";
+import { defineMessages, useIntl } from "react-intl";
 import { useCopyToClipboard, useToggle } from "usehooks-ts";
 
 import { COLORS } from "@/ui/colors";
@@ -20,6 +21,18 @@ import { useHasGroupBlur } from "@/utils/formUtils";
 import { MergeProps } from "@/utils/react";
 
 import { FormField, FormFieldProps } from "../FormField/FormField";
+
+const messages = defineMessages({
+  mnemonicPhrase: {
+    defaultMessage: "Mnemonic Phrase",
+  },
+  mnemonicPhraseCopied: {
+    defaultMessage: "Mnemonic phrase copied to clipboard!",
+  },
+  mnemonicPhrasePlaceholder: {
+    defaultMessage: "Empty",
+  },
+});
 
 export const PHRASE_ITEM_COUNT = 24;
 export const EMPTY_PHRASE_ARRAY = Array.from(
@@ -54,6 +67,7 @@ export function MnemonicPhrase({
   const [isHidden, toggleIsHidden] = useToggle(defaultVisible ? false : true);
   const [_, copyToClipboard] = useCopyToClipboard();
   const toast = useIFToast();
+  const { formatMessage } = useIntl();
 
   const handleChange = useCallback(
     (e: ChangeEvent<HTMLInputElement>) => {
@@ -107,8 +121,12 @@ export function MnemonicPhrase({
       error={hasBlur && error ? error : undefined}
       label={
         <HStack>
-          <Text fontSize="sm" color={COLORS.GRAY_MEDIUM}>
-            Mnemonic Phrase
+          <Text
+            fontSize="sm"
+            color={COLORS.GRAY_MEDIUM}
+            _dark={{ color: COLORS.DARK_MODE.GRAY_LIGHT }}
+          >
+            {formatMessage(messages.mnemonicPhrase)}
           </Text>
           {readOnly && (
             <Box
@@ -117,7 +135,7 @@ export function MnemonicPhrase({
               onClick={() => {
                 copyToClipboard(phrase.join(" "));
                 toast({
-                  message: "Mnemonic phrase copied to clipboard!",
+                  message: formatMessage(messages.mnemonicPhraseCopied),
                 });
               }}
             >
@@ -163,6 +181,10 @@ export function MnemonicPhrase({
                     h="25px"
                     bg={COLORS.GRAY_LIGHT}
                     color={COLORS.GRAY_MEDIUM}
+                    _dark={{
+                      bg: COLORS.DARK_MODE.GRAY_DARK,
+                      color: COLORS.WHITE,
+                    }}
                     alignItems="center"
                     justifyContent="center"
                     borderRadius="2px"
@@ -178,12 +200,12 @@ export function MnemonicPhrase({
                   onChange={handleChange}
                   onPaste={handlePaste}
                   borderColor={hasBlur && !value ? COLORS.RED : COLORS.BLACK}
-                  placeholder="Empty"
+                  placeholder={formatMessage(
+                    messages.mnemonicPhrasePlaceholder,
+                  )}
                   _dark={{
-                    borderColor:
-                      hasBlur && !value
-                        ? COLORS.RED
-                        : COLORS.DARK_MODE.GRAY_LIGHT,
+                    bg: COLORS.DARK_MODE.GRAY_MEDIUM,
+                    borderColor: hasBlur && !value ? COLORS.RED : "transparent",
                   }}
                   _hover={{
                     borderColor: COLORS.BLACK,

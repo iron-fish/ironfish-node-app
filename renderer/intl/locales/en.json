@@ -2,6 +2,9 @@
   "+02x3X": {
     "message": "Your address book is where you can manage all of your contacts, their names, and their public addresses."
   },
+  "+RhnH+": {
+    "message": "Empty"
+  },
   "+gH1Ai": {
     "message": "Node Name"
   },
@@ -293,6 +296,9 @@
   },
   "QS9NTE": {
     "message": "Account name — A to Z"
+  },
+  "QXxopU": {
+    "message": "Mnemonic phrase copied to clipboard!"
   },
   "QlsDcr": {
     "message": "Action"

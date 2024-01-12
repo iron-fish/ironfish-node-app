@@ -36,7 +36,8 @@ export function FormField({
         borderColor={error ? COLORS.RED : COLORS.BLACK}
         borderRadius={4}
         _dark={{
-          borderColor: error ? COLORS.RED : COLORS.WHITE,
+          bg: COLORS.DARK_MODE.GRAY_DARK,
+          borderColor: error ? COLORS.RED : COLORS.DARK_MODE.GRAY_MEDIUM,
         }}
         {...triggerProps}
       >
@@ -57,6 +58,9 @@ export function FormField({
               as="span"
               fontSize="sm"
               color={COLORS.GRAY_MEDIUM}
+              _dark={{
+                color: COLORS.DARK_MODE.GRAY_LIGHT,
+              }}
               flexGrow={1}
               transition="transform 0.2s ease-in-out"
             >
