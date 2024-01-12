@@ -102,7 +102,13 @@ async function translate(content: JSONContent, targetLanguage: string) {
     throw new Error("No translation text returned");
   }
 
-  return JSON.parse(translationText);
+  try {
+    return JSON.parse(translationText);
+  } catch (error) {
+    console.error(error);
+    console.log(translationText);
+    throw new Error("Invalid JSON");
+  }
 }
 
 function createContentChunks(content: JSONContent) {
@@ -173,19 +179,25 @@ async function main() {
     locales = [locale];
   }
 
+  console.log(`Translating the following locales: ${locales.join(", ")}\n`);
+
   // Chunk out content to prevent hitting the token limit.
   // Note that the limit is currently far below the actual limit.
   const englishChunks = createContentChunks(english);
 
   // Translate each language and write result to file
   for (const locale of locales) {
-    console.log(`Begin translation to ${locale}`);
+    console.log(`Starting translation for locale: ${locale}\n`);
     let translatedContent = {};
 
     let currentChunk = 0;
 
     for await (const chunk of englishChunks) {
-      console.log(`Translating chunk ${++currentChunk} of ${locale}`);
+      console.log(
+        `${locale}: Translating chunk ${++currentChunk} of ${
+          englishChunks.length
+        }`,
+      );
       console.time("Translated chunk in: ");
 
       const translation = await translate(chunk, locale);
