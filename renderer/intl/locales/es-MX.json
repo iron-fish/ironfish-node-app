@@ -1,11 +1,23 @@
 {
   "+02x3X": {
-    "message": "Tu libreta de direcciones es donde puedes administrar todos tus contactos, sus nombres y sus direcciones públicas.",
+    "message": "Tu libro de direcciones es donde puedes administrar todos tus contactos, sus nombres y sus direcciones públicas.",
     "description": "Your address book is where you can manage all of your contacts, their names, and their public addresses."
+  },
+  "+RhnH+": {
+    "message": "Vacio",
+    "description": "Empty"
   },
   "+gH1Ai": {
     "message": "Nombre del Nodo",
     "description": "Node Name"
+  },
+  "/0TOL5": {
+    "message": "Cantidad",
+    "description": "Amount"
+  },
+  "/jJLYy": {
+    "message": "Transacciones",
+    "description": "Transactions"
   },
   "/km2Zu": {
     "message": "Importar Cuenta",
@@ -15,13 +27,45 @@
     "message": "Exportar Cuenta",
     "description": "Export Account"
   },
+  "/zn2B0": {
+    "message": "Las cuentas de solo lectura no pueden iniciar transacciones",
+    "description": "View only accounts cannot initiate transactions"
+  },
+  "21ueTy": {
+    "message": "Dirección Pública",
+    "description": "Public Address"
+  },
+  "25vn7e": {
+    "message": "Progreso de descompresión: {progress}%",
+    "description": "Unzip progress: {progress}%"
+  },
+  "2AcArH": {
+    "message": "Elige esta opción si no tienes una cuenta de Iron Fish existente o si deseas crear una nueva.",
+    "description": "Choose this option if you don't have an existing Iron Fish account or if you'd like to create a new one."
+  },
+  "2DcNnd": {
+    "message": "Comparte tu dirección para recibir pagos manteniendo los detalles de tu cuenta totalmente privados.",
+    "description": "Share your address to receive payments while keeping your account details entirely private."
+  },
   "2G6Qs7": {
     "message": "Configuraciones guardadas",
     "description": "Settings saved"
   },
+  "2KXvZ0": {
+    "message": "¿Estás seguro? No puedes deshacer esta acción después.",
+    "description": "Are you sure? You can't undo this action afterwards."
+  },
   "2qzbcD": {
-    "message": "Mínimo de Pares",
+    "message": "Mínimo de Amigos",
     "description": "Min Peers"
+  },
+  "3/a0Ho": {
+    "message": "No somos capaces de descargar las notas de lanzamiento en este momento.",
+    "description": "We're not able to download release notes right now."
+  },
+  "3OLlCN": {
+    "message": "De/Para",
+    "description": "From/To"
   },
   "3VI9mt": {
     "message": "Guardar Cambios",
@@ -35,17 +79,41 @@
     "message": "Frase de Recuperación",
     "description": "Recovery Phrase"
   },
-  "43FmnD": {
-    "message": "Proteger tu frase mnemónica y llaves codificadas es esencial para mantener plena propiedad, control y seguridad sobre tus activos digitales.",
-    "description": "Safeguarding your mnemonic phrase and encoded keys is essential to maintain full ownership, control, and security over your digital assets."
-  },
   "47FYwb": {
     "message": "Cancelar",
     "description": "Cancel"
   },
+  "4l6vz1": {
+    "message": "Copiar",
+    "description": "Copy"
+  },
+  "4woaDB": {
+    "message": "Enviando Transacción",
+    "description": "Submitting Transaction"
+  },
+  "551bXe": {
+    "message": "Solo Lectura",
+    "description": "View Only"
+  },
+  "59UOUq": {
+    "message": "No tienes ninguna cuenta",
+    "description": "You don't have any accounts"
+  },
   "5JcXdV": {
     "message": "Crear Cuenta",
     "description": "Create Account"
+  },
+  "5MiM5y": {
+    "message": "Enviar Activo",
+    "description": "Send Asset"
+  },
+  "5OJ1yw": {
+    "message": "Nombre Interno de la Cuenta",
+    "description": "Internal Account Name"
+  },
+  "5UdRx1": {
+    "message": "Importar Con",
+    "description": "Import With"
   },
   "5c3Wrw": {
     "message": "Balance total de cuentas",
@@ -55,8 +123,12 @@
     "message": "Desconocido",
     "description": "Unknown"
   },
+  "62mqGj": {
+    "message": "Eliminar Contacto",
+    "description": "Delete Contact"
+  },
   "6AhQlk": {
-    "message": "¿Estás seguro de que quieres restablecer el nodo a su estado inicial?",
+    "message": "¿Estás seguro de que quieres reiniciar el nodo a su estado inicial?",
     "description": "Are you sure you want to reset the node to its initial state?"
   },
   "6Ior7i": {
@@ -67,33 +139,145 @@
     "message": "Tipo de Conexión",
     "description": "Connection Type"
   },
-  "6T+v0W": {
-    "message": "Cuenta importada",
-    "description": "Account imported"
+  "6q3tCn": {
+    "message": "Conectando",
+    "description": "Connecting"
   },
-  "6yYqh0": {
-    "message": "Telemetría",
-    "description": "Telemetry"
+  "7JxXKc": {
+    "message": "Descargar Instantánea",
+    "description": "Download Snapshot"
+  },
+  "7N6OYQ": {
+    "message": "Ver Transacción",
+    "description": "View Transaction"
+  },
+  "8GvVWZ": {
+    "message": "Algo salió mal, por favor, inténtalo de nuevo.",
+    "description": "Something went wrong, please try again."
+  },
+  "8JwFP/": {
+    "message": "¿Nombre de cuenta personalizado?",
+    "description": "Custom account name?"
+  },
+  "8WtyrD": {
+    "message": "Español",
+    "description": "Spanish"
+  },
+  "9+Ddtu": {
+    "message": "Siguiente",
+    "description": "Next"
+  },
+  "9DI6zl": {
+    "message": "Puede cambiar la cantidad de la tarifa que desea pagar. Sin embargo, eso se correlacionará directamente con la rapidez con la que su transacción es recogida por la blockchain.",
+    "description": "You can change the fee amount you'd like to pay. However, that will directly correlate with the speed with which your transaction is picked up by the blockchain."
+  },
+  "9IVf3z": {
+    "message": "Resumen de la cuenta",
+    "description": "Account Overview"
+  },
+  "9WRlF4": {
+    "message": "Enviar",
+    "description": "Send"
+  },
+  "9WhwsR": {
+    "message": "Este nombre es cómo nos referiremos a su cuenta internamente. No es visible para nadie más.",
+    "description": "This name is how we will refer to your account internally. It is not visible to anyone else."
+  },
+  "9XUYQt": {
+    "message": "Importar",
+    "description": "Import"
+  },
+  "9j3hXO": {
+    "message": "A",
+    "description": "To"
+  },
+  "9pwT3E": {
+    "message": "¿Necesitas ayuda? Encuéntranos en Discord",
+    "description": "Need Help? Find us on Discord"
   },
   "9uOFF3": {
     "message": "Resumen",
     "description": "Overview"
   },
   "AetNAD": {
-    "message": "Buscar",
+    "message": "Navegar",
     "description": "Browse"
   },
   "Arxl88": {
     "message": "Saliente",
     "description": "Outgoing"
   },
+  "AyGP4T": {
+    "message": "Mensaje de error",
+    "description": "Error Message"
+  },
+  "BwRLcj": {
+    "message": "Su transacción ha sido enviada. Pueden pasar algunos minutos hasta que se confirme. Esta transacción aparecerá en su actividad como pendiente hasta que se confirme.",
+    "description": "Your transaction has been submitted. It may take a few minutes until it is confirmed. This transaction will appear in your activity as pending until it is confirmed."
+  },
+  "BxM6mJ": {
+    "message": "De saldo más bajo a más alto",
+    "description": "Lowest to highest balance"
+  },
+  "C43FrR": {
+    "message": "Cantidad:",
+    "description": "Amount:"
+  },
+  "D31nQ7": {
+    "message": "Ocurrió un error al estimar la tarifa de la transacción",
+    "description": "An error occurred while estimating the transaction fee"
+  },
   "D3idYv": {
-    "message": "Configuración",
+    "message": "Configuraciones",
     "description": "Settings"
   },
+  "D5NqQO": {
+    "message": "Memo",
+    "description": "Memo"
+  },
+  "Dh1MGS": {
+    "message": "Sincronización de la cuenta",
+    "description": "Account Syncing"
+  },
+  "DnuK8f": {
+    "message": "Activa esto si quieres especificar un nombre personalizado para esta cuenta. De lo contrario, el nombre de la cuenta se inferirá de los datos de la cuenta exportada.",
+    "description": "Turn this on if you want to specify a custom name for this account. Otherwise, the account name will be inferred from your exported account data."
+  },
+  "FM2S9I": {
+    "message": "Configura tu nodo",
+    "description": "Set up your node"
+  },
+  "Fn/FTS": {
+    "message": "Ocurrió un error al cargar sus transacciones. Si esto sucede varias veces, por favor háznoslo saber en Discord.",
+    "description": "An error occurred while loading your transactions. If this happens several times, please let us know on Discord."
+  },
+  "FnRTEV": {
+    "message": "Promedio",
+    "description": "Average"
+  },
+  "FvanT6": {
+    "message": "Cuentas",
+    "description": "Accounts"
+  },
+  "GHoUMq": {
+    "message": "Sincronización de la cuenta: {progress}%",
+    "description": "Account Syncing: {progress}%"
+  },
+  "GKzO/A": {
+    "message": "Tarifa:",
+    "description": "Fee:"
+  },
   "Gcv5yj": {
-    "message": "Uso del Montón",
+    "message": "Uso de Heap",
     "description": "Heap Used"
+  },
+  "Gcv7QB": {
+    "message": "Nombre de la cuenta",
+    "description": "Account name"
+  },
+  "Gxw4v5": {
+    "message": "Tus claves y frase mnemotécnica son esenciales para acceder exclusivamente a tus activos digitales. Es importante almacenarlos de forma segura.",
+    "description": "Your keys and mnemonic phrase are essential for accessing your digital assets exclusively. It's important to store them securely."
   },
   "H56oje": {
     "message": "Trabajadores del Nodo",
@@ -103,76 +287,184 @@
     "message": "Nombre",
     "description": "Name"
   },
+  "HkADqs": {
+    "message": "Tarifa ($IRON)",
+    "description": "Fee ($IRON)"
+  },
+  "JJNc3c": {
+    "message": "Anterior",
+    "description": "Previous"
+  },
+  "Jjpq7w": {
+    "message": "Secuencia de bloques",
+    "description": "Block Sequence"
+  },
   "JoB2Ml": {
-    "message": "Tu cuenta fue importada exitosamente",
+    "message": "Su cuenta fue importada exitosamente",
     "description": "Your account was successfully imported"
+  },
+  "JqiqNj": {
+    "message": "Algo salió mal",
+    "description": "Something went wrong"
+  },
+  "K340v+": {
+    "message": "Se produjo un error al descargar la instantánea:",
+    "description": "An error occurred while downloading the snapshot:"
   },
   "K3r6DQ": {
     "message": "Eliminar",
     "description": "Delete"
   },
+  "KN7zKn": {
+    "message": "Error",
+    "description": "Error"
+  },
+  "Kkv03/": {
+    "message": "Detalles de la transacción",
+    "description": "Transaction Details"
+  },
   "L4MaM3": {
     "message": "Núcleos",
     "description": "Cores"
   },
+  "LP4H/8": {
+    "message": "Escaneando bloques: {sequence} / {totalSequence}",
+    "description": "Scanning blocks: {sequence} / {totalSequence}"
+  },
+  "LPlno7": {
+    "message": "Varios destinatarios",
+    "description": "Multiple recipients"
+  },
+  "LRJJAc": {
+    "message": "Hash de transacción",
+    "description": "Transaction Hash"
+  },
   "Ld49Lh": {
-    "message": "¿Cómo te gustaría nombrar esta cuenta? Este nombre solo será visible para ti.",
+    "message": "¿Cómo le gustaría nombrar esta cuenta? Este nombre sólo es visible para usted.",
     "description": "What would you like to name this account? This name is only visible to you."
   },
+  "MDZ4hi": {
+    "message": "¿Ya tienes una cuenta? Introduce tus credenciales de recuperación y continúa usando tu cuenta como se esperaba.",
+    "description": "Already have an account? Enter your recovery credentials and continue using your account as expected."
+  },
+  "MFUhla": {
+    "message": "Mayor a menor saldo",
+    "description": "Highest to lowest balance"
+  },
   "N0KGQj": {
-    "message": "Graffiti del Bloque",
+    "message": "Graffiti de bloque",
     "description": "Block Graffiti"
+  },
+  "N0bVvU": {
+    "message": "Error copiado al portapapeles",
+    "description": "Error copied to clipboard"
   },
   "NDtjP8": {
     "message": "¿Estás seguro? Tendrás que volver a importar esta cuenta si quieres usarla de nuevo.",
     "description": "Are you sure? You'll have to re-import this account if you want to use it again."
   },
   "NX/nQR": {
-    "message": "Cambiar la configuración del nodo puede optimizar el rendimiento, mejorar la conectividad, mejorar la seguridad y administrar los recursos de manera efectiva.",
+    "message": "Cambiar la configuración del nodo puede optimizar el rendimiento, mejorar la conectividad, mejorar la seguridad y gestionar eficientemente los recursos.",
     "description": "Changing node settings can optimize performance, improve connectivity, enhance security, and manage resources effectively."
   },
   "Nw8+4i": {
-    "message": "ID del Par",
+    "message": "ID de par",
     "description": "Peer ID"
+  },
+  "O+Q7TL": {
+    "message": "Secuencia enviada",
+    "description": "Submitted Sequence"
   },
   "OfA95/": {
     "message": "Archivo seleccionado: {fileName}",
     "description": "Selected file: {fileName}"
   },
   "Og5CP/": {
-    "message": "Máximo del Montón",
+    "message": "Heap Máximo",
     "description": "Heap Max"
   },
   "Ohn4yX": {
-    "message": "Telemetría deshabilitada",
+    "message": "Telemetría desactivada",
     "description": "Telemetry disabled"
   },
+  "P3UCNi": {
+    "message": "Sincronizando bloques: {progress}%",
+    "description": "Syncing blocks: {progress}%"
+  },
+  "P7PLVj": {
+    "message": "Fecha",
+    "description": "Date"
+  },
   "Pq25uf": {
-    "message": "Restablecer Nodo",
+    "message": "Resetear Nodo",
     "description": "Reset Node"
   },
+  "QS9NTE": {
+    "message": "Nombre de la cuenta — A a Z",
+    "description": "Account name — A to Z"
+  },
+  "QXxopU": {
+    "message": "¡Frase mnemónica copiada al portapapeles!",
+    "description": "Mnemonic phrase copied to clipboard!"
+  },
+  "QlsDcr": {
+    "message": "Acción",
+    "description": "Action"
+  },
+  "Qu9LpU": {
+    "message": "La cuenta seleccionada se está sincronizando. Su saldo puede no ser exacto y el envío de transacciones estará deshabilitado hasta que se complete la sincronización.",
+    "description": "The selected account is syncing. Your balance may be inaccurate and sending transactions will be disabled until the sync is complete."
+  },
   "R2OqnW": {
-    "message": "Eliminar Cuenta",
+    "message": "Eliminar cuenta",
     "description": "Delete Account"
   },
-  "RAL4T2": {
-    "message": "Mantén tus claves seguras revelando su contenido solo cuando estés seguro de que nadie está mirando. Estos se utilizan para acceder a tus cuentas y son la principal medida de seguridad contra el acceso no solicitado de usuarios.",
-    "description": "Keep your keys safe by only revealing their contents when you're sure nobody is peering. These are used to access your accounts and are the primary security measure against non-solicited user access."
-  },
   "RLGujF": {
-    "message": "Pares Conectados",
+    "message": "Pares conectados",
     "description": "Connected Peers"
   },
+  "RYLKpw": {
+    "message": "Sincronizar desde pares",
+    "description": "Sync from Peers"
+  },
+  "RahCRH": {
+    "message": "Caducado",
+    "description": "Expired"
+  },
+  "RsD3Mg": {
+    "message": "Chino",
+    "description": "Chinese"
+  },
+  "Ry+/2j": {
+    "message": "Múltiples memos",
+    "description": "Multiple memos"
+  },
+  "S+nmcq": {
+    "message": "Información de la transacción",
+    "description": "Transaction Information"
+  },
   "SaPa2h": {
-    "message": "Clave Codificada",
+    "message": "Clave codificada",
     "description": "Encoded Key"
+  },
+  "Seu2ON": {
+    "message": "Para:",
+    "description": "To:"
   },
   "T2yddR": {
     "message": "Tu Nodo",
     "description": "Your Node"
   },
+  "TRfaIL": {
+    "message": "Sincronizado",
+    "description": "Synced"
+  },
+  "TTpGX5": {
+    "message": "Elige cómo sincronizar tu cadena",
+    "description": "Choose how to sync your chain"
+  },
   "Te4gbw": {
-    "message": "Formato de Exportación:",
+    "message": "Formato de exportación:",
     "description": "Export Format:"
   },
   "TebMku": {
@@ -180,23 +472,75 @@
     "description": "You don't have any transactions"
   },
   "TenpoO": {
-    "message": "Nos gustaría recoger datos telemétricos anónimos con el fin de mejorar continuamente tu experiencia. Estos datos incluyen el rendimiento del nodo, la información del bloque y otras métricas de salud. Puedes habilitar o deshabilitar esto en cualquier momento en la página de ajustes del nodo.",
+    "message": "Nos gustaría recopilar datos de telemetría anónimos para mejorar continuamente tu experiencia. Estos datos incluyen el rendimiento del nodo, información de bloques y otras métricas de salud. Puedes habilitar o deshabilitar esto en cualquier momento en la página de configuración del nodo.",
     "description": "We'd like to collect anonymous telemetry data in order to continually improve your experience. This data includes node performance, block information, and other health metrics. You can enable or disable this at any time in the node settings page."
   },
+  "ThbkST": {
+    "message": "No se pueden cargar tus transacciones",
+    "description": "Unable to load your transactions"
+  },
+  "TzwzhT": {
+    "message": "Puedes eliminar y volver a importar tus cuentas cuando quieras, siempre que poseas las claves de la cuenta. Es muy recomendable mantener una copia de seguridad de tus claves de cuenta en un lugar seguro.",
+    "description": "You can remove and reimport your accounts whenever you like, provided that you possess the account keys. It is highly recommended to maintain a backup of your account keys in a secure location."
+  },
+  "ULXFfP": {
+    "message": "Recibir",
+    "description": "Receive"
+  },
+  "UTOugV": {
+    "message": "Tus Activos",
+    "description": "Your Assets"
+  },
+  "VBDJ/l": {
+    "message": "Tu saldo puede no ser preciso mientras estás sincronizando",
+    "description": "Your balance might not be accurate while you're syncing"
+  },
+  "VqP8r/": {
+    "message": "Memo:",
+    "description": "Memo:"
+  },
+  "VzzYJk": {
+    "message": "Crear",
+    "description": "Create"
+  },
+  "WHjylD": {
+    "message": "Por favor, reinicia la aplicación y vuelve a intentarlo. Si el problema persiste, déjanos saber en Discord para que podamos ayudarte a solucionarlo.",
+    "description": "Please restart the app and try again. If the issue persists, let us know on Discord so we can help troubleshoot."
+  },
+  "WKCp0D": {
+    "message": "Activo",
+    "description": "Asset"
+  },
+  "WNgCs+": {
+    "message": "Volver al Libro de Direcciones",
+    "description": "Back to Address Book"
+  },
   "WWEwrn": {
-    "message": "Ajustes del Nodo",
+    "message": "Configuraciones de Nodo",
     "description": "Node Settings"
+  },
+  "WkrNSk": {
+    "message": "Inglés",
+    "description": "English"
   },
   "WsssxH": {
     "message": "Selecciona tu archivo JSON o Bech32 para importar tu cuenta.",
     "description": "Select your JSON or Bech32 file to import your account."
   },
+  "X+BJ/8": {
+    "message": "Otros Activos",
+    "description": "Other Assets"
+  },
   "XLvNHQ": {
     "message": "Por favor, anota esta frase de recuperación y guárdala en un lugar seguro. La necesitarás para recuperar tu cuenta.",
     "description": "Please write down this recovery phrase and keep it in a safe place. You will need it to recover your account."
   },
+  "XYgEt1": {
+    "message": "Por favor, guarda esta frase en un lugar seguro. Te pediremos que la ingreses nuevamente.",
+    "description": "Please keep this phrase stored somewhere safe. We will ask you to re-enter this."
+  },
   "Xvk80E": {
-    "message": "Por favor, introduce un nombre para esta cuenta",
+    "message": "Por favor, ingresa un nombre para esta cuenta",
     "description": "Please enter a name for this account"
   },
   "YDkqMJ": {
@@ -204,95 +548,331 @@
     "description": "Incoming"
   },
   "YFT4rG": {
-    "message": "Claves",
+    "message": "Llaves",
     "description": "Keys"
   },
+  "Z4i3fh": {
+    "message": "La aplicación Iron Fish Node soporta {languageCount} idiomas. Si tu idioma preferido no está en la lista, ¡por favor contáctanos y déjanos saber!",
+    "description": "The Iron Fish Node app supports {languageCount} languages. If your preferred language isn't listed, please reach out and let us know!"
+  },
+  "Z7mY5w": {
+    "message": "Confirmar Detalles de la Transacción",
+    "description": "Confirm Transaction Details"
+  },
+  "ZQCgnA": {
+    "message": "El nombre de este contacto solo es visible para ti.",
+    "description": "This contact's name is only visible to you."
+  },
+  "Zaa51D": {
+    "message": "Ucraniano",
+    "description": "Ukranian"
+  },
   "ZhUW3G": {
-    "message": "Total del Montón",
+    "message": "Heap Total",
     "description": "Heap Total"
   },
-  "aAyZzA": {
-    "message": "Puedes eliminar y volver a importar tus cuentas a tu conveniencia, siempre que poseas las claves de cuenta necesarias. Para garantizar una experiencia sin problemas, se recomienda encarecidamente mantener una copia de seguridad de las claves de tu cuenta en un lugar seguro.",
-    "description": "You can remove and reimport your accounts at your convenience, provided that you possess the necessary account keys. To ensure a seamless experience, it is highly recommended to maintain a backup of your account keys in a secure location."
+  "a1u/d5": {
+    "message": "Ver Actividad de la Cuenta",
+    "description": "View Account Activity"
   },
   "acrOoz": {
     "message": "Continuar",
     "description": "Continue"
   },
+  "av5C8J": {
+    "message": "Algo salió mal. Por favor revisa tu transacción e intenta nuevamente.",
+    "description": "Something went wrong. Please review your transaction and try again."
+  },
+  "bFQd/U": {
+    "message": "Al asociarse los nombres de contacto con direcciones públicas, tienes la libertad de personalizar cómo identificas tus contactos sin afectar su dirección subyacente.",
+    "description": "With contact names being associated with public addresses, you have the freedom to customize how you identify your contacts without affecting their underlying address."
+  },
+  "bW7B87": {
+    "message": "Nuevo",
+    "description": "New"
+  },
   "baVA6q": {
-    "message": "Secuencia de Cabeza",
+    "message": "Secuencia Principal",
     "description": "Head Sequence"
+  },
+  "bcOwoF": {
+    "message": "Elige tu idioma",
+    "description": "Choose your language"
   },
   "c/KktL": {
     "message": "Recursos",
     "description": "Resources"
   },
+  "dM+p3/": {
+    "message": "De",
+    "description": "From"
+  },
   "e6Ph5+": {
     "message": "Dirección",
     "description": "Address"
+  },
+  "eKEL/g": {
+    "message": "Pendiente",
+    "description": "Pending"
+  },
+  "eVlu1R": {
+    "message": "Selecciona idioma",
+    "description": "Select language"
+  },
+  "ecJcrS": {
+    "message": "Sincronizando bloques",
+    "description": "Syncing blocks"
+  },
+  "ekfOaV": {
+    "message": "Regresar",
+    "description": "Go Back"
+  },
+  "f6dOFt": {
+    "message": "Intentar ahora",
+    "description": "Retry now"
   },
   "fF376U": {
     "message": "Actual",
     "description": "Current"
   },
+  "fKN5VY": {
+    "message": "Crear Contacto",
+    "description": "Create Contact"
+  },
   "flxGnZ": {
-    "message": "Telemetría habilitada",
+    "message": "Telemetría activada",
     "description": "Telemetry enabled"
+  },
+  "g/oZa8": {
+    "message": "Esperando la sincronización de peers",
+    "description": "Waiting for peers to sync from"
+  },
+  "gcuDcH": {
+    "message": "Enviado",
+    "description": "Sent"
+  },
+  "gjBiyj": {
+    "message": "Cargando...",
+    "description": "Loading..."
+  },
+  "gu9i+5": {
+    "message": "Versión {currentVersion}",
+    "description": "Version {currentVersion}"
   },
   "gyrIEl": {
     "message": "Archivo",
     "description": "File"
   },
+  "h/XIMH": {
+    "message": "Añadir Contacto",
+    "description": "Add Contact"
+  },
+  "h1fexv": {
+    "message": "Serás redirigido automáticamente a la página de tus cuentas una vez que se aplique la instantánea.",
+    "description": "You'll automatically be redirected to your accounts page once the snapshot is applied."
+  },
   "hR0flV": {
     "message": "Todas tus transacciones, ya sean en $IRON u otros activos personalizados, se mostrarán en esta sección. Para iniciar una transacción, simplemente haz clic en las pestañas 'Enviar' o 'Recibir'.",
     "description": "All your transactions, whether in $IRON or other custom assets, will be displayed in this section. To start a transaction, simply click on the 'Send' or 'Receive' tabs."
+  },
+  "iWiHY7": {
+    "message": "La cadena de bloques se está sincronizando. Tu saldo puede ser inexacto y se desactivará el envío de transacciones hasta que se complete la sincronización.",
+    "description": "The blockchain is syncing. Your balance may be inaccurate and sending transactions will be disabled until the sync is complete."
+  },
+  "is+QTN": {
+    "message": "Configuraciones de Contacto",
+    "description": "Contact Settings"
   },
   "j2AFTQ": {
     "message": "Estado del Nodo",
     "description": "Node Status"
   },
+  "jc6sBv": {
+    "message": "Contacto actualizado",
+    "description": "Contact updated"
+  },
+  "jd6+BK": {
+    "message": "Reintentando en {duration}...",
+    "description": "Retrying in {duration}..."
+  },
+  "jsy7pk": {
+    "message": "Intentar De Nuevo",
+    "description": "Try Again"
+  },
+  "jwIURF": {
+    "message": "La cuenta seleccionada no tiene fondos suficientes para enviar esta transacción",
+    "description": "The selected account does not have enough funds to send this transaction"
+  },
+  "kF9XUo": {
+    "message": "Marca de Tiempo",
+    "description": "Timestamp"
+  },
+  "kTt/ND": {
+    "message": "Ruso",
+    "description": "Russian"
+  },
+  "lu5YPq": {
+    "message": "activo desconocido",
+    "description": "unknown asset"
+  },
+  "ml3Hqe": {
+    "message": "Esta cuenta se está sincronizando. Por favor espera hasta que se complete la sincronización antes de enviar transacciones.",
+    "description": "This account is syncing. Please wait until the sync is complete before sending transactions."
+  },
+  "mrlGwZ": {
+    "message": "Descargar Instantánea: rápido y centralizado. Obtén una copia completa de la cadena de bloques rápidamente desde una fuente central.",
+    "description": "Download Snapshot: Fast and centralized. Get a complete copy of the blockchain quickly from a central source."
+  },
+  "mzRLqs": {
+    "message": "Descarga en progreso...",
+    "description": "Download in progress..."
+  },
   "nkeKcx": {
-    "message": "Hash de Cabeza",
+    "message": "Hash principal",
     "description": "Head Hash"
   },
+  "nleCAa": {
+    "message": "Notas de la versión",
+    "description": "Release Notes"
+  },
+  "o0DpEu": {
+    "message": "Descomprimiendo...",
+    "description": "Unzipping..."
+  },
+  "omnNfq": {
+    "message": "Acerca de las tarifas",
+    "description": "About Fees"
+  },
+  "p8bsw4": {
+    "message": "Error de transacción",
+    "description": "Transaction Error"
+  },
+  "pPk+ar": {
+    "message": "De:",
+    "description": "From:"
+  },
+  "pQJ67O": {
+    "message": "Sincronización desde compañeros: más lento pero descentralizado. Recupere la blockchain de otros usuarios, contribuyendo a la descentralización de la red. Aunque puede llevar más tiempo, refuerza la resistencia de la red.",
+    "description": "Sync from peers: Slower but decentralized. Retrieve the blockchain from other users, contributing to network decentralization. While it may take longer, it strengthens the network's resilience."
+  },
   "pbdvze": {
-    "message": "Por favor, introduce tu frase mnemotécnica. Si has copiado la frase completa en tu portapapeles, puedes pegarla en cualquier entrada y se dividirá automáticamente en el número correcto de palabras.",
+    "message": "Por favor, introduzca su frase mnemotécnica. Si ha copiado la frase completa en su portapapeles, puede pegarla en cualquier entrada y se dividirá automáticamente en el número correcto de palabras.",
     "description": "Please enter your mnemonic phrase. If you've copied the full phrase to your clipboard, you can paste it in any input and it will automatically be split into the correct number of words."
+  },
+  "pqKz+h": {
+    "message": "Lento",
+    "description": "Slow"
   },
   "q0qMyV": {
     "message": "RSS",
     "description": "RSS"
   },
   "qDYGja": {
-    "message": "Guardar configuraciones",
+    "message": "Guardar ajustes",
     "description": "Save Settings"
+  },
+  "qVtJd7": {
+    "message": "Memo (máx. 32 caracteres)",
+    "description": "Memo (32 characters max)"
+  },
+  "qkf/DE": {
+    "message": "Cancelar Transacción",
+    "description": "Cancel Transaction"
+  },
+  "r1Z23X": {
+    "message": "Todas sus cuentas se mostrarán en esta sección. Para crear o importar una cuenta, simplemente haga clic en uno de los botones de arriba.",
+    "description": "All your accounts will be displayed in this section. To create or import an account, simply click one of the buttons above."
   },
   "rbrahO": {
     "message": "Cerrar",
     "description": "Close"
   },
+  "rfxp5c": {
+    "message": "Confirmar y enviar",
+    "description": "Confirm & Send"
+  },
+  "tf+yHL": {
+    "message": "Rápido",
+    "description": "Fast"
+  },
   "tf1lIh": {
     "message": "Gratis",
     "description": "Free"
+  },
+  "tzMNF3": {
+    "message": "Estado",
+    "description": "Status"
   },
   "uCgp+K": {
     "message": "Bloques por mensaje",
     "description": "Blocks Per message"
   },
+  "uHGB/g": {
+    "message": "{currMb} / {totalMb} mb descargados",
+    "description": "{currMb} / {totalMb} mb downloaded"
+  },
+  "uT4OlP": {
+    "message": "Tarifa",
+    "description": "Fee"
+  },
   "vNT9Ip": {
     "message": "Frase Mnemotécnica",
     "description": "Mnemonic Phrase"
   },
+  "vV69eP": {
+    "message": "Descargar una instantánea es la forma más rápida de sincronizar con la red.",
+    "description": "Downloading a snapshot is the fastest way to sync with the network."
+  },
+  "wGpbja": {
+    "message": "Error al agregar contacto",
+    "description": "Add Contact Error"
+  },
+  "wsALI4": {
+    "message": "Introduce la clave codificada",
+    "description": "Enter Encoded Key"
+  },
+  "xP64Lw": {
+    "message": "Libreta de direcciones",
+    "description": "Address Book"
+  },
   "xkLxAx": {
-    "message": "Cuenta creada",
+    "message": "Cuenta Creada",
     "description": "Account Created"
   },
   "y3LzSM": {
-    "message": "Max de pares",
+    "message": "Máximo de compañeros",
     "description": "Max Peers"
+  },
+  "yLnnBl": {
+    "message": "Transacción enviada",
+    "description": "Transaction Submitted"
   },
   "yjpdGo": {
     "message": "No tienes ningún contacto",
     "description": "You don't have any contacts"
+  },
+  "ytT37i": {
+    "message": "Volver a todas las cuentas",
+    "description": "Back to all accounts"
+  },
+  "z/wUXE": {
+    "message": "Recibido",
+    "description": "Received"
+  },
+  "zAPy5e": {
+    "message": "Nombre de la cuenta — Z a A",
+    "description": "Account name — Z to A"
+  },
+  "zCTaQX": {
+    "message": "Las cuentas de solo lectura no pueden enviar transacciones",
+    "description": "View only accounts cannot send transactions"
+  },
+  "zFegDD": {
+    "message": "Contacto",
+    "description": "Contact"
+  },
+  "zR2zr+": {
+    "message": "Dirección copiada al portapapeles",
+    "description": "Address copied to clipboard"
   }
 }

@@ -1,1 +1,878 @@
-{}
+{
+  "+02x3X": {
+    "message": "Ваша адресна книга - це місце, де ви можете керувати всіма своїми контактами, їхніми іменами та публічними адресами.",
+    "description": "Your address book is where you can manage all of your contacts, their names, and their public addresses."
+  },
+  "+RhnH+": {
+    "message": "Порожньо",
+    "description": "Empty"
+  },
+  "+gH1Ai": {
+    "message": "Ім'я вузла",
+    "description": "Node Name"
+  },
+  "/0TOL5": {
+    "message": "Кількість",
+    "description": "Amount"
+  },
+  "/jJLYy": {
+    "message": "Транзакції",
+    "description": "Transactions"
+  },
+  "/km2Zu": {
+    "message": "Імпорт облікового запису",
+    "description": "Import Account"
+  },
+  "/tbC+S": {
+    "message": "Експорт облікового запису",
+    "description": "Export Account"
+  },
+  "/zn2B0": {
+    "message": "Облікові записи тільки для перегляду не можуть ініціювати транзакції",
+    "description": "View only accounts cannot initiate transactions"
+  },
+  "21ueTy": {
+    "message": "Публічна адреса",
+    "description": "Public Address"
+  },
+  "25vn7e": {
+    "message": "Прогрес розпакування: {progress}%",
+    "description": "Unzip progress: {progress}%"
+  },
+  "2AcArH": {
+    "message": "Виберіть цей варіант, якщо у вас немає існуючого облікового запису Iron Fish або якщо ви хочете створити новий.",
+    "description": "Choose this option if you don't have an existing Iron Fish account or if you'd like to create a new one."
+  },
+  "2DcNnd": {
+    "message": "Поділіться своєю адресою, щоб отримувати платежі, зберігаючи повністю приватні дані вашого облікового запису.",
+    "description": "Share your address to receive payments while keeping your account details entirely private."
+  },
+  "2G6Qs7": {
+    "message": "Налаштування збережено",
+    "description": "Settings saved"
+  },
+  "2KXvZ0": {
+    "message": "Ви впевнені? Пізніше ви не зможете скасувати цю дію.",
+    "description": "Are you sure? You can't undo this action afterwards."
+  },
+  "2qzbcD": {
+    "message": "Мінімальна кількість пірів",
+    "description": "Min Peers"
+  },
+  "3/a0Ho": {
+    "message": "Наразі ми не можемо завантажити примітки до випуску.",
+    "description": "We're not able to download release notes right now."
+  },
+  "3OLlCN": {
+    "message": "Від/До",
+    "description": "From/To"
+  },
+  "3VI9mt": {
+    "message": "Зберегти зміни",
+    "description": "Save Changes"
+  },
+  "3WkdVP": {
+    "message": "Ім'я облікового запису",
+    "description": "Account Name"
+  },
+  "3euoRJ": {
+    "message": "Фраза відновлення",
+    "description": "Recovery Phrase"
+  },
+  "47FYwb": {
+    "message": "Скасувати",
+    "description": "Cancel"
+  },
+  "4l6vz1": {
+    "message": "Скопіювати",
+    "description": "Copy"
+  },
+  "4woaDB": {
+    "message": "Подання транзакції",
+    "description": "Submitting Transaction"
+  },
+  "551bXe": {
+    "message": "Лише для перегляду",
+    "description": "View Only"
+  },
+  "59UOUq": {
+    "message": "В вас немає жодного облікового запису",
+    "description": "You don't have any accounts"
+  },
+  "5JcXdV": {
+    "message": "Створити обліковий запис",
+    "description": "Create Account"
+  },
+  "5MiM5y": {
+    "message": "Надіслати актив",
+    "description": "Send Asset"
+  },
+  "5OJ1yw": {
+    "message": "Внутрішнє ім'я облікового запису",
+    "description": "Internal Account Name"
+  },
+  "5UdRx1": {
+    "message": "Імпортувати з",
+    "description": "Import With"
+  },
+  "5c3Wrw": {
+    "message": "Загальний баланс облікових записів",
+    "description": "Total accounts balance"
+  },
+  "5jeq8P": {
+    "message": "Невідомо",
+    "description": "Unknown"
+  },
+  "62mqGj": {
+    "message": "Видалити контакт",
+    "description": "Delete Contact"
+  },
+  "6AhQlk": {
+    "message": "Ви впевнені, що хочете скинути вузол до початкового стану?",
+    "description": "Are you sure you want to reset the node to its initial state?"
+  },
+  "6Ior7i": {
+    "message": "Я зберіг фразу відновлення",
+    "description": "I saved my recovery phrase"
+  },
+  "6P/bTL": {
+    "message": "Тип з'єднання",
+    "description": "Connection Type"
+  },
+  "6q3tCn": {
+    "message": "Підключення",
+    "description": "Connecting"
+  },
+  "7JxXKc": {
+    "message": "Завантажити знімок",
+    "description": "Download Snapshot"
+  },
+  "7N6OYQ": {
+    "message": "Переглянути транзакцію",
+    "description": "View Transaction"
+  },
+  "8GvVWZ": {
+    "message": "Щось пішло не так, будь ласка, спробуйте ще раз.",
+    "description": "Something went wrong, please try again."
+  },
+  "8JwFP/": {
+    "message": "Призначувати обліковому запису власне ім'я?",
+    "description": "Custom account name?"
+  },
+  "8WtyrD": {
+    "message": "Іспанська",
+    "description": "Spanish"
+  },
+  "9+Ddtu": {
+    "message": "Далі",
+    "description": "Next"
+  },
+  "9DI6zl": {
+    "message": "Ви можете змінити суму комісії, яку хочете заплатити. Однак це буде напряму корелювати зі швидкістю, з якою вашу транзакцію забере блокчейн.",
+    "description": "You can change the fee amount you'd like to pay. However, that will directly correlate with the speed with which your transaction is picked up by the blockchain."
+  },
+  "9IVf3z": {
+    "message": "Огляд облікового запису",
+    "description": "Account Overview"
+  },
+  "9WRlF4": {
+    "message": "Надіслати",
+    "description": "Send"
+  },
+  "9WhwsR": {
+    "message": "Це назва, за якою ми будемо внутрішньо розпізнавати ваш обліковий запис. Вона не видна нікому іншому.",
+    "description": "This name is how we will refer to your account internally. It is not visible to anyone else."
+  },
+  "9XUYQt": {
+    "message": "Імпорт",
+    "description": "Import"
+  },
+  "9j3hXO": {
+    "message": "До",
+    "description": "To"
+  },
+  "9pwT3E": {
+    "message": "Потрібна допомога? Знайдіть нас на Discord",
+    "description": "Need Help? Find us on Discord"
+  },
+  "9uOFF3": {
+    "message": "Огляд",
+    "description": "Overview"
+  },
+  "AetNAD": {
+    "message": "Переглянути",
+    "description": "Browse"
+  },
+  "Arxl88": {
+    "message": "Вихідні",
+    "description": "Outgoing"
+  },
+  "AyGP4T": {
+    "message": "Повідомлення про помилку",
+    "description": "Error Message"
+  },
+  "BwRLcj": {
+    "message": "Вашу транзакцію відправлено. Може пройти кілька хвилин до її підтвердження. Ця транзакція з'явиться в вашій активності як очікує підтвердження, доки вона не буде підтверджена.",
+    "description": "Your transaction has been submitted. It may take a few minutes until it is confirmed. This transaction will appear in your activity as pending until it is confirmed."
+  },
+  "BxM6mJ": {
+    "message": "Від найнижчого до найвищого балансу",
+    "description": "Lowest to highest balance"
+  },
+  "C43FrR": {
+    "message": "Сума:",
+    "description": "Amount:"
+  },
+  "D31nQ7": {
+    "message": "Сталася помилка під час оцінки комісії за транзакцію",
+    "description": "An error occurred while estimating the transaction fee"
+  },
+  "D3idYv": {
+    "message": "Налаштування",
+    "description": "Settings"
+  },
+  "D5NqQO": {
+    "message": "Мемо",
+    "description": "Memo"
+  },
+  "Dh1MGS": {
+    "message": "Синхронізація облікового запису",
+    "description": "Account Syncing"
+  },
+  "DnuK8f": {
+    "message": "Увімкніть це, якщо хочете вказати власне ім'я для цього облікового запису. В іншому випадку ім'я облікового запису буде вибране на основі експортованих даних облікового запису.",
+    "description": "Turn this on if you want to specify a custom name for this account. Otherwise, the account name will be inferred from your exported account data."
+  },
+  "FM2S9I": {
+    "message": "Налаштуйте свій вузол",
+    "description": "Set up your node"
+  },
+  "Fn/FTS": {
+    "message": "Сталася помилка під час завантаження ваших транзакцій. Якщо це трапляється кілька разів, будь ласка, повідомте нам на Discord.",
+    "description": "An error occurred while loading your transactions. If this happens several times, please let us know on Discord."
+  },
+  "FnRTEV": {
+    "message": "Середній",
+    "description": "Average"
+  },
+  "FvanT6": {
+    "message": "Облікові записи",
+    "description": "Accounts"
+  },
+  "GHoUMq": {
+    "message": "Синхронізація облікового запису: {progress}%",
+    "description": "Account Syncing: {progress}%"
+  },
+  "GKzO/A": {
+    "message": "Комісія:",
+    "description": "Fee:"
+  },
+  "Gcv5yj": {
+    "message": "Використано купи",
+    "description": "Heap Used"
+  },
+  "Gcv7QB": {
+    "message": "Назва облікового запису",
+    "description": "Account name"
+  },
+  "Gxw4v5": {
+    "message": "Ваші ключі та мнемонічні фрази є важливими для ексклюзивного доступу до ваших цифрових активів. Важливо зберігати їх у безпечному місці.",
+    "description": "Your keys and mnemonic phrase are essential for accessing your digital assets exclusively. It's important to store them securely."
+  },
+  "H56oje": {
+    "message": "Роботи вузла",
+    "description": "Node Workers"
+  },
+  "HAlOn1": {
+    "message": "Ім'я",
+    "description": "Name"
+  },
+  "HkADqs": {
+    "message": "Комісія ($IRON)",
+    "description": "Fee ($IRON)"
+  },
+  "JJNc3c": {
+    "message": "Попередній",
+    "description": "Previous"
+  },
+  "Jjpq7w": {
+    "message": "Послідовність блоків",
+    "description": "Block Sequence"
+  },
+  "JoB2Ml": {
+    "message": "Ваш обліковий запис успішно імпортовано",
+    "description": "Your account was successfully imported"
+  },
+  "JqiqNj": {
+    "message": "Щось пішло не так",
+    "description": "Something went wrong"
+  },
+  "K340v+": {
+    "message": "Під час завантаження знімка виникла помилка:",
+    "description": "An error occurred while downloading the snapshot:"
+  },
+  "K3r6DQ": {
+    "message": "Видалити",
+    "description": "Delete"
+  },
+  "KN7zKn": {
+    "message": "Помилка",
+    "description": "Error"
+  },
+  "Kkv03/": {
+    "message": "Деталі транзакції",
+    "description": "Transaction Details"
+  },
+  "L4MaM3": {
+    "message": "Ядра",
+    "description": "Cores"
+  },
+  "LP4H/8": {
+    "message": "Сканування блоків: {sequence} / {totalSequence}",
+    "description": "Scanning blocks: {sequence} / {totalSequence}"
+  },
+  "LPlno7": {
+    "message": "Декілька отримувачів",
+    "description": "Multiple recipients"
+  },
+  "LRJJAc": {
+    "message": "Хеш транзакції",
+    "description": "Transaction Hash"
+  },
+  "Ld49Lh": {
+    "message": "Як ви хотіли б назвати цей обліковий запис? Ця назва видна тільки вам.",
+    "description": "What would you like to name this account? This name is only visible to you."
+  },
+  "MDZ4hi": {
+    "message": "Вже маєте обліковий запис? Введіть дані для відновлення та продовжуйте користуватися своїм обліковим записом, як зазвичай.",
+    "description": "Already have an account? Enter your recovery credentials and continue using your account as expected."
+  },
+  "MFUhla": {
+    "message": "Від найвищого до найнижчого балансу",
+    "description": "Highest to lowest balance"
+  },
+  "N0KGQj": {
+    "message": "Графіті блоків",
+    "description": "Block Graffiti"
+  },
+  "N0bVvU": {
+    "message": "Помилка скопійована в буфер обміну",
+    "description": "Error copied to clipboard"
+  },
+  "NDtjP8": {
+    "message": "Ви впевнені? Вам доведеться знову імпортувати цей обліковий запис, якщо ви знову захочете його використовувати.",
+    "description": "Are you sure? You'll have to re-import this account if you want to use it again."
+  },
+  "NX/nQR": {
+    "message": "Зміна налаштувань вузла може оптимізувати продуктивність, покращити з'єднання, посилити безпеку та ефективно керувати ресурсами.",
+    "description": "Changing node settings can optimize performance, improve connectivity, enhance security, and manage resources effectively."
+  },
+  "Nw8+4i": {
+    "message": "ID вузла",
+    "description": "Peer ID"
+  },
+  "O+Q7TL": {
+    "message": "Надіслана послідовність",
+    "description": "Submitted Sequence"
+  },
+  "OfA95/": {
+    "message": "Обраний файл: {fileName}",
+    "description": "Selected file: {fileName}"
+  },
+  "Og5CP/": {
+    "message": "Максимум купи",
+    "description": "Heap Max"
+  },
+  "Ohn4yX": {
+    "message": "Телеметрію вимкнено",
+    "description": "Telemetry disabled"
+  },
+  "P3UCNi": {
+    "message": "Синхронізація блоків: {progress}%",
+    "description": "Syncing blocks: {progress}%"
+  },
+  "P7PLVj": {
+    "message": "Дата",
+    "description": "Date"
+  },
+  "Pq25uf": {
+    "message": "Скидання вузла",
+    "description": "Reset Node"
+  },
+  "QS9NTE": {
+    "message": "Назва облікового запису — від А до Я",
+    "description": "Account name — A to Z"
+  },
+  "QXxopU": {
+    "message": "Мнемонічна фраза скопійована в буфер обміну!",
+    "description": "Mnemonic phrase copied to clipboard!"
+  },
+  "QlsDcr": {
+    "message": "Дія",
+    "description": "Action"
+  },
+  "Qu9LpU": {
+    "message": "Обраний обліковий запис синхронізується. Ваш баланс може бути неточним, а відправлення транзакцій буде відключено до завершення синхронізації.",
+    "description": "The selected account is syncing. Your balance may be inaccurate and sending transactions will be disabled until the sync is complete."
+  },
+  "R2OqnW": {
+    "message": "Видалити обліковий запис",
+    "description": "Delete Account"
+  },
+  "RLGujF": {
+    "message": "Підключені вузли",
+    "description": "Connected Peers"
+  },
+  "RYLKpw": {
+    "message": "Синхронізувати з вузлами",
+    "description": "Sync from Peers"
+  },
+  "RahCRH": {
+    "message": "Термін дії завершений",
+    "description": "Expired"
+  },
+  "RsD3Mg": {
+    "message": "Китайська",
+    "description": "Chinese"
+  },
+  "Ry+/2j": {
+    "message": "Кілька мемо",
+    "description": "Multiple memos"
+  },
+  "S+nmcq": {
+    "message": "Інформація про транзакцію",
+    "description": "Transaction Information"
+  },
+  "SaPa2h": {
+    "message": "Закодований ключ",
+    "description": "Encoded Key"
+  },
+  "Seu2ON": {
+    "message": "До:",
+    "description": "To:"
+  },
+  "T2yddR": {
+    "message": "Ваш вузол",
+    "description": "Your Node"
+  },
+  "TRfaIL": {
+    "message": "Синхронізовано",
+    "description": "Synced"
+  },
+  "TTpGX5": {
+    "message": "Виберіть спосіб синхронізації вашого ланцюга",
+    "description": "Choose how to sync your chain"
+  },
+  "Te4gbw": {
+    "message": "Формат експорту:",
+    "description": "Export Format:"
+  },
+  "TebMku": {
+    "message": "У вас немає жодних транзакцій",
+    "description": "You don't have any transactions"
+  },
+  "TenpoO": {
+    "message": "Ми хотіли б збирати анонімні телеметричні дані, щоб постійно поліпшувати ваш досвід. Ці дані включають продуктивність вузла, інформацію про блоки та інші метрики здоров'я. Ви можете увімкнути або вимкнути це в будь-який час на сторінці налаштувань вузла.",
+    "description": "We'd like to collect anonymous telemetry data in order to continually improve your experience. This data includes node performance, block information, and other health metrics. You can enable or disable this at any time in the node settings page."
+  },
+  "ThbkST": {
+    "message": "Не вдається завантажити ваші транзакції",
+    "description": "Unable to load your transactions"
+  },
+  "TzwzhT": {
+    "message": "Ви можете видалити та повторно імпортувати свої облікові записи, коли забажаєте, за умови, що у вас є ключі облікового запису. Наполегливо рекомендується робити резервну копію ключів вашого облікового запису в безпечному місці.",
+    "description": "You can remove and reimport your accounts whenever you like, provided that you possess the account keys. It is highly recommended to maintain a backup of your account keys in a secure location."
+  },
+  "ULXFfP": {
+    "message": "Отримати",
+    "description": "Receive"
+  },
+  "UTOugV": {
+    "message": "Ваші активи",
+    "description": "Your Assets"
+  },
+  "VBDJ/l": {
+    "message": "Ваш баланс може бути неточним, поки ви синхронізуєтеся",
+    "description": "Your balance might not be accurate while you're syncing"
+  },
+  "VqP8r/": {
+    "message": "Пам'ятка:",
+    "description": "Memo:"
+  },
+  "VzzYJk": {
+    "message": "Створити",
+    "description": "Create"
+  },
+  "WHjylD": {
+    "message": "Будь ласка, перезапустіть додаток та спробуйте знову. Якщо проблема збережеться, повідомте нам в Discord, щоб ми могли допомогти у вирішенні проблеми.",
+    "description": "Please restart the app and try again. If the issue persists, let us know on Discord so we can help troubleshoot."
+  },
+  "WKCp0D": {
+    "message": "Актив",
+    "description": "Asset"
+  },
+  "WNgCs+": {
+    "message": "Повернутися до адресної книги",
+    "description": "Back to Address Book"
+  },
+  "WWEwrn": {
+    "message": "Налаштування вузла",
+    "description": "Node Settings"
+  },
+  "WkrNSk": {
+    "message": "Англійська",
+    "description": "English"
+  },
+  "WsssxH": {
+    "message": "Виберіть ваш JSON або Bech32 файл для імпорту вашого облікового запису.",
+    "description": "Select your JSON or Bech32 file to import your account."
+  },
+  "X+BJ/8": {
+    "message": "Інші активи",
+    "description": "Other Assets"
+  },
+  "XLvNHQ": {
+    "message": "Будь ласка, запишіть цю фразу для відновлення та зберігайте її в безпечному місці. Вам це буде потрібно, щоб відновити свій обліковий запис.",
+    "description": "Please write down this recovery phrase and keep it in a safe place. You will need it to recover your account."
+  },
+  "XYgEt1": {
+    "message": "Будь ласка, зберігайте цю фразу в безпечному місці. Ми попросимо вас її повторно ввести.",
+    "description": "Please keep this phrase stored somewhere safe. We will ask you to re-enter this."
+  },
+  "Xvk80E": {
+    "message": "Будь ласка, введіть назву для цього облікового запису",
+    "description": "Please enter a name for this account"
+  },
+  "YDkqMJ": {
+    "message": "Вхідні",
+    "description": "Incoming"
+  },
+  "YFT4rG": {
+    "message": "Ключі",
+    "description": "Keys"
+  },
+  "Z4i3fh": {
+    "message": "Додаток Iron Fish Node підтримує {languageCount} мови. Якщо вашої мови немає у списку, будь ласка, дайте нам знати!",
+    "description": "The Iron Fish Node app supports {languageCount} languages. If your preferred language isn't listed, please reach out and let us know!"
+  },
+  "Z7mY5w": {
+    "message": "Підтвердіть деталі транзакції",
+    "description": "Confirm Transaction Details"
+  },
+  "ZQCgnA": {
+    "message": "Це ім'я контакту видно тільки вам.",
+    "description": "This contact's name is only visible to you."
+  },
+  "Zaa51D": {
+    "message": "Українська",
+    "description": "Ukranian"
+  },
+  "ZhUW3G": {
+    "message": "Загальна купа",
+    "description": "Heap Total"
+  },
+  "a1u/d5": {
+    "message": "Переглянути активність облікового запису",
+    "description": "View Account Activity"
+  },
+  "acrOoz": {
+    "message": "Продовжити",
+    "description": "Continue"
+  },
+  "av5C8J": {
+    "message": "Щось пішло не так. Будь ласка, перегляньте вашу транзакцію та спробуйте знову.",
+    "description": "Something went wrong. Please review your transaction and try again."
+  },
+  "bFQd/U": {
+    "message": "З іменами контактів, пов’язаними з публічними адресами, у вас є свобода налаштувати спосіб визначення ваших контактів, не впливаючи на їх базову адресу.",
+    "description": "With contact names being associated with public addresses, you have the freedom to customize how you identify your contacts without affecting their underlying address."
+  },
+  "bW7B87": {
+    "message": "Новий",
+    "description": "New"
+  },
+  "baVA6q": {
+    "message": "Послідовність заголовків",
+    "description": "Head Sequence"
+  },
+  "bcOwoF": {
+    "message": "Виберіть свою мову",
+    "description": "Choose your language"
+  },
+  "c/KktL": {
+    "message": "Ресурси",
+    "description": "Resources"
+  },
+  "dM+p3/": {
+    "message": "Від",
+    "description": "From"
+  },
+  "e6Ph5+": {
+    "message": "Адреса",
+    "description": "Address"
+  },
+  "eKEL/g": {
+    "message": "В очікуванні",
+    "description": "Pending"
+  },
+  "eVlu1R": {
+    "message": "Виберіть мову",
+    "description": "Select language"
+  },
+  "ecJcrS": {
+    "message": "Синхронізація блоків",
+    "description": "Syncing blocks"
+  },
+  "ekfOaV": {
+    "message": "Повернутися назад",
+    "description": "Go Back"
+  },
+  "f6dOFt": {
+    "message": "Спробувати зараз",
+    "description": "Retry now"
+  },
+  "fF376U": {
+    "message": "Поточний",
+    "description": "Current"
+  },
+  "fKN5VY": {
+    "message": "Створити контакт",
+    "description": "Create Contact"
+  },
+  "flxGnZ": {
+    "message": "Телеметрія включена",
+    "description": "Telemetry enabled"
+  },
+  "g/oZa8": {
+    "message": "Очікуючі однорангові вузли для синхронізації від",
+    "description": "Waiting for peers to sync from"
+  },
+  "gcuDcH": {
+    "message": "Надіслано",
+    "description": "Sent"
+  },
+  "gjBiyj": {
+    "message": "Завантаження...",
+    "description": "Loading..."
+  },
+  "gu9i+5": {
+    "message": "Версія {currentVersion}",
+    "description": "Version {currentVersion}"
+  },
+  "gyrIEl": {
+    "message": "Файл",
+    "description": "File"
+  },
+  "h/XIMH": {
+    "message": "Додати контакт",
+    "description": "Add Contact"
+  },
+  "h1fexv": {
+    "message": "Ви автоматично будете перенаправлені на сторінку ваших облікових записів, як тільки знімок буде застосовано.",
+    "description": "You'll automatically be redirected to your accounts page once the snapshot is applied."
+  },
+  "hR0flV": {
+    "message": "Усі ваши транзакції, чи то в $IRON, чи інших налаштованих активів, будуть відображатися в цьому розділі. Щоб розпочати транзакцію, просто натисніть на вкладки 'Надіслати' або 'Отримати'.",
+    "description": "All your transactions, whether in $IRON or other custom assets, will be displayed in this section. To start a transaction, simply click on the 'Send' or 'Receive' tabs."
+  },
+  "iWiHY7": {
+    "message": "Блокчейн синхронізується. Ваш баланс може бути не точним, і відправка транзакцій буде відключена, поки синхронізація не буде завершена.",
+    "description": "The blockchain is syncing. Your balance may be inaccurate and sending transactions will be disabled until the sync is complete."
+  },
+  "is+QTN": {
+    "message": "Налаштування контакту",
+    "description": "Contact Settings"
+  },
+  "j2AFTQ": {
+    "message": "Статус вузла",
+    "description": "Node Status"
+  },
+  "jc6sBv": {
+    "message": "Контакт оновлено",
+    "description": "Contact updated"
+  },
+  "jd6+BK": {
+    "message": "Повтор спроби через {duration}...",
+    "description": "Retrying in {duration}..."
+  },
+  "jsy7pk": {
+    "message": "Спробувати знову",
+    "description": "Try Again"
+  },
+  "jwIURF": {
+    "message": "Вибраному обліковому запису не вистачає коштів для відправки цієї транзакції",
+    "description": "The selected account does not have enough funds to send this transaction"
+  },
+  "kF9XUo": {
+    "message": "Мітка часу",
+    "description": "Timestamp"
+  },
+  "kTt/ND": {
+    "message": "Російська",
+    "description": "Russian"
+  },
+  "lu5YPq": {
+    "message": "невідомий актив",
+    "description": "unknown asset"
+  },
+  "ml3Hqe": {
+    "message": "Цей обліковий запис синхронізується. Будь ласка, зачекайте, поки синхронізація не буде завершена, перед відправкою транзакцій.",
+    "description": "This account is syncing. Please wait until the sync is complete before sending transactions."
+  },
+  "mrlGwZ": {
+    "message": "Завантажити знімок: швидко та централізовано. Отримайте повну копію блокчейна швидко з центрального джерела.",
+    "description": "Download Snapshot: Fast and centralized. Get a complete copy of the blockchain quickly from a central source."
+  },
+  "mzRLqs": {
+    "message": "Завантаження триває...",
+    "description": "Download in progress..."
+  },
+  "nkeKcx": {
+    "message": "Головний хеш",
+    "description": "Head Hash"
+  },
+  "nleCAa": {
+    "message": "Примітки до випуску",
+    "description": "Release Notes"
+  },
+  "o0DpEu": {
+    "message": "Розпаковується...",
+    "description": "Unzipping..."
+  },
+  "omnNfq": {
+    "message": "Про комісії",
+    "description": "About Fees"
+  },
+  "p8bsw4": {
+    "message": "Помилка транзакції",
+    "description": "Transaction Error"
+  },
+  "pPk+ar": {
+    "message": "Від:",
+    "description": "From:"
+  },
+  "pQJ67O": {
+    "message": "Синхронізація з пірами: Повільніше, але децентралізовано. Отримання блокчейна від інших користувачів, що сприяє децентралізації мережі. Хоча це може зайняти більше часу, це зміцнює стійкість мережі.",
+    "description": "Sync from peers: Slower but decentralized. Retrieve the blockchain from other users, contributing to network decentralization. While it may take longer, it strengthens the network's resilience."
+  },
+  "pbdvze": {
+    "message": "Будь ласка, введіть свою мнемонічну фразу. Якщо ви скопіювали повну фразу в буфер обміну, ви можете вставити її в будь-яке вхідне поле, і вона автоматично буде розбита на відповідну кількість слів.",
+    "description": "Please enter your mnemonic phrase. If you've copied the full phrase to your clipboard, you can paste it in any input and it will automatically be split into the correct number of words."
+  },
+  "pqKz+h": {
+    "message": "Повільно",
+    "description": "Slow"
+  },
+  "q0qMyV": {
+    "message": "RSS",
+    "description": "RSS"
+  },
+  "qDYGja": {
+    "message": "Зберегти налаштування",
+    "description": "Save Settings"
+  },
+  "qVtJd7": {
+    "message": "Мемо (максимум 32 символи)",
+    "description": "Memo (32 characters max)"
+  },
+  "qkf/DE": {
+    "message": "Скасувати транзакцію",
+    "description": "Cancel Transaction"
+  },
+  "r1Z23X": {
+    "message": "Всі ваші рахунки будуть відображені в цьому розділі. Щоб створити або імпортувати рахунок, просто натисніть одну з кнопок вище.",
+    "description": "All your accounts will be displayed in this section. To create or import an account, simply click one of the buttons above."
+  },
+  "rbrahO": {
+    "message": "Закрити",
+    "description": "Close"
+  },
+  "rfxp5c": {
+    "message": "Підтвердіть і надішліть",
+    "description": "Confirm & Send"
+  },
+  "tf+yHL": {
+    "message": "Швидко",
+    "description": "Fast"
+  },
+  "tf1lIh": {
+    "message": "Безкоштовно",
+    "description": "Free"
+  },
+  "tzMNF3": {
+    "message": "Статус",
+    "description": "Status"
+  },
+  "uCgp+K": {
+    "message": "Блоки за повідомлення",
+    "description": "Blocks Per message"
+  },
+  "uHGB/g": {
+    "message": "{currMb} / {totalMb} мб завантажено",
+    "description": "{currMb} / {totalMb} mb downloaded"
+  },
+  "uT4OlP": {
+    "message": "Комісія",
+    "description": "Fee"
+  },
+  "vNT9Ip": {
+    "message": "Мнемонічна фраза",
+    "description": "Mnemonic Phrase"
+  },
+  "vV69eP": {
+    "message": "Завантаження знімку є найшвидшим способом синхронізації з мережею.",
+    "description": "Downloading a snapshot is the fastest way to sync with the network."
+  },
+  "wGpbja": {
+    "message": "Помилка при додаванні контакту",
+    "description": "Add Contact Error"
+  },
+  "wsALI4": {
+    "message": "Введіть кодований ключ",
+    "description": "Enter Encoded Key"
+  },
+  "xP64Lw": {
+    "message": "Адресна книга",
+    "description": "Address Book"
+  },
+  "xkLxAx": {
+    "message": "Рахунок створено",
+    "description": "Account Created"
+  },
+  "y3LzSM": {
+    "message": "Максимум пірів",
+    "description": "Max Peers"
+  },
+  "yLnnBl": {
+    "message": "Транзакція відправлена",
+    "description": "Transaction Submitted"
+  },
+  "yjpdGo": {
+    "message": "У вас немає жодних контактів",
+    "description": "You don't have any contacts"
+  },
+  "ytT37i": {
+    "message": "Назад до всіх рахунків",
+    "description": "Back to all accounts"
+  },
+  "z/wUXE": {
+    "message": "Отримано",
+    "description": "Received"
+  },
+  "zAPy5e": {
+    "message": "Назва рахунку — від Z до A",
+    "description": "Account name — Z to A"
+  },
+  "zCTaQX": {
+    "message": "Рахунки тільки для перегляду не можуть відправляти транзакції",
+    "description": "View only accounts cannot send transactions"
+  },
+  "zFegDD": {
+    "message": "Контакт",
+    "description": "Contact"
+  },
+  "zR2zr+": {
+    "message": "Адреса скопійована в буфер обміну",
+    "description": "Address copied to clipboard"
+  }
+}

@@ -1,1 +1,878 @@
-{}
+{
+  "+02x3X": {
+    "message": "您的地址簿是您可以管理所有联系人、他们的姓名和他们的公共地址的地方。",
+    "description": "Your address book is where you can manage all of your contacts, their names, and their public addresses."
+  },
+  "+RhnH+": {
+    "message": "空的",
+    "description": "Empty"
+  },
+  "+gH1Ai": {
+    "message": "节点名称",
+    "description": "Node Name"
+  },
+  "/0TOL5": {
+    "message": "金额",
+    "description": "Amount"
+  },
+  "/jJLYy": {
+    "message": "交易",
+    "description": "Transactions"
+  },
+  "/km2Zu": {
+    "message": "导入账户",
+    "description": "Import Account"
+  },
+  "/tbC+S": {
+    "message": "导出账户",
+    "description": "Export Account"
+  },
+  "/zn2B0": {
+    "message": "只读账户不能发起交易",
+    "description": "View only accounts cannot initiate transactions"
+  },
+  "21ueTy": {
+    "message": "公共地址",
+    "description": "Public Address"
+  },
+  "25vn7e": {
+    "message": "解压进度：{progress}%",
+    "description": "Unzip progress: {progress}%"
+  },
+  "2AcArH": {
+    "message": "如果您没有现有的 Iron Fish 帐户或者您想创建一个新的，请选择这个选项。",
+    "description": "Choose this option if you don't have an existing Iron Fish account or if you'd like to create a new one."
+  },
+  "2DcNnd": {
+    "message": "分享您的地址以接收支付，同时将您的帐户详细信息保持完全私密。",
+    "description": "Share your address to receive payments while keeping your account details entirely private."
+  },
+  "2G6Qs7": {
+    "message": "设置已保存",
+    "description": "Settings saved"
+  },
+  "2KXvZ0": {
+    "message": "您确定吗？此后不能撤销此操作。",
+    "description": "Are you sure? You can't undo this action afterwards."
+  },
+  "2qzbcD": {
+    "message": "最小节点",
+    "description": "Min Peers"
+  },
+  "3/a0Ho": {
+    "message": "我们现在无法下载发布说明。",
+    "description": "We're not able to download release notes right now."
+  },
+  "3OLlCN": {
+    "message": "从/到",
+    "description": "From/To"
+  },
+  "3VI9mt": {
+    "message": "保存更改",
+    "description": "Save Changes"
+  },
+  "3WkdVP": {
+    "message": "账户名称",
+    "description": "Account Name"
+  },
+  "3euoRJ": {
+    "message": "恢复短语",
+    "description": "Recovery Phrase"
+  },
+  "47FYwb": {
+    "message": "取消",
+    "description": "Cancel"
+  },
+  "4l6vz1": {
+    "message": "复制",
+    "description": "Copy"
+  },
+  "4woaDB": {
+    "message": "提交交易",
+    "description": "Submitting Transaction"
+  },
+  "551bXe": {
+    "message": "仅查看",
+    "description": "View Only"
+  },
+  "59UOUq": {
+    "message": "您没有任何账户",
+    "description": "You don't have any accounts"
+  },
+  "5JcXdV": {
+    "message": "创建账户",
+    "description": "Create Account"
+  },
+  "5MiM5y": {
+    "message": "发送资产",
+    "description": "Send Asset"
+  },
+  "5OJ1yw": {
+    "message": "内部账户名称",
+    "description": "Internal Account Name"
+  },
+  "5UdRx1": {
+    "message": "导入方式",
+    "description": "Import With"
+  },
+  "5c3Wrw": {
+    "message": "总账户余额",
+    "description": "Total accounts balance"
+  },
+  "5jeq8P": {
+    "message": "未知",
+    "description": "Unknown"
+  },
+  "62mqGj": {
+    "message": "删除联系人",
+    "description": "Delete Contact"
+  },
+  "6AhQlk": {
+    "message": "您确定要将节点重置到初始状态吗？",
+    "description": "Are you sure you want to reset the node to its initial state?"
+  },
+  "6Ior7i": {
+    "message": "我保存了我的恢复短语",
+    "description": "I saved my recovery phrase"
+  },
+  "6P/bTL": {
+    "message": "连接类型",
+    "description": "Connection Type"
+  },
+  "6q3tCn": {
+    "message": "正在连接",
+    "description": "Connecting"
+  },
+  "7JxXKc": {
+    "message": "下载快照",
+    "description": "Download Snapshot"
+  },
+  "7N6OYQ": {
+    "message": "查看交易",
+    "description": "View Transaction"
+  },
+  "8GvVWZ": {
+    "message": "出了些问题，请重试。",
+    "description": "Something went wrong, please try again."
+  },
+  "8JwFP/": {
+    "message": "自定义账户名称？",
+    "description": "Custom account name?"
+  },
+  "8WtyrD": {
+    "message": "西班牙语",
+    "description": "Spanish"
+  },
+  "9+Ddtu": {
+    "message": "下一个",
+    "description": "Next"
+  },
+  "9DI6zl": {
+    "message": "您可以更改您希望支付的费用金额。然而，这将直接影响链交易被网络验证的速度。",
+    "description": "You can change the fee amount you'd like to pay. However, that will directly correlate with the speed with which your transaction is picked up by the blockchain."
+  },
+  "9IVf3z": {
+    "message": "账户概览",
+    "description": "Account Overview"
+  },
+  "9WRlF4": {
+    "message": "发送",
+    "description": "Send"
+  },
+  "9WhwsR": {
+    "message": "这个名字是我们内部用来称呼您的账户的。它对任何其他人都不可见。",
+    "description": "This name is how we will refer to your account internally. It is not visible to anyone else."
+  },
+  "9XUYQt": {
+    "message": "导入",
+    "description": "Import"
+  },
+  "9j3hXO": {
+    "message": "至",
+    "description": "To"
+  },
+  "9pwT3E": {
+    "message": "需要帮助？在Discord上找到我们",
+    "description": "Need Help? Find us on Discord"
+  },
+  "9uOFF3": {
+    "message": "概览",
+    "description": "Overview"
+  },
+  "AetNAD": {
+    "message": "浏览",
+    "description": "Browse"
+  },
+  "Arxl88": {
+    "message": "出账",
+    "description": "Outgoing"
+  },
+  "AyGP4T": {
+    "message": "错误信息",
+    "description": "Error Message"
+  },
+  "BwRLcj": {
+    "message": "您的交易已提交。它可能需要几分钟的时间才能被确认。此交易将作为待处理的交易出现在您的活动中，直到被确认。",
+    "description": "Your transaction has been submitted. It may take a few minutes until it is confirmed. This transaction will appear in your activity as pending until it is confirmed."
+  },
+  "BxM6mJ": {
+    "message": "从最少到最多余额",
+    "description": "Lowest to highest balance"
+  },
+  "C43FrR": {
+    "message": "金额:",
+    "description": "Amount:"
+  },
+  "D31nQ7": {
+    "message": "估计交易费用时发生错误",
+    "description": "An error occurred while estimating the transaction fee"
+  },
+  "D3idYv": {
+    "message": "设置",
+    "description": "Settings"
+  },
+  "D5NqQO": {
+    "message": "备注",
+    "description": "Memo"
+  },
+  "Dh1MGS": {
+    "message": "账户同步中",
+    "description": "Account Syncing"
+  },
+  "DnuK8f": {
+    "message": "如果您想为此账户指定一个自定义名字，请开启这个设定。否则，账户名将从您导出的账户数据中推断出来。",
+    "description": "Turn this on if you want to specify a custom name for this account. Otherwise, the account name will be inferred from your exported account data."
+  },
+  "FM2S9I": {
+    "message": "设置您的节点",
+    "description": "Set up your node"
+  },
+  "Fn/FTS": {
+    "message": "加载交易信息时出错。如果这种情况反复发生，请在Discord上联系我们。",
+    "description": "An error occurred while loading your transactions. If this happens several times, please let us know on Discord."
+  },
+  "FnRTEV": {
+    "message": "平均",
+    "description": "Average"
+  },
+  "FvanT6": {
+    "message": "账户",
+    "description": "Accounts"
+  },
+  "GHoUMq": {
+    "message": "账户同步中: {progress}%",
+    "description": "Account Syncing: {progress}%"
+  },
+  "GKzO/A": {
+    "message": "费:",
+    "description": "Fee:"
+  },
+  "Gcv5yj": {
+    "message": "已使用堆",
+    "description": "Heap Used"
+  },
+  "Gcv7QB": {
+    "message": "账户名",
+    "description": "Account name"
+  },
+  "Gxw4v5": {
+    "message": "您的密钥和助记词是获取您的数字资产的必需品。务必妥善保存它们。",
+    "description": "Your keys and mnemonic phrase are essential for accessing your digital assets exclusively. It's important to store them securely."
+  },
+  "H56oje": {
+    "message": "节点工作者",
+    "description": "Node Workers"
+  },
+  "HAlOn1": {
+    "message": "名称",
+    "description": "Name"
+  },
+  "HkADqs": {
+    "message": "手续费（$IRON）",
+    "description": "Fee ($IRON)"
+  },
+  "JJNc3c": {
+    "message": "前一个",
+    "description": "Previous"
+  },
+  "Jjpq7w": {
+    "message": "块序列",
+    "description": "Block Sequence"
+  },
+  "JoB2Ml": {
+    "message": "您的帐户已成功导入",
+    "description": "Your account was successfully imported"
+  },
+  "JqiqNj": {
+    "message": "出了些问题",
+    "description": "Something went wrong"
+  },
+  "K340v+": {
+    "message": "下载快照时发生错误：",
+    "description": "An error occurred while downloading the snapshot:"
+  },
+  "K3r6DQ": {
+    "message": "删除",
+    "description": "Delete"
+  },
+  "KN7zKn": {
+    "message": "错误",
+    "description": "Error"
+  },
+  "Kkv03/": {
+    "message": "交易详细信息",
+    "description": "Transaction Details"
+  },
+  "L4MaM3": {
+    "message": "核心",
+    "description": "Cores"
+  },
+  "LP4H/8": {
+    "message": "扫描区块：{sequence} / {totalSequence}",
+    "description": "Scanning blocks: {sequence} / {totalSequence}"
+  },
+  "LPlno7": {
+    "message": "多个收件人",
+    "description": "Multiple recipients"
+  },
+  "LRJJAc": {
+    "message": "交易哈希",
+    "description": "Transaction Hash"
+  },
+  "Ld49Lh": {
+    "message": "你想给这个账户起什么名字？这个名字只有你能看到。",
+    "description": "What would you like to name this account? This name is only visible to you."
+  },
+  "MDZ4hi": {
+    "message": "已经有账户了？输入你的恢复凭证并继续如期使用你的账户。",
+    "description": "Already have an account? Enter your recovery credentials and continue using your account as expected."
+  },
+  "MFUhla": {
+    "message": "从高到低的余额",
+    "description": "Highest to lowest balance"
+  },
+  "N0KGQj": {
+    "message": "区块涂鸦",
+    "description": "Block Graffiti"
+  },
+  "N0bVvU": {
+    "message": "错误已复制到剪贴板",
+    "description": "Error copied to clipboard"
+  },
+  "NDtjP8": {
+    "message": "你确定吗？如果你想再次使用它，你将必须重新导入这个账户。",
+    "description": "Are you sure? You'll have to re-import this account if you want to use it again."
+  },
+  "NX/nQR": {
+    "message": "更改节点设置可以优化性能，提高连通性，增强安全性，并有效管理资源。",
+    "description": "Changing node settings can optimize performance, improve connectivity, enhance security, and manage resources effectively."
+  },
+  "Nw8+4i": {
+    "message": "节点ID",
+    "description": "Peer ID"
+  },
+  "O+Q7TL": {
+    "message": "已提交的顺序",
+    "description": "Submitted Sequence"
+  },
+  "OfA95/": {
+    "message": "已选择的文件：{fileName}",
+    "description": "Selected file: {fileName}"
+  },
+  "Og5CP/": {
+    "message": "堆最大值",
+    "description": "Heap Max"
+  },
+  "Ohn4yX": {
+    "message": "遥测已禁用",
+    "description": "Telemetry disabled"
+  },
+  "P3UCNi": {
+    "message": "同步区块：{progress}%",
+    "description": "Syncing blocks: {progress}%"
+  },
+  "P7PLVj": {
+    "message": "日期",
+    "description": "Date"
+  },
+  "Pq25uf": {
+    "message": "重置节点",
+    "description": "Reset Node"
+  },
+  "QS9NTE": {
+    "message": "账户名称 —— 从A到Z",
+    "description": "Account name — A to Z"
+  },
+  "QXxopU": {
+    "message": "助记词已复制到剪贴板！",
+    "description": "Mnemonic phrase copied to clipboard!"
+  },
+  "QlsDcr": {
+    "message": "动作",
+    "description": "Action"
+  },
+  "Qu9LpU": {
+    "message": "所选账户正在同步。您的余额可能不准确，直到同步完成，发送交易将被禁用。",
+    "description": "The selected account is syncing. Your balance may be inaccurate and sending transactions will be disabled until the sync is complete."
+  },
+  "R2OqnW": {
+    "message": "删除账户",
+    "description": "Delete Account"
+  },
+  "RLGujF": {
+    "message": "已连接的节点",
+    "description": "Connected Peers"
+  },
+  "RYLKpw": {
+    "message": "从节点同步",
+    "description": "Sync from Peers"
+  },
+  "RahCRH": {
+    "message": "过期了",
+    "description": "Expired"
+  },
+  "RsD3Mg": {
+    "message": "中文",
+    "description": "Chinese"
+  },
+  "Ry+/2j": {
+    "message": "多条备忘录",
+    "description": "Multiple memos"
+  },
+  "S+nmcq": {
+    "message": "交易信息",
+    "description": "Transaction Information"
+  },
+  "SaPa2h": {
+    "message": "编码密钥",
+    "description": "Encoded Key"
+  },
+  "Seu2ON": {
+    "message": "向：",
+    "description": "To:"
+  },
+  "T2yddR": {
+    "message": "你的节点",
+    "description": "Your Node"
+  },
+  "TRfaIL": {
+    "message": "已同步",
+    "description": "Synced"
+  },
+  "TTpGX5": {
+    "message": "选择如何同步你的链",
+    "description": "Choose how to sync your chain"
+  },
+  "Te4gbw": {
+    "message": "导出格式：",
+    "description": "Export Format:"
+  },
+  "TebMku": {
+    "message": "您没有任何交易",
+    "description": "You don't have any transactions"
+  },
+  "TenpoO": {
+    "message": "我们希望收集匿名的遥测数据，以持续改进您的体验。这些数据包括节点性能、区块信息和其他健康度量。您可以随时在节点设置页面启用或禁用此功能。",
+    "description": "We'd like to collect anonymous telemetry data in order to continually improve your experience. This data includes node performance, block information, and other health metrics. You can enable or disable this at any time in the node settings page."
+  },
+  "ThbkST": {
+    "message": "无法加载您的交易",
+    "description": "Unable to load your transactions"
+  },
+  "TzwzhT": {
+    "message": "只要您拥有帐户密钥，就可以随时移除并重新导入您的帐户。强烈建议您在一个安全的地方备份您的账户密钥。",
+    "description": "You can remove and reimport your accounts whenever you like, provided that you possess the account keys. It is highly recommended to maintain a backup of your account keys in a secure location."
+  },
+  "ULXFfP": {
+    "message": "接收",
+    "description": "Receive"
+  },
+  "UTOugV": {
+    "message": "您的资产",
+    "description": "Your Assets"
+  },
+  "VBDJ/l": {
+    "message": "在同步状态下，您的余额可能并不准确。",
+    "description": "Your balance might not be accurate while you're syncing"
+  },
+  "VqP8r/": {
+    "message": "备注：",
+    "description": "Memo:"
+  },
+  "VzzYJk": {
+    "message": "创建",
+    "description": "Create"
+  },
+  "WHjylD": {
+    "message": "请重启应用并重试。如果问题仍然存在，请在Discord上告诉我们，我们可以帮助您解决问题。",
+    "description": "Please restart the app and try again. If the issue persists, let us know on Discord so we can help troubleshoot."
+  },
+  "WKCp0D": {
+    "message": "资产",
+    "description": "Asset"
+  },
+  "WNgCs+": {
+    "message": "返回到地址簿",
+    "description": "Back to Address Book"
+  },
+  "WWEwrn": {
+    "message": "节点设置",
+    "description": "Node Settings"
+  },
+  "WkrNSk": {
+    "message": "英文",
+    "description": "English"
+  },
+  "WsssxH": {
+    "message": "选择您的JSON或Bech32文件以导入您的帐户。",
+    "description": "Select your JSON or Bech32 file to import your account."
+  },
+  "X+BJ/8": {
+    "message": "其他资产",
+    "description": "Other Assets"
+  },
+  "XLvNHQ": {
+    "message": "请抄下这个恢复短语并将其保存在一个安全的地方。您需要它来恢复您的帐户。",
+    "description": "Please write down this recovery phrase and keep it in a safe place. You will need it to recover your account."
+  },
+  "XYgEt1": {
+    "message": "请将这个短语存储在安全的地方。我们会要求您重新输入这个。",
+    "description": "Please keep this phrase stored somewhere safe. We will ask you to re-enter this."
+  },
+  "Xvk80E": {
+    "message": "请为此账户输入一个名称",
+    "description": "Please enter a name for this account"
+  },
+  "YDkqMJ": {
+    "message": "收到",
+    "description": "Incoming"
+  },
+  "YFT4rG": {
+    "message": "密钥",
+    "description": "Keys"
+  },
+  "Z4i3fh": {
+    "message": "Iron Fish Node应用支持{languageCount}种语言。如果您的首选语言未列出，请与我们联系并告知！",
+    "description": "The Iron Fish Node app supports {languageCount} languages. If your preferred language isn't listed, please reach out and let us know!"
+  },
+  "Z7mY5w": {
+    "message": "确认交易详情",
+    "description": "Confirm Transaction Details"
+  },
+  "ZQCgnA": {
+    "message": "此联系人的名称只对您可见。",
+    "description": "This contact's name is only visible to you."
+  },
+  "Zaa51D": {
+    "message": "乌克兰语",
+    "description": "Ukranian"
+  },
+  "ZhUW3G": {
+    "message": "堆积总数",
+    "description": "Heap Total"
+  },
+  "a1u/d5": {
+    "message": "查看帐户活动",
+    "description": "View Account Activity"
+  },
+  "acrOoz": {
+    "message": "继续",
+    "description": "Continue"
+  },
+  "av5C8J": {
+    "message": "出了点问题。请您重新检查您的交易然后再试。",
+    "description": "Something went wrong. Please review your transaction and try again."
+  },
+  "bFQd/U": {
+    "message": "通过将联系人名称与公开地址关联，您可以自由定制识别您的联系人的方式，而不影响其底层地址。",
+    "description": "With contact names being associated with public addresses, you have the freedom to customize how you identify your contacts without affecting their underlying address."
+  },
+  "bW7B87": {
+    "message": "新的",
+    "description": "New"
+  },
+  "baVA6q": {
+    "message": "头部序列",
+    "description": "Head Sequence"
+  },
+  "bcOwoF": {
+    "message": "选择你的语言",
+    "description": "Choose your language"
+  },
+  "c/KktL": {
+    "message": "资源",
+    "description": "Resources"
+  },
+  "dM+p3/": {
+    "message": "从",
+    "description": "From"
+  },
+  "e6Ph5+": {
+    "message": "地址",
+    "description": "Address"
+  },
+  "eKEL/g": {
+    "message": "待定",
+    "description": "Pending"
+  },
+  "eVlu1R": {
+    "message": "选择语言",
+    "description": "Select language"
+  },
+  "ecJcrS": {
+    "message": "同步区块",
+    "description": "Syncing blocks"
+  },
+  "ekfOaV": {
+    "message": "返回",
+    "description": "Go Back"
+  },
+  "f6dOFt": {
+    "message": "立即重试",
+    "description": "Retry now"
+  },
+  "fF376U": {
+    "message": "当前",
+    "description": "Current"
+  },
+  "fKN5VY": {
+    "message": "创建联系人",
+    "description": "Create Contact"
+  },
+  "flxGnZ": {
+    "message": "已启用遥测",
+    "description": "Telemetry enabled"
+  },
+  "g/oZa8": {
+    "message": "等待来自同伴的同步",
+    "description": "Waiting for peers to sync from"
+  },
+  "gcuDcH": {
+    "message": "已发送",
+    "description": "Sent"
+  },
+  "gjBiyj": {
+    "message": "加载中...",
+    "description": "Loading..."
+  },
+  "gu9i+5": {
+    "message": "版本 {currentVersion}",
+    "description": "Version {currentVersion}"
+  },
+  "gyrIEl": {
+    "message": "文件",
+    "description": "File"
+  },
+  "h/XIMH": {
+    "message": "添加联系人",
+    "description": "Add Contact"
+  },
+  "h1fexv": {
+    "message": "一旦应用了快照，您将自动被重定向到您的账户页面。",
+    "description": "You'll automatically be redirected to your accounts page once the snapshot is applied."
+  },
+  "hR0flV": {
+    "message": "您的所有交易，无论是在 $IRON 或其他自定义资产中，都会在此部分显示。要开始交易，只需点击 '发送' 或 '接收' 标签。",
+    "description": "All your transactions, whether in $IRON or other custom assets, will be displayed in this section. To start a transaction, simply click on the 'Send' or 'Receive' tabs."
+  },
+  "iWiHY7": {
+    "message": "区块链正在同步。您的余额可能不准确，而且在同步完成之前，将禁止发送交易。",
+    "description": "The blockchain is syncing. Your balance may be inaccurate and sending transactions will be disabled until the sync is complete."
+  },
+  "is+QTN": {
+    "message": "联系人设置",
+    "description": "Contact Settings"
+  },
+  "j2AFTQ": {
+    "message": "节点状态",
+    "description": "Node Status"
+  },
+  "jc6sBv": {
+    "message": "联系人已更新",
+    "description": "Contact updated"
+  },
+  "jd6+BK": {
+    "message": "{duration}后重试...",
+    "description": "Retrying in {duration}..."
+  },
+  "jsy7pk": {
+    "message": "再试一次",
+    "description": "Try Again"
+  },
+  "jwIURF": {
+    "message": "选定的账户没有足够的资金发送此交易",
+    "description": "The selected account does not have enough funds to send this transaction"
+  },
+  "kF9XUo": {
+    "message": "时间戳",
+    "description": "Timestamp"
+  },
+  "kTt/ND": {
+    "message": "俄语",
+    "description": "Russian"
+  },
+  "lu5YPq": {
+    "message": "未知资产",
+    "description": "unknown asset"
+  },
+  "ml3Hqe": {
+    "message": "此账户正在同步。请等待同步完成后再发送交易。",
+    "description": "This account is syncing. Please wait until the sync is complete before sending transactions."
+  },
+  "mrlGwZ": {
+    "message": "下载快照：快速且集中。从中心源快速获取区块链的完整副本。",
+    "description": "Download Snapshot: Fast and centralized. Get a complete copy of the blockchain quickly from a central source."
+  },
+  "mzRLqs": {
+    "message": "下载进行中...",
+    "description": "Download in progress..."
+  },
+  "nkeKcx": {
+    "message": "头哈希",
+    "description": "Head Hash"
+  },
+  "nleCAa": {
+    "message": "发行说明",
+    "description": "Release Notes"
+  },
+  "o0DpEu": {
+    "message": "正在解压...",
+    "description": "Unzipping..."
+  },
+  "omnNfq": {
+    "message": "关于费用",
+    "description": "About Fees"
+  },
+  "p8bsw4": {
+    "message": "交易错误",
+    "description": "Transaction Error"
+  },
+  "pPk+ar": {
+    "message": "发件人：",
+    "description": "From:"
+  },
+  "pQJ67O": {
+    "message": "从同伴同步：虽然慢，但是去中心化。从其他用户处获取区块链，为网络去中心化作出贡献。尽管可能需要更长的时间，但这会增强网络的抗压能力。",
+    "description": "Sync from peers: Slower but decentralized. Retrieve the blockchain from other users, contributing to network decentralization. While it may take longer, it strengthens the network's resilience."
+  },
+  "pbdvze": {
+    "message": "请输入您的助记词。如果您已经复制了整个助记词到剪贴板，您可以将其粘贴在任何输入框中，它将自动分割成正确数量的单词。",
+    "description": "Please enter your mnemonic phrase. If you've copied the full phrase to your clipboard, you can paste it in any input and it will automatically be split into the correct number of words."
+  },
+  "pqKz+h": {
+    "message": "慢速",
+    "description": "Slow"
+  },
+  "q0qMyV": {
+    "message": "RSS",
+    "description": "RSS"
+  },
+  "qDYGja": {
+    "message": "保存设置",
+    "description": "Save Settings"
+  },
+  "qVtJd7": {
+    "message": "备忘录（最多32个字符）",
+    "description": "Memo (32 characters max)"
+  },
+  "qkf/DE": {
+    "message": "取消交易",
+    "description": "Cancel Transaction"
+  },
+  "r1Z23X": {
+    "message": "您的所有账户将在此部分显示。要创建或导入账户，只需点击上面的其中一个按钮。",
+    "description": "All your accounts will be displayed in this section. To create or import an account, simply click one of the buttons above."
+  },
+  "rbrahO": {
+    "message": "关闭",
+    "description": "Close"
+  },
+  "rfxp5c": {
+    "message": "确认并发送",
+    "description": "Confirm & Send"
+  },
+  "tf+yHL": {
+    "message": "快速",
+    "description": "Fast"
+  },
+  "tf1lIh": {
+    "message": "免费",
+    "description": "Free"
+  },
+  "tzMNF3": {
+    "message": "状态",
+    "description": "Status"
+  },
+  "uCgp+K": {
+    "message": "每个消息的区块",
+    "description": "Blocks Per message"
+  },
+  "uHGB/g": {
+    "message": "已下载 {currMb} / {totalMb} mb",
+    "description": "{currMb} / {totalMb} mb downloaded"
+  },
+  "uT4OlP": {
+    "message": "费用",
+    "description": "Fee"
+  },
+  "vNT9Ip": {
+    "message": "助记词",
+    "description": "Mnemonic Phrase"
+  },
+  "vV69eP": {
+    "message": "下载快照是与网络同步的最快方式。",
+    "description": "Downloading a snapshot is the fastest way to sync with the network."
+  },
+  "wGpbja": {
+    "message": "添加联系人错误",
+    "description": "Add Contact Error"
+  },
+  "wsALI4": {
+    "message": "输入编码键",
+    "description": "Enter Encoded Key"
+  },
+  "xP64Lw": {
+    "message": "地址簿",
+    "description": "Address Book"
+  },
+  "xkLxAx": {
+    "message": "账户已创建",
+    "description": "Account Created"
+  },
+  "y3LzSM": {
+    "message": "最大同伴",
+    "description": "Max Peers"
+  },
+  "yLnnBl": {
+    "message": "已提交交易",
+    "description": "Transaction Submitted"
+  },
+  "yjpdGo": {
+    "message": "你没有任何联系人",
+    "description": "You don't have any contacts"
+  },
+  "ytT37i": {
+    "message": "回到所有账户",
+    "description": "Back to all accounts"
+  },
+  "z/wUXE": {
+    "message": "收到的",
+    "description": "Received"
+  },
+  "zAPy5e": {
+    "message": "账户名称 — Z至A",
+    "description": "Account name — Z to A"
+  },
+  "zCTaQX": {
+    "message": "只读账户无法发送交易",
+    "description": "View only accounts cannot send transactions"
+  },
+  "zFegDD": {
+    "message": "联系人",
+    "description": "Contact"
+  },
+  "zR2zr+": {
+    "message": "地址已复制到剪贴板",
+    "description": "Address copied to clipboard"
+  }
+}
