@@ -4,10 +4,10 @@ import { defineMessages, useIntl } from "react-intl";
 import { COLORS } from "@/ui/colors";
 
 const messages = defineMessages({
-  viewOnly: {
+  customNameLabel: {
     defaultMessage: "Custom account name?",
   },
-  viewOnlyTooltip: {
+  customNameTooltip: {
     defaultMessage:
       "Turn this on if you want to specify a custom name for this account. Otherwise, the account name will be inferred from your exported account data.",
   },
@@ -28,7 +28,7 @@ export function CustomNameChip() {
   const { formatMessage } = useIntl();
 
   return (
-    <Tooltip label={formatMessage(messages.viewOnlyTooltip)} placement="top">
+    <Tooltip label={formatMessage(messages.customNameTooltip)} placement="top">
       <HStack
         alignItems="center"
         bg={COLORS.GRAY_LIGHT}
@@ -50,7 +50,7 @@ export function CustomNameChip() {
         }}
       >
         <Icon />
-        <Text fontSize="12px">{formatMessage(messages.viewOnly)}</Text>
+        <Text fontSize="12px">{formatMessage(messages.customNameLabel)}</Text>
       </HStack>
     </Tooltip>
   );
