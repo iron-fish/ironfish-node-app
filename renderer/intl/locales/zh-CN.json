@@ -419,6 +419,10 @@
     "message": "删除账户",
     "description": "Delete Account"
   },
+  "RIUFf+": {
+    "message": "乌克兰语",
+    "description": "Ukrainian"
+  },
   "RLGujF": {
     "message": "已连接的节点",
     "description": "Connected Peers"
@@ -562,10 +566,6 @@
   "ZQCgnA": {
     "message": "此联系人的名称只对您可见。",
     "description": "This contact's name is only visible to you."
-  },
-  "Zaa51D": {
-    "message": "乌克兰语",
-    "description": "Ukranian"
   },
   "ZhUW3G": {
     "message": "堆积总数",

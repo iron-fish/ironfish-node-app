@@ -419,6 +419,10 @@
     "message": "Удалить аккаунт",
     "description": "Delete Account"
   },
+  "RIUFf+": {
+    "message": "Украинский",
+    "description": "Ukrainian"
+  },
   "RLGujF": {
     "message": "Подключенные пиры",
     "description": "Connected Peers"
@@ -562,10 +566,6 @@
   "ZQCgnA": {
     "message": "Это имя контакта видно только вам.",
     "description": "This contact's name is only visible to you."
-  },
-  "Zaa51D": {
-    "message": "Украинский",
-    "description": "Ukranian"
   },
   "ZhUW3G": {
     "message": "Общий Объем",

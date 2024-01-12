@@ -419,6 +419,10 @@
     "message": "Eliminar cuenta",
     "description": "Delete Account"
   },
+  "RIUFf+": {
+    "message": "Ucraniano",
+    "description": "Ukrainian"
+  },
   "RLGujF": {
     "message": "Pares conectados",
     "description": "Connected Peers"
@@ -562,10 +566,6 @@
   "ZQCgnA": {
     "message": "El nombre de este contacto solo es visible para ti.",
     "description": "This contact's name is only visible to you."
-  },
-  "Zaa51D": {
-    "message": "Ucraniano",
-    "description": "Ukranian"
   },
   "ZhUW3G": {
     "message": "Heap Total",

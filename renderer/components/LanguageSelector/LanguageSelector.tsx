@@ -34,8 +34,8 @@ const messages = defineMessages({
   langRussian: {
     defaultMessage: "Russian",
   },
-  langUkranian: {
-    defaultMessage: "Ukranian",
+  langUkrainian: {
+    defaultMessage: "Ukrainian",
   },
   chooseLanguage: {
     defaultMessage: "Choose your language",
@@ -75,7 +75,7 @@ const sortOptionsMap: {
     value: "ru-RU",
   },
   "uk-UA": {
-    label: messages.langUkranian,
+    label: messages.langUkrainian,
     value: "uk-UA",
   },
 };

@@ -419,6 +419,10 @@
     "message": "Видалити обліковий запис",
     "description": "Delete Account"
   },
+  "RIUFf+": {
+    "message": "Українська",
+    "description": "Ukrainian"
+  },
   "RLGujF": {
     "message": "Підключені вузли",
     "description": "Connected Peers"
@@ -562,10 +566,6 @@
   "ZQCgnA": {
     "message": "Це ім'я контакту видно тільки вам.",
     "description": "This contact's name is only visible to you."
-  },
-  "Zaa51D": {
-    "message": "Українська",
-    "description": "Ukranian"
   },
   "ZhUW3G": {
     "message": "Загальна купа",
