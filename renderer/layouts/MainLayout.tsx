@@ -3,9 +3,9 @@ import {
   GridItem,
   Box,
   VStack,
-  Text,
   HStack,
   Flex,
+  Heading,
 } from "@chakra-ui/react";
 import { useRouter } from "next/router";
 import { createContext, ReactNode, useContext, useState } from "react";
@@ -122,38 +122,50 @@ function Sidebar() {
               key={href}
               href={href}
               w="100%"
-              py={3}
-              px={2}
+              height="40px"
+              px={4}
               borderRadius={4}
               bg={isActive ? COLORS.GRAY_LIGHT : "transparent"}
+              color={isActive ? COLORS.BLACK : COLORS.GRAY_MEDIUM}
               _dark={{
                 bg: isActive ? COLORS.DARK_MODE.GRAY_MEDIUM : "transparent",
+                color: isActive ? COLORS.WHITE : COLORS.DARK_MODE.GRAY_LIGHT,
               }}
               _hover={{
                 bg: COLORS.GRAY_LIGHT,
+                color: COLORS.BLACK,
                 _dark: {
                   bg: COLORS.DARK_MODE.GRAY_MEDIUM,
+                  color: COLORS.WHITE,
                 },
               }}
+              role="group"
             >
-              <HStack>
-                <Box w="30px" display="flex" justifyContent="center">
+              <HStack gap={4} h="100%">
+                <Box
+                  display="flex"
+                  justifyContent="center"
+                  width="24px"
+                  color={COLORS.BLACK}
+                  _dark={{ color: COLORS.WHITE }}
+                >
                   {icon}
                 </Box>
-                <Text
+                <Heading
+                  fontSize="sm"
                   display={{
                     base: "none",
                     md: "block",
                   }}
                 >
                   {formatMessage(label)}
-                </Text>
+                </Heading>
               </HStack>
             </ChakraLink>
           );
         })}
       </VStack>
-      <VStack alignItems="stretch" gap={3}>
+      <VStack alignItems="center" gap={4}>
         <StatusIndicator />
         <LanguageSelector />
         <DarkModeSwitch />
@@ -196,8 +208,12 @@ export default function MainLayout({ children, backLinkProps }: Props) {
             base: "auto",
             md: "265px",
           }}
-          p={4}
+          px={4}
           pt="50px"
+          pb={{
+            base: 8,
+            md: 6,
+          }}
           display="flex"
           alignItems="stretch"
         >

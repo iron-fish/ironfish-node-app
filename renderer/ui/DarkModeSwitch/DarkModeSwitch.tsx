@@ -23,12 +23,14 @@ export const DarkModeSwitch = () => {
       aria-label="Toggle Color Mode"
       onClick={toggleColorMode}
       bg={COLORS.GRAY_LIGHT}
-      w="100%"
+      w={{
+        base: "34px",
+        md: "100%",
+      }}
       h={{
-        base: "80px",
+        base: "60px",
         md: "auto",
       }}
-      minWidth="40px"
       p={1}
       position="relative"
       borderRadius="5px"

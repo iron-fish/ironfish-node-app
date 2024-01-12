@@ -113,6 +113,14 @@ export function LanguageSelector() {
           bg: COLORS.DARK_MODE.GRAY_MEDIUM,
           color: COLORS.DARK_MODE.GRAY_LIGHT,
         }}
+        width={{
+          base: "34px",
+          md: "100%",
+        }}
+        height={{
+          base: "34px",
+          md: "100%",
+        }}
         onClick={onOpen}
       >
         <MdOutlineLanguage />
