@@ -671,6 +671,10 @@
     "message": "Ви автоматично будете перенаправлені на сторінку ваших облікових записів, як тільки знімок буде застосовано.",
     "description": "You'll automatically be redirected to your accounts page once the snapshot is applied."
   },
+  "hDI+JM": {
+    "message": "Сортувати",
+    "description": "Sort by"
+  },
   "hR0flV": {
     "message": "Усі ваши транзакції, чи то в $IRON, чи інших налаштованих активів, будуть відображатися в цьому розділі. Щоб розпочати транзакцію, просто натисніть на вкладки 'Надіслати' або 'Отримати'.",
     "description": "All your transactions, whether in $IRON or other custom assets, will be displayed in this section. To start a transaction, simply click on the 'Send' or 'Receive' tabs."
@@ -838,6 +842,10 @@
   "xkLxAx": {
     "message": "Рахунок створено",
     "description": "Account Created"
+  },
+  "xmcVZ0": {
+    "message": "Пошук",
+    "description": "Search"
   },
   "y3LzSM": {
     "message": "Максимум пірів",

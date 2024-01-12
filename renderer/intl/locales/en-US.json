@@ -504,6 +504,9 @@
   "h1fexv": {
     "message": "You'll automatically be redirected to your accounts page once the snapshot is applied."
   },
+  "hDI+JM": {
+    "message": "Sort by"
+  },
   "hR0flV": {
     "message": "All your transactions, whether in $IRON or other custom assets, will be displayed in this section. To start a transaction, simply click on the 'Send' or 'Receive' tabs."
   },
@@ -629,6 +632,9 @@
   },
   "xkLxAx": {
     "message": "Account Created"
+  },
+  "xmcVZ0": {
+    "message": "Search"
   },
   "y3LzSM": {
     "message": "Max Peers"
