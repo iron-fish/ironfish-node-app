@@ -140,6 +140,12 @@ class MainWindow {
       return { action: "deny" };
     });
 
+    // We're intentially preventing the browser from handling unload events (e.g. close, refresh)
+    // so we have to handle closing the window manually.
+    this.window.on("close", () => {
+      this.window?.destroy();
+    });
+
     this.window.on("closed", () => {
       this.window = null;
       const [promise, resolve] = PromiseUtils.split<BrowserWindow>();
