@@ -98,7 +98,7 @@
       "eslint --fix",
       "prettier --write",
       "npm run extract:i18n",
-      "git add renderer/intl/locales/en.json"
+      "git add renderer/intl/locales/en-US.json"
     ]
   }
 }
