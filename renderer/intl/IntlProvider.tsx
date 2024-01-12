@@ -13,7 +13,7 @@ import { trpcReact } from "@/providers/TRPCProvider";
 import English from "./compiled-locales/en-US.json";
 import Spanish from "./compiled-locales/es-MX.json";
 import Russian from "./compiled-locales/ru-RU.json";
-import Ukranian from "./compiled-locales/uk-UA.json";
+import Ukrainian from "./compiled-locales/uk-UA.json";
 import Chinese from "./compiled-locales/zh-CN.json";
 import { LOCALES, DEFAULT_LOCALE } from "./intl-constants";
 
@@ -70,7 +70,7 @@ export function IntlProvider({ children }: { children: React.ReactNode }) {
       case "ru-RU":
         return Russian;
       case "uk-UA":
-        return Ukranian;
+        return Ukrainian;
       case "zh-CN":
         return Chinese;
       default:
