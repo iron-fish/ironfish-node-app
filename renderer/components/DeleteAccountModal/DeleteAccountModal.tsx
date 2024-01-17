@@ -181,7 +181,9 @@ export function DeleteAccountModal({
               ) : (
                 <VStack gap={4} alignItems="stretch">
                   <TextInput
-                    {...register("name", { pattern: new RegExp(account.name) })}
+                    {...register("name", {
+                      validate: (input) => input === account.name,
+                    })}
                     label={formatMessage(messages.typeToDelete, {
                       accountName: account.name,
                     })}
