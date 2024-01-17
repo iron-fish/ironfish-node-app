@@ -1,19 +1,9 @@
-import {
-  HStack,
-  VStack,
-  useDisclosure,
-  AlertDialog,
-  AlertDialogOverlay,
-  AlertDialogContent,
-  AlertDialogFooter,
-  AlertDialogHeader,
-  AlertDialogBody,
-  Button,
-} from "@chakra-ui/react";
+import { HStack, VStack, useDisclosure } from "@chakra-ui/react";
 import { useRouter } from "next/router";
-import { useRef, useState } from "react";
+import { useState } from "react";
 import { defineMessages, useIntl } from "react-intl";
 
+import { DeleteAccountModal } from "@/components/DeleteAccountModal/DeleteAccountModal";
 import { trpcReact } from "@/providers/TRPCProvider";
 import { TextInput } from "@/ui/Forms/TextInput/TextInput";
 import { PillButton } from "@/ui/PillButton/PillButton";
@@ -36,19 +26,6 @@ const messages = defineMessages({
   deleteAccount: {
     defaultMessage: "Delete Account",
   },
-  deleteAccountTitle: {
-    defaultMessage: "Delete Account",
-  },
-  deleteAccountConfirmation: {
-    defaultMessage:
-      "Are you sure? You'll have to re-import this account if you want to use it again.",
-  },
-  cancel: {
-    defaultMessage: "Cancel",
-  },
-  delete: {
-    defaultMessage: "Delete",
-  },
 });
 
 export function AccountSettings({ accountName }: Props) {
@@ -57,6 +34,24 @@ export function AccountSettings({ accountName }: Props) {
   const { formatMessage } = useIntl();
 
   const [newName, setNewName] = useState(accountName);
+
+  const { data: isSyncedData } = trpcReact.isAccountSynced.useQuery(
+    {
+      account: accountName,
+    },
+    {
+      refetchInterval: 5000,
+    },
+  );
+
+  const { data: accountData } = trpcReact.getAccount.useQuery(
+    {
+      name: accountName,
+    },
+    {
+      refetchInterval: 5000,
+    },
+  );
 
   // @todo: Renaming the account causes the parent component to refetch an account which no longer exists,
   // causing an error. The error doesn't cause any issues, because once the redirect happens, the parent
@@ -72,13 +67,6 @@ export function AccountSettings({ accountName }: Props) {
       },
     });
 
-  const { mutate: deleteAccount, isLoading: isDeleteLoading } =
-    trpcReact.deleteAccount.useMutation({
-      onSuccess: () => {
-        router.replace("/accounts");
-      },
-    });
-
   const hasValidName = newName.length > 0;
 
   const {
@@ -86,7 +74,6 @@ export function AccountSettings({ accountName }: Props) {
     onOpen: onDeleteModalOpen,
     onClose: onDeleteModalClose,
   } = useDisclosure();
-  const cancelDeleteRef = useRef(null);
 
   return (
     <>
@@ -125,39 +112,14 @@ export function AccountSettings({ accountName }: Props) {
           </PillButton>
         </HStack>
       </VStack>
-      <AlertDialog
-        isOpen={isDeleteModalOpen}
-        leastDestructiveRef={cancelDeleteRef}
-        onClose={onDeleteModalClose}
-      >
-        <AlertDialogOverlay>
-          <AlertDialogContent>
-            <AlertDialogHeader fontSize="lg" fontWeight="bold">
-              {formatMessage(messages.deleteAccountTitle)}
-            </AlertDialogHeader>
-
-            <AlertDialogBody>
-              {formatMessage(messages.deleteAccountConfirmation)}
-            </AlertDialogBody>
-
-            <AlertDialogFooter>
-              <Button ref={cancelDeleteRef} onClick={onDeleteModalClose}>
-                {formatMessage(messages.cancel)}
-              </Button>
-              <Button
-                isDisabled={isDeleteLoading}
-                colorScheme="red"
-                onClick={() => {
-                  deleteAccount({ account: accountName });
-                }}
-                ml={3}
-              >
-                {formatMessage(messages.delete)}
-              </Button>
-            </AlertDialogFooter>
-          </AlertDialogContent>
-        </AlertDialogOverlay>
-      </AlertDialog>
+      {isSyncedData && accountData && (
+        <DeleteAccountModal
+          isOpen={isDeleteModalOpen}
+          onClose={onDeleteModalClose}
+          isSynced={isSyncedData.synced}
+          account={accountData}
+        />
+      )}
     </>
   );
 }

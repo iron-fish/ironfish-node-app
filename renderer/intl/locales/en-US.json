@@ -105,6 +105,9 @@
   "6P/bTL": {
     "message": "Connection Type"
   },
+  "6hS0se": {
+    "message": "Are you sure you want to delete the account?"
+  },
   "6q3tCn": {
     "message": "Connecting"
   },
@@ -264,14 +267,14 @@
   "MFUhla": {
     "message": "Highest to lowest balance"
   },
+  "MlzVS6": {
+    "message": "If you delete this account without exporting it first, YOU WILL LOSE THESE ASSETS."
+  },
   "N0KGQj": {
     "message": "Block Graffiti"
   },
   "N0bVvU": {
     "message": "Error copied to clipboard"
-  },
-  "NDtjP8": {
-    "message": "Are you sure? You'll have to re-import this account if you want to use it again."
   },
   "NX/nQR": {
     "message": "Changing node settings can optimize performance, improve connectivity, enhance security, and manage resources effectively."
@@ -516,8 +519,14 @@
   "is+QTN": {
     "message": "Contact Settings"
   },
+  "j1Eelr": {
+    "message": "This account is not yet synced and may contain $IRON or other assets."
+  },
   "j2AFTQ": {
     "message": "Node Status"
+  },
+  "jURX0R": {
+    "message": "Type ''{accountName}'' to delete"
   },
   "jc6sBv": {
     "message": "Contact updated"
@@ -536,6 +545,9 @@
   },
   "kTt/ND": {
     "message": "Russian"
+  },
+  "kYXW+e": {
+    "message": "This account currently holds the following assets:"
   },
   "lu5YPq": {
     "message": "unknown asset"
@@ -662,5 +674,8 @@
   },
   "zR2zr+": {
     "message": "Address copied to clipboard"
+  },
+  "zl76y/": {
+    "message": "Text must match the account name ''{accountName}''"
   }
 }
