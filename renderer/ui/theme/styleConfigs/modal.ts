@@ -8,10 +8,9 @@ const { definePartsStyle, defineMultiStyleConfig } =
 
 const baseStyle = definePartsStyle({
   dialog: {
-    borderWidth: "1px",
+    borderRadius: "4px",
     _dark: {
       bg: COLORS.DARK_MODE.BG,
-      borderColor: COLORS.DARK_MODE.GRAY_MEDIUM,
     },
   },
 });

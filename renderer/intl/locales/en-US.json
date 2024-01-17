@@ -24,6 +24,9 @@
   "/zn2B0": {
     "message": "View only accounts cannot initiate transactions"
   },
+  "0rIM5R": {
+    "message": "Remove Account"
+  },
   "21ueTy": {
     "message": "Public Address"
   },
@@ -104,9 +107,6 @@
   },
   "6P/bTL": {
     "message": "Connection Type"
-  },
-  "6hS0se": {
-    "message": "Are you sure you want to delete the account?"
   },
   "6q3tCn": {
     "message": "Connecting"
@@ -222,8 +222,14 @@
   "HkADqs": {
     "message": "Fee ($IRON)"
   },
+  "HtgUU8": {
+    "message": "Type ''{accountName}'' to remove"
+  },
   "JJNc3c": {
     "message": "Previous"
+  },
+  "JM4YI+": {
+    "message": "Are you sure you want to remove this account?"
   },
   "Jjpq7w": {
     "message": "Block Sequence"
@@ -266,9 +272,6 @@
   },
   "MFUhla": {
     "message": "Highest to lowest balance"
-  },
-  "MlzVS6": {
-    "message": "If you delete this account without exporting it first, YOU WILL LOSE THESE ASSETS."
   },
   "N0KGQj": {
     "message": "Block Graffiti"
@@ -314,9 +317,6 @@
   },
   "Qu9LpU": {
     "message": "The selected account is syncing. Your balance may be inaccurate and sending transactions will be disabled until the sync is complete."
-  },
-  "R2OqnW": {
-    "message": "Delete Account"
   },
   "RIUFf+": {
     "message": "Ukrainian"
@@ -459,6 +459,9 @@
   "dM+p3/": {
     "message": "From"
   },
+  "dTSUUK": {
+    "message": "If you remove this account without exporting it first, YOU WILL LOSE ACCESS TO IT."
+  },
   "e6Ph5+": {
     "message": "Address"
   },
@@ -525,9 +528,6 @@
   "j2AFTQ": {
     "message": "Node Status"
   },
-  "jURX0R": {
-    "message": "Type ''{accountName}'' to delete"
-  },
   "jc6sBv": {
     "message": "Contact updated"
   },
@@ -545,9 +545,6 @@
   },
   "kTt/ND": {
     "message": "Russian"
-  },
-  "kYXW+e": {
-    "message": "This account currently holds the following assets:"
   },
   "lu5YPq": {
     "message": "unknown asset"
@@ -632,6 +629,9 @@
   },
   "vV69eP": {
     "message": "Downloading a snapshot is the fastest way to sync with the network."
+  },
+  "vaP4MI": {
+    "message": "It currently holds:"
   },
   "wGpbja": {
     "message": "Add Contact Error"

@@ -20,22 +20,23 @@ import { defineMessages, useIntl } from "react-intl";
 import { getTrpcVanillaClient, trpcReact } from "@/providers/TRPCProvider";
 import { TextInput } from "@/ui/Forms/TextInput/TextInput";
 import { PillButton } from "@/ui/PillButton/PillButton";
+import { hexToUTF16String } from "@/utils/hexToUTF16String";
 import { formatOre } from "@/utils/ironUtils";
 
 const messages = defineMessages({
-  deleteAccount: {
-    defaultMessage: "Delete Account",
+  removeAccount: {
+    defaultMessage: "Remove Account",
   },
   notSyncedWarning: {
     defaultMessage:
       "This account is not yet synced and may contain $IRON or other assets.",
   },
   hasBalanceWarning: {
-    defaultMessage: "This account currently holds the following assets:",
+    defaultMessage: "It currently holds:",
   },
-  loseAssetsWarning: {
+  loseAccessWarning: {
     defaultMessage:
-      "If you delete this account without exporting it first, YOU WILL LOSE THESE ASSETS.",
+      "If you remove this account without exporting it first, YOU WILL LOSE ACCESS TO IT.",
   },
   loading: {
     defaultMessage: "Loading...",
@@ -49,17 +50,17 @@ const messages = defineMessages({
   cancel: {
     defaultMessage: "Cancel",
   },
-  deleteAccountButton: {
-    defaultMessage: "Delete Account",
+  removeAccountButton: {
+    defaultMessage: "Remove Account",
   },
   closeButton: {
     defaultMessage: "Close",
   },
   areYouSure: {
-    defaultMessage: "Are you sure you want to delete the account?",
+    defaultMessage: "Are you sure you want to remove this account?",
   },
-  typeToDelete: {
-    defaultMessage: "Type ''{accountName}'' to delete",
+  typeToRemove: {
+    defaultMessage: "Type ''{accountName}'' to remove",
   },
   textMustMatch: {
     defaultMessage: "Text must match the account name ''{accountName}''",
@@ -75,7 +76,7 @@ type Props = {
   >;
 };
 
-export function DeleteAccountModal({
+export function RemoveAccountModal({
   isOpen,
   onClose,
   account,
@@ -128,44 +129,35 @@ export function DeleteAccountModal({
     <Modal isOpen={isOpen} onClose={handleClose}>
       <ModalOverlay />
       <ModalContent maxW="100%" width="600px">
-        <ModalBody px={16} pt={16}>
+        <ModalBody px={16} pt={16} pb={0}>
           {!isError && (
             <>
-              <Heading fontSize="2xl" mb={4}>
-                {formatMessage(messages.deleteAccount)}
+              <Heading fontSize="28px" lineHeight="160%" mb={4}>
+                {formatMessage(messages.removeAccount)}
               </Heading>
-
-              {!isSynced && (
-                <Text fontSize="md" mb={6}>
-                  {formatMessage(messages.notSyncedWarning)}
-                </Text>
-              )}
-
-              {isSynced && hasBalance && (
-                <>
-                  <Text fontSize="md" mb={6}>
-                    {formatMessage(messages.hasBalanceWarning)}
-                  </Text>
-                  <UnorderedList mb={6}>
-                    {balances.map((b) => (
-                      <ListItem key={b.assetId}>{`${formatOre(b.unconfirmed)} ${
-                        b.asset.name
-                      }`}</ListItem>
-                    ))}
-                  </UnorderedList>
-                </>
-              )}
-
-              {(!isSynced || hasBalance) && (
-                <Text fontSize="md" mb={6}>
-                  {formatMessage(messages.loseAssetsWarning)}
-                </Text>
-              )}
 
               <Text fontSize="md" mb={6}>
                 {formatMessage(messages.areYouSure, {
                   accountName: account.name,
-                })}
+                })}{" "}
+                {isSynced &&
+                  hasBalance &&
+                  formatMessage(messages.hasBalanceWarning)}{" "}
+                {!isSynced && formatMessage(messages.notSyncedWarning)}
+              </Text>
+
+              {isSynced && hasBalance && (
+                <UnorderedList mb={6} pl={1}>
+                  {balances.map((b) => (
+                    <ListItem key={b.assetId}>{`${formatOre(
+                      b.unconfirmed,
+                    )} ${hexToUTF16String(b.asset.name)}`}</ListItem>
+                  ))}
+                </UnorderedList>
+              )}
+
+              <Text fontSize="md" mb={8}>
+                {formatMessage(messages.loseAccessWarning)}
               </Text>
 
               {isError && (
@@ -184,7 +176,7 @@ export function DeleteAccountModal({
                     {...register("name", {
                       validate: (input) => input === account.name,
                     })}
-                    label={formatMessage(messages.typeToDelete, {
+                    label={formatMessage(messages.typeToRemove, {
                       accountName: account.name,
                     })}
                     error={
@@ -221,7 +213,7 @@ export function DeleteAccountModal({
                   })();
                 }}
               >
-                {formatMessage(messages.deleteAccountButton)}
+                {formatMessage(messages.removeAccountButton)}
               </PillButton>
             </>
           )}

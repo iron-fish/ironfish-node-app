@@ -3,7 +3,7 @@ import { useRouter } from "next/router";
 import { useState } from "react";
 import { defineMessages, useIntl } from "react-intl";
 
-import { DeleteAccountModal } from "@/components/DeleteAccountModal/DeleteAccountModal";
+import { RemoveAccountModal } from "@/components/RemoveAccountModal/RemoveAccountModal";
 import { trpcReact } from "@/providers/TRPCProvider";
 import { TextInput } from "@/ui/Forms/TextInput/TextInput";
 import { PillButton } from "@/ui/PillButton/PillButton";
@@ -23,8 +23,8 @@ const messages = defineMessages({
   saveChanges: {
     defaultMessage: "Save Changes",
   },
-  deleteAccount: {
-    defaultMessage: "Delete Account",
+  removeAccount: {
+    defaultMessage: "Remove Account",
   },
 });
 
@@ -70,9 +70,9 @@ export function AccountSettings({ accountName }: Props) {
   const hasValidName = newName.length > 0;
 
   const {
-    isOpen: isDeleteModalOpen,
-    onOpen: onDeleteModalOpen,
-    onClose: onDeleteModalClose,
+    isOpen: isRemoveModalOpen,
+    onOpen: onRemoveModalOpen,
+    onClose: onRemoveModalClose,
   } = useDisclosure();
 
   return (
@@ -102,20 +102,20 @@ export function AccountSettings({ accountName }: Props) {
           </PillButton>
           <PillButton
             isDisabled={isRenameLoading}
-            onClick={onDeleteModalOpen}
+            onClick={onRemoveModalOpen}
             variant="inverted"
             height="60px"
             px={8}
             border={0}
           >
-            {formatMessage(messages.deleteAccount)}
+            {formatMessage(messages.removeAccount)}
           </PillButton>
         </HStack>
       </VStack>
       {isSyncedData && accountData && (
-        <DeleteAccountModal
-          isOpen={isDeleteModalOpen}
-          onClose={onDeleteModalClose}
+        <RemoveAccountModal
+          isOpen={isRemoveModalOpen}
+          onClose={onRemoveModalClose}
           isSynced={isSyncedData.synced}
           account={accountData}
         />
