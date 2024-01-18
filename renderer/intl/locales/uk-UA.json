@@ -415,6 +415,10 @@
     "message": "Обраний обліковий запис синхронізується. Ваш баланс може бути неточним, а відправлення транзакцій буде відключено до завершення синхронізації.",
     "description": "The selected account is syncing. Your balance may be inaccurate and sending transactions will be disabled until the sync is complete."
   },
+  "QwFX54": {
+    "message": "Нотатки про транзакції",
+    "description": "Transaction Notes"
+  },
   "R2OqnW": {
     "message": "Видалити обліковий запис",
     "description": "Delete Account"
@@ -786,6 +790,10 @@
   "r1Z23X": {
     "message": "Всі ваші рахунки будуть відображені в цьому розділі. Щоб створити або імпортувати рахунок, просто натисніть одну з кнопок вище.",
     "description": "All your accounts will be displayed in this section. To create or import an account, simply click one of the buttons above."
+  },
+  "rGIQdX": {
+    "message": "Повернутися до огляду облікового запису",
+    "description": "Back to Account Overview"
   },
   "rbrahO": {
     "message": "Закрити",

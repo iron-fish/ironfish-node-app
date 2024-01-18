@@ -415,6 +415,10 @@
     "message": "La cuenta seleccionada se está sincronizando. Su saldo puede no ser exacto y el envío de transacciones estará deshabilitado hasta que se complete la sincronización.",
     "description": "The selected account is syncing. Your balance may be inaccurate and sending transactions will be disabled until the sync is complete."
   },
+  "QwFX54": {
+    "message": "Notas de la transacción",
+    "description": "Transaction Notes"
+  },
   "R2OqnW": {
     "message": "Eliminar cuenta",
     "description": "Delete Account"
@@ -786,6 +790,10 @@
   "r1Z23X": {
     "message": "Todas sus cuentas se mostrarán en esta sección. Para crear o importar una cuenta, simplemente haga clic en uno de los botones de arriba.",
     "description": "All your accounts will be displayed in this section. To create or import an account, simply click one of the buttons above."
+  },
+  "rGIQdX": {
+    "message": "Volver al resumen de la cuenta",
+    "description": "Back to Account Overview"
   },
   "rbrahO": {
     "message": "Cerrar",
