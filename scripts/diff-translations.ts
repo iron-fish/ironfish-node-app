@@ -33,7 +33,7 @@ async function main() {
       encoding: "utf8",
     });
 
-    // Log to be translated
+    // Log keys to be translated
     const missing: Array<string> = [];
     for (const [key, value] of Object.entries(english)) {
       if (!dataKeys.has(key)) {

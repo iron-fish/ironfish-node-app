@@ -18,7 +18,7 @@
     "compile:i18n": "formatjs compile-folder --ast --format crowdin renderer/intl/locales renderer/intl/compiled-locales",
     "i18n": "npm run extract:i18n && npm run compile:i18n",
     "translate": "tsx scripts/openai-translator.ts",
-    "translate:missing": "tsx scripts/diff-translations.ts"
+    "translate:diff": "tsx scripts/diff-translations.ts"
   },
   "license": "MPL-2.0",
   "dependencies": {
