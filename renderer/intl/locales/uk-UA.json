@@ -31,6 +31,10 @@
     "message": "Облікові записи тільки для перегляду не можуть ініціювати транзакції",
     "description": "View only accounts cannot initiate transactions"
   },
+  "0rIM5R": {
+    "message": "Видалити аккаунт",
+    "description": "Remove Account"
+  },
   "21ueTy": {
     "message": "Публічна адреса",
     "description": "Public Address"
@@ -291,9 +295,17 @@
     "message": "Комісія ($IRON)",
     "description": "Fee ($IRON)"
   },
+  "HtgUU8": {
+    "message": "Введіть ''{accountName}'' щоб видалити",
+    "description": "Type ''{accountName}'' to remove"
+  },
   "JJNc3c": {
     "message": "Попередній",
     "description": "Previous"
+  },
+  "JM4YI+": {
+    "message": "Ви впевнені, що хочете видалити цей обліковий запис?",
+    "description": "Are you sure you want to remove this account?"
   },
   "Jjpq7w": {
     "message": "Послідовність блоків",
@@ -351,6 +363,10 @@
     "message": "Від найвищого до найнижчого балансу",
     "description": "Highest to lowest balance"
   },
+  "MFXvHT": {
+    "message": "Ваш баланс може не бути повністю оновлений під час цього процесу синхронізації",
+    "description": "Your balance may not be fully updated during this syncing process."
+  },
   "N0KGQj": {
     "message": "Графіті блоків",
     "description": "Block Graffiti"
@@ -358,10 +374,6 @@
   "N0bVvU": {
     "message": "Помилка скопійована в буфер обміну",
     "description": "Error copied to clipboard"
-  },
-  "NDtjP8": {
-    "message": "Ви впевнені? Вам доведеться знову імпортувати цей обліковий запис, якщо ви знову захочете його використовувати.",
-    "description": "Are you sure? You'll have to re-import this account if you want to use it again."
   },
   "NX/nQR": {
     "message": "Зміна налаштувань вузла може оптимізувати продуктивність, покращити з'єднання, посилити безпеку та ефективно керувати ресурсами.",
@@ -414,10 +426,6 @@
   "Qu9LpU": {
     "message": "Обраний обліковий запис синхронізується. Ваш баланс може бути неточним, а відправлення транзакцій буде відключено до завершення синхронізації.",
     "description": "The selected account is syncing. Your balance may be inaccurate and sending transactions will be disabled until the sync is complete."
-  },
-  "R2OqnW": {
-    "message": "Видалити обліковий запис",
-    "description": "Delete Account"
   },
   "RIUFf+": {
     "message": "Українська",
@@ -606,6 +614,10 @@
   "dM+p3/": {
     "message": "Від",
     "description": "From"
+  },
+  "dTSUUK": {
+    "message": "Якщо ви видалите цей обліковий запис без його попереднього експорту, ВИ ВТРАТИТЕ ДОСТУП ДО НЬОГО.",
+    "description": "If you remove this account without exporting it first, YOU WILL LOSE ACCESS TO IT."
   },
   "e6Ph5+": {
     "message": "Адреса",
@@ -827,6 +839,10 @@
     "message": "Завантаження знімку є найшвидшим способом синхронізації з мережею.",
     "description": "Downloading a snapshot is the fastest way to sync with the network."
   },
+  "vaP4MI": {
+    "message": "На рахунку зараз є:",
+    "description": "It currently holds:"
+  },
   "wGpbja": {
     "message": "Помилка при додаванні контакту",
     "description": "Add Contact Error"
@@ -882,5 +898,9 @@
   "zR2zr+": {
     "message": "Адреса скопійована в буфер обміну",
     "description": "Address copied to clipboard"
+  },
+  "zl76y/": {
+    "message": "Текст повинен відповідати назві облікового запису ''{accountName}''",
+    "description": "Text must match the account name ''{accountName}''"
   }
 }
