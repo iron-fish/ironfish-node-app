@@ -31,6 +31,10 @@
     "message": "Las cuentas de solo lectura no pueden iniciar transacciones",
     "description": "View only accounts cannot initiate transactions"
   },
+  "0rIM5R": {
+    "message": "Eliminar Cuenta",
+    "description": "Remove Account"
+  },
   "21ueTy": {
     "message": "Dirección Pública",
     "description": "Public Address"
@@ -291,9 +295,17 @@
     "message": "Tarifa ($IRON)",
     "description": "Fee ($IRON)"
   },
+  "HtgUU8": {
+    "message": "Escriba ''{accountName}'' para eliminar",
+    "description": "Type ''{accountName}'' to remove"
+  },
   "JJNc3c": {
     "message": "Anterior",
     "description": "Previous"
+  },
+  "JM4YI+": {
+    "message": "¿Estás seguro de que quieres eliminar esta cuenta?",
+    "description": "Are you sure you want to remove this account?"
   },
   "Jjpq7w": {
     "message": "Secuencia de bloques",
@@ -351,6 +363,10 @@
     "message": "Mayor a menor saldo",
     "description": "Highest to lowest balance"
   },
+  "MFXvHT": {
+    "message": "Es posible que su saldo no se actualice completamente durante este proceso de sincronización",
+    "description": "Your balance may not be fully updated during this syncing process."
+  },
   "N0KGQj": {
     "message": "Graffiti de bloque",
     "description": "Block Graffiti"
@@ -358,10 +374,6 @@
   "N0bVvU": {
     "message": "Error copiado al portapapeles",
     "description": "Error copied to clipboard"
-  },
-  "NDtjP8": {
-    "message": "¿Estás seguro? Tendrás que volver a importar esta cuenta si quieres usarla de nuevo.",
-    "description": "Are you sure? You'll have to re-import this account if you want to use it again."
   },
   "NX/nQR": {
     "message": "Cambiar la configuración del nodo puede optimizar el rendimiento, mejorar la conectividad, mejorar la seguridad y gestionar eficientemente los recursos.",
@@ -414,10 +426,6 @@
   "Qu9LpU": {
     "message": "La cuenta seleccionada se está sincronizando. Su saldo puede no ser exacto y el envío de transacciones estará deshabilitado hasta que se complete la sincronización.",
     "description": "The selected account is syncing. Your balance may be inaccurate and sending transactions will be disabled until the sync is complete."
-  },
-  "R2OqnW": {
-    "message": "Eliminar cuenta",
-    "description": "Delete Account"
   },
   "RIUFf+": {
     "message": "Ucraniano",
@@ -606,6 +614,10 @@
   "dM+p3/": {
     "message": "De",
     "description": "From"
+  },
+  "dTSUUK": {
+    "message": "Si eliminas esta cuenta sin exportarla primero, PERDERÁS EL ACCESO A ELLA.",
+    "description": "If you remove this account without exporting it first, YOU WILL LOSE ACCESS TO IT."
   },
   "e6Ph5+": {
     "message": "Dirección",
@@ -827,6 +839,10 @@
     "message": "Descargar una instantánea es la forma más rápida de sincronizar con la red.",
     "description": "Downloading a snapshot is the fastest way to sync with the network."
   },
+  "vaP4MI": {
+    "message": "La cuenta actualmente tiene:",
+    "description": "It currently holds:"
+  },
   "wGpbja": {
     "message": "Error al agregar contacto",
     "description": "Add Contact Error"
@@ -882,5 +898,9 @@
   "zR2zr+": {
     "message": "Dirección copiada al portapapeles",
     "description": "Address copied to clipboard"
+  },
+  "zl76y/": {
+    "message": "El texto debe coincidir con el nombre de la cuenta ''{accountName}''",
+    "description": "Text must match the account name ''{accountName}''"
   }
 }

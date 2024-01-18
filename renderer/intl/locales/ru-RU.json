@@ -31,6 +31,10 @@
     "message": "Учетные записи только для просмотра не могут инициировать транзакции",
     "description": "View only accounts cannot initiate transactions"
   },
+  "0rIM5R": {
+    "message": "Удалить аккаунт",
+    "description": "Remove Account"
+  },
   "21ueTy": {
     "message": "Публичный адрес",
     "description": "Public Address"
@@ -291,9 +295,17 @@
     "message": "Комиссия ($IRON)",
     "description": "Fee ($IRON)"
   },
+  "HtgUU8": {
+    "message": "Введите ''{accountName}'' для удаления",
+    "description": "Type ''{accountName}'' to remove"
+  },
   "JJNc3c": {
     "message": "Предыдущее",
     "description": "Previous"
+  },
+  "JM4YI+": {
+    "message": "Вы уверены, что хотите удалить этот аккаунт?",
+    "description": "Are you sure you want to remove this account?"
   },
   "Jjpq7w": {
     "message": "Последовательность блоков",
@@ -351,6 +363,10 @@
     "message": "От наибольшего к наименьшему балансу",
     "description": "Highest to lowest balance"
   },
+  "MFXvHT": {
+    "message": "Ваш баланс может не быть полностью обновлен во время этого процесса синхронизации",
+    "description": "Your balance may not be fully updated during this syncing process."
+  },
   "N0KGQj": {
     "message": "Граффити блока",
     "description": "Block Graffiti"
@@ -358,10 +374,6 @@
   "N0bVvU": {
     "message": "Ошибка скопирована в буфер обмена",
     "description": "Error copied to clipboard"
-  },
-  "NDtjP8": {
-    "message": "Вы уверены? Вам придется снова импортировать этот аккаунт, если вы захотите его использовать снова.",
-    "description": "Are you sure? You'll have to re-import this account if you want to use it again."
   },
   "NX/nQR": {
     "message": "Изменение настроек узла может оптимизировать производительность, улучшить подключение, повысить безопасность и эффективно управлять ресурсами.",
@@ -414,10 +426,6 @@
   "Qu9LpU": {
     "message": "Выбранный аккаунт синхронизируется. Ваш баланс может быть неточным и отправка транзакций будет отключена до окончания синхронизации.",
     "description": "The selected account is syncing. Your balance may be inaccurate and sending transactions will be disabled until the sync is complete."
-  },
-  "R2OqnW": {
-    "message": "Удалить аккаунт",
-    "description": "Delete Account"
   },
   "RIUFf+": {
     "message": "Украинский",
@@ -606,6 +614,10 @@
   "dM+p3/": {
     "message": "От",
     "description": "From"
+  },
+  "dTSUUK": {
+    "message": "Если вы удалите этот аккаунт, не экспортировав его сначала, ВЫ ПОТЕРЯЕТЕ ДОСТУП К НЕМУ.",
+    "description": "If you remove this account without exporting it first, YOU WILL LOSE ACCESS TO IT."
   },
   "e6Ph5+": {
     "message": "Адрес",
@@ -827,6 +839,10 @@
     "message": "Загрузка снимка - самый быстрый способ синхронизироваться с сетью.",
     "description": "Downloading a snapshot is the fastest way to sync with the network."
   },
+  "vaP4MI": {
+    "message": "На счету в настоящее время есть:",
+    "description": "It currently holds:"
+  },
   "wGpbja": {
     "message": "Ошибка добавления контакта",
     "description": "Add Contact Error"
@@ -882,5 +898,9 @@
   "zR2zr+": {
     "message": "Адрес скопирован в буфер обмена",
     "description": "Address copied to clipboard"
+  },
+  "zl76y/": {
+    "message": "Текст должен соответствовать имени учетной записи ''{accountName}''",
+    "description": "Text must match the account name ''{accountName}''"
   }
 }

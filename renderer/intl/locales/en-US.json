@@ -24,6 +24,9 @@
   "/zn2B0": {
     "message": "View only accounts cannot initiate transactions"
   },
+  "0rIM5R": {
+    "message": "Remove Account"
+  },
   "21ueTy": {
     "message": "Public Address"
   },
@@ -219,8 +222,14 @@
   "HkADqs": {
     "message": "Fee ($IRON)"
   },
+  "HtgUU8": {
+    "message": "Type ''{accountName}'' to remove"
+  },
   "JJNc3c": {
     "message": "Previous"
+  },
+  "JM4YI+": {
+    "message": "Are you sure you want to remove this account?"
   },
   "Jjpq7w": {
     "message": "Block Sequence"
@@ -264,14 +273,14 @@
   "MFUhla": {
     "message": "Highest to lowest balance"
   },
+  "MFXvHT": {
+    "message": "Your balance may not be fully updated during this syncing process."
+  },
   "N0KGQj": {
     "message": "Block Graffiti"
   },
   "N0bVvU": {
     "message": "Error copied to clipboard"
-  },
-  "NDtjP8": {
-    "message": "Are you sure? You'll have to re-import this account if you want to use it again."
   },
   "NX/nQR": {
     "message": "Changing node settings can optimize performance, improve connectivity, enhance security, and manage resources effectively."
@@ -311,9 +320,6 @@
   },
   "Qu9LpU": {
     "message": "The selected account is syncing. Your balance may be inaccurate and sending transactions will be disabled until the sync is complete."
-  },
-  "R2OqnW": {
-    "message": "Delete Account"
   },
   "RIUFf+": {
     "message": "Ukrainian"
@@ -455,6 +461,9 @@
   },
   "dM+p3/": {
     "message": "From"
+  },
+  "dTSUUK": {
+    "message": "If you remove this account without exporting it first, YOU WILL LOSE ACCESS TO IT."
   },
   "e6Ph5+": {
     "message": "Address"
@@ -621,6 +630,9 @@
   "vV69eP": {
     "message": "Downloading a snapshot is the fastest way to sync with the network."
   },
+  "vaP4MI": {
+    "message": "It currently holds:"
+  },
   "wGpbja": {
     "message": "Add Contact Error"
   },
@@ -662,5 +674,8 @@
   },
   "zR2zr+": {
     "message": "Address copied to clipboard"
+  },
+  "zl76y/": {
+    "message": "Text must match the account name ''{accountName}''"
   }
 }
