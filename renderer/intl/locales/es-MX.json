@@ -199,6 +199,10 @@
     "message": "Resumen",
     "description": "Overview"
   },
+  "AFZGS9": {
+    "message": "El Iron Fish Node App soporta {languageCount} idiomas. Si tu idioma preferido no está en la lista, ¡por favor contáctanos y déjanos saber!",
+    "description": "The Iron Fish Node App supports {languageCount} languages. If your preferred language isn't listed, please reach out and let us know!"
+  },
   "AetNAD": {
     "message": "Navegar",
     "description": "Browse"
@@ -554,10 +558,6 @@
   "YFT4rG": {
     "message": "Llaves",
     "description": "Keys"
-  },
-  "Z4i3fh": {
-    "message": "La aplicación Iron Fish Node soporta {languageCount} idiomas. Si tu idioma preferido no está en la lista, ¡por favor contáctanos y déjanos saber!",
-    "description": "The Iron Fish Node app supports {languageCount} languages. If your preferred language isn't listed, please reach out and let us know!"
   },
   "Z7mY5w": {
     "message": "Confirmar Detalles de la Transacción",

@@ -199,6 +199,10 @@
     "message": "概览",
     "description": "Overview"
   },
+  "AFZGS9": {
+    "message": "Iron Fish Node App支持{languageCount}种语言。如果您的首选语言未列出，请与我们联系并告知！",
+    "description": "The Iron Fish Node App supports {languageCount} languages. If your preferred language isn't listed, please reach out and let us know!"
+  },
   "AetNAD": {
     "message": "浏览",
     "description": "Browse"
@@ -554,10 +558,6 @@
   "YFT4rG": {
     "message": "密钥",
     "description": "Keys"
-  },
-  "Z4i3fh": {
-    "message": "Iron Fish Node应用支持{languageCount}种语言。如果您的首选语言未列出，请与我们联系并告知！",
-    "description": "The Iron Fish Node app supports {languageCount} languages. If your preferred language isn't listed, please reach out and let us know!"
   },
   "Z7mY5w": {
     "message": "确认交易详情",

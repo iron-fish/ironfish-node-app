@@ -199,6 +199,10 @@
     "message": "Огляд",
     "description": "Overview"
   },
+  "AFZGS9": {
+    "message": "Iron Fish Node App підтримує {languageCount} мови. Якщо вашої мови немає у списку, будь ласка, дайте нам знати!",
+    "description": "The Iron Fish Node App supports {languageCount} languages. If your preferred language isn't listed, please reach out and let us know!"
+  },
   "AetNAD": {
     "message": "Переглянути",
     "description": "Browse"
@@ -554,10 +558,6 @@
   "YFT4rG": {
     "message": "Ключі",
     "description": "Keys"
-  },
-  "Z4i3fh": {
-    "message": "Додаток Iron Fish Node підтримує {languageCount} мови. Якщо вашої мови немає у списку, будь ласка, дайте нам знати!",
-    "description": "The Iron Fish Node app supports {languageCount} languages. If your preferred language isn't listed, please reach out and let us know!"
   },
   "Z7mY5w": {
     "message": "Підтвердіть деталі транзакції",
