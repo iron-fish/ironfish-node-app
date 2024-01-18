@@ -411,6 +411,10 @@
     "message": "Сбросить Узел",
     "description": "Reset Node"
   },
+  "Q/MbJP": {
+    "message": "Пожалуйста, сохраните эту фразу в безопасном месте.",
+    "description": "Please keep this phrase stored somewhere safe."
+  },
   "QS9NTE": {
     "message": "Имя аккаунта от А до Я",
     "description": "Account name — A to Z"
@@ -806,6 +810,10 @@
   "rfxp5c": {
     "message": "Подтвердить и отправить",
     "description": "Confirm & Send"
+  },
+  "rqrhXg": {
+    "message": "Подтвердите вашу фразу восстановления",
+    "description": "Confirm Your Recovery Phrase"
   },
   "tf+yHL": {
     "message": "Быстро",

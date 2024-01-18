@@ -411,6 +411,10 @@
     "message": "重置节点",
     "description": "Reset Node"
   },
+  "Q/MbJP": {
+    "message": "请将这个短语存储在安全的地方。",
+    "description": "Please keep this phrase stored somewhere safe."
+  },
   "QS9NTE": {
     "message": "账户名称 —— 从A到Z",
     "description": "Account name — A to Z"
@@ -806,6 +810,10 @@
   "rfxp5c": {
     "message": "确认并发送",
     "description": "Confirm & Send"
+  },
+  "rqrhXg": {
+    "message": "确认您的恢复短语",
+    "description": "Confirm Your Recovery Phrase"
   },
   "tf+yHL": {
     "message": "快速",

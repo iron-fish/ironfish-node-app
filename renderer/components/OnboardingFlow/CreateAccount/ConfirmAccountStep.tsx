@@ -1,5 +1,6 @@
 import { Box, Heading, Text } from "@chakra-ui/react";
 import { useState, useMemo } from "react";
+import { defineMessages, useIntl } from "react-intl";
 
 import { BackButton } from "@/components/BackButton/BackButton";
 import { COLORS } from "@/ui/colors";
@@ -9,6 +10,21 @@ import {
 } from "@/ui/Forms/MnemonicPhrase/MnemonicPhrase";
 import { PillButton } from "@/ui/PillButton/PillButton";
 import { validateMnemonic } from "@/utils/mnemonic";
+
+const messages = defineMessages({
+  createAccount: {
+    defaultMessage: "Create Account",
+  },
+  confirmRecoveryPhrase: {
+    defaultMessage: "Confirm Your Recovery Phrase",
+  },
+  recoveryPhraseDescription: {
+    defaultMessage: "Please keep this phrase stored somewhere safe.",
+  },
+  continueButton: {
+    defaultMessage: "Continue",
+  },
+});
 
 export function ConfirmAccountStep({
   mnemonicPhrase,
@@ -22,6 +38,7 @@ export function ConfirmAccountStep({
   onBack: () => void;
   isLoading?: boolean;
 }) {
+  const { formatMessage } = useIntl();
   const [confirmValues, setConfirmValues] =
     useState<Array<string>>(EMPTY_PHRASE_ARRAY);
 
@@ -35,14 +52,14 @@ export function ConfirmAccountStep({
     <Box pointerEvents={isLoading ? "none" : undefined}>
       <BackButton onClick={onBack} />
       <Heading mt={4} mb={8}>
-        Create Account
+        {formatMessage(messages.createAccount)}
       </Heading>
 
       <Text fontSize="2xl" mb={1}>
-        Confirm Your Recovery Phrase
+        {formatMessage(messages.confirmRecoveryPhrase)}
       </Text>
       <Text color={COLORS.GRAY_MEDIUM} mb={4}>
-        Please keep this phrase stored somewhere safe.
+        {formatMessage(messages.recoveryPhraseDescription)}
       </Text>
       <MnemonicPhrase
         defaultVisible
@@ -54,7 +71,7 @@ export function ConfirmAccountStep({
         mb={8}
       />
       <PillButton isDisabled={isLoading || !isValid} onClick={onNextStep}>
-        Continue
+        {formatMessage(messages.continueButton)}
       </PillButton>
     </Box>
   );
