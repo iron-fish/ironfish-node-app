@@ -273,6 +273,9 @@
   "MFUhla": {
     "message": "Highest to lowest balance"
   },
+  "MFXvHT": {
+    "message": "Your balance may not be fully updated during this syncing process."
+  },
   "N0KGQj": {
     "message": "Block Graffiti"
   },
@@ -521,9 +524,6 @@
   },
   "is+QTN": {
     "message": "Contact Settings"
-  },
-  "j1Eelr": {
-    "message": "This account is not yet synced and may contain $IRON or other assets."
   },
   "j2AFTQ": {
     "message": "Node Status"

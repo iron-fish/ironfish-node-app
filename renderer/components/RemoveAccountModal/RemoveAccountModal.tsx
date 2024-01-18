@@ -18,6 +18,7 @@ import { useForm } from "react-hook-form";
 import { defineMessages, useIntl } from "react-intl";
 
 import { getTrpcVanillaClient, trpcReact } from "@/providers/TRPCProvider";
+import { COLORS } from "@/ui/colors";
 import { TextInput } from "@/ui/Forms/TextInput/TextInput";
 import { PillButton } from "@/ui/PillButton/PillButton";
 import { hexToUTF16String } from "@/utils/hexToUTF16String";
@@ -27,19 +28,12 @@ const messages = defineMessages({
   removeAccount: {
     defaultMessage: "Remove Account",
   },
-  notSyncedWarning: {
-    defaultMessage:
-      "This account is not yet synced and may contain $IRON or other assets.",
-  },
   hasBalanceWarning: {
     defaultMessage: "It currently holds:",
   },
   loseAccessWarning: {
     defaultMessage:
       "If you remove this account without exporting it first, YOU WILL LOSE ACCESS TO IT.",
-  },
-  loading: {
-    defaultMessage: "Loading...",
   },
   tryAgain: {
     defaultMessage: "Try Again",
@@ -58,6 +52,10 @@ const messages = defineMessages({
   },
   areYouSure: {
     defaultMessage: "Are you sure you want to remove this account?",
+  },
+  areYouSureSyncing: {
+    defaultMessage:
+      "Your balance may not be fully updated during this syncing process.",
   },
   typeToRemove: {
     defaultMessage: "Type ''{accountName}'' to remove",
@@ -136,15 +134,33 @@ export function RemoveAccountModal({
                 {formatMessage(messages.removeAccount)}
               </Heading>
 
-              <Text fontSize="md" mb={6}>
-                {formatMessage(messages.areYouSure, {
-                  accountName: account.name,
-                })}{" "}
-                {isSynced &&
-                  hasBalance &&
-                  formatMessage(messages.hasBalanceWarning)}{" "}
-                {!isSynced && formatMessage(messages.notSyncedWarning)}
-              </Text>
+              {!isSynced && (
+                <Box
+                  mb={8}
+                  borderRadius="4px"
+                  bg={COLORS.YELLOW_LIGHT}
+                  color="#7E7400"
+                  _dark={{
+                    bg: COLORS.DARK_MODE.YELLOW_DARK,
+                    color: COLORS.DARK_MODE.YELLOW_LIGHT,
+                  }}
+                  fontSize="sm"
+                  textAlign="center"
+                  lineHeight="160%"
+                  py={1}
+                  px={6}
+                >
+                  {formatMessage(messages.areYouSure)}{" "}
+                  {formatMessage(messages.areYouSureSyncing)}
+                </Box>
+              )}
+
+              {isSynced && (
+                <Text fontSize="md" mb={6}>
+                  {formatMessage(messages.areYouSure)}{" "}
+                  {hasBalance && formatMessage(messages.hasBalanceWarning)}
+                </Text>
+              )}
 
               {isSynced && hasBalance && (
                 <UnorderedList mb={6} pl={1}>
