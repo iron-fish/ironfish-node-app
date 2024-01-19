@@ -2,17 +2,11 @@
   "+02x3X": {
     "message": "Your address book is where you can manage all of your contacts, their names, and their public addresses."
   },
-  "+RhnH+": {
-    "message": "Empty"
-  },
   "+gH1Ai": {
     "message": "Node Name"
   },
   "/0TOL5": {
     "message": "Amount"
-  },
-  "/jJLYy": {
-    "message": "Transactions"
   },
   "/km2Zu": {
     "message": "Import Account"
@@ -29,12 +23,6 @@
   },
   "21ueTy": {
     "message": "Public Address"
-  },
-  "25vn7e": {
-    "message": "Unzip progress: {progress}%"
-  },
-  "2AcArH": {
-    "message": "Choose this option if you don't have an existing Iron Fish account or if you'd like to create a new one."
   },
   "2DcNnd": {
     "message": "Share your address to receive payments while keeping your account details entirely private."
@@ -69,9 +57,6 @@
   "4l6vz1": {
     "message": "Copy"
   },
-  "4woaDB": {
-    "message": "Submitting Transaction"
-  },
   "551bXe": {
     "message": "View Only"
   },
@@ -83,12 +68,6 @@
   },
   "5MiM5y": {
     "message": "Send Asset"
-  },
-  "5OJ1yw": {
-    "message": "Internal Account Name"
-  },
-  "5UdRx1": {
-    "message": "Import With"
   },
   "5c3Wrw": {
     "message": "Total accounts balance"
@@ -111,12 +90,6 @@
   "6q3tCn": {
     "message": "Connecting"
   },
-  "7JxXKc": {
-    "message": "Download Snapshot"
-  },
-  "7N6OYQ": {
-    "message": "View Transaction"
-  },
   "8GvVWZ": {
     "message": "Something went wrong, please try again."
   },
@@ -126,20 +99,11 @@
   "8WtyrD": {
     "message": "Spanish"
   },
-  "9+Ddtu": {
-    "message": "Next"
-  },
   "9DI6zl": {
     "message": "You can change the fee amount you'd like to pay. However, that will directly correlate with the speed with which your transaction is picked up by the blockchain."
   },
-  "9IVf3z": {
-    "message": "Account Overview"
-  },
   "9WRlF4": {
     "message": "Send"
-  },
-  "9WhwsR": {
-    "message": "This name is how we will refer to your account internally. It is not visible to anyone else."
   },
   "9XUYQt": {
     "message": "Import"
@@ -165,14 +129,8 @@
   "AyGP4T": {
     "message": "Error Message"
   },
-  "BwRLcj": {
-    "message": "Your transaction has been submitted. It may take a few minutes until it is confirmed. This transaction will appear in your activity as pending until it is confirmed."
-  },
   "BxM6mJ": {
     "message": "Lowest to highest balance"
-  },
-  "C43FrR": {
-    "message": "Amount:"
   },
   "D31nQ7": {
     "message": "An error occurred while estimating the transaction fee"
@@ -189,9 +147,6 @@
   "DnuK8f": {
     "message": "Turn this on if you want to specify a custom name for this account. Otherwise, the account name will be inferred from your exported account data."
   },
-  "FM2S9I": {
-    "message": "Set up your node"
-  },
   "Fn/FTS": {
     "message": "An error occurred while loading your transactions. If this happens several times, please let us know on Discord."
   },
@@ -204,17 +159,11 @@
   "GHoUMq": {
     "message": "Account Syncing: {progress}%"
   },
-  "GKzO/A": {
-    "message": "Fee:"
-  },
   "Gcv5yj": {
     "message": "Heap Used"
   },
   "Gcv7QB": {
     "message": "Account name"
-  },
-  "Gxw4v5": {
-    "message": "Your keys and mnemonic phrase are essential for accessing your digital assets exclusively. It's important to store them securely."
   },
   "H56oje": {
     "message": "Node Workers"
@@ -228,9 +177,6 @@
   "HtgUU8": {
     "message": "Type ''{accountName}'' to remove"
   },
-  "JJNc3c": {
-    "message": "Previous"
-  },
   "JM4YI+": {
     "message": "Are you sure you want to remove this account?"
   },
@@ -243,14 +189,8 @@
   "JqiqNj": {
     "message": "Something went wrong"
   },
-  "K340v+": {
-    "message": "An error occurred while downloading the snapshot:"
-  },
   "K3r6DQ": {
     "message": "Delete"
-  },
-  "KN7zKn": {
-    "message": "Error"
   },
   "Kkv03/": {
     "message": "Transaction Details"
@@ -269,9 +209,6 @@
   },
   "Ld49Lh": {
     "message": "What would you like to name this account? This name is only visible to you."
-  },
-  "MDZ4hi": {
-    "message": "Already have an account? Enter your recovery credentials and continue using your account as expected."
   },
   "MFUhla": {
     "message": "Highest to lowest balance"
@@ -300,9 +237,6 @@
   "Og5CP/": {
     "message": "Heap Max"
   },
-  "Ohn4yX": {
-    "message": "Telemetry disabled"
-  },
   "P3UCNi": {
     "message": "Syncing blocks: {progress}%"
   },
@@ -312,14 +246,8 @@
   "Pq25uf": {
     "message": "Reset Node"
   },
-  "Q/MbJP": {
-    "message": "Please keep this phrase stored somewhere safe."
-  },
   "QS9NTE": {
     "message": "Account name — A to Z"
-  },
-  "QXxopU": {
-    "message": "Mnemonic phrase copied to clipboard!"
   },
   "QlsDcr": {
     "message": "Action"
@@ -332,9 +260,6 @@
   },
   "RLGujF": {
     "message": "Connected Peers"
-  },
-  "RYLKpw": {
-    "message": "Sync from Peers"
   },
   "RahCRH": {
     "message": "Expired"
@@ -351,17 +276,11 @@
   "SaPa2h": {
     "message": "Encoded Key"
   },
-  "Seu2ON": {
-    "message": "To:"
-  },
   "T2yddR": {
     "message": "Your Node"
   },
   "TRfaIL": {
     "message": "Synced"
-  },
-  "TTpGX5": {
-    "message": "Choose how to sync your chain"
   },
   "Te4gbw": {
     "message": "Export Format:"
@@ -369,14 +288,8 @@
   "TebMku": {
     "message": "You don't have any transactions"
   },
-  "TenpoO": {
-    "message": "We'd like to collect anonymous telemetry data in order to continually improve your experience. This data includes node performance, block information, and other health metrics. You can enable or disable this at any time in the node settings page."
-  },
   "ThbkST": {
     "message": "Unable to load your transactions"
-  },
-  "TzwzhT": {
-    "message": "You can remove and reimport your accounts whenever you like, provided that you possess the account keys. It is highly recommended to maintain a backup of your account keys in a secure location."
   },
   "ULXFfP": {
     "message": "Receive"
@@ -387,9 +300,6 @@
   "VBDJ/l": {
     "message": "Your balance might not be accurate while you're syncing"
   },
-  "VqP8r/": {
-    "message": "Memo:"
-  },
   "VzzYJk": {
     "message": "Create"
   },
@@ -398,9 +308,6 @@
   },
   "WKCp0D": {
     "message": "Asset"
-  },
-  "WNgCs+": {
-    "message": "Back to Address Book"
   },
   "WWEwrn": {
     "message": "Node Settings"
@@ -417,20 +324,11 @@
   "XLvNHQ": {
     "message": "Please write down this recovery phrase and keep it in a safe place. You will need it to recover your account."
   },
-  "XYgEt1": {
-    "message": "Please keep this phrase stored somewhere safe. We will ask you to re-enter this."
-  },
   "Xvk80E": {
     "message": "Please enter a name for this account"
   },
   "YDkqMJ": {
     "message": "Incoming"
-  },
-  "YFT4rG": {
-    "message": "Keys"
-  },
-  "Z7mY5w": {
-    "message": "Confirm Transaction Details"
   },
   "ZQCgnA": {
     "message": "This contact's name is only visible to you."
@@ -438,17 +336,8 @@
   "ZhUW3G": {
     "message": "Heap Total"
   },
-  "a1u/d5": {
-    "message": "View Account Activity"
-  },
   "acrOoz": {
     "message": "Continue"
-  },
-  "av5C8J": {
-    "message": "Something went wrong. Please review your transaction and try again."
-  },
-  "bFQd/U": {
-    "message": "With contact names being associated with public addresses, you have the freedom to customize how you identify your contacts without affecting their underlying address."
   },
   "bW7B87": {
     "message": "New"
@@ -483,9 +372,6 @@
   "ekfOaV": {
     "message": "Go Back"
   },
-  "f6dOFt": {
-    "message": "Retry now"
-  },
   "fF376U": {
     "message": "Current"
   },
@@ -513,9 +399,6 @@
   "h/XIMH": {
     "message": "Add Contact"
   },
-  "h1fexv": {
-    "message": "You'll automatically be redirected to your accounts page once the snapshot is applied."
-  },
   "hDI+JM": {
     "message": "Sort by"
   },
@@ -525,17 +408,11 @@
   "iWiHY7": {
     "message": "The blockchain is syncing. Your balance may be inaccurate and sending transactions will be disabled until the sync is complete."
   },
-  "is+QTN": {
-    "message": "Contact Settings"
-  },
   "j2AFTQ": {
     "message": "Node Status"
   },
   "jc6sBv": {
     "message": "Contact updated"
-  },
-  "jd6+BK": {
-    "message": "Retrying in {duration}..."
   },
   "jsy7pk": {
     "message": "Try Again"
@@ -555,32 +432,14 @@
   "ml3Hqe": {
     "message": "This account is syncing. Please wait until the sync is complete before sending transactions."
   },
-  "mrlGwZ": {
-    "message": "Download Snapshot: Fast and centralized. Get a complete copy of the blockchain quickly from a central source."
-  },
-  "mzRLqs": {
-    "message": "Download in progress..."
-  },
   "nkeKcx": {
     "message": "Head Hash"
   },
   "nleCAa": {
     "message": "Release Notes"
   },
-  "o0DpEu": {
-    "message": "Unzipping..."
-  },
   "omnNfq": {
     "message": "About Fees"
-  },
-  "p8bsw4": {
-    "message": "Transaction Error"
-  },
-  "pPk+ar": {
-    "message": "From:"
-  },
-  "pQJ67O": {
-    "message": "Sync from peers: Slower but decentralized. Retrieve the blockchain from other users, contributing to network decentralization. While it may take longer, it strengthens the network's resilience."
   },
   "pbdvze": {
     "message": "Please enter your mnemonic phrase. If you've copied the full phrase to your clipboard, you can paste it in any input and it will automatically be split into the correct number of words."
@@ -597,20 +456,11 @@
   "qVtJd7": {
     "message": "Memo (32 characters max)"
   },
-  "qkf/DE": {
-    "message": "Cancel Transaction"
-  },
   "r1Z23X": {
     "message": "All your accounts will be displayed in this section. To create or import an account, simply click one of the buttons above."
   },
   "rbrahO": {
     "message": "Close"
-  },
-  "rfxp5c": {
-    "message": "Confirm & Send"
-  },
-  "rqrhXg": {
-    "message": "Confirm Your Recovery Phrase"
   },
   "tf+yHL": {
     "message": "Fast"
@@ -624,17 +474,11 @@
   "uCgp+K": {
     "message": "Blocks Per message"
   },
-  "uHGB/g": {
-    "message": "{currMb} / {totalMb} mb downloaded"
-  },
   "uT4OlP": {
     "message": "Fee"
   },
   "vNT9Ip": {
     "message": "Mnemonic Phrase"
-  },
-  "vV69eP": {
-    "message": "Downloading a snapshot is the fastest way to sync with the network."
   },
   "vaP4MI": {
     "message": "It currently holds:"
@@ -657,14 +501,8 @@
   "y3LzSM": {
     "message": "Max Peers"
   },
-  "yLnnBl": {
-    "message": "Transaction Submitted"
-  },
   "yjpdGo": {
     "message": "You don't have any contacts"
-  },
-  "ytT37i": {
-    "message": "Back to all accounts"
   },
   "z/wUXE": {
     "message": "Received"

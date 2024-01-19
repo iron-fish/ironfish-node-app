@@ -54,6 +54,13 @@ const theme = extendTheme({
       },
     }),
     Tabs: tabsTheme,
+    Progress: {
+      baseStyle: {
+        track: {
+          borderRadius: "full",
+        },
+      },
+    },
   },
   semanticTokens: {
     colors: {

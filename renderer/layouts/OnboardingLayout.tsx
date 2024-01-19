@@ -11,6 +11,7 @@ import Image from "next/image";
 import { ReactNode } from "react";
 import { defineMessages, useIntl } from "react-intl";
 
+import { LanguageSelector } from "@/components/LanguageSelector/LanguageSelector";
 import bigOnboardingFish from "@/images/big-onboarding-fish.svg";
 import discord from "@/images/discord.png";
 
@@ -55,7 +56,7 @@ export function OnboardingLayout({ children }: { children: ReactNode }) {
           maxW={{
             base: "100%",
             md: "724px",
-            "2xl": "900px",
+            "2xl": "1024px",
           }}
           position="relative"
           w="100%"
@@ -85,8 +86,23 @@ export function OnboardingLayout({ children }: { children: ReactNode }) {
             borderTop="1px solid #DEDFE2"
             py={3}
             alignSelf="stretch"
-            justifyContent="center"
+            justifyContent="space-between"
+            px={{
+              base: "64px",
+              "2xl": "152px",
+            }}
           >
+            <Box>
+              <LanguageSelector
+                buttonContainerProps={{
+                  px: {
+                    base: 0,
+                    md: 4,
+                  },
+                  bg: "white",
+                }}
+              />
+            </Box>
             <Box
               as="a"
               target="_blank"
