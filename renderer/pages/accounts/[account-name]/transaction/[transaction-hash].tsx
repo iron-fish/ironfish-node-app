@@ -1,5 +1,6 @@
 import { HStack, Heading, Skeleton } from "@chakra-ui/react";
 import { useRouter } from "next/router";
+import { defineMessages, useIntl } from "react-intl";
 
 import { CopyAddress } from "@/components/CopyAddress/CopyAddress";
 import { NotesList } from "@/components/NotesList/NotesList";
@@ -8,6 +9,15 @@ import MainLayout from "@/layouts/MainLayout";
 import { trpcReact } from "@/providers/TRPCProvider";
 import { asQueryString } from "@/utils/parseRouteQuery";
 
+const messages = defineMessages({
+  backToAccountOverview: {
+    defaultMessage: "Back to Account Overview",
+  },
+  transactionNotes: {
+    defaultMessage: "Transaction Notes",
+  },
+});
+
 function SingleTransactionContent({
   accountName,
   transactionHash,
@@ -15,6 +25,8 @@ function SingleTransactionContent({
   accountName: string;
   transactionHash: string;
 }) {
+  const { formatMessage } = useIntl()
+
   const { data: accountData } = trpcReact.getAccount.useQuery({
     name: accountName,
   });
@@ -33,7 +45,7 @@ function SingleTransactionContent({
       <MainLayout
         backLinkProps={{
           href: `/accounts/${accountName}`,
-          label: "Back to Account Overview",
+          label: formatMessage(messages.backToAccountOverview),
         }}
       >
         <HStack mb={8} gap={4}>
@@ -52,7 +64,7 @@ function SingleTransactionContent({
     <MainLayout
       backLinkProps={{
         href: `/accounts/${accountName}`,
-        label: "Back to Account Overview",
+        label: formatMessage(messages.backToAccountOverview),
       }}
     >
       <HStack mb={8} gap={4}>
@@ -66,7 +78,7 @@ function SingleTransactionContent({
         transaction={transactionData.transaction}
         mb={16}
       />
-      <NotesList notes={transactionData.notes} />
+      <NotesList heading={formatMessage(messages.transactionNotes)} notes={transactionData.notes} />
     </MainLayout>
   );
 }

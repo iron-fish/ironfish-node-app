@@ -435,6 +435,10 @@
     "message": "Выбранный аккаунт синхронизируется. Ваш баланс может быть неточным и отправка транзакций будет отключена до окончания синхронизации.",
     "description": "The selected account is syncing. Your balance may be inaccurate and sending transactions will be disabled until the sync is complete."
   },
+  "QwFX54": {
+    "message": "Примечания к транзакции",
+    "description": "Transaction Notes"
+  },
   "RIUFf+": {
     "message": "Украинский",
     "description": "Ukrainian"
@@ -802,6 +806,10 @@
   "r1Z23X": {
     "message": "Все ваши аккаунты будут отображаться в этом разделе. Чтобы создать или импортировать аккаунт, просто нажмите одну из кнопок выше.",
     "description": "All your accounts will be displayed in this section. To create or import an account, simply click one of the buttons above."
+  },
+  "rGIQdX": {
+    "message": "Вернуться к обзору аккаунта",
+    "description": "Back to Account Overview"
   },
   "rbrahO": {
     "message": "Закрыть",
