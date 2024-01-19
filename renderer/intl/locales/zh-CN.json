@@ -31,6 +31,10 @@
     "message": "只读账户不能发起交易",
     "description": "View only accounts cannot initiate transactions"
   },
+  "0rIM5R": {
+    "message": "删除帐户",
+    "description": "Remove Account"
+  },
   "21ueTy": {
     "message": "公共地址",
     "description": "Public Address"
@@ -199,6 +203,10 @@
     "message": "概览",
     "description": "Overview"
   },
+  "AFZGS9": {
+    "message": "Iron Fish Node App支持{languageCount}种语言。如果您的首选语言未列出，请与我们联系并告知！",
+    "description": "The Iron Fish Node App supports {languageCount} languages. If your preferred language isn't listed, please reach out and let us know!"
+  },
   "AetNAD": {
     "message": "浏览",
     "description": "Browse"
@@ -291,9 +299,17 @@
     "message": "手续费（$IRON）",
     "description": "Fee ($IRON)"
   },
+  "HtgUU8": {
+    "message": "输入''{accountName}''以移除",
+    "description": "Type ''{accountName}'' to remove"
+  },
   "JJNc3c": {
     "message": "前一个",
     "description": "Previous"
+  },
+  "JM4YI+": {
+    "message": "是否确实要删除此帐户",
+    "description": "Are you sure you want to remove this account?"
   },
   "Jjpq7w": {
     "message": "块序列",
@@ -351,6 +367,10 @@
     "message": "从高到低的余额",
     "description": "Highest to lowest balance"
   },
+  "MFXvHT": {
+    "message": "在此同步过程中，您的余额可能无法完全更新",
+    "description": "Your balance may not be fully updated during this syncing process."
+  },
   "N0KGQj": {
     "message": "区块涂鸦",
     "description": "Block Graffiti"
@@ -358,10 +378,6 @@
   "N0bVvU": {
     "message": "错误已复制到剪贴板",
     "description": "Error copied to clipboard"
-  },
-  "NDtjP8": {
-    "message": "你确定吗？如果你想再次使用它，你将必须重新导入这个账户。",
-    "description": "Are you sure? You'll have to re-import this account if you want to use it again."
   },
   "NX/nQR": {
     "message": "更改节点设置可以优化性能，提高连通性，增强安全性，并有效管理资源。",
@@ -399,6 +415,10 @@
     "message": "重置节点",
     "description": "Reset Node"
   },
+  "Q/MbJP": {
+    "message": "请将这个短语存储在安全的地方。",
+    "description": "Please keep this phrase stored somewhere safe."
+  },
   "QS9NTE": {
     "message": "账户名称 —— 从A到Z",
     "description": "Account name — A to Z"
@@ -418,10 +438,6 @@
   "QwFX54": {
     "message": "交易须知",
     "description": "Transaction Notes"
-  },
-  "R2OqnW": {
-    "message": "删除账户",
-    "description": "Delete Account"
   },
   "RIUFf+": {
     "message": "乌克兰语",
@@ -559,10 +575,6 @@
     "message": "密钥",
     "description": "Keys"
   },
-  "Z4i3fh": {
-    "message": "Iron Fish Node应用支持{languageCount}种语言。如果您的首选语言未列出，请与我们联系并告知！",
-    "description": "The Iron Fish Node app supports {languageCount} languages. If your preferred language isn't listed, please reach out and let us know!"
-  },
   "Z7mY5w": {
     "message": "确认交易详情",
     "description": "Confirm Transaction Details"
@@ -610,6 +622,10 @@
   "dM+p3/": {
     "message": "从",
     "description": "From"
+  },
+  "dTSUUK": {
+    "message": "如果您在首先导出此帐户之前将其删除，您将无法再访问它。",
+    "description": "If you remove this account without exporting it first, YOU WILL LOSE ACCESS TO IT."
   },
   "e6Ph5+": {
     "message": "地址",
@@ -803,6 +819,10 @@
     "message": "确认并发送",
     "description": "Confirm & Send"
   },
+  "rqrhXg": {
+    "message": "确认您的恢复短语",
+    "description": "Confirm Your Recovery Phrase"
+  },
   "tf+yHL": {
     "message": "快速",
     "description": "Fast"
@@ -834,6 +854,10 @@
   "vV69eP": {
     "message": "下载快照是与网络同步的最快方式。",
     "description": "Downloading a snapshot is the fastest way to sync with the network."
+  },
+  "vaP4MI": {
+    "message": "该帐户当前具有：",
+    "description": "It currently holds:"
   },
   "wGpbja": {
     "message": "添加联系人错误",
@@ -890,5 +914,9 @@
   "zR2zr+": {
     "message": "地址已复制到剪贴板",
     "description": "Address copied to clipboard"
+  },
+  "zl76y/": {
+    "message": "文本必须与帐户名称''{accountName}''匹配",
+    "description": "Text must match the account name ''{accountName}''"
   }
 }

@@ -31,6 +31,10 @@
     "message": "Las cuentas de solo lectura no pueden iniciar transacciones",
     "description": "View only accounts cannot initiate transactions"
   },
+  "0rIM5R": {
+    "message": "Eliminar Cuenta",
+    "description": "Remove Account"
+  },
   "21ueTy": {
     "message": "Dirección Pública",
     "description": "Public Address"
@@ -199,6 +203,10 @@
     "message": "Resumen",
     "description": "Overview"
   },
+  "AFZGS9": {
+    "message": "El Iron Fish Node App soporta {languageCount} idiomas. Si tu idioma preferido no está en la lista, ¡por favor contáctanos y déjanos saber!",
+    "description": "The Iron Fish Node App supports {languageCount} languages. If your preferred language isn't listed, please reach out and let us know!"
+  },
   "AetNAD": {
     "message": "Navegar",
     "description": "Browse"
@@ -291,9 +299,17 @@
     "message": "Tarifa ($IRON)",
     "description": "Fee ($IRON)"
   },
+  "HtgUU8": {
+    "message": "Escriba ''{accountName}'' para eliminar",
+    "description": "Type ''{accountName}'' to remove"
+  },
   "JJNc3c": {
     "message": "Anterior",
     "description": "Previous"
+  },
+  "JM4YI+": {
+    "message": "¿Estás seguro de que quieres eliminar esta cuenta?",
+    "description": "Are you sure you want to remove this account?"
   },
   "Jjpq7w": {
     "message": "Secuencia de bloques",
@@ -351,6 +367,10 @@
     "message": "Mayor a menor saldo",
     "description": "Highest to lowest balance"
   },
+  "MFXvHT": {
+    "message": "Es posible que su saldo no se actualice completamente durante este proceso de sincronización",
+    "description": "Your balance may not be fully updated during this syncing process."
+  },
   "N0KGQj": {
     "message": "Graffiti de bloque",
     "description": "Block Graffiti"
@@ -358,10 +378,6 @@
   "N0bVvU": {
     "message": "Error copiado al portapapeles",
     "description": "Error copied to clipboard"
-  },
-  "NDtjP8": {
-    "message": "¿Estás seguro? Tendrás que volver a importar esta cuenta si quieres usarla de nuevo.",
-    "description": "Are you sure? You'll have to re-import this account if you want to use it again."
   },
   "NX/nQR": {
     "message": "Cambiar la configuración del nodo puede optimizar el rendimiento, mejorar la conectividad, mejorar la seguridad y gestionar eficientemente los recursos.",
@@ -399,6 +415,10 @@
     "message": "Resetear Nodo",
     "description": "Reset Node"
   },
+  "Q/MbJP": {
+    "message": "Por favor, guarda esta frase en un lugar seguro.",
+    "description": "Please keep this phrase stored somewhere safe."
+  },
   "QS9NTE": {
     "message": "Nombre de la cuenta — A a Z",
     "description": "Account name — A to Z"
@@ -418,10 +438,6 @@
   "QwFX54": {
     "message": "Notas de la transacción",
     "description": "Transaction Notes"
-  },
-  "R2OqnW": {
-    "message": "Eliminar cuenta",
-    "description": "Delete Account"
   },
   "RIUFf+": {
     "message": "Ucraniano",
@@ -559,10 +575,6 @@
     "message": "Llaves",
     "description": "Keys"
   },
-  "Z4i3fh": {
-    "message": "La aplicación Iron Fish Node soporta {languageCount} idiomas. Si tu idioma preferido no está en la lista, ¡por favor contáctanos y déjanos saber!",
-    "description": "The Iron Fish Node app supports {languageCount} languages. If your preferred language isn't listed, please reach out and let us know!"
-  },
   "Z7mY5w": {
     "message": "Confirmar Detalles de la Transacción",
     "description": "Confirm Transaction Details"
@@ -610,6 +622,10 @@
   "dM+p3/": {
     "message": "De",
     "description": "From"
+  },
+  "dTSUUK": {
+    "message": "Si eliminas esta cuenta sin exportarla primero, PERDERÁS EL ACCESO A ELLA.",
+    "description": "If you remove this account without exporting it first, YOU WILL LOSE ACCESS TO IT."
   },
   "e6Ph5+": {
     "message": "Dirección",
@@ -803,6 +819,10 @@
     "message": "Confirmar y enviar",
     "description": "Confirm & Send"
   },
+  "rqrhXg": {
+    "message": "Confirma tu Frase de Recuperación",
+    "description": "Confirm Your Recovery Phrase"
+  },
   "tf+yHL": {
     "message": "Rápido",
     "description": "Fast"
@@ -834,6 +854,10 @@
   "vV69eP": {
     "message": "Descargar una instantánea es la forma más rápida de sincronizar con la red.",
     "description": "Downloading a snapshot is the fastest way to sync with the network."
+  },
+  "vaP4MI": {
+    "message": "La cuenta actualmente tiene:",
+    "description": "It currently holds:"
   },
   "wGpbja": {
     "message": "Error al agregar contacto",
@@ -890,5 +914,9 @@
   "zR2zr+": {
     "message": "Dirección copiada al portapapeles",
     "description": "Address copied to clipboard"
+  },
+  "zl76y/": {
+    "message": "El texto debe coincidir con el nombre de la cuenta ''{accountName}''",
+    "description": "Text must match the account name ''{accountName}''"
   }
 }

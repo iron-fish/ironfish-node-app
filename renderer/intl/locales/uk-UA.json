@@ -31,6 +31,10 @@
     "message": "Облікові записи тільки для перегляду не можуть ініціювати транзакції",
     "description": "View only accounts cannot initiate transactions"
   },
+  "0rIM5R": {
+    "message": "Видалити аккаунт",
+    "description": "Remove Account"
+  },
   "21ueTy": {
     "message": "Публічна адреса",
     "description": "Public Address"
@@ -199,6 +203,10 @@
     "message": "Огляд",
     "description": "Overview"
   },
+  "AFZGS9": {
+    "message": "Iron Fish Node App підтримує {languageCount} мови. Якщо вашої мови немає у списку, будь ласка, дайте нам знати!",
+    "description": "The Iron Fish Node App supports {languageCount} languages. If your preferred language isn't listed, please reach out and let us know!"
+  },
   "AetNAD": {
     "message": "Переглянути",
     "description": "Browse"
@@ -291,9 +299,17 @@
     "message": "Комісія ($IRON)",
     "description": "Fee ($IRON)"
   },
+  "HtgUU8": {
+    "message": "Введіть ''{accountName}'' щоб видалити",
+    "description": "Type ''{accountName}'' to remove"
+  },
   "JJNc3c": {
     "message": "Попередній",
     "description": "Previous"
+  },
+  "JM4YI+": {
+    "message": "Ви впевнені, що хочете видалити цей обліковий запис?",
+    "description": "Are you sure you want to remove this account?"
   },
   "Jjpq7w": {
     "message": "Послідовність блоків",
@@ -351,6 +367,10 @@
     "message": "Від найвищого до найнижчого балансу",
     "description": "Highest to lowest balance"
   },
+  "MFXvHT": {
+    "message": "Ваш баланс може не бути повністю оновлений під час цього процесу синхронізації",
+    "description": "Your balance may not be fully updated during this syncing process."
+  },
   "N0KGQj": {
     "message": "Графіті блоків",
     "description": "Block Graffiti"
@@ -358,10 +378,6 @@
   "N0bVvU": {
     "message": "Помилка скопійована в буфер обміну",
     "description": "Error copied to clipboard"
-  },
-  "NDtjP8": {
-    "message": "Ви впевнені? Вам доведеться знову імпортувати цей обліковий запис, якщо ви знову захочете його використовувати.",
-    "description": "Are you sure? You'll have to re-import this account if you want to use it again."
   },
   "NX/nQR": {
     "message": "Зміна налаштувань вузла може оптимізувати продуктивність, покращити з'єднання, посилити безпеку та ефективно керувати ресурсами.",
@@ -399,6 +415,10 @@
     "message": "Скидання вузла",
     "description": "Reset Node"
   },
+  "Q/MbJP": {
+    "message": "Будь ласка, зберігайте цю фразу в безпечному місці.",
+    "description": "Please keep this phrase stored somewhere safe."
+  },
   "QS9NTE": {
     "message": "Назва облікового запису — від А до Я",
     "description": "Account name — A to Z"
@@ -418,10 +438,6 @@
   "QwFX54": {
     "message": "Нотатки про транзакції",
     "description": "Transaction Notes"
-  },
-  "R2OqnW": {
-    "message": "Видалити обліковий запис",
-    "description": "Delete Account"
   },
   "RIUFf+": {
     "message": "Українська",
@@ -559,10 +575,6 @@
     "message": "Ключі",
     "description": "Keys"
   },
-  "Z4i3fh": {
-    "message": "Додаток Iron Fish Node підтримує {languageCount} мови. Якщо вашої мови немає у списку, будь ласка, дайте нам знати!",
-    "description": "The Iron Fish Node app supports {languageCount} languages. If your preferred language isn't listed, please reach out and let us know!"
-  },
   "Z7mY5w": {
     "message": "Підтвердіть деталі транзакції",
     "description": "Confirm Transaction Details"
@@ -610,6 +622,10 @@
   "dM+p3/": {
     "message": "Від",
     "description": "From"
+  },
+  "dTSUUK": {
+    "message": "Якщо ви видалите цей обліковий запис без його попереднього експорту, ВИ ВТРАТИТЕ ДОСТУП ДО НЬОГО.",
+    "description": "If you remove this account without exporting it first, YOU WILL LOSE ACCESS TO IT."
   },
   "e6Ph5+": {
     "message": "Адреса",
@@ -803,6 +819,10 @@
     "message": "Підтвердіть і надішліть",
     "description": "Confirm & Send"
   },
+  "rqrhXg": {
+    "message": "Підтвердіть вашу фразу відновлення",
+    "description": "Confirm Your Recovery Phrase"
+  },
   "tf+yHL": {
     "message": "Швидко",
     "description": "Fast"
@@ -834,6 +854,10 @@
   "vV69eP": {
     "message": "Завантаження знімку є найшвидшим способом синхронізації з мережею.",
     "description": "Downloading a snapshot is the fastest way to sync with the network."
+  },
+  "vaP4MI": {
+    "message": "На рахунку зараз є:",
+    "description": "It currently holds:"
   },
   "wGpbja": {
     "message": "Помилка при додаванні контакту",
@@ -890,5 +914,9 @@
   "zR2zr+": {
     "message": "Адреса скопійована в буфер обміну",
     "description": "Address copied to clipboard"
+  },
+  "zl76y/": {
+    "message": "Текст повинен відповідати назві облікового запису ''{accountName}''",
+    "description": "Text must match the account name ''{accountName}''"
   }
 }

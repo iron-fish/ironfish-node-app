@@ -24,6 +24,9 @@
   "/zn2B0": {
     "message": "View only accounts cannot initiate transactions"
   },
+  "0rIM5R": {
+    "message": "Remove Account"
+  },
   "21ueTy": {
     "message": "Public Address"
   },
@@ -150,6 +153,9 @@
   "9uOFF3": {
     "message": "Overview"
   },
+  "AFZGS9": {
+    "message": "The Iron Fish Node App supports {languageCount} languages. If your preferred language isn't listed, please reach out and let us know!"
+  },
   "AetNAD": {
     "message": "Browse"
   },
@@ -219,8 +225,14 @@
   "HkADqs": {
     "message": "Fee ($IRON)"
   },
+  "HtgUU8": {
+    "message": "Type ''{accountName}'' to remove"
+  },
   "JJNc3c": {
     "message": "Previous"
+  },
+  "JM4YI+": {
+    "message": "Are you sure you want to remove this account?"
   },
   "Jjpq7w": {
     "message": "Block Sequence"
@@ -264,14 +276,14 @@
   "MFUhla": {
     "message": "Highest to lowest balance"
   },
+  "MFXvHT": {
+    "message": "Your balance may not be fully updated during this syncing process."
+  },
   "N0KGQj": {
     "message": "Block Graffiti"
   },
   "N0bVvU": {
     "message": "Error copied to clipboard"
-  },
-  "NDtjP8": {
-    "message": "Are you sure? You'll have to re-import this account if you want to use it again."
   },
   "NX/nQR": {
     "message": "Changing node settings can optimize performance, improve connectivity, enhance security, and manage resources effectively."
@@ -300,6 +312,9 @@
   "Pq25uf": {
     "message": "Reset Node"
   },
+  "Q/MbJP": {
+    "message": "Please keep this phrase stored somewhere safe."
+  },
   "QS9NTE": {
     "message": "Account name — A to Z"
   },
@@ -314,9 +329,6 @@
   },
   "QwFX54": {
     "message": "Transaction Notes"
-  },
-  "R2OqnW": {
-    "message": "Delete Account"
   },
   "RIUFf+": {
     "message": "Ukrainian"
@@ -420,9 +432,6 @@
   "YFT4rG": {
     "message": "Keys"
   },
-  "Z4i3fh": {
-    "message": "The Iron Fish Node app supports {languageCount} languages. If your preferred language isn't listed, please reach out and let us know!"
-  },
   "Z7mY5w": {
     "message": "Confirm Transaction Details"
   },
@@ -458,6 +467,9 @@
   },
   "dM+p3/": {
     "message": "From"
+  },
+  "dTSUUK": {
+    "message": "If you remove this account without exporting it first, YOU WILL LOSE ACCESS TO IT."
   },
   "e6Ph5+": {
     "message": "Address"
@@ -603,6 +615,9 @@
   "rfxp5c": {
     "message": "Confirm & Send"
   },
+  "rqrhXg": {
+    "message": "Confirm Your Recovery Phrase"
+  },
   "tf+yHL": {
     "message": "Fast"
   },
@@ -626,6 +641,9 @@
   },
   "vV69eP": {
     "message": "Downloading a snapshot is the fastest way to sync with the network."
+  },
+  "vaP4MI": {
+    "message": "It currently holds:"
   },
   "wGpbja": {
     "message": "Add Contact Error"
@@ -668,5 +686,8 @@
   },
   "zR2zr+": {
     "message": "Address copied to clipboard"
+  },
+  "zl76y/": {
+    "message": "Text must match the account name ''{accountName}''"
   }
 }

@@ -48,6 +48,7 @@ export function OnboardingLayout({ children }: { children: ReactNode }) {
           </Box>
         </Box>
         <VStack
+          alignItems="stretch"
           gap={0}
           bg="white"
           h="100%"
@@ -78,7 +79,7 @@ export function OnboardingLayout({ children }: { children: ReactNode }) {
             }}
             py={16}
           >
-            {children}
+            <Box flex={1}>{children}</Box>
           </Flex>
           <Flex
             borderTop="1px solid #DEDFE2"
