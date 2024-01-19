@@ -411,6 +411,10 @@
     "message": "Скидання вузла",
     "description": "Reset Node"
   },
+  "Q/MbJP": {
+    "message": "Будь ласка, зберігайте цю фразу в безпечному місці.",
+    "description": "Please keep this phrase stored somewhere safe."
+  },
   "QS9NTE": {
     "message": "Назва облікового запису — від А до Я",
     "description": "Account name — A to Z"
@@ -806,6 +810,10 @@
   "rfxp5c": {
     "message": "Підтвердіть і надішліть",
     "description": "Confirm & Send"
+  },
+  "rqrhXg": {
+    "message": "Підтвердіть вашу фразу відновлення",
+    "description": "Confirm Your Recovery Phrase"
   },
   "tf+yHL": {
     "message": "Швидко",

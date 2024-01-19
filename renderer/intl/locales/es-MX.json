@@ -411,6 +411,10 @@
     "message": "Resetear Nodo",
     "description": "Reset Node"
   },
+  "Q/MbJP": {
+    "message": "Por favor, guarda esta frase en un lugar seguro.",
+    "description": "Please keep this phrase stored somewhere safe."
+  },
   "QS9NTE": {
     "message": "Nombre de la cuenta — A a Z",
     "description": "Account name — A to Z"
@@ -806,6 +810,10 @@
   "rfxp5c": {
     "message": "Confirmar y enviar",
     "description": "Confirm & Send"
+  },
+  "rqrhXg": {
+    "message": "Confirma tu Frase de Recuperación",
+    "description": "Confirm Your Recovery Phrase"
   },
   "tf+yHL": {
     "message": "Rápido",
