@@ -45,7 +45,7 @@ const messages = defineMessages({
   },
   description: {
     defaultMessage:
-      "The Iron Fish Node app supports {languageCount} languages. If your preferred language isn't listed, please reach out and let us know!",
+      "The Iron Fish Node App supports {languageCount} languages. If your preferred language isn't listed, please reach out and let us know!",
   },
   close: {
     defaultMessage: "Close",

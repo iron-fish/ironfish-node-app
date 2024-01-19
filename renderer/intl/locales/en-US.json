@@ -153,6 +153,9 @@
   "9uOFF3": {
     "message": "Overview"
   },
+  "AFZGS9": {
+    "message": "The Iron Fish Node App supports {languageCount} languages. If your preferred language isn't listed, please reach out and let us know!"
+  },
   "AetNAD": {
     "message": "Browse"
   },
@@ -425,9 +428,6 @@
   },
   "YFT4rG": {
     "message": "Keys"
-  },
-  "Z4i3fh": {
-    "message": "The Iron Fish Node app supports {languageCount} languages. If your preferred language isn't listed, please reach out and let us know!"
   },
   "Z7mY5w": {
     "message": "Confirm Transaction Details"
