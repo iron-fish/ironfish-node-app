@@ -80,7 +80,7 @@ export function AccountRow({
               h="110px"
               w="110px"
               gradient={color || "pink"}
-              mr={8}
+              mr={{ base: 4, lg: 8 }}
               position="relative"
             >
               <Flex
@@ -152,7 +152,11 @@ export function AccountRow({
               </PillButton>
             </VStack>
 
-            <VStack pl={8} pr={4} justifyContent="center">
+            <VStack
+              pl={{ base: 4, lg: 6, xl: 8 }}
+              pr={{ base: 1, lg: 3, xl: 4 }}
+              justifyContent="center"
+            >
               <ChevronRightIcon
                 boxSize={5}
                 color={COLORS.GRAY_MEDIUM}
