@@ -28,7 +28,7 @@ const messages = defineMessages({
 
 type Props = {
   notes: TransactionNote[];
-  heading?: string;
+  heading: string;
   asTransactions?: boolean;
   isError?: boolean;
   isLoading?: boolean;
@@ -38,7 +38,7 @@ type Props = {
 
 export function NotesList({
   notes,
-  heading = "Transaction Notes",
+  heading,
   asTransactions = false,
   isError,
   isLoading,

@@ -55,12 +55,12 @@ async function createThemeChangeHandler() {
       if (nativeTheme.shouldUseDarkColors) {
         // setTitleBarOverlay is undefined on non-Windows platforms
         mw.setTitleBarOverlay?.({
-          color: "#101010",
+          color: "#10101022",
           symbolColor: "#ffffff",
         });
       } else {
         mw.setTitleBarOverlay?.({
-          color: "#ffffff",
+          color: "#ffffff22",
           symbolColor: "#101010",
         });
       }
