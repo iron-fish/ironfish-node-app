@@ -8,9 +8,10 @@ import {
   TabPanel,
   HStack,
   VStack,
+  Spinner,
 } from "@chakra-ui/react";
 import { useRouter } from "next/router";
-import { useState } from "react";
+import { useMemo } from "react";
 import { defineMessages, useIntl } from "react-intl";
 
 import { AccountAssets } from "@/components/AccountAssets/AccountAssets";
@@ -25,7 +26,6 @@ import lionfishLock from "@/images/lionfish-lock.svg";
 import MainLayout from "@/layouts/MainLayout";
 import { WithExplanatorySidebar } from "@/layouts/WithExplanatorySidebar";
 import { trpcReact } from "@/providers/TRPCProvider";
-import { PillButton } from "@/ui/PillButton/PillButton";
 import { asQueryString } from "@/utils/parseRouteQuery";
 
 const messages = defineMessages({
@@ -74,8 +74,6 @@ function AccountOverviewContent({ accountName }: { accountName: string }) {
   const initialTabIndex = useInitialTabIndex();
   const { formatMessage } = useIntl();
 
-  const [cursor, setCursor] = useState(0);
-
   const { data: accountData } = trpcReact.getAccount.useQuery({
     name: accountName,
   });
@@ -84,13 +82,23 @@ function AccountOverviewContent({ accountName }: { accountName: string }) {
     data: transactionsData,
     isLoading,
     isError,
-  } = trpcReact.getTransactions.useQuery({
-    accountName,
-    cursor,
-    limit: 10,
-  });
+    fetchNextPage,
+    hasNextPage,
+    isFetchingNextPage,
+  } = trpcReact.getTransactions.useInfiniteQuery(
+    {
+      accountName,
+      limit: 10,
+    },
+    {
+      getNextPageParam: (lastPage) => lastPage.nextCursor,
+      initialCursor: 0,
+    },
+  );
 
-  const shouldShowPagination = cursor !== 0 || transactionsData?.hasNextPage;
+  const notes = useMemo(() => {
+    return transactionsData?.pages.flatMap((page) => page.transactions) ?? [];
+  }, [transactionsData?.pages]);
 
   if (!accountData) {
     // @todo: Error handling
@@ -132,29 +140,16 @@ function AccountOverviewContent({ accountName }: { accountName: string }) {
                 asTransactions
                 isLoading={isLoading}
                 isError={isError}
-                notes={transactionsData?.transactions ?? []}
+                notes={notes}
                 heading={formatMessage(messages.accountOverview)}
+                onEndReached={() => {
+                  if (!hasNextPage || isFetchingNextPage) return;
+                  fetchNextPage();
+                }}
               />
-              {shouldShowPagination && (
-                <HStack flex={1} justifyContent="center">
-                  <PillButton
-                    isDisabled={!transactionsData || cursor <= 0}
-                    onClick={() => {
-                      setCursor((c) => Math.max(c - 10, 0));
-                    }}
-                  >
-                    {formatMessage(messages.previousButton)}
-                  </PillButton>
-                  <PillButton
-                    isDisabled={!transactionsData?.hasNextPage}
-                    onClick={() => {
-                      setCursor((c) => c + 10);
-                    }}
-                  >
-                    {formatMessage(messages.nextButton)}
-                  </PillButton>
-                </HStack>
-              )}
+              <HStack alignItems="center" justifyContent="center" h="50px">
+                {isFetchingNextPage && <Spinner opacity="0.5" />}
+              </HStack>
             </TabPanel>
             <TabPanel p={0}>
               <WithExplanatorySidebar

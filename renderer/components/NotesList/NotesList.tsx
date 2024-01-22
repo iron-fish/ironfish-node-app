@@ -33,6 +33,7 @@ type Props = {
   isError?: boolean;
   isLoading?: boolean;
   combineTypeAndStatus?: boolean;
+  onEndReached?: (index: number) => void;
 };
 
 export function NotesList({
@@ -41,6 +42,7 @@ export function NotesList({
   asTransactions = false,
   isError,
   isLoading,
+  onEndReached,
 }: Props) {
   const { formatMessage } = useIntl();
   const customScrollElement = useScrollElementContext();
@@ -94,6 +96,7 @@ export function NotesList({
               />
             );
           }}
+          endReached={onEndReached}
         />
       )}
     </Box>

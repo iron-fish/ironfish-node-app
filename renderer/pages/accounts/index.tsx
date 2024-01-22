@@ -124,33 +124,31 @@ export default function Accounts() {
   const { formatMessage } = useIntl();
 
   return (
-    <>
-      <MainLayout>
-        <HStack alignItems="start" justifyContent="space-between" mb={10}>
-          <VStack gap={0} alignItems="stretch">
-            <Heading fontSize={28} flexGrow={1} lineHeight="160%">
-              {formatMessage(messages.accountsHeader)}
-            </Heading>
-            <Box>
-              <Text
-                fontSize="md"
-                as="span"
-                color={COLORS.GRAY_MEDIUM}
-                _dark={{ color: COLORS.GRAY_MEDIUM }}
-                mr={1}
-              >
-                {formatMessage(messages.totalAccountsBalance)}:{" "}
-              </Text>
-              <Text fontSize="md" as="span" fontWeight="bold">
-                {totalBalance !== null ? formatOre(totalBalance) : "—"} $IRON
-              </Text>
-            </Box>
-          </VStack>
-          <CreateImportActions />
-        </HStack>
+    <MainLayout>
+      <HStack alignItems="start" justifyContent="space-between" mb={10}>
+        <VStack gap={0} alignItems="stretch">
+          <Heading fontSize={28} flexGrow={1} lineHeight="160%">
+            {formatMessage(messages.accountsHeader)}
+          </Heading>
+          <Box>
+            <Text
+              fontSize="md"
+              as="span"
+              color={COLORS.GRAY_MEDIUM}
+              _dark={{ color: COLORS.GRAY_MEDIUM }}
+              mr={1}
+            >
+              {formatMessage(messages.totalAccountsBalance)}:{" "}
+            </Text>
+            <Text fontSize="md" as="span" fontWeight="bold">
+              {totalBalance !== null ? formatOre(totalBalance) : "—"} $IRON
+            </Text>
+          </Box>
+        </VStack>
+        <CreateImportActions />
+      </HStack>
 
-        <UserAccountsList />
-      </MainLayout>
-    </>
+      <UserAccountsList />
+    </MainLayout>
   );
 }
