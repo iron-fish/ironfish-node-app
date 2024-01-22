@@ -9,6 +9,7 @@ import {
   useDisclosure,
   Flex,
   Box,
+  FlexProps,
 } from "@chakra-ui/react";
 import { useForm } from "react-hook-form";
 import { FaChevronDown } from "react-icons/fa";
@@ -92,7 +93,11 @@ const localeSchema = z.object({
   language: z.enum(["en-US", "es-MX", "zh-CN", "ru-RU", "uk-UA"]),
 });
 
-export function LanguageSelector() {
+type Props = {
+  buttonContainerProps?: FlexProps;
+};
+
+export function LanguageSelector({ buttonContainerProps }: Props) {
   const { formatMessage } = useIntl();
   const { isOpen, onOpen, onClose } = useDisclosure();
   const selectedLocaleContext = useSelectedLocaleContext();
@@ -122,6 +127,7 @@ export function LanguageSelector() {
           md: "100%",
         }}
         onClick={onOpen}
+        {...buttonContainerProps}
       >
         <MdOutlineLanguage />
         <Text
