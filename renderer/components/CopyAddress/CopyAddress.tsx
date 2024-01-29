@@ -15,10 +15,16 @@ const messages = defineMessages({
 
 type Props = TextProps & {
   address: string;
+  parts?: 2 | 3;
   truncate?: boolean;
 };
 
-export function CopyAddress({ address, truncate = true, ...rest }: Props) {
+export function CopyAddress({
+  address,
+  parts = 3,
+  truncate = true,
+  ...rest
+}: Props) {
   const [_, copyToClipboard] = useCopyToClipboard();
   const toast = useIFToast();
   const { formatMessage } = useIntl();
@@ -42,7 +48,7 @@ export function CopyAddress({ address, truncate = true, ...rest }: Props) {
       }}
       {...rest}
     >
-      {truncate ? truncateString(address) : address}
+      {truncate ? truncateString(address, parts) : address}
       <CopyIcon
         color={COLORS.GRAY_MEDIUM}
         _dark={{ color: COLORS.DARK_MODE.GRAY_LIGHT }}
