@@ -18,7 +18,7 @@ import pinkCube from "@/images/pink-cube.svg";
 import pinkHash from "@/images/pink-hash.svg";
 import pinkInformation from "@/images/pink-information.svg";
 import pinkSquareStack from "@/images/pink-square-stack.svg";
-import { TRPCRouterOutputs } from "@/providers/TRPCProvider";
+import { trpcReact, TRPCRouterOutputs } from "@/providers/TRPCProvider";
 import { COLORS } from "@/ui/colors";
 import { ShadowCard } from "@/ui/ShadowCard/ShadowCard";
 import { formatDate } from "@/utils/formatDate";
@@ -54,7 +54,44 @@ const messages = defineMessages({
   transactionInformation: {
     defaultMessage: "Transaction Information",
   },
+  viewInBlockExplorer: {
+    defaultMessage: "View in Block Explorer",
+  },
 });
+
+function TransactionHashBody({ transaction }: { transaction: Transaction }) {
+  const { data } = trpcReact.getExplorerUrl.useQuery({
+    type: "transaction",
+    hash: transaction.hash,
+  });
+
+  const { formatMessage } = useIntl();
+
+  return (
+    <VStack alignItems="flex-start">
+      <CopyAddress
+        fontSize="md"
+        color={COLORS.BLACK}
+        _dark={{ color: COLORS.WHITE }}
+        address={transaction.hash}
+        parts={2}
+      />
+      {data && (
+        <Box
+          as="a"
+          target="_blank"
+          display="inline"
+          href={data}
+          _hover={{ textDecor: "underline" }}
+        >
+          <Text fontSize="xs" lineHeight="160%">
+            {formatMessage(messages.viewInBlockExplorer)}
+          </Text>
+        </Box>
+      )}
+    </VStack>
+  );
+}
 
 const ITEMS = [
   {
@@ -66,13 +103,7 @@ const ITEMS = [
     label: messages.transactionHash,
     icon: <Image src={pinkHash} alt="" />,
     render: (transaction: Transaction) => (
-      <CopyAddress
-        fontSize="md"
-        color={COLORS.BLACK}
-        _dark={{ color: COLORS.WHITE }}
-        address={transaction.hash}
-        parts={2}
-      />
+      <TransactionHashBody transaction={transaction} />
     ),
   },
   {

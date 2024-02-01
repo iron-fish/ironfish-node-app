@@ -823,6 +823,10 @@
     "message": "Підтвердіть вашу фразу відновлення",
     "description": "Confirm Your Recovery Phrase"
   },
+  "tU2A8W": {
+    "message": "Переглянути в Block Explorer",
+    "description": "View in Block Explorer"
+  },
   "tf+yHL": {
     "message": "Швидко",
     "description": "Fast"

@@ -1,3 +1,4 @@
+import { MAINNET, TESTNET } from "@ironfish/sdk";
 import log from "electron-log";
 import { z } from "zod";
 
@@ -22,6 +23,13 @@ const handleSetConfigInput = z.object({
   // Not all config values are picked up without a restart, so defaults to true.
   restartAfterSet: z.boolean().default(true),
 });
+
+const getExplorerUrlInput = z
+  .object({
+    type: z.enum(["transaction", "block"]),
+    hash: z.string(),
+  })
+  .optional();
 
 export const ironfishRouter = t.router({
   getConfig: t.procedure.input(handleGetConfigInput).query(async (opts) => {
@@ -71,6 +79,28 @@ export const ironfishRouter = t.router({
   }),
   getInitialState: t.procedure.query(async () => {
     return manager.getInitialState();
+  }),
+  getExplorerUrl: t.procedure.input(getExplorerUrlInput).query(async (opts) => {
+    const ironfish = await manager.getIronfish();
+    const rpcClient = await ironfish.rpcClient();
+    const response = await rpcClient.node.getStatus();
+    const networkId = response.content.node.networkId;
+
+    let url;
+    if (networkId === MAINNET.id) {
+      url = "https://explorer.ironfish.network/";
+    } else if (networkId === TESTNET.id) {
+      url = "https://testnet.explorer.ironfish.network/";
+    } else {
+      return null;
+    }
+
+    if (opts.input?.type === "block") {
+      return `${url}blocks/${opts.input.hash}`;
+    } else if (opts.input?.type === "transaction") {
+      return `${url}transaction/${opts.input.hash}`;
+    }
+    return url;
   }),
   resetNode: t.procedure.mutation(async () => {
     const ironfish = await manager.getIronfish();
