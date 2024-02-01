@@ -40,3 +40,15 @@ export function getNodeAppBetaContacts(): Promise<Array<BetaContact>> {
     });
   });
 }
+
+export function deleteNodeAppBetaContacts(): void {
+  const betaContactsDbPath = path.join(
+    os.homedir(),
+    "/.ironfish/node-app",
+    "address_book.db",
+  );
+
+  if (fs.existsSync(betaContactsDbPath)) {
+    fs.rmSync(betaContactsDbPath);
+  }
+}

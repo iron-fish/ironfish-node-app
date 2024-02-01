@@ -2,7 +2,10 @@ import Store, { Schema } from "electron-store";
 import { v4 as uuidv4 } from "uuid";
 import { z } from "zod";
 
-import { getNodeAppBetaContacts } from "./utils/getNodeAppBetaContacts";
+import {
+  deleteNodeAppBetaContacts,
+  getNodeAppBetaContacts,
+} from "./utils/getNodeAppBetaContacts";
 import { t } from "../trpc";
 
 const contactDefinition = z.object({
@@ -56,7 +59,7 @@ export const contactsRouter = t.router({
     }),
   migrateNodeAppBetaContacts: t.procedure.mutation(async () => {
     const betaContacts = await getNodeAppBetaContacts();
-    const contacts = await store.get("contacts", []);
+    const contacts = store.get("contacts", []);
     const addressLookup = new Set(contacts.map((contact) => contact.address));
 
     let order = 0;
@@ -73,6 +76,7 @@ export const contactsRouter = t.router({
     }
 
     store.set("contacts", contacts);
+    deleteNodeAppBetaContacts();
     return contacts;
   }),
   addContact: t.procedure
