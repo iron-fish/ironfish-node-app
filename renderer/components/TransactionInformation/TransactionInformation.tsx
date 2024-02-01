@@ -23,7 +23,8 @@ import { COLORS } from "@/ui/colors";
 import { ShadowCard } from "@/ui/ShadowCard/ShadowCard";
 import { formatDate } from "@/utils/formatDate";
 import { formatOre } from "@/utils/ironUtils";
-import { truncateString } from "@/utils/truncateString";
+
+import { CopyAddress } from "../CopyAddress/CopyAddress";
 
 type Transaction = TRPCRouterOutputs["getTransaction"]["transaction"];
 
@@ -64,7 +65,15 @@ const ITEMS = [
   {
     label: messages.transactionHash,
     icon: <Image src={pinkHash} alt="" />,
-    render: (transaction: Transaction) => truncateString(transaction.hash, 2),
+    render: (transaction: Transaction) => (
+      <CopyAddress
+        fontSize="md"
+        color={COLORS.BLACK}
+        _dark={{ color: COLORS.WHITE }}
+        address={transaction.hash}
+        parts={2}
+      />
+    ),
   },
   {
     label: messages.timestamp,
