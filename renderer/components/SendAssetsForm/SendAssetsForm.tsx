@@ -2,7 +2,7 @@ import { VStack, chakra, HStack } from "@chakra-ui/react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useRouter } from "next/router";
 import { useEffect, useMemo, useState } from "react";
-import { useForm } from "react-hook-form";
+import { useForm, Controller } from "react-hook-form";
 import { useIntl, defineMessages } from "react-intl";
 
 import { TRPCRouterOutputs, trpcReact } from "@/providers/TRPCProvider";
@@ -14,10 +14,12 @@ import { PillButton } from "@/ui/PillButton/PillButton";
 import { hexToUTF16String } from "@/utils/hexToUTF16String";
 import { formatOre, parseIron } from "@/utils/ironUtils";
 import { asQueryString } from "@/utils/parseRouteQuery";
+import { sliceToUtf8Bytes } from "@/utils/sliceToUtf8Bytes";
 import { truncateString } from "@/utils/truncateString";
 
 import { ConfirmTransactionModal } from "./ConfirmTransactionModal/ConfirmTransactionModal";
 import {
+  MAX_MEMO_SIZE,
   TransactionData,
   TransactionFormData,
   transactionSchema,
@@ -121,6 +123,7 @@ export function SendAssetsFormContent({
 
   const {
     register,
+    control,
     handleSubmit,
     formState: { errors },
     watch,
@@ -339,10 +342,21 @@ export function SendAssetsFormContent({
             error={errors.fee?.message}
           />
 
-          <TextInput
-            {...register("memo")}
-            label={formatMessage(messages.memoLabel)}
-            error={errors.memo?.message}
+          <Controller
+            name="memo"
+            control={control}
+            render={({ field }) => (
+              <TextInput
+                {...field}
+                onChange={(e) =>
+                  field.onChange(
+                    sliceToUtf8Bytes(e.target.value, MAX_MEMO_SIZE),
+                  )
+                }
+                label={formatMessage(messages.memoLabel)}
+                error={errors.memo?.message}
+              />
+            )}
           />
 
           <RenderError
