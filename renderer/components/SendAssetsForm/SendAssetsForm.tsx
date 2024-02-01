@@ -144,7 +144,6 @@ export function SendAssetsFormContent({
   const feeValue = watch("fee");
   const amountValue = watch("amount");
   const toAccountValue = watch("toAccount");
-  const memoValue = watch("memo");
 
   const { data: estimatedFeesData, error: estimatedFeesError } =
     trpcReact.getEstimatedFees.useQuery(
@@ -153,7 +152,7 @@ export function SendAssetsFormContent({
         output: {
           amount: parseIron(amountValue),
           assetId: assetValue,
-          memo: memoValue ?? "",
+          memo: "",
           publicAddress: toAccountValue,
         },
       },
