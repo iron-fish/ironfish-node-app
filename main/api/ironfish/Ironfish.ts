@@ -105,13 +105,6 @@ export class Ironfish {
         }
       }
 
-      const newSecretKey = Buffer.from(
-        node.peerNetwork.localPeer.privateIdentity.secretKey,
-      ).toString("hex");
-
-      node.internal.set("networkIdentity", newSecretKey);
-      await node.internal.save();
-
       if (node.internal.get("isFirstRun")) {
         node.internal.set("isFirstRun", false);
         node.internal.set("telemetryNodeId", uuid());
