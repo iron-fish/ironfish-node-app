@@ -2,6 +2,9 @@ import * as z from "zod";
 
 import { getTrpcVanillaClient } from "@/providers/TRPCProvider";
 import { MIN_IRON_VALUE } from "@/utils/ironUtils";
+import { sliceToUtf8Bytes } from "@/utils/sliceToUtf8Bytes";
+
+export const MAX_MEMO_SIZE = 32;
 
 export const transactionSchema = z.object({
   fromAccount: z.string().min(1),
@@ -18,7 +21,13 @@ export const transactionSchema = z.object({
   assetId: z.string().min(1),
   amount: z.coerce.number().min(MIN_IRON_VALUE),
   fee: z.union([z.literal("slow"), z.literal("average"), z.literal("fast")]),
-  memo: z.string().max(32).optional(),
+  memo: z
+    .string()
+    .refine(
+      (s) => s === sliceToUtf8Bytes(s, MAX_MEMO_SIZE),
+      "Memo can't be more than 32 bytes",
+    )
+    .optional(),
 });
 
 export type TransactionFormData = z.infer<typeof transactionSchema>;
