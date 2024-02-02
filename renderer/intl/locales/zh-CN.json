@@ -823,6 +823,10 @@
     "message": "确认您的恢复短语",
     "description": "Confirm Your Recovery Phrase"
   },
+  "tU2A8W": {
+    "message": "在Block Explorer中查看",
+    "description": "View in Block Explorer"
+  },
   "tf+yHL": {
     "message": "快速",
     "description": "Fast"
