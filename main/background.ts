@@ -4,6 +4,7 @@ import serve from "electron-serve";
 import { createIPCHandler } from "electron-trpc/main";
 
 import { router } from "./api";
+import { migrateNodeAppBetaContacts } from "./api/contacts/utils/migrateNodeAppBetaContacts";
 import { manager } from "./api/manager";
 import { getUserSettings } from "./api/user-settings/userSettings";
 import { mainWindow } from "./main-window";
@@ -79,6 +80,7 @@ app.whenReady().then(() => {
 
   createThemeChangeHandler();
   setNativeThemeSource();
+  migrateNodeAppBetaContacts();
 
   const handler = createIPCHandler({ router });
 

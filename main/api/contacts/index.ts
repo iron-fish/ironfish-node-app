@@ -2,7 +2,6 @@ import Store, { Schema } from "electron-store";
 import { v4 as uuidv4 } from "uuid";
 import { z } from "zod";
 
-import { getNodeAppBetaContacts } from "./utils/getNodeAppBetaContacts";
 import { t } from "../trpc";
 
 const contactDefinition = z.object({
@@ -35,7 +34,7 @@ const schema: Schema<{
   },
 };
 
-const store = new Store({ schema, name: "contacts" });
+export const store = new Store({ schema, name: "contacts" });
 
 export const contactsRouter = t.router({
   getContacts: t.procedure.query(async () => {
@@ -54,27 +53,6 @@ export const contactsRouter = t.router({
         null
       );
     }),
-  migrateNodeAppBetaContacts: t.procedure.mutation(async () => {
-    const betaContacts = await getNodeAppBetaContacts();
-    const contacts = await store.get("contacts", []);
-    const addressLookup = new Set(contacts.map((contact) => contact.address));
-
-    let order = 0;
-
-    for (const contact of betaContacts) {
-      if (!addressLookup.has(contact.address)) {
-        contacts.push({
-          id: uuidv4(),
-          name: contact.name,
-          address: contact.address,
-          order: order++,
-        });
-      }
-    }
-
-    store.set("contacts", contacts);
-    return contacts;
-  }),
   addContact: t.procedure
     .input(
       z.object({
