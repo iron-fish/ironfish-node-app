@@ -19,14 +19,6 @@ export default function Home() {
 
   const { mutate: startNode } = trpcReact.startNode.useMutation();
 
-  const { mutate: migrateContacts } =
-    trpcReact.migrateNodeAppBetaContacts.useMutation();
-
-  // Trigger contact migration when the app starts up
-  useEffect(() => {
-    migrateContacts();
-  }, [migrateContacts]);
-
   // If user has no accounts, go to onboarding
   useEffect(() => {
     if (initialStateData === "onboarding") {
