@@ -68,7 +68,7 @@ export const contactsRouter = t.router({
         address: opts.input.address,
         order: contacts.length,
       });
-      contactsStore.set("contacts", contacts);
+      store.set("contacts", contacts);
       return contacts;
     }),
   editContact: t.procedure
