@@ -24,18 +24,18 @@ import { ViewOnlyChip } from "../ViewOnlyChip/ViewOnlyChip";
 type FormatTypes = `${AccountFormat}`;
 
 const viewOnlyFormatOptions: Map<string, FormatTypes> = new Map([
-  ["Bech32", "Bech32"],
+  ["Base64Json", "Base64Json"],
   ["JSON", "JSON"],
 ]);
 
 const formatOptions: Map<string, FormatTypes> = new Map([
-  ["Bech32", "Bech32"],
+  ["Base64Json", "Base64Json"],
   ["JSON", "JSON"],
   ["Mnemonic", "Mnemonic"],
   ["Spending Key", "SpendingKey"],
 ]);
 
-const defaultFormat: FormatTypes = "Bech32";
+const defaultFormat: FormatTypes = "Base64Json";
 
 const messages = defineMessages({
   exportAccount: {
