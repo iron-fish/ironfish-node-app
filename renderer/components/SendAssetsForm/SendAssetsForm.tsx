@@ -298,14 +298,54 @@ export function SendAssetsFormContent({
             error={errors.assetId?.message}
           />
 
-          <TextInput
-            {...register("amount", {
-              onChange: () => {
-                clearErrors("root.serverError");
-              },
-            })}
-            label={formatMessage(messages.amountLabel)}
-            error={errors.amount?.message}
+          <Controller
+            name="amount"
+            control={control}
+            render={({ field }) => (
+              <TextInput
+                {...field}
+                value={field.value ?? ""}
+                onChange={(e) => {
+                  clearErrors("root.serverError");
+
+                  // remove any non-numeric characters except for periods
+                  const azValue = e.target.value.replace(/[^\d.]/g, "");
+
+                  // only allow one period
+                  if (azValue.split(".").length > 2) {
+                    e.preventDefault();
+                    return;
+                  }
+
+                  let finalValue = azValue;
+
+                  // only allow up to 8 decimal places
+                  const parts = azValue.split(".");
+                  if (parts[1]?.length > 8) {
+                    finalValue = `${parts[0]}.${parts[1].slice(0, 8)}`;
+                  }
+
+                  field.onChange(finalValue);
+                }}
+                onFocus={() => {
+                  console.log(field.value);
+                  if (field.value === 0) {
+                    field.onChange("");
+                  }
+                }}
+                onBlur={() => {
+                  console.log(field.value, typeof field.value);
+                  if (!field.value) {
+                    field.onChange(0);
+                  }
+                  if (String(field.value).endsWith(".")) {
+                    field.onChange(String(field.value).slice(0, -1));
+                  }
+                }}
+                label={formatMessage(messages.amountLabel)}
+                error={errors.amount?.message}
+              />
+            )}
           />
 
           <Select
@@ -347,6 +387,7 @@ export function SendAssetsFormContent({
             render={({ field }) => (
               <TextInput
                 {...field}
+                value={field.value ?? ""}
                 onChange={(e) =>
                   field.onChange(
                     sliceToUtf8Bytes(e.target.value, MAX_MEMO_SIZE),
