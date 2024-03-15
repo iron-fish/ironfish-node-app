@@ -287,9 +287,7 @@ export function ResetNodeButton({
               <Button
                 colorScheme="red"
                 onClick={async () => {
-                  console.log("resetting node");
                   await resetNode();
-                  console.log("node reset successfully");
                   onSuccess?.();
                 }}
                 isDisabled={isLoading}
