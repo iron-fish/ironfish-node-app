@@ -150,7 +150,7 @@ export function UserAccountsList() {
         .map((account) => {
           return (
             <AccountRow
-              key={account.address}
+              key={account.name}
               color={getGradientColor(account.address)}
               name={account.name}
               balance={account.balances.iron.confirmed}
