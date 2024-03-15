@@ -6,8 +6,11 @@ import { defineMessages, useIntl } from "react-intl";
 import { useCopyToClipboard } from "usehooks-ts";
 
 import { WithDraggableArea } from "@/layouts/WithDraggableArea";
+import { trpcReact } from "@/providers/TRPCProvider";
 import { COLORS } from "@/ui/colors";
 import { useIFToast } from "@/ui/Toast/Toast";
+
+import { ResetNodeButton } from "../NodeSettings/NodeSettings";
 
 const messages = defineMessages({
   errorStateHeading: {
@@ -64,6 +67,7 @@ function DefaultFallback({ error }: { error: Error }) {
   const { formatMessage } = useIntl();
   const [_, copyToClipboard] = useCopyToClipboard();
   const toast = useIFToast();
+  const { mutate: relaunchApp } = trpcReact.relaunchApp.useMutation();
   return (
     <WithDraggableArea>
       <Flex h="100%" alignItems="center" justifyContent="center" p={4}>
@@ -104,9 +108,19 @@ function DefaultFallback({ error }: { error: Error }) {
             maxW="100%"
             w="100%"
             overflow="auto"
+            mb={8}
           >
             <Text as="pre">{error.message}</Text>
           </Code>
+
+          <ResetNodeButton
+            buttonProps={{
+              variant: "primary",
+            }}
+            onSuccess={() => {
+              relaunchApp();
+            }}
+          />
         </Box>
       </Flex>
     </WithDraggableArea>

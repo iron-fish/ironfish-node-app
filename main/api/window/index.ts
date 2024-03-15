@@ -1,4 +1,4 @@
-import { dialog } from "electron";
+import { app, dialog } from "electron";
 import log from "electron-log";
 
 import { mainWindow } from "../../main-window";
@@ -21,5 +21,9 @@ export const windowRouter = t.router({
     }
 
     return;
+  }),
+  relaunchApp: t.procedure.mutation(async () => {
+    app.relaunch();
+    app.exit();
   }),
 });

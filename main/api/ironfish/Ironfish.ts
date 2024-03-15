@@ -169,7 +169,7 @@ export class Ironfish {
   async reset() {
     // Implementation references the CLI reset command:
     // https://github.com/iron-fish/ironfish/blob/master/ironfish-cli/src/commands/reset.ts
-    let sdk = await this.sdk();
+    let sdk = this._initialized ? await this.sdk() : await this.constructSdk();
 
     const chainDatabasePath = sdk.config.chainDatabasePath;
     const peerStoreFilePath: string = sdk.config.files.join(
