@@ -11,12 +11,13 @@ import {
   Grid,
   GridItem,
   HStack,
+  Spinner,
   Switch,
   useDisclosure,
 } from "@chakra-ui/react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useRouter } from "next/router";
-import { useRef } from "react";
+import { ComponentProps, useRef } from "react";
 import { useForm } from "react-hook-form";
 import { defineMessages, useIntl } from "react-intl";
 import { z } from "zod";
@@ -93,12 +94,10 @@ function NodeSettingsContent({
   initialBlocksPerMessage?: number;
   initialEnableTelemetry?: boolean;
 }) {
-  const router = useRouter();
   const { formatMessage } = useIntl();
+  const router = useRouter();
   const toast = useIFToast();
 
-  const { mutateAsync: resetNode, isLoading: isResetLoading } =
-    trpcReact.resetNode.useMutation();
   const { mutate: setConfig, isLoading: isSetConfigLoading } =
     trpcReact.setConfig.useMutation({
       onSuccess: () => {
@@ -107,13 +106,6 @@ function NodeSettingsContent({
         });
       },
     });
-
-  const {
-    isOpen: isResetNodeModalOpen,
-    onOpen: onResetNodeModalOpen,
-    onClose: onResetNodeModalClose,
-  } = useDisclosure();
-  const cancelResetRef = useRef(null);
 
   const {
     register,
@@ -131,8 +123,6 @@ function NodeSettingsContent({
       enableTelemetry: initialEnableTelemetry,
     },
   });
-
-  const isLoading = isResetLoading || isSetConfigLoading;
 
   return (
     <>
@@ -219,17 +209,52 @@ function NodeSettingsContent({
         >
           {formatMessage(messages.saveSettings)}
         </PillButton>
-        <PillButton
-          isDisabled={isLoading}
-          onClick={onResetNodeModalOpen}
-          variant="inverted"
-          height="60px"
-          px={8}
-          border={0}
-        >
-          {formatMessage(messages.resetNode)}
-        </PillButton>
+        <ResetNodeButton
+          forceIsLoading={isSetConfigLoading}
+          onSuccess={() => router.push("/home")}
+        />
       </HStack>
+    </>
+  );
+}
+
+export function ResetNodeButton({
+  forceIsLoading,
+  buttonProps,
+  onSuccess,
+}: {
+  forceIsLoading?: boolean;
+  buttonProps?: ComponentProps<typeof PillButton>;
+  onSuccess?: () => void;
+}) {
+  const { formatMessage } = useIntl();
+
+  const { mutateAsync: resetNode, isLoading: isResetLoading } =
+    trpcReact.resetNode.useMutation();
+
+  const {
+    isOpen: isResetNodeModalOpen,
+    onOpen: onResetNodeModalOpen,
+    onClose: onResetNodeModalClose,
+  } = useDisclosure();
+
+  const cancelResetRef = useRef(null);
+
+  const isLoading = isResetLoading || forceIsLoading;
+
+  return (
+    <>
+      <PillButton
+        isDisabled={isLoading}
+        onClick={onResetNodeModalOpen}
+        variant="inverted"
+        height="60px"
+        px={8}
+        border={0}
+        {...buttonProps}
+      >
+        {formatMessage(messages.resetNode)}
+      </PillButton>
       <AlertDialog
         isOpen={isResetNodeModalOpen}
         leastDestructiveRef={cancelResetRef}
@@ -242,20 +267,30 @@ function NodeSettingsContent({
             </AlertDialogHeader>
 
             <AlertDialogBody>
-              {formatMessage(messages.areYouSureResetNode)}
+              {isLoading ? (
+                <HStack justifyContent="center" my={4}>
+                  <Spinner opacity="0.5" size="lg" />
+                </HStack>
+              ) : (
+                formatMessage(messages.areYouSureResetNode)
+              )}
             </AlertDialogBody>
 
             <AlertDialogFooter>
-              <Button ref={cancelResetRef} onClick={onResetNodeModalClose}>
+              <Button
+                ref={cancelResetRef}
+                onClick={onResetNodeModalClose}
+                isDisabled={isLoading}
+              >
                 {formatMessage(messages.cancel)}
               </Button>
               <Button
                 colorScheme="red"
-                onClick={() => {
-                  resetNode().then(() => {
-                    router.push("/home");
-                  });
+                onClick={async () => {
+                  await resetNode();
+                  onSuccess?.();
                 }}
+                isDisabled={isLoading}
                 ml={3}
               >
                 {formatMessage(messages.resetNode)}
