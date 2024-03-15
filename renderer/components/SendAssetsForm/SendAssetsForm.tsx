@@ -328,13 +328,11 @@ export function SendAssetsFormContent({
                   field.onChange(finalValue);
                 }}
                 onFocus={() => {
-                  console.log(field.value);
                   if (field.value === 0) {
                     field.onChange("");
                   }
                 }}
                 onBlur={() => {
-                  console.log(field.value, typeof field.value);
                   if (!field.value) {
                     field.onChange(0);
                   }
