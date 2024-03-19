@@ -186,6 +186,9 @@
   "Dh1MGS": {
     "message": "Account Syncing"
   },
+  "Dm//f5": {
+    "message": "If this issue continues to occur, resetting your node may help. Resetting the node will reinitialize your blockchain data, but it will not delete your accounts."
+  },
   "DnuK8f": {
     "message": "Turn this on if you want to specify a custom name for this account. Otherwise, the account name will be inferred from your exported account data."
   },
@@ -419,6 +422,9 @@
   },
   "XLvNHQ": {
     "message": "Please write down this recovery phrase and keep it in a safe place. You will need it to recover your account."
+  },
+  "XO7ZpR": {
+    "message": "Note: An app update is available. Please restart the app to apply the update, or download the latest version from the <link>Iron Fish website</link>."
   },
   "XYgEt1": {
     "message": "Please keep this phrase stored somewhere safe. We will ask you to re-enter this."
