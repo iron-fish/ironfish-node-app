@@ -1,5 +1,4 @@
 import { Ironfish } from "./ironfish/Ironfish";
-import { getUserSettings } from "./user-settings/userSettings";
 
 export type InitialState =
   | "onboarding"
@@ -13,8 +12,8 @@ export class Manager {
   async getIronfish(): Promise<Ironfish> {
     if (this._ironfish) return this._ironfish;
 
-    const userSettings = await getUserSettings();
-    const dataDir = userSettings.get("dataDir");
+    // const userSettings = await getUserSettings();
+    const dataDir = "~/.ironfish-testnet"; //userSettings.get("dataDir");
     this._ironfish = new Ironfish(dataDir);
     return this._ironfish;
   }

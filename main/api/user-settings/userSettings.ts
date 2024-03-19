@@ -1,4 +1,4 @@
-import { DEFAULT_DATA_DIR, NodeFileProvider } from "@ironfish/sdk";
+import { NodeFileProvider } from "@ironfish/sdk";
 import Store, { Schema } from "electron-store";
 import { z } from "zod";
 
@@ -36,7 +36,7 @@ export async function getUserSettings() {
     schema: settingsSchema,
     name: STORE_NAME,
     defaults: {
-      dataDir: fileSystem.resolve(DEFAULT_DATA_DIR),
+      dataDir: fileSystem.resolve("~/.ironfish-testnet"),
       theme: "system",
       locale: null,
     },
