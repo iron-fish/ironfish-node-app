@@ -6,9 +6,10 @@ import {
   Heading,
   Code,
   HStack,
-  Divider,
   chakra,
   Grid,
+  ListItem,
+  OrderedList,
 } from "@chakra-ui/react";
 import log from "electron-log";
 import { Component, ErrorInfo, ReactNode } from "react";
@@ -26,23 +27,29 @@ const messages = defineMessages({
   errorStateHeading: {
     defaultMessage: "Something went wrong",
   },
-  errorStateDescription: {
-    defaultMessage:
-      "Please restart the app and try again. If the issue persists, let us know on Discord so we can help troubleshoot.",
-  },
   errorMessage: {
     defaultMessage: "Error Message",
   },
   errorCopied: {
     defaultMessage: "Error copied to clipboard",
   },
-  appUpdateAvailable: {
-    defaultMessage:
-      "Note: An app update is available. Please restart the app to apply the update, or download the latest version from the <link>Iron Fish website</link>.",
+  troubleshootingSteps: {
+    defaultMessage: "Troubleshooting Steps",
   },
-  resetNodeMessage: {
+  restartApp: {
+    defaultMessage: "Try restarting the app",
+  },
+  updateAvailable: {
     defaultMessage:
-      "If this issue continues to occur, resetting your node may help. Resetting the node will reinitialize your blockchain data, but it will not delete your accounts.",
+      "An app update is available. Wait for it to finish downloading and restart the app, or download the latest version from the <link>Iron Fish website</link>.",
+  },
+  resetNode: {
+    defaultMessage:
+      "Reset the node. You'll have to re-scan the blockchain, but your accounts and funds will not be affected.",
+  },
+  reportIssue: {
+    defaultMessage:
+      "If none of these steps help, please report the issue on <link>Discord</link>.",
   },
 });
 
@@ -89,8 +96,6 @@ function DefaultFallback({ error }: { error: Error }) {
 
   const { data: isUpdateAvailable } = trpcReact.isUpdateAvailable.useQuery();
 
-  console.log({ isUpdateAvailable });
-
   return (
     <WithDraggableArea>
       <Flex h="100%" alignItems="center" justifyContent="center" p={4}>
@@ -98,33 +103,6 @@ function DefaultFallback({ error }: { error: Error }) {
           <Heading as="h1" textAlign="center" mb={4}>
             {formatMessage(messages.errorStateHeading)}
           </Heading>
-          <Grid gap={4} mb={6}>
-            <Text fontSize="md">
-              {formatMessage(messages.errorStateDescription)}
-            </Text>
-
-            {!isUpdateAvailable && (
-              <Text fontSize="md">
-                {formatMessage(messages.appUpdateAvailable, {
-                  // Using `unknown` here due to formatMessage expecting a string even though this is an array of strings
-                  link: (content: unknown) => {
-                    return (
-                      <chakra.span
-                        as="a"
-                        color={COLORS.LINK}
-                        href="https://ironfish.network/use/node-app"
-                        target="_blank"
-                        rel="noreferrer"
-                        _hover={{ textDecoration: "underline" }}
-                      >
-                        {Array.isArray(content) && content.at(0)}
-                      </chakra.span>
-                    );
-                  },
-                })}
-              </Text>
-            )}
-          </Grid>
 
           <HStack>
             <Text
@@ -155,15 +133,58 @@ function DefaultFallback({ error }: { error: Error }) {
             maxW="100%"
             w="100%"
             overflow="auto"
+            mb={6}
           >
             <Text as="pre">{error.message}</Text>
           </Code>
 
-          <Divider my={8} />
-
-          <Text fontSize="md" mb={6}>
-            {formatMessage(messages.resetNodeMessage)}
-          </Text>
+          <Grid gap={4} mb={6}>
+            <Text fontWeight="bold" fontSize="md">
+              {formatMessage(messages.troubleshootingSteps)}
+            </Text>
+            <OrderedList>
+              <ListItem>{formatMessage(messages.restartApp)}</ListItem>
+              {isUpdateAvailable && (
+                <ListItem>
+                  {formatMessage(messages.updateAvailable, {
+                    link: (content: unknown) => {
+                      return (
+                        <chakra.span
+                          as="a"
+                          color={COLORS.LINK}
+                          href="https://ironfish.network/use/node-app"
+                          target="_blank"
+                          rel="noreferrer"
+                          _hover={{ textDecoration: "underline" }}
+                        >
+                          {Array.isArray(content) && content.at(0)}
+                        </chakra.span>
+                      );
+                    },
+                  })}
+                </ListItem>
+              )}
+              <ListItem>{formatMessage(messages.resetNode)}</ListItem>
+              <ListItem>
+                {formatMessage(messages.reportIssue, {
+                  link: (content: unknown) => {
+                    return (
+                      <chakra.span
+                        as="a"
+                        color={COLORS.LINK}
+                        href="https://discord.ironfish.network/"
+                        target="_blank"
+                        rel="noreferrer"
+                        _hover={{ textDecoration: "underline" }}
+                      >
+                        {Array.isArray(content) && content.at(0)}
+                      </chakra.span>
+                    );
+                  },
+                })}
+              </ListItem>
+            </OrderedList>
+          </Grid>
 
           <ResetNodeButton
             buttonProps={{

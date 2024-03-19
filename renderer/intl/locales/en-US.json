@@ -108,6 +108,9 @@
   "6P/bTL": {
     "message": "Connection Type"
   },
+  "6Zll8z": {
+    "message": "Reset the node. You'll have to re-scan the blockchain, but your accounts and funds will not be affected."
+  },
   "6q3tCn": {
     "message": "Connecting"
   },
@@ -186,9 +189,6 @@
   "Dh1MGS": {
     "message": "Account Syncing"
   },
-  "Dm//f5": {
-    "message": "If this issue continues to occur, resetting your node may help. Resetting the node will reinitialize your blockchain data, but it will not delete your accounts."
-  },
   "DnuK8f": {
     "message": "Turn this on if you want to specify a custom name for this account. Otherwise, the account name will be inferred from your exported account data."
   },
@@ -231,6 +231,9 @@
   "HtgUU8": {
     "message": "Type ''{accountName}'' to remove"
   },
+  "IwW0RC": {
+    "message": "If none of these steps help, please report the issue on <link>Discord</link>."
+  },
   "JJNc3c": {
     "message": "Previous"
   },
@@ -254,6 +257,9 @@
   },
   "KN7zKn": {
     "message": "Error"
+  },
+  "KiaI4a": {
+    "message": "Try restarting the app"
   },
   "Kkv03/": {
     "message": "Transaction Details"
@@ -399,9 +405,6 @@
   "VzzYJk": {
     "message": "Create"
   },
-  "WHjylD": {
-    "message": "Please restart the app and try again. If the issue persists, let us know on Discord so we can help troubleshoot."
-  },
   "WKCp0D": {
     "message": "Asset"
   },
@@ -422,9 +425,6 @@
   },
   "XLvNHQ": {
     "message": "Please write down this recovery phrase and keep it in a safe place. You will need it to recover your account."
-  },
-  "XO7ZpR": {
-    "message": "Note: An app update is available. Please restart the app to apply the update, or download the latest version from the <link>Iron Fish website</link>."
   },
   "XYgEt1": {
     "message": "Please keep this phrase stored somewhere safe. We will ask you to re-enter this."
@@ -467,6 +467,9 @@
   },
   "bcOwoF": {
     "message": "Choose your language"
+  },
+  "bqjW+S": {
+    "message": "Troubleshooting Steps"
   },
   "c/KktL": {
     "message": "Resources"
@@ -578,6 +581,9 @@
   },
   "o0DpEu": {
     "message": "Unzipping..."
+  },
+  "oZO6n5": {
+    "message": "An app update is available. Wait for it to finish downloading and restart the app, or download the latest version from the <link>Iron Fish website</link>."
   },
   "omnNfq": {
     "message": "About Fees"
