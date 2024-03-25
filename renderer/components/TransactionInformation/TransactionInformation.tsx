@@ -158,7 +158,7 @@ export function TransactionInformation({ transaction, ...rest }: Props) {
                   >
                     {formatMessage(label)}
                   </Text>
-                  <Text fontSize="md">{render(transaction)}</Text>
+                  <Box fontSize="md">{render(transaction)}</Box>
                 </VStack>
                 {icon}
               </HStack>

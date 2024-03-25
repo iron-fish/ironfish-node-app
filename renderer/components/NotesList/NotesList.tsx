@@ -72,7 +72,7 @@ export function NotesList({
       <Heading as="h2" fontSize="2xl" mb={8}>
         {heading}
       </Heading>
-      <NoteHeadings />
+      <NoteHeadings asTransactions={asTransactions} />
       {isLoading && <Skeleton height="600px" />}
       {!isLoading && customScrollElement && (
         <Virtuoso
