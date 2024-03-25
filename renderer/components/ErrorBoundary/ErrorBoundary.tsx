@@ -19,6 +19,7 @@ import { useCopyToClipboard } from "usehooks-ts";
 import { WithDraggableArea } from "@/layouts/WithDraggableArea";
 import { trpcReact } from "@/providers/TRPCProvider";
 import { COLORS } from "@/ui/colors";
+import { PillButton } from "@/ui/PillButton/PillButton";
 import { useIFToast } from "@/ui/Toast/Toast";
 
 import { ResetNodeButton } from "../NodeSettings/NodeSettings";
@@ -50,6 +51,9 @@ const messages = defineMessages({
   reportIssue: {
     defaultMessage:
       "If none of these steps help, please report the issue on <link>Discord</link>.",
+  },
+  restartAppButton: {
+    defaultMessage: "Restart App",
   },
 });
 
@@ -186,14 +190,19 @@ function DefaultFallback({ error }: { error: Error }) {
             </OrderedList>
           </Grid>
 
-          <ResetNodeButton
-            buttonProps={{
-              variant: "primary",
-            }}
-            onSuccess={() => {
-              relaunchApp();
-            }}
-          />
+          <HStack>
+            <ResetNodeButton
+              buttonProps={{
+                variant: "inverted",
+              }}
+              onSuccess={() => {
+                relaunchApp();
+              }}
+            />
+            <PillButton onClick={() => relaunchApp()}>
+              {formatMessage(messages.restartAppButton)}
+            </PillButton>
+          </HStack>
         </Box>
       </Flex>
     </WithDraggableArea>
