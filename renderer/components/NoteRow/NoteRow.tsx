@@ -11,6 +11,7 @@ import { formatDate } from "@/utils/formatDate";
 import { hexToUTF16String } from "@/utils/hexToUTF16String";
 import { formatOre } from "@/utils/ironUtils";
 
+import { ChangeIcon } from "./icons/ChangeIcon";
 import { ExpiredIcon } from "./icons/ExpiredIcon";
 import { PendingIcon } from "./icons/PendingIcon";
 import { ReceivedIcon } from "./icons/ReceivedIcon";
@@ -22,24 +23,35 @@ function getNoteStatusDisplay(
   type: TransactionType,
   status: TransactionStatus,
   asTransaction: boolean,
+  isSelfSend: boolean,
 ): { icon: ReactNode; message: MessageDescriptor } {
   if (!asTransaction || status === "confirmed") {
+    if (isSelfSend) {
+      return { icon: <ChangeIcon />, message: messages.change };
+    }
+
     if (type === "send") {
       return { icon: <SentIcon />, message: messages.sent };
-    } else if (type === "receive" || type === "miner") {
+    }
+
+    if (type === "receive" || type === "miner") {
       return { icon: <ReceivedIcon />, message: messages.received };
     }
 
     const unhandledType: never = type;
     console.error("Unhandled transaction type", unhandledType);
     return { icon: <ReceivedIcon />, message: messages.received };
-  } else if (
+  }
+
+  if (
     status === "pending" ||
     status === "unknown" ||
     status === "unconfirmed"
   ) {
     return { icon: <PendingIcon />, message: messages.pending };
-  } else if (status === "expired") {
+  }
+
+  if (status === "expired") {
     return { icon: <ExpiredIcon />, message: messages.expired };
   }
 
@@ -102,7 +114,14 @@ export function NoteRow({
   asTransaction?: boolean;
 }) {
   const { formatMessage } = useIntl();
-  const statusDisplay = getNoteStatusDisplay(type, status, asTransaction);
+
+  const isSelfSend = from === to;
+  const statusDisplay = getNoteStatusDisplay(
+    type,
+    status,
+    asTransaction,
+    isSelfSend,
+  );
   const headings = useHeadingsText();
 
   const cellContent = useMemo(() => {
