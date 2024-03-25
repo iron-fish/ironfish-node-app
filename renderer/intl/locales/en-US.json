@@ -255,6 +255,10 @@
   "K3r6DQ": {
     "message": "Delete"
   },
+  "KGELcL": {
+    "description": "Change as in the money that is returned to the sender after a transaction",
+    "message": "Change"
+  },
   "KN7zKn": {
     "message": "Error"
   },

@@ -36,6 +36,11 @@ export const messages = defineMessages({
   multipleMemos: {
     defaultMessage: "Multiple memos",
   },
+  change: {
+    defaultMessage: "Change",
+    description:
+      "Change as in the money that is returned to the sender after a transaction",
+  },
 });
 
 export function useHeadingsText() {

@@ -1,4 +1,4 @@
-import { HStack, Heading, Skeleton } from "@chakra-ui/react";
+import { Box, HStack, Heading, Skeleton } from "@chakra-ui/react";
 import { useRouter } from "next/router";
 import { defineMessages, useIntl } from "react-intl";
 
@@ -16,6 +16,11 @@ const messages = defineMessages({
   transactionNotes: {
     defaultMessage: "Transaction Notes",
   },
+  change: {
+    defaultMessage: "Change",
+    description:
+      "Change as in the money that is returned to the sender after a transaction",
+  },
 });
 
 function SingleTransactionContent({
@@ -25,7 +30,7 @@ function SingleTransactionContent({
   accountName: string;
   transactionHash: string;
 }) {
-  const { formatMessage } = useIntl()
+  const { formatMessage } = useIntl();
 
   const { data: accountData } = trpcReact.getAccount.useQuery({
     name: accountName,
@@ -60,6 +65,25 @@ function SingleTransactionContent({
     );
   }
 
+  type NoteType = (typeof transactionData.notes)[number];
+
+  const [regularNotes, selfSendNotes] = transactionData.notes.reduce<
+    [Array<NoteType>, Array<NoteType>]
+  >(
+    (acc, tx) => {
+      const isSelfSend = tx.from === tx.to;
+      if (!isSelfSend) {
+        acc[0].push(tx);
+      } else {
+        acc[1].push(tx);
+      }
+      return acc;
+    },
+    [[], []],
+  );
+
+  const showSelfSendNotes = regularNotes.length > 0 && selfSendNotes.length > 0;
+
   return (
     <MainLayout
       backLinkProps={{
@@ -78,7 +102,18 @@ function SingleTransactionContent({
         transaction={transactionData.transaction}
         mb={16}
       />
-      <NotesList heading={formatMessage(messages.transactionNotes)} notes={transactionData.notes} />
+      <NotesList
+        heading={formatMessage(messages.transactionNotes)}
+        notes={showSelfSendNotes ? regularNotes : transactionData.notes}
+      />
+      {showSelfSendNotes && (
+        <Box mt={10}>
+          <NotesList
+            heading={formatMessage(messages.change)}
+            notes={selfSendNotes}
+          />
+        </Box>
+      )}
     </MainLayout>
   );
 }

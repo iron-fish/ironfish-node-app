@@ -2,7 +2,11 @@ import { Grid, GridItem, Text } from "@chakra-ui/react";
 
 import { CARET_WIDTH, useHeadingsText } from "./shared";
 
-export function NoteHeadings() {
+type Props = {
+  asTransactions?: boolean;
+};
+
+export function NoteHeadings({ asTransactions }: Props) {
   const headingsText = useHeadingsText();
 
   return (
@@ -13,7 +17,7 @@ export function NoteHeadings() {
       }}
       templateColumns={{
         base: `repeat(5, 1fr)`,
-        lg: `repeat(5, 1fr) ${CARET_WIDTH}`,
+        lg: `repeat(5, 1fr) ${asTransactions ? CARET_WIDTH : ""}`,
       }}
       opacity="0.8"
       mb={4}
