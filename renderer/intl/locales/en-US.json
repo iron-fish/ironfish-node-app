@@ -108,6 +108,9 @@
   "6P/bTL": {
     "message": "Connection Type"
   },
+  "6Zll8z": {
+    "message": "Reset the node. You'll have to re-scan the blockchain, but your accounts and funds will not be affected."
+  },
   "6q3tCn": {
     "message": "Connecting"
   },
@@ -228,6 +231,9 @@
   "HtgUU8": {
     "message": "Type ''{accountName}'' to remove"
   },
+  "IwW0RC": {
+    "message": "If none of these steps help, please report the issue on <link>Discord</link>."
+  },
   "JJNc3c": {
     "message": "Previous"
   },
@@ -255,6 +261,9 @@
   },
   "KN7zKn": {
     "message": "Error"
+  },
+  "KiaI4a": {
+    "message": "Try restarting the app"
   },
   "Kkv03/": {
     "message": "Transaction Details"
@@ -400,9 +409,6 @@
   "VzzYJk": {
     "message": "Create"
   },
-  "WHjylD": {
-    "message": "Please restart the app and try again. If the issue persists, let us know on Discord so we can help troubleshoot."
-  },
   "WKCp0D": {
     "message": "Asset"
   },
@@ -465,6 +471,9 @@
   },
   "bcOwoF": {
     "message": "Choose your language"
+  },
+  "bqjW+S": {
+    "message": "Troubleshooting Steps"
   },
   "c/KktL": {
     "message": "Resources"
@@ -553,6 +562,9 @@
   "kF9XUo": {
     "message": "Timestamp"
   },
+  "kNJdlj": {
+    "message": "Restart App"
+  },
   "kTt/ND": {
     "message": "Russian"
   },
@@ -576,6 +588,9 @@
   },
   "o0DpEu": {
     "message": "Unzipping..."
+  },
+  "oZO6n5": {
+    "message": "An app update is available. Wait for it to finish downloading and restart the app, or download the latest version from the <link>Iron Fish website</link>."
   },
   "omnNfq": {
     "message": "About Fees"
