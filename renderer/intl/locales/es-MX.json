@@ -527,10 +527,6 @@
     "message": "Crear",
     "description": "Create"
   },
-  "WHjylD": {
-    "message": "Por favor, reinicia la aplicación y vuelve a intentarlo. Si el problema persiste, déjanos saber en Discord para que podamos ayudarte a solucionarlo.",
-    "description": "Please restart the app and try again. If the issue persists, let us know on Discord so we can help troubleshoot."
-  },
   "WKCp0D": {
     "message": "Activo",
     "description": "Asset"

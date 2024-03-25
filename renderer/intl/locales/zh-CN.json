@@ -527,10 +527,6 @@
     "message": "创建",
     "description": "Create"
   },
-  "WHjylD": {
-    "message": "请重启应用并重试。如果问题仍然存在，请在Discord上告诉我们，我们可以帮助您解决问题。",
-    "description": "Please restart the app and try again. If the issue persists, let us know on Discord so we can help troubleshoot."
-  },
   "WKCp0D": {
     "message": "资产",
     "description": "Asset"

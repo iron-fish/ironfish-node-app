@@ -527,10 +527,6 @@
     "message": "Создать",
     "description": "Create"
   },
-  "WHjylD": {
-    "message": "Пожалуйста, перезапустите приложение и попробуйте снова. Если проблема сохраняется, сообщите нам на Discord, чтобы мы могли помочь в устранении неполадок.",
-    "description": "Please restart the app and try again. If the issue persists, let us know on Discord so we can help troubleshoot."
-  },
   "WKCp0D": {
     "message": "Актив",
     "description": "Asset"

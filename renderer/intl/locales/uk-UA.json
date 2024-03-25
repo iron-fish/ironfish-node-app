@@ -527,10 +527,6 @@
     "message": "Створити",
     "description": "Create"
   },
-  "WHjylD": {
-    "message": "Будь ласка, перезапустіть додаток та спробуйте знову. Якщо проблема збережеться, повідомте нам в Discord, щоб ми могли допомогти у вирішенні проблеми.",
-    "description": "Please restart the app and try again. If the issue persists, let us know on Discord so we can help troubleshoot."
-  },
   "WKCp0D": {
     "message": "Актив",
     "description": "Asset"
