@@ -17,7 +17,7 @@ let cachedResult:
   | { ok: true; data: ReadonlyArray<PartialGithubRelease> }
   | { ok: false; data: string } = { ok: false, data: "" };
 
-async function getLatestRelease() {
+async function getLatestReleases() {
   const now = performance.now();
 
   if (now - cacheTime > lastAttempt) {
@@ -61,7 +61,7 @@ export const updateRouter = t.router({
     return app.getVersion();
   }),
   isUpdateAvailable: t.procedure.query(async () => {
-    const latestRelease = await getLatestRelease();
+    const latestRelease = await getLatestReleases();
 
     if (!latestRelease.ok) return false;
 
@@ -72,7 +72,7 @@ export const updateRouter = t.router({
     return gt(latestVersion, app.getVersion());
   }),
   getUpdateNotes: t.procedure.query(async () => {
-    const latestRelease = await getLatestRelease();
+    const latestRelease = await getLatestReleases();
 
     if (latestRelease.ok) {
       return latestRelease.data;
