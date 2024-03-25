@@ -115,12 +115,11 @@ export function NoteRow({
 }) {
   const { formatMessage } = useIntl();
 
-  const isSelfSend = from === to;
   const statusDisplay = getNoteStatusDisplay(
     type,
     status,
     asTransaction,
-    isSelfSend,
+    from === to && type !== "miner",
   );
   const headings = useHeadingsText();
 

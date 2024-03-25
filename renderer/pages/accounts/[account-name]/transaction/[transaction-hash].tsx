@@ -71,7 +71,8 @@ function SingleTransactionContent({
     [Array<NoteType>, Array<NoteType>]
   >(
     (acc, tx) => {
-      const isSelfSend = tx.from === tx.to;
+      const isSelfSend = tx.from === tx.to && tx.type !== "miner";
+
       if (!isSelfSend) {
         acc[0].push(tx);
       } else {
