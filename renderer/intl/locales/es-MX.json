@@ -918,5 +918,33 @@
   "zl76y/": {
     "message": "El texto debe coincidir con el nombre de la cuenta ''{accountName}''",
     "description": "Text must match the account name ''{accountName}''"
+  },
+  "6Zll8z": {
+    "message": "Reinicia el nodo. Tendrás que volver a escanear la cadena de bloques, pero tus cuentas y fondos no se verán afectados.",
+    "description": "Reset the node. You'll have to re-scan the blockchain, but your accounts and funds will not be affected."
+  },
+  "IwW0RC": {
+    "message": "Si ninguno de estos pasos ayuda, por favor reporta el problema en <link>Discord</link>.",
+    "description": "If none of these steps help, please report the issue on <link>Discord</link>."
+  },
+  "KGELcL": {
+    "message": "Cambio",
+    "description": "Change"
+  },
+  "KiaI4a": {
+    "message": "Intenta reiniciar la aplicación",
+    "description": "Try restarting the app"
+  },
+  "bqjW+S": {
+    "message": "Pasos de solución de problemas",
+    "description": "Troubleshooting Steps"
+  },
+  "kNJdlj": {
+    "message": "Reinicia la aplicación",
+    "description": "Restart App"
+  },
+  "oZO6n5": {
+    "message": "Una actualización de la aplicación está disponible. Espera a que termine de descargarse y reinicia la aplicación, o descarga la última versión de la <link> página web de Iron Fish </link>.",
+    "description": "An app update is available. Wait for it to finish downloading and restart the app, or download the latest version from the <link>Iron Fish website</link>."
   }
 }
