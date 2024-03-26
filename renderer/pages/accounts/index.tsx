@@ -29,6 +29,9 @@ const messages = defineMessages({
   accountsHeader: {
     defaultMessage: "Accounts",
   },
+  switchNetworks: {
+    defaultMessage: "Switch networks",
+  },
   createAccount: {
     defaultMessage: "Create",
   },

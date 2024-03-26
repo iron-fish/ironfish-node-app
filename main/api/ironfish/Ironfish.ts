@@ -2,13 +2,13 @@ import fsAsync from "fs/promises";
 
 import {
   ALL_API_NAMESPACES,
+  DatabaseIsLockedError,
   FullNode,
-  PEER_STORE_FILE_NAME,
   IronfishSdk,
+  PEER_STORE_FILE_NAME,
   RpcClient,
   RpcMemoryClient,
   getPackageFrom,
-  DatabaseIsLockedError,
 } from "@ironfish/sdk";
 import log from "electron-log";
 import { v4 as uuid } from "uuid";
@@ -27,26 +27,36 @@ export class Ironfish {
   private _fullNode: FullNode | null = null;
   private _initialized: boolean = false;
   private _dataDir: string;
+  private _networkId: number;
 
-  constructor(dataDir: string) {
+  constructor({ dataDir, networkId }: { dataDir: string; networkId: number }) {
     this._dataDir = dataDir;
+    this._networkId = networkId;
   }
 
   private constructSdk() {
     return IronfishSdk.init({
-      dataDir: this._dataDir,
+      dataDir: this.getDataDirByNetworkId(),
       logger: logger,
       pkg: getPackageFrom(packageJson),
       configOverrides: {
         databaseMigrate: true,
       },
+      internalOverrides: {
+        networkId: this._networkId,
+      },
     });
+  }
+
+  private getDataDirByNetworkId() {
+    return this._networkId === 0 ? this._dataDir + "-testnet" : this._dataDir;
   }
 
   private constructNode(sdk: IronfishSdk) {
     return sdk.node({
       privateIdentity: sdk.getPrivateIdentity(),
       autoSeed: true,
+      networkId: this._networkId,
     });
   }
 
@@ -158,6 +168,16 @@ export class Ironfish {
 
     this.rpcClientPromise = splitPromise();
     this.sdkPromise = splitPromise();
+  }
+
+  async changeNetwork(networkId: number) {
+    if (this._networkId === networkId) {
+      return;
+    }
+    await this.stop();
+    this._networkId = networkId;
+
+    await this.init();
   }
 
   async restart() {

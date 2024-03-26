@@ -36,6 +36,10 @@ export const snapshotRouter = t.router({
     }),
   downloadSnapshot: t.procedure.mutation(async () => {
     const ironfish = await manager.getIronfish();
+    if (ironfish.isStarted()) {
+      await ironfish.stop();
+      await ironfish.init();
+    }
     ironfish.downloadSnapshot();
   }),
 });

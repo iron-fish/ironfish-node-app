@@ -17,7 +17,11 @@ export class Manager {
 
     const userSettings = await getUserSettings();
     const dataDir = userSettings.get("dataDir");
-    this._ironfish = new Ironfish(dataDir);
+    const networkId = userSettings.get("networkId");
+    this._ironfish = new Ironfish({
+      dataDir,
+      networkId,
+    });
     return this._ironfish;
   }
 

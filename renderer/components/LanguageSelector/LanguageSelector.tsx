@@ -1,23 +1,23 @@
 import {
-  Text,
-  Modal,
-  ModalOverlay,
-  ModalContent,
-  ModalBody,
-  Heading,
-  ModalFooter,
-  useDisclosure,
-  Flex,
   Box,
+  Flex,
   FlexProps,
+  Heading,
+  Modal,
+  ModalBody,
+  ModalContent,
+  ModalFooter,
+  ModalOverlay,
+  Text,
+  useDisclosure,
 } from "@chakra-ui/react";
 import { useForm } from "react-hook-form";
-import { FaChevronDown } from "react-icons/fa";
+import { FaChevronRight } from "react-icons/fa";
 import { MdOutlineLanguage } from "react-icons/md";
 import { defineMessages, useIntl } from "react-intl";
 import { z } from "zod";
 
-import { useSelectedLocaleContext, Locales } from "@/intl/IntlProvider";
+import { Locales, useSelectedLocaleContext } from "@/intl/IntlProvider";
 import { COLORS } from "@/ui/colors";
 import { Select } from "@/ui/Forms/Select/Select";
 import { PillButton } from "@/ui/PillButton/PillButton";
@@ -111,9 +111,16 @@ export function LanguageSelector({ buttonContainerProps }: Props) {
         borderRadius="5px"
         bg={COLORS.GRAY_LIGHT}
         color={COLORS.GRAY_MEDIUM}
-        justifyContent="center"
+        justifyContent={{
+          base: "center",
+          md: "space-between",
+        }}
         alignItems="center"
         py="6px"
+        px={{
+          base: 0,
+          md: "18px",
+        }}
         _dark={{
           bg: COLORS.DARK_MODE.GRAY_MEDIUM,
           color: COLORS.DARK_MODE.GRAY_LIGHT,
@@ -129,25 +136,28 @@ export function LanguageSelector({ buttonContainerProps }: Props) {
         onClick={onOpen}
         {...buttonContainerProps}
       >
-        <MdOutlineLanguage />
-        <Text
-          ml={2}
-          mr={3}
-          as="span"
-          display={{
-            base: "none",
-            md: "block",
-          }}
-        >
-          {formatMessage(selectedLanguage.message)}
-        </Text>
+        <Flex alignItems="center" justifyContent="center">
+          <MdOutlineLanguage />
+          <Text
+            ml={18}
+            mr={3}
+            as="span"
+            display={{
+              base: "none",
+              md: "block",
+            }}
+          >
+            {formatMessage(selectedLanguage.message)}
+          </Text>
+        </Flex>
+
         <Box
           display={{
             base: "none",
             md: "block",
           }}
         >
-          <FaChevronDown fontSize="0.6em" />
+          <FaChevronRight fontSize="0.6em" />
         </Box>
       </Flex>
       <LanguageSelectorModal isOpen={isOpen} onClose={onClose} />
