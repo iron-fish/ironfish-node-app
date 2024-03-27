@@ -527,10 +527,6 @@
     "message": "Создать",
     "description": "Create"
   },
-  "WHjylD": {
-    "message": "Пожалуйста, перезапустите приложение и попробуйте снова. Если проблема сохраняется, сообщите нам на Discord, чтобы мы могли помочь в устранении неполадок.",
-    "description": "Please restart the app and try again. If the issue persists, let us know on Discord so we can help troubleshoot."
-  },
   "WKCp0D": {
     "message": "Актив",
     "description": "Asset"
@@ -922,5 +918,33 @@
   "zl76y/": {
     "message": "Текст должен соответствовать имени учетной записи ''{accountName}''",
     "description": "Text must match the account name ''{accountName}''"
+  },
+  "6Zll8z": {
+    "message": "Сбросьте узел. Вам придется заново сканировать блокчейн, но это не повлияет на ваши аккаунты и средства.",
+    "description": "Reset the node. You'll have to re-scan the blockchain, but your accounts and funds will not be affected."
+  },
+  "IwW0RC": {
+    "message": "Если ни один из этих шагов не помог, пожалуйста, сообщите об этой проблеме в <link>Discord</link>.",
+    "description": "If none of these steps help, please report the issue on <link>Discord</link>."
+  },
+  "KGELcL": {
+    "message": "Сдача",
+    "description": "Change"
+  },
+  "KiaI4a": {
+    "message": "Попробуйте перезапустить приложение",
+    "description": "Try restarting the app"
+  },
+  "bqjW+S": {
+    "message": "Шаги по устранению неполадок",
+    "description": "Troubleshooting Steps"
+  },
+  "kNJdlj": {
+    "message": "Перезапустить приложение",
+    "description": "Restart App"
+  },
+  "oZO6n5": {
+    "message": "Доступно обновление приложения. Дождитесь его загрузки и перезапустите приложение, или скачайте последнюю версию с <link>сайта Iron Fish</link>.",
+    "description": "An app update is available. Wait for it to finish downloading and restart the app, or download the latest version from the <link>Iron Fish website</link>."
   }
 }

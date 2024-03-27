@@ -111,8 +111,23 @@ async function translate(content: JSONContent, targetLanguage: string) {
   }
 }
 
-function createContentChunks(content: JSONContent) {
-  const entries = Object.entries(content);
+function createContentChunks(
+  englishContent: JSONContent,
+  localeContent: JSONContent,
+) {
+  const missingContent: JSONContent = {};
+
+  for (const [key, value] of Object.entries(englishContent)) {
+    const needsTranslation =
+      !Object.hasOwn(localeContent, key) ||
+      localeContent[key].description !== englishContent[key].message;
+
+    if (needsTranslation) {
+      missingContent[key] = value;
+    }
+  }
+
+  const entries = Object.entries(missingContent);
   const chunks: JSONContent[] = [];
   let currentChunk: JSONContent = {};
 
@@ -168,7 +183,9 @@ function assertLocale(str: string): asserts str is (typeof LOCALES)[number] {
 // Translate a specific locales:
 // npm run translate -- --locale=es-MX
 async function main() {
-  let locales: ReadonlyArray<Locale> = LOCALES;
+  let locales: ReadonlyArray<Locale> = LOCALES.filter(
+    (locale) => locale !== "en-US",
+  );
 
   const args = process.argv.slice(2);
   const specifiedLocale = args.find((arg) => arg.startsWith("--locale="));
@@ -181,15 +198,27 @@ async function main() {
 
   console.log(`Translating the following locales: ${locales.join(", ")}\n`);
 
-  // Chunk out content to prevent hitting the token limit.
-  // Note that the limit is currently far below the actual limit.
-  const englishChunks = createContentChunks(english);
-
   // Translate each language and write result to file
   for (const locale of locales) {
     console.log(`Starting translation for locale: ${locale}\n`);
-    let translatedContent = {};
 
+    // Get existing translated content. We'll only translate missing content.
+    const localeFilePath = path.join(
+      __dirname,
+      `../renderer/intl/locales/${locale}.json`,
+    );
+    let currentTranslation: JSONContent = {};
+
+    if (fs.existsSync(localeFilePath)) {
+      currentTranslation = JSON.parse(fs.readFileSync(localeFilePath, "utf-8"));
+    }
+
+    // Chunk out content to prevent hitting the token limit.
+    // Note that the limit is currently far below the actual limit.
+    // This function also diffs the content to only translate missing entries.
+    const englishChunks = createContentChunks(english, currentTranslation);
+
+    let translatedContent = currentTranslation;
     let currentChunk = 0;
 
     for await (const chunk of englishChunks) {
@@ -215,7 +244,7 @@ async function main() {
     console.log(`Writing translation to ${locale}.json`);
 
     fs.writeFileSync(
-      path.join(__dirname, `../renderer/intl/locales/${locale}.json`),
+      localeFilePath,
       JSON.stringify(translatedContent, null, 2),
     );
   }

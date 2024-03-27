@@ -527,10 +527,6 @@
     "message": "创建",
     "description": "Create"
   },
-  "WHjylD": {
-    "message": "请重启应用并重试。如果问题仍然存在，请在Discord上告诉我们，我们可以帮助您解决问题。",
-    "description": "Please restart the app and try again. If the issue persists, let us know on Discord so we can help troubleshoot."
-  },
   "WKCp0D": {
     "message": "资产",
     "description": "Asset"
@@ -922,5 +918,33 @@
   "zl76y/": {
     "message": "文本必须与帐户名称''{accountName}''匹配",
     "description": "Text must match the account name ''{accountName}''"
+  },
+  "6Zll8z": {
+    "message": "重置节点。您将需要重新扫描区块链，但您的帐户和资金不会受到影响。",
+    "description": "Reset the node. You'll have to re-scan the blockchain, but your accounts and funds will not be affected."
+  },
+  "IwW0RC": {
+    "message": "如果这些步骤都无效，请在<link>Discord</link>上报告问题。",
+    "description": "If none of these steps help, please report the issue on <link>Discord</link>."
+  },
+  "KGELcL": {
+    "message": "零钱",
+    "description": "Change"
+  },
+  "KiaI4a": {
+    "message": "尝试重启应用",
+    "description": "Try restarting the app"
+  },
+  "bqjW+S": {
+    "message": "故障排除步骤",
+    "description": "Troubleshooting Steps"
+  },
+  "kNJdlj": {
+    "message": "重启应用",
+    "description": "Restart App"
+  },
+  "oZO6n5": {
+    "message": "应用有更新。等待其完成下载并重启应用，或从<link>Iron Fish 网站</link>下载最新版本。",
+    "description": "An app update is available. Wait for it to finish downloading and restart the app, or download the latest version from the <link>Iron Fish website</link>."
   }
 }
