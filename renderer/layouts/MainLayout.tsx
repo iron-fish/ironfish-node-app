@@ -1,11 +1,11 @@
 import {
+  Box,
+  Flex,
   Grid,
   GridItem,
-  Box,
-  VStack,
-  HStack,
-  Flex,
   Heading,
+  HStack,
+  VStack,
 } from "@chakra-ui/react";
 import { useRouter } from "next/router";
 import { createContext, ReactNode, useContext, useState } from "react";
@@ -13,7 +13,9 @@ import { defineMessages, useIntl } from "react-intl";
 
 import { BackButton } from "@/components/BackButton/BackButton";
 import { LanguageSelector } from "@/components/LanguageSelector/LanguageSelector";
+import { NetworkSelector } from "@/components/NetworkSelector/NetworkSelector";
 import { StatusIndicator } from "@/components/StatusIndicator/StatusIndicator";
+import { TestnetBanner } from "@/components/TestnetBanner/TestnetBanner";
 import { ChakraLink } from "@/ui/ChakraLink/ChakraLink";
 import { COLORS } from "@/ui/colors";
 import { DarkModeSwitch } from "@/ui/DarkModeSwitch/DarkModeSwitch";
@@ -167,6 +169,7 @@ function Sidebar() {
       </VStack>
       <VStack alignItems="center" gap={4}>
         <StatusIndicator />
+        <NetworkSelector />
         <LanguageSelector />
         <DarkModeSwitch />
       </VStack>
@@ -200,51 +203,58 @@ export default function MainLayout({ children, backLinkProps }: Props) {
         bg: COLORS.DARK_MODE.BG,
       }}
     >
-      <Grid height="100%" templateColumns="auto 1fr">
-        <GridItem
-          h="100%"
-          overflow="auto"
-          w={{
-            base: "auto",
-            md: "265px",
-          }}
-          px={4}
-          pt="50px"
-          pb={{
-            base: 8,
-            md: 6,
-          }}
-          display="flex"
-          alignItems="stretch"
-        >
-          <Sidebar />
+      <Grid height="100%" templateRows="auto 1fr" templateColumns="1fr" gap={0}>
+        <GridItem>
+          <TestnetBanner />
         </GridItem>
-        <GridItem
-          px={6}
-          pt={10}
-          pb={8}
-          h="100%"
-          overflow="auto"
-          ref={(r) => setScrollElement(r)}
-        >
-          <ScrollElementContext.Provider value={scrollElement}>
-            <Box
-              mx="auto"
-              maxWidth={{
-                base: "100%",
-                xl: "1048px",
-                "2xl": "1280px",
+        <GridItem>
+          <Grid height="100%" templateColumns="auto 1fr">
+            <GridItem
+              h="100%"
+              overflow="auto"
+              w={{
+                base: "auto",
+                md: "265px",
               }}
+              px={4}
+              pt="50px"
+              pb={{
+                base: 8,
+                md: 6,
+              }}
+              display="flex"
+              alignItems="stretch"
             >
-              {backLinkProps && (
-                <BackButton
-                  href={backLinkProps.href}
-                  label={backLinkProps.label}
-                />
-              )}
-              {children}
-            </Box>
-          </ScrollElementContext.Provider>
+              <Sidebar />
+            </GridItem>
+            <GridItem
+              px={6}
+              pt={10}
+              pb={8}
+              h="100%"
+              overflow="auto"
+              ref={(r) => setScrollElement(r)}
+            >
+              <ScrollElementContext.Provider value={scrollElement}>
+                <Box
+                  mx="auto"
+                  maxWidth={{
+                    base: "100%",
+                    xl: "1048px",
+                    "2xl": "1280px",
+                  }}
+                >
+                  {backLinkProps && (
+                    <BackButton
+                      href={backLinkProps.href}
+                      label={backLinkProps.label}
+                    />
+                  )}
+                  {children}
+                </Box>
+              </ScrollElementContext.Provider>
+            </GridItem>
+          </Grid>
         </GridItem>
       </Grid>
     </WithDraggableArea>

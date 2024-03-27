@@ -2,13 +2,15 @@ import fsAsync from "fs/promises";
 
 import {
   ALL_API_NAMESPACES,
+  DEFAULT_DATA_DIR,
+  DatabaseIsLockedError,
   FullNode,
-  PEER_STORE_FILE_NAME,
   IronfishSdk,
+  NodeFileProvider,
+  PEER_STORE_FILE_NAME,
   RpcClient,
   RpcMemoryClient,
   getPackageFrom,
-  DatabaseIsLockedError,
 } from "@ironfish/sdk";
 import log from "electron-log";
 import { v4 as uuid } from "uuid";
@@ -16,6 +18,7 @@ import { v4 as uuid } from "uuid";
 import { logger } from "./logger";
 import packageJson from "../../../package.json";
 import { SnapshotManager } from "../snapshot/snapshotManager";
+import { getUserSettings } from "../user-settings/userSettings";
 import { SplitPromise, splitPromise } from "../utils";
 
 export class Ironfish {
@@ -26,27 +29,37 @@ export class Ironfish {
   private _started: boolean = false;
   private _fullNode: FullNode | null = null;
   private _initialized: boolean = false;
-  private _dataDir: string;
+  private _networkId: number;
 
-  constructor(dataDir: string) {
-    this._dataDir = dataDir;
+  constructor({ networkId }: { networkId: number }) {
+    this._networkId = networkId;
   }
 
   private constructSdk() {
     return IronfishSdk.init({
-      dataDir: this._dataDir,
+      dataDir: this.getDataDir(),
       logger: logger,
       pkg: getPackageFrom(packageJson),
       configOverrides: {
         databaseMigrate: true,
       },
+      internalOverrides: {
+        networkId: this._networkId,
+      },
     });
+  }
+
+  private getDataDir() {
+    return this._networkId === 0
+      ? DEFAULT_DATA_DIR + "-testnet"
+      : DEFAULT_DATA_DIR;
   }
 
   private constructNode(sdk: IronfishSdk) {
     return sdk.node({
       privateIdentity: sdk.getPrivateIdentity(),
       autoSeed: true,
+      networkId: this._networkId,
     });
   }
 
@@ -85,8 +98,10 @@ export class Ironfish {
 
     try {
       log.log("Initializing Iron Fish SDK...");
+      console.log(this._networkId);
 
       const sdk = await this.constructSdk();
+      log.log("Initialized Iron Fish SDK.");
       const node = await this.constructNode(sdk);
 
       this._fullNode = node;
@@ -158,6 +173,28 @@ export class Ironfish {
 
     this.rpcClientPromise = splitPromise();
     this.sdkPromise = splitPromise();
+  }
+
+  async changeNetwork(networkId: number) {
+    if (this._networkId === networkId) {
+      return;
+    }
+    await this.stop();
+    this._networkId = networkId;
+
+    const fileSystem = new NodeFileProvider();
+    await fileSystem.init();
+    const dataDir = fileSystem.resolve(this.getDataDir());
+    const settingsStore = await getUserSettings();
+
+    console.log("dataDir", dataDir);
+    console.log("networkId", networkId);
+    settingsStore.set({
+      dataDir,
+      networkId,
+    });
+
+    await this.init();
   }
 
   async restart() {

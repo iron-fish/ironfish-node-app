@@ -1,9 +1,9 @@
-import { VStack, chakra, HStack } from "@chakra-ui/react";
+import { HStack, VStack, chakra } from "@chakra-ui/react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useRouter } from "next/router";
 import { useEffect, useMemo, useState } from "react";
-import { useForm, Controller } from "react-hook-form";
-import { useIntl, defineMessages } from "react-intl";
+import { Controller, useForm } from "react-hook-form";
+import { defineMessages, useIntl } from "react-intl";
 
 import { TRPCRouterOutputs, trpcReact } from "@/providers/TRPCProvider";
 import { Combobox } from "@/ui/Forms/Combobox/Combobox";
@@ -196,7 +196,7 @@ export function SendAssetsFormContent({
       (account) => account.name === fromAccountValue,
     );
     if (!match) {
-      throw new Error("Non-existent account selected");
+      return accountsData[0];
     }
     return match;
   }, [accountsData, fromAccountValue]);

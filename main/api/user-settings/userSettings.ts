@@ -1,10 +1,15 @@
-import { DEFAULT_DATA_DIR, NodeFileProvider } from "@ironfish/sdk";
+import {
+  DEFAULT_DATA_DIR,
+  DEFAULT_NETWORK_ID,
+  NodeFileProvider,
+} from "@ironfish/sdk";
 import Store, { Schema } from "electron-store";
 import { z } from "zod";
 
 const STORE_NAME = "user-settings";
 
 export const settingsZodSchema = z.object({
+  networkId: z.number(),
   dataDir: z.string(),
   theme: z.enum(["light", "dark", "system"]),
   locale: z.string().nullable(),
@@ -15,6 +20,9 @@ export type SchemaDefinition = z.infer<typeof settingsZodSchema>;
 export const settingsSchema: Schema<SchemaDefinition> = {
   dataDir: {
     type: "string",
+  },
+  networkId: {
+    type: "number",
   },
   theme: {
     enum: ["light", "dark", "system"],
@@ -37,6 +45,7 @@ export async function getUserSettings() {
     name: STORE_NAME,
     defaults: {
       dataDir: fileSystem.resolve(DEFAULT_DATA_DIR),
+      networkId: DEFAULT_NETWORK_ID,
       theme: "system",
       locale: null,
     },

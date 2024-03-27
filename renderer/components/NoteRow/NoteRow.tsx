@@ -143,8 +143,8 @@ export function NoteRow({
         {!memo
           ? "—"
           : Array.isArray(memo)
-          ? formatMessage(messages.multipleMemos)
-          : memo}
+            ? formatMessage(messages.multipleMemos)
+            : memo}
       </Text>,
     ];
   }, [

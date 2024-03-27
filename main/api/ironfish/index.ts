@@ -113,4 +113,14 @@ export const ironfishRouter = t.router({
     const ironfish = await manager.getIronfish();
     await ironfish.start();
   }),
+  changeNetwork: t.procedure
+    .input(
+      z.object({
+        network: z.enum(["MAINNET", "TESTNET"]),
+      }),
+    )
+    .mutation(async (opts) => {
+      const ironfish = await manager.getIronfish();
+      await ironfish.changeNetwork(opts.input.network === "MAINNET" ? 1 : 0);
+    }),
 });
