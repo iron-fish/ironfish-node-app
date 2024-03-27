@@ -1,3 +1,5 @@
+import { RpcClient } from "@ironfish/sdk";
+
 import { Ironfish } from "./ironfish/Ironfish";
 import { getUserSettings } from "./user-settings/userSettings";
 
@@ -19,6 +21,20 @@ export class Manager {
     return this._ironfish;
   }
 
+  async shouldDownloadSnapshot(): Promise<boolean> {
+    const ironfish = await this.getIronfish();
+    const rpcClient = await ironfish.rpcClient();
+    return this.isSnapshotStale(rpcClient);
+  }
+
+  private isSnapshotStale = async (rpcClient: RpcClient) => {
+    const statusResponse = await rpcClient.node.getStatus();
+    const headTimestamp = statusResponse.content.blockchain.headTimestamp;
+    const hoursSinceLastBlock = (Date.now() - headTimestamp) / 1000 / 60 / 60;
+    // If the last block was more than 2 weeks ago, prompt the user to download a snapshot
+    return hoursSinceLastBlock > 24 * 7 * 2;
+  };
+
   async getInitialState(): Promise<InitialState> {
     if (this._initialState) return this._initialState;
 
@@ -36,12 +52,9 @@ export class Manager {
       return "onboarding";
     }
 
-    const statusResponse = await rpcClient.node.getStatus();
-    const headTimestamp = statusResponse.content.blockchain.headTimestamp;
-    const hoursSinceLastBlock = (Date.now() - headTimestamp) / 1000 / 60 / 60;
+    const shouldDownloadSnapshot = await this.isSnapshotStale(rpcClient);
 
-    // If the last block was more than 2 weeks ago, prompt the user to download a snapshot
-    if (hoursSinceLastBlock > 24 * 7 * 2) {
+    if (shouldDownloadSnapshot) {
       return "snapshot-download-prompt";
     }
 
