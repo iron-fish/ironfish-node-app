@@ -16,10 +16,8 @@ export class Manager {
     if (this._ironfish) return this._ironfish;
 
     const userSettings = await getUserSettings();
-    const dataDir = userSettings.get("dataDir");
     const networkId = userSettings.get("networkId");
     this._ironfish = new Ironfish({
-      dataDir,
       networkId,
     });
     return this._ironfish;
@@ -28,6 +26,8 @@ export class Manager {
   async shouldDownloadSnapshot(): Promise<boolean> {
     const ironfish = await this.getIronfish();
     const rpcClient = await ironfish.rpcClient();
+    console.log("\n\n==================\n\nthis.isSnapshotStale(rpcClient)");
+    console.log(await this.isSnapshotStale(rpcClient));
     return await this.isSnapshotStale(rpcClient);
   }
 

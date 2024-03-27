@@ -2,9 +2,11 @@ import fsAsync from "fs/promises";
 
 import {
   ALL_API_NAMESPACES,
+  DEFAULT_DATA_DIR,
   DatabaseIsLockedError,
   FullNode,
   IronfishSdk,
+  NodeFileProvider,
   PEER_STORE_FILE_NAME,
   RpcClient,
   RpcMemoryClient,
@@ -16,6 +18,7 @@ import { v4 as uuid } from "uuid";
 import { logger } from "./logger";
 import packageJson from "../../../package.json";
 import { SnapshotManager } from "../snapshot/snapshotManager";
+import { getUserSettings } from "../user-settings/userSettings";
 import { SplitPromise, splitPromise } from "../utils";
 
 export class Ironfish {
@@ -26,17 +29,15 @@ export class Ironfish {
   private _started: boolean = false;
   private _fullNode: FullNode | null = null;
   private _initialized: boolean = false;
-  private _dataDir: string;
   private _networkId: number;
 
-  constructor({ dataDir, networkId }: { dataDir: string; networkId: number }) {
-    this._dataDir = dataDir;
+  constructor({ networkId }: { networkId: number }) {
     this._networkId = networkId;
   }
 
   private constructSdk() {
     return IronfishSdk.init({
-      dataDir: this.getDataDirByNetworkId(),
+      dataDir: this.getDataDir(),
       logger: logger,
       pkg: getPackageFrom(packageJson),
       configOverrides: {
@@ -48,8 +49,10 @@ export class Ironfish {
     });
   }
 
-  private getDataDirByNetworkId() {
-    return this._networkId === 0 ? this._dataDir + "-testnet" : this._dataDir;
+  private getDataDir() {
+    return this._networkId === 0
+      ? DEFAULT_DATA_DIR + "-testnet"
+      : DEFAULT_DATA_DIR;
   }
 
   private constructNode(sdk: IronfishSdk) {
@@ -95,8 +98,10 @@ export class Ironfish {
 
     try {
       log.log("Initializing Iron Fish SDK...");
+      console.log(this._networkId);
 
       const sdk = await this.constructSdk();
+      log.log("Initialized Iron Fish SDK.");
       const node = await this.constructNode(sdk);
 
       this._fullNode = node;
@@ -176,6 +181,18 @@ export class Ironfish {
     }
     await this.stop();
     this._networkId = networkId;
+
+    const fileSystem = new NodeFileProvider();
+    await fileSystem.init();
+    const dataDir = fileSystem.resolve(this.getDataDir());
+    const settingsStore = await getUserSettings();
+
+    console.log("dataDir", dataDir);
+    console.log("networkId", networkId);
+    settingsStore.set({
+      dataDir,
+      networkId,
+    });
 
     await this.init();
   }
