@@ -1,11 +1,11 @@
 import {
-  Text,
   Box,
-  Heading,
   FormControl,
-  Switch,
   FormLabel,
   HStack,
+  Heading,
+  Switch,
+  Text,
 } from "@chakra-ui/react";
 import { useRouter } from "next/router";
 import { useCallback } from "react";
@@ -40,6 +40,10 @@ export function TelemetryPrompt() {
   const { data: configData } = trpcReact.getConfig.useQuery({
     name: "enableTelemetry",
   });
+  const { mutate: startNode } = trpcReact.startNode.useMutation();
+  const { data: shouldDownloadSnapshotData, isLoading } =
+    trpcReact.shouldDownloadSnapshot.useQuery();
+
   const { mutate: setConfig } = trpcReact.setConfig.useMutation();
   const { formatMessage } = useIntl();
 
@@ -86,8 +90,14 @@ export function TelemetryPrompt() {
         <PillButton
           height="60px"
           px={8}
+          isDisabled={isLoading}
           onClick={() => {
-            router.push("/onboarding/snapshot-download");
+            if (shouldDownloadSnapshotData) {
+              router.push("/onboarding/snapshot-download");
+            } else {
+              startNode();
+              router.replace("/accounts");
+            }
           }}
         >
           {formatMessage(messages.continue)}

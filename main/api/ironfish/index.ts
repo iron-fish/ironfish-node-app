@@ -80,6 +80,9 @@ export const ironfishRouter = t.router({
   getInitialState: t.procedure.query(async () => {
     return manager.getInitialState();
   }),
+  shouldDownloadSnapshot: t.procedure.query(async () => {
+    return manager.shouldDownloadSnapshot();
+  }),
   getExplorerUrl: t.procedure.input(getExplorerUrlInput).query(async (opts) => {
     const ironfish = await manager.getIronfish();
     const rpcClient = await ironfish.rpcClient();
