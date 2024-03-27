@@ -41,7 +41,7 @@ export function TelemetryPrompt() {
     name: "enableTelemetry",
   });
   const { mutate: startNode } = trpcReact.startNode.useMutation();
-  const { data: shouldDownloadSnapshotData } =
+  const { data: shouldDownloadSnapshotData, isLoading } =
     trpcReact.shouldDownloadSnapshot.useQuery();
 
   const { mutate: setConfig } = trpcReact.setConfig.useMutation();
@@ -90,6 +90,7 @@ export function TelemetryPrompt() {
         <PillButton
           height="60px"
           px={8}
+          isDisabled={isLoading}
           onClick={() => {
             if (shouldDownloadSnapshotData) {
               router.push("/onboarding/snapshot-download");
