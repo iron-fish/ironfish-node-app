@@ -15,7 +15,7 @@ export function TestnetBanner() {
   const { formatMessage } = useIntl();
 
   if (data?.node.networkId === 1) {
-    return <></>;
+    return null;
   }
 
   return (

@@ -12,7 +12,7 @@ import {
   useDisclosure,
 } from "@chakra-ui/react";
 import { useRouter } from "next/router";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { FaChevronRight } from "react-icons/fa";
 import { MdOutlineLan } from "react-icons/md";
 import { defineMessages, useIntl } from "react-intl";
@@ -150,21 +150,11 @@ function NetworkSelectorModal({
   initialNetwork: string;
 }) {
   const router = useRouter();
-  const {
-    mutate: changeNetwork,
-    isLoading,
-    isSuccess,
-  } = trpcReact.changeNetwork.useMutation();
+  const { mutate: changeNetwork, isLoading } =
+    trpcReact.changeNetwork.useMutation();
   const { formatMessage } = useIntl();
   const [selectedNetwork, setSelectedNetwork] = useState(initialNetwork);
   const [isNetworkChanged, setIsNetworkChanged] = useState(false);
-
-  useEffect(() => {
-    if (isSuccess) {
-      router.push("/home");
-      onClose();
-    }
-  }, [onClose, isSuccess, router]);
 
   return (
     <Modal isOpen={isOpen} onClose={onClose}>
@@ -199,9 +189,17 @@ function NetworkSelectorModal({
             px={8}
             border={0}
             onClick={() => {
-              changeNetwork({
-                network: String(selectedNetwork) as "MAINNET" | "TESTNET",
-              });
+              changeNetwork(
+                {
+                  network: String(selectedNetwork) as "MAINNET" | "TESTNET",
+                },
+                {
+                  onSuccess: () => {
+                    router.push("/home");
+                    onClose();
+                  },
+                },
+              );
             }}
           >
             {isLoading
