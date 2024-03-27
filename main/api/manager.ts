@@ -24,7 +24,7 @@ export class Manager {
   async shouldDownloadSnapshot(): Promise<boolean> {
     const ironfish = await this.getIronfish();
     const rpcClient = await ironfish.rpcClient();
-    return this.isSnapshotStale(rpcClient);
+    return await this.isSnapshotStale(rpcClient);
   }
 
   private isSnapshotStale = async (rpcClient: RpcClient) => {
