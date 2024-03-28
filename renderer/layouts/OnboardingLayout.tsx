@@ -12,6 +12,7 @@ import { ReactNode } from "react";
 import { defineMessages, useIntl } from "react-intl";
 
 import { LanguageSelector } from "@/components/LanguageSelector/LanguageSelector";
+import { NetworkSelector } from "@/components/NetworkSelector/NetworkSelector";
 import bigOnboardingFish from "@/images/big-onboarding-fish.svg";
 import discord from "@/images/discord.png";
 
@@ -94,6 +95,17 @@ export function OnboardingLayout({ children }: { children: ReactNode }) {
           >
             <Box>
               <LanguageSelector
+                buttonContainerProps={{
+                  px: {
+                    base: 0,
+                    md: 4,
+                  },
+                  bg: "white",
+                }}
+              />
+            </Box>
+            <Box>
+              <NetworkSelector
                 buttonContainerProps={{
                   px: {
                     base: 0,

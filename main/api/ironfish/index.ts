@@ -77,9 +77,21 @@ export const ironfishRouter = t.router({
     const response = await rpcClient.node.getStatus();
     return response.content;
   }),
-  getInitialState: t.procedure.query(async () => {
-    return manager.getInitialState();
-  }),
+  getInitialState: t.procedure
+    .input(
+      z
+        .object({
+          seed: z.string().optional(),
+        })
+        .optional(),
+    )
+    .query(
+      async ({
+        input: _, // Hack to skip the cache. Trpc doesn't support queryKey yet.
+      }) => {
+        return await manager.getInitialState();
+      },
+    ),
   shouldDownloadSnapshot: t.procedure.query(async () => {
     return manager.shouldDownloadSnapshot();
   }),
@@ -113,4 +125,14 @@ export const ironfishRouter = t.router({
     const ironfish = await manager.getIronfish();
     await ironfish.start();
   }),
+  changeNetwork: t.procedure
+    .input(
+      z.object({
+        network: z.enum(["MAINNET", "TESTNET"]),
+      }),
+    )
+    .mutation(async (opts) => {
+      const ironfish = await manager.getIronfish();
+      await ironfish.changeNetwork(opts.input.network === "MAINNET" ? 1 : 0);
+    }),
 });

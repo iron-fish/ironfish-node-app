@@ -10,14 +10,15 @@ export type InitialState =
 
 export class Manager {
   private _ironfish: Ironfish | null = null;
-  private _initialState: InitialState | null = null;
 
   async getIronfish(): Promise<Ironfish> {
     if (this._ironfish) return this._ironfish;
 
     const userSettings = await getUserSettings();
-    const dataDir = userSettings.get("dataDir");
-    this._ironfish = new Ironfish(dataDir);
+    const networkId = userSettings.get("networkId");
+    this._ironfish = new Ironfish({
+      networkId,
+    });
     return this._ironfish;
   }
 
@@ -36,8 +37,6 @@ export class Manager {
   };
 
   async getInitialState(): Promise<InitialState> {
-    if (this._initialState) return this._initialState;
-
     const ironfish = await this.getIronfish();
 
     if (!ironfish.isStarted()) {
