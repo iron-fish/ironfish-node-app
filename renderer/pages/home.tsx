@@ -12,6 +12,7 @@ import { LogoLg } from "@/ui/SVGs/LogoLg";
 export default function Home() {
   const router = useRouter();
 
+  // We use this random value to ensure that the useQuery hook doesn't cache the result
   const [randomValue] = useState(() => {
     return Math.random();
   });
