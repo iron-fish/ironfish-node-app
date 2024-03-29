@@ -9,6 +9,9 @@ export const COLORS = {
   DEEP_BLUE: "#1D0070",
   RED: "#F15929",
 
+  SKY_BLUE: "#D3F9FF",
+  DARK_BLUE: "#005664",
+
   GREEN_LIGHT: "#ECFFCE",
   GREEN_DARK: "#6A991C",
   YELLOW_LIGHT: "#FFF9B8",
@@ -21,6 +24,8 @@ export const COLORS = {
     GRAY_LIGHT: "#ADAEB4",
     GRAY_MEDIUM: "#3B3B3B",
     GRAY_DARK: "#252525",
+    SKY_BLUE: "#D3F9FF",
+    DARK_BLUE: "#005664",
     GREEN_LIGHT: "#C7F182",
     GREEN_DARK: "#242C18",
     YELLOW_LIGHT: "#E3DB7C",

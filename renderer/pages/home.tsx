@@ -1,6 +1,6 @@
-import { VStack, Flex, Spinner } from "@chakra-ui/react";
+import { Flex, Spinner, VStack } from "@chakra-ui/react";
 import { useRouter } from "next/router";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 
 import { trpcReact } from "@/providers/TRPCProvider";
 import { LogoLg } from "@/ui/SVGs/LogoLg";
@@ -11,11 +11,22 @@ import { LogoLg } from "@/ui/SVGs/LogoLg";
  */
 export default function Home() {
   const router = useRouter();
+
+  // We use this random value to ensure that the useQuery hook doesn't cache the result
+  const [randomValue] = useState(() => {
+    return Math.random();
+  });
+
   const { data: initialStateData, isLoading: isInitialStateLoading } =
-    trpcReact.getInitialState.useQuery(undefined, {
-      retry: false,
-      useErrorBoundary: true,
-    });
+    trpcReact.getInitialState.useQuery(
+      {
+        seed: randomValue.toString(),
+      },
+      {
+        retry: false,
+        useErrorBoundary: true,
+      },
+    );
 
   const { mutate: startNode } = trpcReact.startNode.useMutation();
 
