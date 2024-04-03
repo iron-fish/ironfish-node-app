@@ -125,6 +125,12 @@ export const ironfishRouter = t.router({
     const ironfish = await manager.getIronfish();
     await ironfish.start();
   }),
+  getNetworkInfo: t.procedure.query(async () => {
+    const ironfish = await manager.getIronfish();
+    const rpcClient = await ironfish.rpcClient();
+    const response = await rpcClient.chain.getNetworkInfo();
+    return response.content;
+  }),
   changeNetwork: t.procedure
     .input(
       z.object({

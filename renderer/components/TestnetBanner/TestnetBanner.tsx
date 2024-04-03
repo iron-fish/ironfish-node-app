@@ -11,10 +11,10 @@ const messages = defineMessages({
 });
 
 export function TestnetBanner() {
-  const { data } = trpcReact.getStatus.useQuery();
+  const { data } = trpcReact.getNetworkInfo.useQuery();
   const { formatMessage } = useIntl();
 
-  if (data?.node.networkId === 1) {
+  if (data?.networkId === 1) {
     return null;
   }
 
