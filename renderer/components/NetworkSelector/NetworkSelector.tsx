@@ -73,7 +73,7 @@ type Props = {
 export function NetworkSelector({ buttonContainerProps }: Props) {
   const { formatMessage } = useIntl();
   const { isOpen, onOpen, onClose } = useDisclosure();
-  const { data } = trpcReact.getStatus.useQuery();
+  const { data } = trpcReact.getNetworkInfo.useQuery();
 
   if (!data) {
     return null;
@@ -123,7 +123,7 @@ export function NetworkSelector({ buttonContainerProps }: Props) {
               md: "block",
             }}
           >
-            {getNetworkById(data.node.networkId).label}
+            {getNetworkById(data.networkId).label}
           </Text>
         </Flex>
         <Box
@@ -140,7 +140,7 @@ export function NetworkSelector({ buttonContainerProps }: Props) {
         <NetworkSelectorModal
           isOpen={isOpen}
           onClose={onClose}
-          currentNetwork={data.node.networkId}
+          currentNetwork={data.networkId}
         />
       )}
     </>
