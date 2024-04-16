@@ -1,8 +1,8 @@
-import { Text, Progress, Box, HStack, Heading } from "@chakra-ui/react";
+import { Box, HStack, Heading, Progress, Text } from "@chakra-ui/react";
 import { formatDuration } from "date-fns";
 import { useRouter } from "next/router";
-import { useEffect, useState, useCallback, useMemo } from "react";
-import { useIntl, defineMessages } from "react-intl";
+import { useCallback, useEffect, useMemo, useState } from "react";
+import { defineMessages, useIntl } from "react-intl";
 import { useCountdown } from "usehooks-ts";
 
 import { trpcReact } from "@/providers/TRPCProvider";
@@ -23,7 +23,7 @@ const messages = defineMessages({
       "Downloading a snapshot is the fastest way to sync with the network.",
   },
   mbDownloaded: {
-    defaultMessage: "{currMb} / {totalMb} mb downloaded",
+    defaultMessage: "{currMb} / {totalMb} mb",
   },
   unzipping: {
     defaultMessage: "Unzipping...",
@@ -68,7 +68,7 @@ function percent(num: number, total: number) {
 }
 
 function bytesToMb(bytes: number) {
-  return (bytes / 1024 / 1024).toFixed(2);
+  return (bytes / 1024 / 1024).toFixed(1);
 }
 
 function useBackoff() {
@@ -152,7 +152,7 @@ function DownloadProgress({ onSuccess }: { onSuccess: () => void }) {
             value={percent(snapshotState.currBytes, snapshotState.totalBytes)}
           />
           <HStack mt={4}>
-            <Text>
+            <Text fontFamily={"monospace"} fontSize={"small"}>
               {formatMessage(messages.mbDownloaded, {
                 currMb: bytesToMb(snapshotState.currBytes),
                 totalMb: bytesToMb(snapshotState.totalBytes),

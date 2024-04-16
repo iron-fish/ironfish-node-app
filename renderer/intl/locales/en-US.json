@@ -102,6 +102,9 @@
   "62mqGj": {
     "message": "Delete Contact"
   },
+  "68s+e1": {
+    "message": "{currMb} / {totalMb} mb"
+  },
   "6AhQlk": {
     "message": "Are you sure you want to reset the node to its initial state?"
   },
@@ -672,9 +675,6 @@
   },
   "uCgp+K": {
     "message": "Blocks Per message"
-  },
-  "uHGB/g": {
-    "message": "{currMb} / {totalMb} mb downloaded"
   },
   "uT4OlP": {
     "message": "Fee"
