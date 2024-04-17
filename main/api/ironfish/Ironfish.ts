@@ -78,6 +78,10 @@ export class Ironfish {
     return this.sdkPromise.promise;
   }
 
+  async stopDownloadSnapshot() {
+    await this.snapshotManager.stop();
+  }
+
   async downloadSnapshot(): Promise<void> {
     if (this._started) {
       throw new Error("Cannot download snapshot after node has started");

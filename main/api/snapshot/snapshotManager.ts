@@ -15,6 +15,7 @@ export class SnapshotManager {
   onProgress: Event<[SnapshotUpdate]> = new Event();
   snapshotPromise: SplitPromise<void> = splitPromise();
   started = false;
+  private snapshotDownloader?: SnapshotDownloader;
 
   async run(sdk: IronfishSdk, node: FullNode): Promise<void> {
     if (this.started) {
@@ -32,6 +33,19 @@ export class SnapshotManager {
       this.started = false;
       this.snapshotPromise = splitPromise();
     }
+  }
+
+  async stop(): Promise<void> {
+    if (!this.snapshotDownloader || !this.started) {
+      return;
+    }
+
+    this.snapshotDownloader.stopDownload();
+    this.started = false;
+
+    this.snapshotPromise.reject(
+      new Error("Snapshot download and processing was stopped by the user."),
+    );
   }
 
   result(): Promise<void> {
@@ -62,6 +76,7 @@ export class SnapshotManager {
       dest,
       nodeChainDBVersion,
     );
+    this.snapshotDownloader = Downloader;
 
     const manifest = await Downloader.manifest();
 

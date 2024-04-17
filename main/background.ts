@@ -1,4 +1,4 @@
-import { BrowserWindow, app, nativeTheme, crashReporter } from "electron";
+import { BrowserWindow, app, crashReporter, nativeTheme } from "electron";
 import log from "electron-log";
 import serve from "electron-serve";
 import { createIPCHandler } from "electron-trpc/main";
@@ -33,6 +33,9 @@ async function createWindow(handler: ReturnType<typeof createIPCHandler>) {
   });
 
   window.once("closed", () => {
+    if (window.isDestroyed()) {
+      return;
+    }
     handler.detachWindow(window);
   });
 
@@ -106,5 +109,13 @@ app.on("will-quit", (e) => {
     ironfish.stop().then(() => {
       app.quit();
     });
+  }
+});
+
+app.on("before-quit", async (e) => {
+  if (ironfish.snapshotManager.started) {
+    e.preventDefault();
+    await ironfish.stopDownloadSnapshot();
+    app.quit();
   }
 });

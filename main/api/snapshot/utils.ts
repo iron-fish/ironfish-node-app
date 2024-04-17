@@ -5,8 +5,8 @@ import { IncomingMessage } from "http";
 import path from "path";
 
 import { ErrorUtils, IronfishSdk, TimeUtils } from "@ironfish/sdk";
-import axios from "axios";
-import { list, extract } from "tar";
+import axios, { CancelTokenSource } from "axios";
+import { extract, list } from "tar";
 
 export type SnapshotManifest = {
   block_sequence: number;
@@ -78,6 +78,8 @@ export class SnapshotDownloader {
   manifestUrl: string;
   dest: string;
   _manifest?: SnapshotManifest;
+  private writer?: fs.WriteStream;
+  private idleCancelSource?: CancelTokenSource;
 
   constructor(manifestUrl: string, dest: string, nodeChainDBVersion: number) {
     this.nodeChainDBVersion = nodeChainDBVersion;
@@ -102,6 +104,11 @@ export class SnapshotDownloader {
   async snapshotPath(): Promise<string> {
     const manifest = await this.manifest();
     return path.join(this.dest, manifest.file_name);
+  }
+
+  stopDownload(): void {
+    this.writer?.end();
+    this.idleCancelSource?.cancel("Download has been stopped.");
   }
 
   async download(
@@ -133,6 +140,7 @@ export class SnapshotDownloader {
     // CancelToken is a TS type, not the value we want here
     // eslint-disable-next-line import/no-named-as-default-member
     const idleCancelSource = axios.CancelToken.source();
+    this.idleCancelSource = idleCancelSource;
 
     const idleInterval = setInterval(() => {
       const timeSinceLastChunk = performance.now() - idleLastChunk;
@@ -164,6 +172,8 @@ export class SnapshotDownloader {
     const writer = fs.createWriteStream(snapshotPath, {
       flags: resumingDownload ? "a" : "w",
     });
+
+    this.writer = writer;
 
     downloaded = resumingDownload ? downloaded : 0;
 
