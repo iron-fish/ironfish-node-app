@@ -3,6 +3,7 @@
  * file, You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 import { DecimalUtils } from "./decimalUtils";
+import { hexToUTF16String } from "./hexToUTF16String";
 import {
   IRON_SYMBOL,
   IRON_DECIMAL_PLACES,
@@ -88,44 +89,23 @@ export class CurrencyUtils {
     return DecimalUtils.normalize({ value: amount, decimals: -decimals });
   }
 
-  /**
-   * Renders values for human-readable purposes:
-   * - Renders $IRON in the major denomination, with 8 decimal places
-   * - If a custom asset, and `decimals` is provided, it will render the custom
-   *     asset in the major denomination with the decimal places
-   * - If a custom asset, and `decimals` is not provided, it will render the
-   *     custom asset in the minor denomination with no decimal places
-   */
-  static render(
-    amount: bigint | string,
-    includeSymbol: boolean = false,
-    assetId?: string,
-    verifiedAssetMetadata?: {
-      decimals?: number;
-      symbol?: string;
+  static shortSymbol(
+    assetId: string,
+    asset?: {
+      verification: {
+        symbol?: string;
+      };
+      name: string;
     },
   ): string {
-    const { value: majorValue, decimals: majorDecimals } = this.minorToMajor(
-      BigInt(amount),
-      assetId,
-      verifiedAssetMetadata,
-    );
-    const { symbol, decimals } = this.assetMetadataWithDefaults(
-      assetId,
-      verifiedAssetMetadata,
-    );
-
-    const renderedValue = DecimalUtils.render(
-      majorValue,
-      majorDecimals,
-      decimals,
-    );
-
-    if (includeSymbol) {
-      return `${symbol} ${renderedValue}`;
+    if (isNativeIdentifier(assetId)) {
+      return IRON_SYMBOL;
     }
-
-    return renderedValue;
+    return (
+      asset?.verification.symbol ||
+      (asset?.name && hexToUTF16String(asset.name)) ||
+      "Unknown"
+    );
   }
 
   static assetMetadataWithDefaults(

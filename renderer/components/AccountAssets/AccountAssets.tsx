@@ -22,7 +22,6 @@ import { ArrowReceive } from "@/ui/SVGs/ArrowReceive";
 import { ArrowSend } from "@/ui/SVGs/ArrowSend";
 import { CurrencyUtils } from "@/utils/currency";
 import { DecimalUtils } from "@/utils/decimalUtils";
-import { hexToUTF16String } from "@/utils/hexToUTF16String";
 import { formatOre } from "@/utils/ironUtils";
 
 import { AccountSyncingProgress } from "../AccountSyncingProgress/AccountSyncingProgress";
@@ -171,13 +170,6 @@ export function AccountAssets({ accountName }: { accountName: string }) {
                       major.value,
                       major.decimals,
                     );
-                    const symbol =
-                      asset.verification.status === "verified"
-                        ? CurrencyUtils.assetMetadataWithDefaults(
-                            assetId,
-                            asset.verification,
-                          ).symbol
-                        : hexToUTF16String(asset.name);
 
                     return (
                       <GridItem
@@ -190,7 +182,7 @@ export function AccountAssets({ accountName }: { accountName: string }) {
                       >
                         <Text fontSize="lg" flexGrow={1} as="span">
                           {balance.asset.verification ? "✔ " : ""}
-                          {symbol}
+                          {CurrencyUtils.shortSymbol(assetId, asset)}
                         </Text>
                         <Text fontSize="lg">{majorString}</Text>
                       </GridItem>

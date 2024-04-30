@@ -14,7 +14,6 @@ import { ShadowCard } from "@/ui/ShadowCard/ShadowCard";
 import { CurrencyUtils } from "@/utils/currency";
 import { DecimalUtils } from "@/utils/decimalUtils";
 import { formatDate } from "@/utils/formatDate";
-import { hexToUTF16String } from "@/utils/hexToUTF16String";
 
 import { ChangeIcon } from "./icons/ChangeIcon";
 import { ExpiredIcon } from "./icons/ExpiredIcon";
@@ -139,11 +138,7 @@ export function NoteRow({
       asset?.verification,
     );
     const majorString = DecimalUtils.render(major.value, major.decimals);
-    const symbol =
-      asset?.verification.status === "verified"
-        ? CurrencyUtils.assetMetadataWithDefaults(assetId, asset?.verification)
-            .symbol
-        : hexToUTF16String(asset?.name || "Unknown");
+    const symbol = CurrencyUtils.shortSymbol(assetId, asset);
 
     return [
       <HStack gap={4} key={key++}>
