@@ -1,9 +1,9 @@
 import { parseFixed } from "@ethersproject/bignumber";
 
-import { ASSET_DECIMALS } from "../../shared/constants";
+import { IRON_DECIMAL_PLACES } from "../../shared/constants";
 
 const ORE_FORMATTER = Intl.NumberFormat(undefined, {
-  maximumFractionDigits: ASSET_DECIMALS,
+  maximumFractionDigits: IRON_DECIMAL_PLACES,
 });
 
 /**
@@ -11,7 +11,7 @@ const ORE_FORMATTER = Intl.NumberFormat(undefined, {
  */
 export function parseOre(value: string | number) {
   const parsedValue = typeof value === "string" ? parseFloat(value) : value;
-  return parsedValue / 10 ** ASSET_DECIMALS;
+  return parsedValue / 10 ** IRON_DECIMAL_PLACES;
 }
 
 /**
@@ -20,9 +20,9 @@ export function parseOre(value: string | number) {
 export function parseIron(value: string | number) {
   // Converts scientific notation to fixed decimals
   const asString =
-    typeof value === "number" ? value.toFixed(ASSET_DECIMALS) : value;
+    typeof value === "number" ? value.toFixed(IRON_DECIMAL_PLACES) : value;
   try {
-    return parseFixed(asString, ASSET_DECIMALS).toNumber();
+    return parseFixed(asString, IRON_DECIMAL_PLACES).toNumber();
   } catch {
     return 0;
   }

@@ -20,7 +20,7 @@ import { PillButton } from "@/ui/PillButton/PillButton";
 import { ShadowCard } from "@/ui/ShadowCard/ShadowCard";
 import { ArrowReceive } from "@/ui/SVGs/ArrowReceive";
 import { ArrowSend } from "@/ui/SVGs/ArrowSend";
-import { hexToUTF16String } from "@/utils/hexToUTF16String";
+import { CurrencyUtils } from "@/utils/currency";
 import { formatOre } from "@/utils/ironUtils";
 
 import { AccountSyncingProgress } from "../AccountSyncingProgress/AccountSyncingProgress";
@@ -159,6 +159,13 @@ export function AccountAssets({ accountName }: { accountName: string }) {
                   }
                 >
                   {data.balances.custom.map((balance) => {
+                    const { confirmed, assetId, asset } = balance;
+                    const majorString = CurrencyUtils.render(
+                      confirmed,
+                      assetId,
+                      asset.verification,
+                    );
+
                     return (
                       <GridItem
                         key={balance.assetId}
@@ -169,11 +176,10 @@ export function AccountAssets({ accountName }: { accountName: string }) {
                         borderRadius="4px"
                       >
                         <Text fontSize="lg" flexGrow={1} as="span">
-                          {hexToUTF16String(balance.asset.name)}
+                          {balance.asset.verification ? "✔ " : ""}
+                          {CurrencyUtils.shortSymbol(assetId, asset)}
                         </Text>
-                        <Text fontSize="lg">
-                          {formatOre(balance.confirmed)}
-                        </Text>
+                        <Text fontSize="lg">{majorString}</Text>
                       </GridItem>
                     );
                   })}

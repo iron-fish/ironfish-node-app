@@ -37,7 +37,8 @@ export async function getTransactionNotes(
       ?.sort((note) => (note.assetId === IRON_ID ? -1 : 1))
       .map((note) => {
         return {
-          assetName: assetLookup[note.assetId]?.name ?? "Unknown",
+          asset: assetLookup[note.assetId],
+          assetId: note.assetId,
           value: note.value,
           timestamp: transaction.timestamp,
           from: note.sender,
@@ -143,7 +144,8 @@ export async function formatTransactionsToNotes(
 
       transactionNotes.push({
         accountName,
-        assetName: asset.name,
+        asset: asset,
+        assetId: abd.assetId,
         from: firstNote.sender,
         to: to,
         status: tx.status,

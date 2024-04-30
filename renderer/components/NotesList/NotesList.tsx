@@ -83,7 +83,8 @@ export function NotesList({
               <NoteRow
                 key={note.noteHash}
                 accountName={note.accountName}
-                assetName={note.assetName}
+                asset={note.asset}
+                assetId={note.assetId}
                 value={note.value}
                 timestamp={note.timestamp}
                 from={note.from}
