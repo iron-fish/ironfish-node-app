@@ -1,15 +1,20 @@
 import { ChevronRightIcon } from "@chakra-ui/icons";
 import { Box, HStack, Text, Flex } from "@chakra-ui/react";
-import type { TransactionStatus, TransactionType } from "@ironfish/sdk";
+import type {
+  RpcAsset,
+  TransactionStatus,
+  TransactionType,
+} from "@ironfish/sdk";
 import { ReactNode, useMemo } from "react";
 import { MessageDescriptor, useIntl } from "react-intl";
 
 import { MaybeLink } from "@/ui/ChakraLink/ChakraLink";
 import { COLORS } from "@/ui/colors";
 import { ShadowCard } from "@/ui/ShadowCard/ShadowCard";
+import { CurrencyUtils } from "@/utils/currency";
+import { DecimalUtils } from "@/utils/decimalUtils";
 import { formatDate } from "@/utils/formatDate";
 import { hexToUTF16String } from "@/utils/hexToUTF16String";
-import { formatOre } from "@/utils/ironUtils";
 
 import { ChangeIcon } from "./icons/ChangeIcon";
 import { ExpiredIcon } from "./icons/ExpiredIcon";
@@ -86,7 +91,8 @@ function NoteTo({
 
 export function NoteRow({
   accountName,
-  assetName,
+  asset,
+  assetId,
   value,
   timestamp,
   from,
@@ -98,7 +104,8 @@ export function NoteRow({
   asTransaction = false,
 }: {
   accountName: string;
-  assetName: string;
+  asset?: RpcAsset;
+  assetId: string;
   value: string;
   timestamp: number;
   from: string;
@@ -125,13 +132,26 @@ export function NoteRow({
 
   const cellContent = useMemo(() => {
     let key = 0;
+
+    const major = CurrencyUtils.minorToMajor(
+      BigInt(value),
+      assetId,
+      asset?.verification,
+    );
+    const majorString = DecimalUtils.render(major.value, major.decimals);
+    const symbol =
+      asset?.verification.status === "verified"
+        ? CurrencyUtils.assetMetadataWithDefaults(assetId, asset?.verification)
+            .symbol
+        : hexToUTF16String(asset?.name || "Unknown");
+
     return [
       <HStack gap={4} key={key++}>
         {statusDisplay.icon}
         <Text as="span">{formatMessage(statusDisplay.message)}</Text>
       </HStack>,
       <Text as="span" key={key++}>
-        {formatOre(value)} {hexToUTF16String(assetName)}
+        {`${majorString} ${symbol}`}
       </Text>,
       <Text as="span" key={key++}>
         <NoteTo to={to} from={from} type={type} />
@@ -148,7 +168,8 @@ export function NoteRow({
       </Text>,
     ];
   }, [
-    assetName,
+    asset,
+    assetId,
     formatMessage,
     from,
     memo,

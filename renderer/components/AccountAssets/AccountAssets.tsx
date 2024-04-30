@@ -20,6 +20,8 @@ import { PillButton } from "@/ui/PillButton/PillButton";
 import { ShadowCard } from "@/ui/ShadowCard/ShadowCard";
 import { ArrowReceive } from "@/ui/SVGs/ArrowReceive";
 import { ArrowSend } from "@/ui/SVGs/ArrowSend";
+import { CurrencyUtils } from "@/utils/currency";
+import { DecimalUtils } from "@/utils/decimalUtils";
 import { hexToUTF16String } from "@/utils/hexToUTF16String";
 import { formatOre } from "@/utils/ironUtils";
 
@@ -159,6 +161,24 @@ export function AccountAssets({ accountName }: { accountName: string }) {
                   }
                 >
                   {data.balances.custom.map((balance) => {
+                    const { confirmed, assetId, asset } = balance;
+                    const major = CurrencyUtils.minorToMajor(
+                      BigInt(confirmed),
+                      assetId,
+                      asset.verification,
+                    );
+                    const majorString = DecimalUtils.render(
+                      major.value,
+                      major.decimals,
+                    );
+                    const symbol =
+                      asset.verification.status === "verified"
+                        ? CurrencyUtils.assetMetadataWithDefaults(
+                            assetId,
+                            asset.verification,
+                          ).symbol
+                        : hexToUTF16String(asset.name);
+
                     return (
                       <GridItem
                         key={balance.assetId}
@@ -169,11 +189,10 @@ export function AccountAssets({ accountName }: { accountName: string }) {
                         borderRadius="4px"
                       >
                         <Text fontSize="lg" flexGrow={1} as="span">
-                          {hexToUTF16String(balance.asset.name)}
+                          {balance.asset.verification ? "✔ " : ""}
+                          {symbol}
                         </Text>
-                        <Text fontSize="lg">
-                          {formatOre(balance.confirmed)}
-                        </Text>
+                        <Text fontSize="lg">{majorString}</Text>
                       </GridItem>
                     );
                   })}

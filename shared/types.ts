@@ -1,7 +1,12 @@
-import type { TransactionStatus, TransactionType } from "@ironfish/sdk";
+import type {
+  RpcAsset,
+  TransactionStatus,
+  TransactionType,
+} from "@ironfish/sdk";
 
 export type TransactionNote = {
-  assetName: string;
+  asset?: RpcAsset;
+  assetId: string;
   value: string;
   timestamp: number;
   from: string;
