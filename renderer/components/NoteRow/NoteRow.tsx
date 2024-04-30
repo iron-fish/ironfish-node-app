@@ -12,7 +12,6 @@ import { MaybeLink } from "@/ui/ChakraLink/ChakraLink";
 import { COLORS } from "@/ui/colors";
 import { ShadowCard } from "@/ui/ShadowCard/ShadowCard";
 import { CurrencyUtils } from "@/utils/currency";
-import { DecimalUtils } from "@/utils/decimalUtils";
 import { formatDate } from "@/utils/formatDate";
 
 import { ChangeIcon } from "./icons/ChangeIcon";
@@ -132,12 +131,11 @@ export function NoteRow({
   const cellContent = useMemo(() => {
     let key = 0;
 
-    const major = CurrencyUtils.minorToMajor(
-      BigInt(value),
+    const majorString = CurrencyUtils.render(
+      value,
       assetId,
       asset?.verification,
     );
-    const majorString = DecimalUtils.render(major.value, major.decimals);
     const symbol = CurrencyUtils.shortSymbol(assetId, asset);
 
     return [

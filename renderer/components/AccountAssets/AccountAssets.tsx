@@ -21,7 +21,6 @@ import { ShadowCard } from "@/ui/ShadowCard/ShadowCard";
 import { ArrowReceive } from "@/ui/SVGs/ArrowReceive";
 import { ArrowSend } from "@/ui/SVGs/ArrowSend";
 import { CurrencyUtils } from "@/utils/currency";
-import { DecimalUtils } from "@/utils/decimalUtils";
 import { formatOre } from "@/utils/ironUtils";
 
 import { AccountSyncingProgress } from "../AccountSyncingProgress/AccountSyncingProgress";
@@ -161,14 +160,10 @@ export function AccountAssets({ accountName }: { accountName: string }) {
                 >
                   {data.balances.custom.map((balance) => {
                     const { confirmed, assetId, asset } = balance;
-                    const major = CurrencyUtils.minorToMajor(
-                      BigInt(confirmed),
+                    const majorString = CurrencyUtils.render(
+                      confirmed,
                       assetId,
                       asset.verification,
-                    );
-                    const majorString = DecimalUtils.render(
-                      major.value,
-                      major.decimals,
                     );
 
                     return (

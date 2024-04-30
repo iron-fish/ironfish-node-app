@@ -89,6 +89,30 @@ export class CurrencyUtils {
     return DecimalUtils.normalize({ value: amount, decimals: -decimals });
   }
 
+  /**
+   * Renders values for human-readable purposes:
+   * - Renders $IRON in the major denomination, with 8 decimal places
+   * - If a custom asset, and `decimals` is provided, it will render the custom
+   *     asset in the major denomination with the decimal places
+   * - If a custom asset, and `decimals` is not provided, it will render the
+   *     custom asset in the minor denomination with no decimal places
+   */
+  static render(
+    amount: bigint | string,
+    assetId?: string,
+    verifiedAssetMetadata?: {
+      decimals?: number;
+    },
+  ): string {
+    const { value: majorValue, decimals: majorDecimals } = this.minorToMajor(
+      BigInt(amount),
+      assetId,
+      verifiedAssetMetadata,
+    );
+
+    return DecimalUtils.render(majorValue, majorDecimals);
+  }
+
   static shortSymbol(
     assetId: string,
     asset?: {
