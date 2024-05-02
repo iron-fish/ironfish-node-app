@@ -1,6 +1,9 @@
 import * as z from "zod";
 
-import { getTrpcVanillaClient } from "@/providers/TRPCProvider";
+import {
+  TRPCRouterOutputs,
+  getTrpcVanillaClient,
+} from "@/providers/TRPCProvider";
 import { MIN_IRON_VALUE } from "@/utils/ironUtils";
 import { sliceToUtf8Bytes } from "@/utils/sliceToUtf8Bytes";
 
@@ -34,4 +37,14 @@ export type TransactionFormData = z.infer<typeof transactionSchema>;
 
 export type TransactionData = Omit<TransactionFormData, "fee"> & {
   fee: number;
+};
+
+export type AccountType = TRPCRouterOutputs["getAccounts"][number];
+export type BalanceType = AccountType["balances"]["iron"];
+export type AssetType = BalanceType["asset"];
+export type AssetOptionType = {
+  assetName: string;
+  label: string;
+  value: string;
+  asset: AssetType;
 };

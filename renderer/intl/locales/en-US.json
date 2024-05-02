@@ -246,6 +246,9 @@
   "IwW0RC": {
     "message": "If none of these steps help, please report the issue on <link>Discord</link>."
   },
+  "IwdEK5": {
+    "message": "The selected asset could not be found"
+  },
   "JJNc3c": {
     "message": "Previous"
   },
@@ -609,6 +612,9 @@
   },
   "o0DpEu": {
     "message": "Unzipping..."
+  },
+  "oRjz3H": {
+    "message": "An error occured while converting the asset amount"
   },
   "oZO6n5": {
     "message": "An app update is available. Wait for it to finish downloading and restart the app, or download the latest version from the <link>Iron Fish website</link>."

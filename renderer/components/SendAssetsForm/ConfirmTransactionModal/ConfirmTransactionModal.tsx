@@ -19,7 +19,7 @@ import { COLORS } from "@/ui/colors";
 import { PillButton } from "@/ui/PillButton/PillButton";
 import { formatOre } from "@/utils/ironUtils";
 
-import { TransactionData } from "../transactionSchema";
+import { TransactionData, AssetOptionType } from "../transactionSchema";
 
 const messages = defineMessages({
   confirmTransactionDetails: {
@@ -78,19 +78,22 @@ const messages = defineMessages({
   cancel: {
     defaultMessage: "Cancel",
   },
+  unknownAsset: {
+    defaultMessage: "unknown asset",
+  },
 });
 
 type Props = {
   isOpen: boolean;
   transactionData: TransactionData | null;
-  selectedAssetName: string;
+  selectedAsset?: AssetOptionType;
   onCancel: () => void;
 };
 
 export function ConfirmTransactionModal({
   isOpen,
   transactionData,
-  selectedAssetName,
+  selectedAsset,
   onCancel,
 }: Props) {
   const {
@@ -150,7 +153,8 @@ export function ConfirmTransactionModal({
                   </Text>
                   <Text fontSize="md">
                     {formatOre(transactionData?.amount ?? 0)}{" "}
-                    {selectedAssetName}
+                    {selectedAsset?.assetName ??
+                      formatMessage(messages.unknownAsset)}
                   </Text>
                 </Box>
 

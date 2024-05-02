@@ -11,6 +11,7 @@ import { RenderError } from "@/ui/Forms/FormField/FormField";
 import { Select } from "@/ui/Forms/Select/Select";
 import { TextInput } from "@/ui/Forms/TextInput/TextInput";
 import { PillButton } from "@/ui/PillButton/PillButton";
+import { CurrencyUtils } from "@/utils/currency";
 import { hexToUTF16String } from "@/utils/hexToUTF16String";
 import { formatOre, parseIron } from "@/utils/ironUtils";
 import { asQueryString } from "@/utils/parseRouteQuery";
@@ -23,6 +24,9 @@ import {
   TransactionData,
   TransactionFormData,
   transactionSchema,
+  AccountType,
+  BalanceType,
+  AssetOptionType,
 } from "./transactionSchema";
 import {
   AccountSyncingMessage,
@@ -70,10 +74,13 @@ const messages = defineMessages({
   estimatedFeeDefaultError: {
     defaultMessage: "An error occurred while estimating the transaction fee",
   },
+  assetNotFoundError: {
+    defaultMessage: "The selected asset could not be found",
+  },
+  assetAmountConversionError: {
+    defaultMessage: "An error occured while converting the asset amount",
+  },
 });
-
-type AccountType = TRPCRouterOutputs["getAccounts"][number];
-type BalanceType = AccountType["balances"]["iron"];
 
 function getAccountBalances(account: AccountType): {
   [key: string]: BalanceType;
@@ -143,10 +150,18 @@ export function SendAssetsFormContent({
   });
 
   const fromAccountValue = watch("fromAccount");
-  const assetValue = watch("assetId");
+  const assetIdValue = watch("assetId");
   const feeValue = watch("fee");
   const amountValue = watch("amount");
   const toAccountValue = watch("toAccount");
+
+  useEffect(() => {
+    // If the 'assetId' changes, reset the 'amount' field
+    // to prevent issues if there is a mismatch in decimals
+    // between two assets.
+    const _unused = assetIdValue;
+    resetField("amount");
+  }, [resetField, assetIdValue]);
 
   const { data: estimatedFeesData, error: estimatedFeesError } =
     trpcReact.getEstimatedFees.useQuery(
@@ -154,9 +169,11 @@ export function SendAssetsFormContent({
         accountName: fromAccountValue,
         output: {
           amount: parseIron(amountValue),
-          assetId: assetValue,
+          assetId: assetIdValue,
           memo: "",
-          publicAddress: toAccountValue,
+          // For fee estimation, the actual address of the recipient is not important, is just has to be
+          // a valid address. Therefore, we're just going to use the address of the first account.
+          publicAddress: accountsData[0].address,
         },
       },
       {
@@ -205,23 +222,35 @@ export function SendAssetsFormContent({
     return getAccountBalances(selectedAccount);
   }, [selectedAccount]);
 
-  const assetOptions = useMemo(() => {
-    return Object.values(accountBalances).map((balance) => {
+  const assetOptionsMap = useMemo(() => {
+    const entries: Array<[string, AssetOptionType]> = Object.values(
+      accountBalances,
+    ).map((balance) => {
       const assetName = hexToUTF16String(balance.asset.name);
-      return {
-        assetName: assetName,
-        label: assetName + ` (${formatOre(balance.confirmed)})`,
-        value: balance.asset.id,
-      };
+      return [
+        balance.asset.id,
+        {
+          assetName: assetName,
+          label: assetName + ` (${formatOre(balance.confirmed)})`,
+          value: balance.asset.id,
+          asset: balance.asset,
+        },
+      ];
     });
+    return new Map(entries);
   }, [accountBalances]);
+
+  const assetOptions = useMemo(
+    () => Array.from(assetOptionsMap.values()),
+    [assetOptionsMap],
+  );
 
   // Resets asset field to $IRON if a newly selected account does not have the selected asset
   useEffect(() => {
-    if (!Object.hasOwn(accountBalances, assetValue)) {
+    if (!Object.hasOwn(accountBalances, assetIdValue)) {
       resetField("assetId");
     }
-  }, [assetValue, resetField, selectedAccount, accountBalances]);
+  }, [assetIdValue, resetField, selectedAccount, accountBalances]);
 
   const { data: contactsData } = trpcReact.getContacts.useQuery();
   const formattedContacts = useMemo(() => {
@@ -262,11 +291,33 @@ export function SendAssetsFormContent({
           }
 
           const fee = estimatedFeesData[data.fee];
+
+          const assetToSend = assetOptionsMap.get(data.assetId);
+          if (!assetToSend) {
+            setError("assetId", {
+              type: "custom",
+              message: formatMessage(messages.assetNotFoundError),
+            });
+            return;
+          }
+          const [value, error] = CurrencyUtils.tryMajorToMinor(
+            BigInt(data.amount),
+            data.assetId,
+            assetToSend.asset.verification,
+          );
+          if (error) {
+            setError("amount", {
+              type: "custom",
+              message: formatMessage(messages.assetAmountConversionError),
+            });
+            return;
+          }
+
           setPendingTransaction({
             fromAccount: data.fromAccount,
             toAccount: data.toAccount,
             assetId: data.assetId,
-            amount: parseIron(data.amount),
+            amount: Number(value),
             fee: fee,
             memo: data.memo ?? "",
           });
@@ -292,7 +343,7 @@ export function SendAssetsFormContent({
 
           <Select
             {...register("assetId")}
-            value={assetValue}
+            value={assetIdValue}
             label={formatMessage(messages.assetLabel)}
             options={assetOptions}
             error={errors.assetId?.message}
@@ -317,12 +368,22 @@ export function SendAssetsFormContent({
                     return;
                   }
 
+                  const assetToSend = assetOptionsMap.get(assetIdValue);
+                  const decimals =
+                    assetToSend?.asset.verification?.decimals ?? 0;
+
                   let finalValue = azValue;
 
-                  // only allow up to 8 decimal places
-                  const parts = azValue.split(".");
-                  if (parts[1]?.length > 8) {
-                    finalValue = `${parts[0]}.${parts[1].slice(0, 8)}`;
+                  if (decimals === 0) {
+                    // If decimals is 0, take the left side of the decimal.
+                    // If no decimal is present, this will still work correctly.
+                    finalValue = azValue.split(".")[0];
+                  } else {
+                    // Otherwise, take the left side of the decimal and up to the correct number of decimal places.
+                    const parts = azValue.split(".");
+                    if (parts[1]?.length > decimals) {
+                      finalValue = `${parts[0]}.${parts[1].slice(0, decimals)}`;
+                    }
                   }
 
                   field.onChange(finalValue);
@@ -420,10 +481,7 @@ export function SendAssetsFormContent({
       <ConfirmTransactionModal
         isOpen={!!pendingTransaction}
         transactionData={pendingTransaction}
-        selectedAssetName={
-          assetOptions.find(({ value }) => value === assetValue)?.assetName ??
-          formatMessage(messages.unknownAsset)
-        }
+        selectedAsset={assetOptionsMap.get(assetIdValue)}
         onCancel={() => {
           setPendingTransaction(null);
         }}
