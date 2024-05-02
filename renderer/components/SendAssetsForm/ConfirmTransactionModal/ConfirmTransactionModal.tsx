@@ -17,6 +17,7 @@ import { defineMessages, useIntl } from "react-intl";
 import { trpcReact } from "@/providers/TRPCProvider";
 import { COLORS } from "@/ui/colors";
 import { PillButton } from "@/ui/PillButton/PillButton";
+import { CurrencyUtils } from "@/utils/currency";
 import { formatOre } from "@/utils/ironUtils";
 
 import { TransactionData, AssetOptionType } from "../transactionSchema";
@@ -121,6 +122,10 @@ export function ConfirmTransactionModal({
     sendTransaction(transactionData);
   }, [sendTransaction, transactionData]);
 
+  if (!transactionData) {
+    return null;
+  }
+
   return (
     <Modal isOpen={isOpen} onClose={handleClose}>
       <ModalOverlay />
@@ -152,7 +157,11 @@ export function ConfirmTransactionModal({
                     {formatMessage(messages.amount)}
                   </Text>
                   <Text fontSize="md">
-                    {formatOre(transactionData?.amount ?? 0)}{" "}
+                    {CurrencyUtils.render(
+                      (transactionData.amount ?? 0).toString(),
+                      transactionData.assetId,
+                      selectedAsset?.asset.verification,
+                    )}{" "}
                     {selectedAsset?.assetName ??
                       formatMessage(messages.unknownAsset)}
                   </Text>

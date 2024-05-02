@@ -13,7 +13,7 @@ import { TextInput } from "@/ui/Forms/TextInput/TextInput";
 import { PillButton } from "@/ui/PillButton/PillButton";
 import { CurrencyUtils } from "@/utils/currency";
 import { hexToUTF16String } from "@/utils/hexToUTF16String";
-import { formatOre, parseIron } from "@/utils/ironUtils";
+import { formatOre } from "@/utils/ironUtils";
 import { asQueryString } from "@/utils/parseRouteQuery";
 import { sliceToUtf8Bytes } from "@/utils/sliceToUtf8Bytes";
 import { truncateString } from "@/utils/truncateString";
@@ -67,9 +67,6 @@ const messages = defineMessages({
   },
   fastFeeLabel: {
     defaultMessage: "Fast",
-  },
-  unknownAsset: {
-    defaultMessage: "unknown asset",
   },
   estimatedFeeDefaultError: {
     defaultMessage: "An error occurred while estimating the transaction fee",
@@ -163,12 +160,73 @@ export function SendAssetsFormContent({
     resetField("amount");
   }, [resetField, assetIdValue]);
 
+  const selectedAccount = useMemo(() => {
+    const match = accountsData?.find(
+      (account) => account.name === fromAccountValue,
+    );
+    if (!match) {
+      return accountsData[0];
+    }
+    return match;
+  }, [accountsData, fromAccountValue]);
+
+  const accountBalances = useMemo(() => {
+    return getAccountBalances(selectedAccount);
+  }, [selectedAccount]);
+
+  const assetOptionsMap = useMemo(() => {
+    const entries: Array<[string, AssetOptionType]> = Object.values(
+      accountBalances,
+    ).map((balance) => {
+      const assetName = hexToUTF16String(balance.asset.name);
+      const confirmed = CurrencyUtils.render(
+        BigInt(balance.confirmed),
+        balance.asset.id,
+        balance.asset.verification,
+      );
+      return [
+        balance.asset.id,
+        {
+          assetName: assetName,
+          label: assetName + ` (${confirmed})`,
+          value: balance.asset.id,
+          asset: balance.asset,
+        },
+      ];
+    });
+    return new Map(entries);
+  }, [accountBalances]);
+
+  const assetOptions = useMemo(
+    () => Array.from(assetOptionsMap.values()),
+    [assetOptionsMap],
+  );
+
+  const assetAmountToSend = useMemo(() => {
+    const assetToSend = assetOptionsMap.get(assetIdValue);
+    if (!assetToSend) {
+      return 0;
+    }
+
+    const [amountToSend, conversionError] = CurrencyUtils.tryMajorToMinor(
+      amountValue.toString(),
+      assetIdValue,
+      assetToSend.asset.verification,
+    );
+
+    if (conversionError) {
+      return 0;
+    }
+
+    return amountToSend;
+  }, [amountValue, assetIdValue, assetOptionsMap]);
+
   const { data: estimatedFeesData, error: estimatedFeesError } =
     trpcReact.getEstimatedFees.useQuery(
       {
         accountName: fromAccountValue,
         output: {
-          amount: parseIron(amountValue),
+          amount: Number(assetAmountToSend),
           assetId: assetIdValue,
           memo: "",
           // For fee estimation, the actual address of the recipient is not important, is just has to be
@@ -208,43 +266,6 @@ export function SendAssetsFormContent({
     return null;
   }, [isAccountSynced, nodeStatusData?.blockchain.synced]);
 
-  const selectedAccount = useMemo(() => {
-    const match = accountsData?.find(
-      (account) => account.name === fromAccountValue,
-    );
-    if (!match) {
-      return accountsData[0];
-    }
-    return match;
-  }, [accountsData, fromAccountValue]);
-
-  const accountBalances = useMemo(() => {
-    return getAccountBalances(selectedAccount);
-  }, [selectedAccount]);
-
-  const assetOptionsMap = useMemo(() => {
-    const entries: Array<[string, AssetOptionType]> = Object.values(
-      accountBalances,
-    ).map((balance) => {
-      const assetName = hexToUTF16String(balance.asset.name);
-      return [
-        balance.asset.id,
-        {
-          assetName: assetName,
-          label: assetName + ` (${formatOre(balance.confirmed)})`,
-          value: balance.asset.id,
-          asset: balance.asset,
-        },
-      ];
-    });
-    return new Map(entries);
-  }, [accountBalances]);
-
-  const assetOptions = useMemo(
-    () => Array.from(assetOptionsMap.values()),
-    [assetOptionsMap],
-  );
-
   // Resets asset field to $IRON if a newly selected account does not have the selected asset
   useEffect(() => {
     if (!Object.hasOwn(accountBalances, assetIdValue)) {
@@ -271,9 +292,8 @@ export function SendAssetsFormContent({
           const currentBalance = Number(
             accountBalances[data.assetId].confirmed,
           );
-          const amountAsIron = parseIron(data.amount);
 
-          if (currentBalance < amountAsIron) {
+          if (currentBalance < assetAmountToSend) {
             setError("amount", {
               type: "custom",
               message: formatMessage(messages.insufficientFundsError),
@@ -292,32 +312,11 @@ export function SendAssetsFormContent({
 
           const fee = estimatedFeesData[data.fee];
 
-          const assetToSend = assetOptionsMap.get(data.assetId);
-          if (!assetToSend) {
-            setError("assetId", {
-              type: "custom",
-              message: formatMessage(messages.assetNotFoundError),
-            });
-            return;
-          }
-          const [value, error] = CurrencyUtils.tryMajorToMinor(
-            BigInt(data.amount),
-            data.assetId,
-            assetToSend.asset.verification,
-          );
-          if (error) {
-            setError("amount", {
-              type: "custom",
-              message: formatMessage(messages.assetAmountConversionError),
-            });
-            return;
-          }
-
           setPendingTransaction({
             fromAccount: data.fromAccount,
             toAccount: data.toAccount,
             assetId: data.assetId,
-            amount: Number(value),
+            amount: Number(assetAmountToSend),
             fee: fee,
             memo: data.memo ?? "",
           });
