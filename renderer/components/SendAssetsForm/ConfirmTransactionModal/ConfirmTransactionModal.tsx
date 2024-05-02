@@ -86,7 +86,7 @@ const messages = defineMessages({
 
 type Props = {
   isOpen: boolean;
-  transactionData: TransactionData | null;
+  transactionData: TransactionData;
   selectedAsset?: AssetOptionType;
   onCancel: () => void;
 };
@@ -116,15 +116,8 @@ export function ConfirmTransactionModal({
   }, [onCancel, reset]);
 
   const handleSubmit = useCallback(() => {
-    if (!transactionData) {
-      throw new Error("No transaction data");
-    }
     sendTransaction(transactionData);
   }, [sendTransaction, transactionData]);
-
-  if (!transactionData) {
-    return null;
-  }
 
   return (
     <Modal isOpen={isOpen} onClose={handleClose}>

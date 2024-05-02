@@ -71,12 +71,6 @@ const messages = defineMessages({
   estimatedFeeDefaultError: {
     defaultMessage: "An error occurred while estimating the transaction fee",
   },
-  assetNotFoundError: {
-    defaultMessage: "The selected asset could not be found",
-  },
-  assetAmountConversionError: {
-    defaultMessage: "An error occured while converting the asset amount",
-  },
 });
 
 function getAccountBalances(account: AccountType): {
@@ -477,14 +471,16 @@ export function SendAssetsFormContent({
           </PillButton>
         </HStack>
       </chakra.form>
-      <ConfirmTransactionModal
-        isOpen={!!pendingTransaction}
-        transactionData={pendingTransaction}
-        selectedAsset={assetOptionsMap.get(assetIdValue)}
-        onCancel={() => {
-          setPendingTransaction(null);
-        }}
-      />
+      {pendingTransaction && (
+        <ConfirmTransactionModal
+          isOpen
+          transactionData={pendingTransaction}
+          selectedAsset={assetOptionsMap.get(assetIdValue)}
+          onCancel={() => {
+            setPendingTransaction(null);
+          }}
+        />
+      )}
     </>
   );
 }
