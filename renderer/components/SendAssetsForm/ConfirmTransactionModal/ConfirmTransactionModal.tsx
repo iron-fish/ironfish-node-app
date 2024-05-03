@@ -151,7 +151,7 @@ export function ConfirmTransactionModal({
                   </Text>
                   <Text fontSize="md">
                     {CurrencyUtils.render(
-                      (transactionData.amount ?? 0).toString(),
+                      transactionData.amount.toString(),
                       transactionData.assetId,
                       selectedAsset?.asset.verification,
                     )}{" "}

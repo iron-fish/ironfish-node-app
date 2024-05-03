@@ -132,7 +132,7 @@ export function SendAssetsFormContent({
   } = useForm<TransactionFormData>({
     resolver: zodResolver(transactionSchema),
     defaultValues: {
-      amount: 0,
+      amount: "0",
       fromAccount: defaultAccount,
       toAccount: defaultToAddress ?? "",
       assetId: defaultAssetId,
@@ -199,7 +199,7 @@ export function SendAssetsFormContent({
   const assetAmountToSend = useMemo(() => {
     const assetToSend = assetOptionsMap.get(assetIdValue);
     if (!assetToSend) {
-      return 0;
+      return 0n;
     }
 
     const [amountToSend, conversionError] = CurrencyUtils.tryMajorToMinor(
@@ -209,7 +209,7 @@ export function SendAssetsFormContent({
     );
 
     if (conversionError) {
-      return 0;
+      return 0n;
     }
 
     return amountToSend;
@@ -231,7 +231,7 @@ export function SendAssetsFormContent({
       {
         retry: false,
         enabled:
-          amountValue > 0 &&
+          Number(amountValue) > 0 &&
           !errors.memo &&
           !errors.amount &&
           !errors.toAccount &&
@@ -310,7 +310,7 @@ export function SendAssetsFormContent({
             fromAccount: data.fromAccount,
             toAccount: data.toAccount,
             assetId: data.assetId,
-            amount: Number(assetAmountToSend),
+            amount: assetAmountToSend.toString(),
             fee: fee,
             memo: data.memo ?? "",
           });
@@ -382,16 +382,16 @@ export function SendAssetsFormContent({
                   field.onChange(finalValue);
                 }}
                 onFocus={() => {
-                  if (field.value === 0) {
+                  if (field.value === "0") {
                     field.onChange("");
                   }
                 }}
                 onBlur={() => {
                   if (!field.value) {
-                    field.onChange(0);
+                    field.onChange("0");
                   }
-                  if (String(field.value).endsWith(".")) {
-                    field.onChange(String(field.value).slice(0, -1));
+                  if (field.value.endsWith(".")) {
+                    field.onChange(field.value.slice(0, -1));
                   }
                 }}
                 label={formatMessage(messages.amountLabel)}
