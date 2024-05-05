@@ -30,17 +30,37 @@ async function main() {
     stdio: "inherit",
   });
 
+  execFileSync("rm", ["-rf", "prebuilds"], {
+    cwd: "node_modules/node-datachannel",
+    stdio: "inherit",
+  });
+
   execFileSync("npm", ["run", "build"], {
     cwd: "node_modules/node-datachannel",
     stdio: "inherit",
   });
 
-  execFileSync("rm", ["-rf", "node_modules"], {
+  execFileSync("mv", ["build/Release/node_datachannel.node", "."], {
     cwd: "node_modules/node-datachannel",
     stdio: "inherit",
   });
 
-  execFileSync("rm", ["-rf", "prebuilds"], {
+  execFileSync("npm", ["run", "clean"], {
+    cwd: "node_modules/node-datachannel",
+    stdio: "inherit",
+  });
+
+  execFileSync("mkdir", ["-p", "build/Release"], {
+    cwd: "node_modules/node-datachannel",
+    stdio: "inherit",
+  });
+
+  execFileSync("mv", ["node_datachannel.node", "build/Release"], {
+    cwd: "node_modules/node-datachannel",
+    stdio: "inherit",
+  });
+
+  execFileSync("rm", ["-rf", "node_modules"], {
     cwd: "node_modules/node-datachannel",
     stdio: "inherit",
   });
