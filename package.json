@@ -12,7 +12,7 @@
     "lint": "eslint --fix --config .eslintrc.js .",
     "format": "prettier --config .prettierrc --write .",
     "prepare": "husky install",
-    "postinstall": "electron-builder install-app-deps",
+    "postinstall": "electron-builder install-app-deps && tsx scripts/patch-node-datachannel.ts",
     "release": "npm run i18n && nextron build --publish always",
     "extract:i18n": "formatjs extract \"renderer/{pages,components,sections,layouts,ui}/**/*.{js,ts,tsx}\" --format crowdin --id-interpolation-pattern \"[sha512:contenthash:base64:6]\" --out-file renderer/intl/locales/en-US.json",
     "compile:i18n": "formatjs compile-folder --ast --format crowdin renderer/intl/locales renderer/intl/compiled-locales",

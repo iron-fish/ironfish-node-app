@@ -1,0 +1,11 @@
+--- node_modules/node-datachannel/CMakeLists.txt
++++ node_modules/node-datachannel/CMakeLists.txt
+@@ -81,7 +82,7 @@
+ elseif(CMAKE_HOST_SYSTEM_NAME STREQUAL "Android")
+     list(APPEND LINK_LIBRARIES -static-libgcc)
+ elseif(UNIX)
+-    list(APPEND LINK_LIBRARIES -static-libgcc -static-libstdc++)
++    list(APPEND LINK_LIBRARIES -static-libgcc)
+ endif()
+ 
+ if(WIN32)
