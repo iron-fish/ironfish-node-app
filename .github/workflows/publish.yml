@@ -163,6 +163,8 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: 18
+      - name: Install Python setuptools
+        run: brew install python-setuptools
       - name: Install dependencies
         run: npm install
       - name: Setup code signing
