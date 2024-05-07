@@ -96,6 +96,8 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: 18
+      - name: Install Python setuptools
+        run: brew install python-setuptools
       - name: Install dependencies
         run: npm install
       - name: Setup code signing
@@ -167,7 +169,7 @@ jobs:
       - name: Check runner architecture
         shell: bash
         run: |
-          if [[ "$(uname -m)" != "x64" ]]; then
+          if [[ "$(uname -m)" != "x86_64" ]]; then
             echo "Runner architecture does not match specified architecture"
             exit 1
           fi
