@@ -2,9 +2,7 @@ name: Publish Release
 permissions:
   contents: write
 on:
-  push:
-    branches:
-      - main
+  push
 concurrency: publish-release
 
 jobs:
@@ -85,8 +83,15 @@ jobs:
   publish_on_mac_arm64:
     name: Mac arm64
     needs: [delete_existing_artifacts]
-    runs-on: [self-hosted, macOS, ARM64]
+    runs-on: macos-latest
     steps:
+      - name: Check runner architecture
+        shell: bash
+        run: |
+          if [[ "$(uname -m)" != "arm64" ]]; then
+            echo "Runner architecture does not match specified architecture"
+            exit 1
+          fi
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
         with:
@@ -157,8 +162,15 @@ jobs:
   publish_on_mac:
     name: Mac x64
     needs: [delete_existing_artifacts]
-    runs-on: macos-latest
+    runs-on: macos-13
     steps:
+      - name: Check runner architecture
+        shell: bash
+        run: |
+          if [[ "$(uname -m)" != "x64" ]]; then
+            echo "Runner architecture does not match specified architecture"
+            exit 1
+          fi
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
         with:
