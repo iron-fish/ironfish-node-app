@@ -2,7 +2,9 @@ name: Publish Release
 permissions:
   contents: write
 on:
-  push
+  push:
+    branches:
+      - main
 concurrency: publish-release
 
 jobs:
