@@ -3,7 +3,7 @@ import Image from "next/image";
 import { useForm } from "react-hook-form";
 import { defineMessages, useIntl } from "react-intl";
 
-import treasureChest from "@/images/treasure-chest.svg";
+import rainbowFish from "@/images/rainbow-fish.svg";
 import MainLayout from "@/layouts/MainLayout";
 import { COLORS } from "@/ui/colors";
 import { Select } from "@/ui/Forms/Select/Select";
@@ -57,7 +57,7 @@ export default function Bridge() {
           >
             {formatMessage(messages.aboutContent)}
           </Text>
-          <Image src={treasureChest} alt="" />
+          <Image src={rainbowFish} alt="" />
         </Box>
       </Flex>
     </MainLayout>
