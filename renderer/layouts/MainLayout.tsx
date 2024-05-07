@@ -22,6 +22,7 @@ import { DarkModeSwitch } from "@/ui/DarkModeSwitch/DarkModeSwitch";
 import { AddressBook } from "@/ui/SVGs/AddressBook";
 import { ArrowReceive } from "@/ui/SVGs/ArrowReceive";
 import { ArrowSend } from "@/ui/SVGs/ArrowSend";
+import { BridgeArrows } from "@/ui/SVGs/BridgeArrows";
 import { House } from "@/ui/SVGs/House";
 import { LogoLg } from "@/ui/SVGs/LogoLg";
 import { LogoSm } from "@/ui/SVGs/LogoSm";
@@ -39,6 +40,9 @@ const messages = defineMessages({
   },
   receive: {
     defaultMessage: "Receive",
+  },
+  bridge: {
+    defaultMessage: "Bridge",
   },
   addressBook: {
     defaultMessage: "Address Book",
@@ -66,6 +70,11 @@ const LINKS = [
     label: messages.receive,
     href: "/receive",
     icon: <ArrowReceive />,
+  },
+  {
+    label: messages.bridge,
+    href: "/bridge",
+    icon: <BridgeArrows />,
   },
   {
     label: messages.addressBook,
