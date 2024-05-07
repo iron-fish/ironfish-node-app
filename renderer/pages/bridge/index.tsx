@@ -1,12 +1,11 @@
-import { Heading, Text, Flex, Box, VStack } from "@chakra-ui/react";
+import { Heading, Text, Flex, Box } from "@chakra-ui/react";
 import Image from "next/image";
-import { useForm } from "react-hook-form";
 import { defineMessages, useIntl } from "react-intl";
 
+import { BridgeAssetsForm } from "@/components/BridgeAssetsForm/BridgeAssetsForm";
 import rainbowFish from "@/images/rainbow-fish.svg";
 import MainLayout from "@/layouts/MainLayout";
 import { COLORS } from "@/ui/colors";
-import { Select } from "@/ui/Forms/Select/Select";
 
 const messages = defineMessages({
   heading: {
@@ -24,8 +23,6 @@ const messages = defineMessages({
 export default function Bridge() {
   const { formatMessage } = useIntl();
 
-  const { register } = useForm();
-
   return (
     <MainLayout>
       <Heading fontSize={28} lineHeight="160%" mb={5}>
@@ -34,15 +31,7 @@ export default function Bridge() {
 
       <Flex gap={16}>
         <Box maxW="592px" w="100%">
-          <VStack gap={4} alignItems="stretch">
-            <Select
-              {...register("fromAccount")}
-              value={"0x123"}
-              label="From Account"
-              options={[]}
-              error={null}
-            />
-          </VStack>
+          <BridgeAssetsForm />
         </Box>
         <Box>
           <Heading fontSize="2xl" mb={4}>
