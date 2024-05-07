@@ -17,9 +17,10 @@ import { defineMessages, useIntl } from "react-intl";
 import { trpcReact } from "@/providers/TRPCProvider";
 import { COLORS } from "@/ui/colors";
 import { PillButton } from "@/ui/PillButton/PillButton";
+import { CurrencyUtils } from "@/utils/currency";
 import { formatOre } from "@/utils/ironUtils";
 
-import { TransactionData } from "../transactionSchema";
+import { TransactionData, AssetOptionType } from "../transactionSchema";
 
 const messages = defineMessages({
   confirmTransactionDetails: {
@@ -78,19 +79,22 @@ const messages = defineMessages({
   cancel: {
     defaultMessage: "Cancel",
   },
+  unknownAsset: {
+    defaultMessage: "unknown asset",
+  },
 });
 
 type Props = {
   isOpen: boolean;
-  transactionData: TransactionData | null;
-  selectedAssetName: string;
+  transactionData: TransactionData;
+  selectedAsset?: AssetOptionType;
   onCancel: () => void;
 };
 
 export function ConfirmTransactionModal({
   isOpen,
   transactionData,
-  selectedAssetName,
+  selectedAsset,
   onCancel,
 }: Props) {
   const {
@@ -112,9 +116,6 @@ export function ConfirmTransactionModal({
   }, [onCancel, reset]);
 
   const handleSubmit = useCallback(() => {
-    if (!transactionData) {
-      throw new Error("No transaction data");
-    }
     sendTransaction(transactionData);
   }, [sendTransaction, transactionData]);
 
@@ -149,8 +150,13 @@ export function ConfirmTransactionModal({
                     {formatMessage(messages.amount)}
                   </Text>
                   <Text fontSize="md">
-                    {formatOre(transactionData?.amount ?? 0)}{" "}
-                    {selectedAssetName}
+                    {CurrencyUtils.render(
+                      transactionData.amount.toString(),
+                      transactionData.assetId,
+                      selectedAsset?.asset.verification,
+                    )}{" "}
+                    {selectedAsset?.assetName ??
+                      formatMessage(messages.unknownAsset)}
                   </Text>
                 </Box>
 

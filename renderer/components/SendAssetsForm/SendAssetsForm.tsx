@@ -11,8 +11,9 @@ import { RenderError } from "@/ui/Forms/FormField/FormField";
 import { Select } from "@/ui/Forms/Select/Select";
 import { TextInput } from "@/ui/Forms/TextInput/TextInput";
 import { PillButton } from "@/ui/PillButton/PillButton";
+import { CurrencyUtils } from "@/utils/currency";
 import { hexToUTF16String } from "@/utils/hexToUTF16String";
-import { formatOre, parseIron } from "@/utils/ironUtils";
+import { formatOre } from "@/utils/ironUtils";
 import { asQueryString } from "@/utils/parseRouteQuery";
 import { sliceToUtf8Bytes } from "@/utils/sliceToUtf8Bytes";
 import { truncateString } from "@/utils/truncateString";
@@ -23,6 +24,9 @@ import {
   TransactionData,
   TransactionFormData,
   transactionSchema,
+  AccountType,
+  BalanceType,
+  AssetOptionType,
 } from "./transactionSchema";
 import {
   AccountSyncingMessage,
@@ -64,16 +68,10 @@ const messages = defineMessages({
   fastFeeLabel: {
     defaultMessage: "Fast",
   },
-  unknownAsset: {
-    defaultMessage: "unknown asset",
-  },
   estimatedFeeDefaultError: {
     defaultMessage: "An error occurred while estimating the transaction fee",
   },
 });
-
-type AccountType = TRPCRouterOutputs["getAccounts"][number];
-type BalanceType = AccountType["balances"]["iron"];
 
 function getAccountBalances(account: AccountType): {
   [key: string]: BalanceType;
@@ -134,7 +132,7 @@ export function SendAssetsFormContent({
   } = useForm<TransactionFormData>({
     resolver: zodResolver(transactionSchema),
     defaultValues: {
-      amount: 0,
+      amount: "0",
       fromAccount: defaultAccount,
       toAccount: defaultToAddress ?? "",
       assetId: defaultAssetId,
@@ -143,26 +141,97 @@ export function SendAssetsFormContent({
   });
 
   const fromAccountValue = watch("fromAccount");
-  const assetValue = watch("assetId");
+  const assetIdValue = watch("assetId");
   const feeValue = watch("fee");
   const amountValue = watch("amount");
   const toAccountValue = watch("toAccount");
+
+  useEffect(() => {
+    // If the 'assetId' changes, reset the 'amount' field
+    // to prevent issues if there is a mismatch in decimals
+    // between two assets.
+    const _unused = assetIdValue;
+    resetField("amount");
+  }, [resetField, assetIdValue]);
+
+  const selectedAccount = useMemo(() => {
+    const match = accountsData?.find(
+      (account) => account.name === fromAccountValue,
+    );
+    if (!match) {
+      return accountsData[0];
+    }
+    return match;
+  }, [accountsData, fromAccountValue]);
+
+  const accountBalances = useMemo(() => {
+    return getAccountBalances(selectedAccount);
+  }, [selectedAccount]);
+
+  const assetOptionsMap = useMemo(() => {
+    const entries: Array<[string, AssetOptionType]> = Object.values(
+      accountBalances,
+    ).map((balance) => {
+      const assetName = hexToUTF16String(balance.asset.name);
+      const confirmed = CurrencyUtils.render(
+        BigInt(balance.confirmed),
+        balance.asset.id,
+        balance.asset.verification,
+      );
+      return [
+        balance.asset.id,
+        {
+          assetName: assetName,
+          label: assetName + ` (${confirmed})`,
+          value: balance.asset.id,
+          asset: balance.asset,
+        },
+      ];
+    });
+    return new Map(entries);
+  }, [accountBalances]);
+
+  const assetOptions = useMemo(
+    () => Array.from(assetOptionsMap.values()),
+    [assetOptionsMap],
+  );
+
+  const assetAmountToSend = useMemo(() => {
+    const assetToSend = assetOptionsMap.get(assetIdValue);
+    if (!assetToSend) {
+      return 0n;
+    }
+
+    const [amountToSend, conversionError] = CurrencyUtils.tryMajorToMinor(
+      amountValue.toString(),
+      assetIdValue,
+      assetToSend.asset.verification,
+    );
+
+    if (conversionError) {
+      return 0n;
+    }
+
+    return amountToSend;
+  }, [amountValue, assetIdValue, assetOptionsMap]);
 
   const { data: estimatedFeesData, error: estimatedFeesError } =
     trpcReact.getEstimatedFees.useQuery(
       {
         accountName: fromAccountValue,
         output: {
-          amount: parseIron(amountValue),
-          assetId: assetValue,
+          amount: Number(assetAmountToSend),
+          assetId: assetIdValue,
           memo: "",
-          publicAddress: toAccountValue,
+          // For fee estimation, the actual address of the recipient is not important, is just has to be
+          // a valid address. Therefore, we're just going to use the address of the first account.
+          publicAddress: accountsData[0].address,
         },
       },
       {
         retry: false,
         enabled:
-          amountValue > 0 &&
+          Number(amountValue) > 0 &&
           !errors.memo &&
           !errors.amount &&
           !errors.toAccount &&
@@ -191,37 +260,12 @@ export function SendAssetsFormContent({
     return null;
   }, [isAccountSynced, nodeStatusData?.blockchain.synced]);
 
-  const selectedAccount = useMemo(() => {
-    const match = accountsData?.find(
-      (account) => account.name === fromAccountValue,
-    );
-    if (!match) {
-      return accountsData[0];
-    }
-    return match;
-  }, [accountsData, fromAccountValue]);
-
-  const accountBalances = useMemo(() => {
-    return getAccountBalances(selectedAccount);
-  }, [selectedAccount]);
-
-  const assetOptions = useMemo(() => {
-    return Object.values(accountBalances).map((balance) => {
-      const assetName = hexToUTF16String(balance.asset.name);
-      return {
-        assetName: assetName,
-        label: assetName + ` (${formatOre(balance.confirmed)})`,
-        value: balance.asset.id,
-      };
-    });
-  }, [accountBalances]);
-
   // Resets asset field to $IRON if a newly selected account does not have the selected asset
   useEffect(() => {
-    if (!Object.hasOwn(accountBalances, assetValue)) {
+    if (!Object.hasOwn(accountBalances, assetIdValue)) {
       resetField("assetId");
     }
-  }, [assetValue, resetField, selectedAccount, accountBalances]);
+  }, [assetIdValue, resetField, selectedAccount, accountBalances]);
 
   const { data: contactsData } = trpcReact.getContacts.useQuery();
   const formattedContacts = useMemo(() => {
@@ -242,9 +286,8 @@ export function SendAssetsFormContent({
           const currentBalance = Number(
             accountBalances[data.assetId].confirmed,
           );
-          const amountAsIron = parseIron(data.amount);
 
-          if (currentBalance < amountAsIron) {
+          if (currentBalance < assetAmountToSend) {
             setError("amount", {
               type: "custom",
               message: formatMessage(messages.insufficientFundsError),
@@ -262,11 +305,12 @@ export function SendAssetsFormContent({
           }
 
           const fee = estimatedFeesData[data.fee];
+
           setPendingTransaction({
             fromAccount: data.fromAccount,
             toAccount: data.toAccount,
             assetId: data.assetId,
-            amount: parseIron(data.amount),
+            amount: assetAmountToSend.toString(),
             fee: fee,
             memo: data.memo ?? "",
           });
@@ -292,7 +336,7 @@ export function SendAssetsFormContent({
 
           <Select
             {...register("assetId")}
-            value={assetValue}
+            value={assetIdValue}
             label={formatMessage(messages.assetLabel)}
             options={assetOptions}
             error={errors.assetId?.message}
@@ -317,27 +361,37 @@ export function SendAssetsFormContent({
                     return;
                   }
 
+                  const assetToSend = assetOptionsMap.get(assetIdValue);
+                  const decimals =
+                    assetToSend?.asset.verification?.decimals ?? 0;
+
                   let finalValue = azValue;
 
-                  // only allow up to 8 decimal places
-                  const parts = azValue.split(".");
-                  if (parts[1]?.length > 8) {
-                    finalValue = `${parts[0]}.${parts[1].slice(0, 8)}`;
+                  if (decimals === 0) {
+                    // If decimals is 0, take the left side of the decimal.
+                    // If no decimal is present, this will still work correctly.
+                    finalValue = azValue.split(".")[0];
+                  } else {
+                    // Otherwise, take the left side of the decimal and up to the correct number of decimal places.
+                    const parts = azValue.split(".");
+                    if (parts[1]?.length > decimals) {
+                      finalValue = `${parts[0]}.${parts[1].slice(0, decimals)}`;
+                    }
                   }
 
                   field.onChange(finalValue);
                 }}
                 onFocus={() => {
-                  if (field.value === 0) {
+                  if (field.value === "0") {
                     field.onChange("");
                   }
                 }}
                 onBlur={() => {
                   if (!field.value) {
-                    field.onChange(0);
+                    field.onChange("0");
                   }
-                  if (String(field.value).endsWith(".")) {
-                    field.onChange(String(field.value).slice(0, -1));
+                  if (field.value.endsWith(".")) {
+                    field.onChange(field.value.slice(0, -1));
                   }
                 }}
                 label={formatMessage(messages.amountLabel)}
@@ -417,17 +471,16 @@ export function SendAssetsFormContent({
           </PillButton>
         </HStack>
       </chakra.form>
-      <ConfirmTransactionModal
-        isOpen={!!pendingTransaction}
-        transactionData={pendingTransaction}
-        selectedAssetName={
-          assetOptions.find(({ value }) => value === assetValue)?.assetName ??
-          formatMessage(messages.unknownAsset)
-        }
-        onCancel={() => {
-          setPendingTransaction(null);
-        }}
-      />
+      {pendingTransaction && (
+        <ConfirmTransactionModal
+          isOpen
+          transactionData={pendingTransaction}
+          selectedAsset={assetOptionsMap.get(assetIdValue)}
+          onCancel={() => {
+            setPendingTransaction(null);
+          }}
+        />
+      )}
     </>
   );
 }

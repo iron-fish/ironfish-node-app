@@ -1,7 +1,9 @@
 import * as z from "zod";
 
-import { getTrpcVanillaClient } from "@/providers/TRPCProvider";
-import { MIN_IRON_VALUE } from "@/utils/ironUtils";
+import {
+  TRPCRouterOutputs,
+  getTrpcVanillaClient,
+} from "@/providers/TRPCProvider";
 import { sliceToUtf8Bytes } from "@/utils/sliceToUtf8Bytes";
 
 export const MAX_MEMO_SIZE = 32;
@@ -19,7 +21,15 @@ export const transactionSchema = z.object({
       return !!response?.valid;
     }, "Invalid public address"),
   assetId: z.string().min(1),
-  amount: z.coerce.number().min(MIN_IRON_VALUE),
+  amount: z
+    .string()
+    .min(1)
+    .refine((value) => {
+      return !isNaN(Number(value));
+    }, "Amount must be a valid number")
+    .refine((value) => {
+      return Number(value) > 0;
+    }, "Amount must be greater than 0"),
   fee: z.union([z.literal("slow"), z.literal("average"), z.literal("fast")]),
   memo: z
     .string()
@@ -34,4 +44,14 @@ export type TransactionFormData = z.infer<typeof transactionSchema>;
 
 export type TransactionData = Omit<TransactionFormData, "fee"> & {
   fee: number;
+};
+
+export type AccountType = TRPCRouterOutputs["getAccounts"][number];
+export type BalanceType = AccountType["balances"]["iron"];
+export type AssetType = BalanceType["asset"];
+export type AssetOptionType = {
+  assetName: string;
+  label: string;
+  value: string;
+  asset: AssetType;
 };
