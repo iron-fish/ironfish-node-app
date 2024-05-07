@@ -436,6 +436,9 @@
   "WNgCs+": {
     "message": "Back to Address Book"
   },
+  "WSW+95": {
+    "message": "About Bridging"
+  },
   "WWEwrn": {
     "message": "Node Settings"
   },
@@ -711,6 +714,9 @@
   },
   "xmcVZ0": {
     "message": "Search"
+  },
+  "xwWibX": {
+    "message": "Bridging enables seamless transfers of assets across any EVM network. Simply choose your account, a bridge provider, select the asset and its amount, pick the destination network, and provide the destination address to execute your transfer."
   },
   "y3LzSM": {
     "message": "Max Peers"
