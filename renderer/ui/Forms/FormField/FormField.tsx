@@ -10,7 +10,7 @@ export type FormFieldProps = MergeProps<
     label: string | ReactNode;
     error?: string | FieldError | FieldErrorsImpl | null;
     icon?: ReactNode;
-    triggerProps?: StackProps & { ref: unknown };
+    triggerProps?: StackProps & { ref?: unknown };
     actions?: ReactNode;
   },
   StackProps
@@ -34,6 +34,7 @@ export function FormField({
         w="100%"
         border="1px solid"
         borderColor={error ? COLORS.RED : COLORS.BLACK}
+        bg={COLORS.WHITE}
         borderRadius={4}
         _dark={{
           bg: COLORS.DARK_MODE.GRAY_DARK,

@@ -19,10 +19,14 @@ type Props = FormFieldProps &
     name: string;
     options: Array<SelectOption>;
     onChange: UseFormRegisterReturn["onChange"];
+    triggerProps?: FormFieldProps["triggerProps"];
   };
 
 export const Select = forwardRef<typeof RadixSelect.Trigger, Props>(
-  function Select({ label, error, options, onChange, name, ...rest }, ref) {
+  function Select(
+    { label, error, options, onChange, name, triggerProps, ...rest },
+    ref,
+  ) {
     const [isOpen, setIsOpen] = useState(false);
 
     return (
@@ -49,6 +53,7 @@ export const Select = forwardRef<typeof RadixSelect.Trigger, Props>(
             className: styles.SelectTrigger,
             ref,
             textAlign: "inherit",
+            ...triggerProps,
           }}
         >
           <RadixSelect.Value
