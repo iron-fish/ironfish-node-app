@@ -12,7 +12,6 @@ import { Select } from "@/ui/Forms/Select/Select";
 import { TextInput } from "@/ui/Forms/TextInput/TextInput";
 import { PillButton } from "@/ui/PillButton/PillButton";
 import { CurrencyUtils } from "@/utils/currency";
-import { hexToUTF16String } from "@/utils/hexToUTF16String";
 import { formatOre } from "@/utils/ironUtils";
 import { asQueryString } from "@/utils/parseRouteQuery";
 import { sliceToUtf8Bytes } from "@/utils/sliceToUtf8Bytes";
@@ -24,10 +23,11 @@ import {
   TransactionData,
   TransactionFormData,
   transactionSchema,
-  AccountType,
-  BalanceType,
-  AssetOptionType,
 } from "./transactionSchema";
+import {
+  normalizeAmountInputChange,
+  useAccountAssets,
+} from "../AssetAmountInput/utils";
 import {
   AccountSyncingMessage,
   ChainSyncingMessage,
@@ -72,21 +72,6 @@ const messages = defineMessages({
     defaultMessage: "An error occurred while estimating the transaction fee",
   },
 });
-
-function getAccountBalances(account: AccountType): {
-  [key: string]: BalanceType;
-} {
-  const customAssets = account.balances.custom?.reduce((acc, customAsset) => {
-    return {
-      ...acc,
-      [customAsset.asset.id]: customAsset,
-    };
-  }, {});
-  return {
-    [account.balances.iron.asset.id]: account.balances.iron,
-    ...customAssets,
-  };
-}
 
 export function SendAssetsFormContent({
   accountsData,
@@ -155,46 +140,14 @@ export function SendAssetsFormContent({
   }, [resetField, assetIdValue]);
 
   const selectedAccount = useMemo(() => {
-    const match = accountsData?.find(
-      (account) => account.name === fromAccountValue,
+    return (
+      accountsData?.find((account) => account.name === fromAccountValue) ??
+      accountsData[0]
     );
-    if (!match) {
-      return accountsData[0];
-    }
-    return match;
   }, [accountsData, fromAccountValue]);
 
-  const accountBalances = useMemo(() => {
-    return getAccountBalances(selectedAccount);
-  }, [selectedAccount]);
-
-  const assetOptionsMap = useMemo(() => {
-    const entries: Array<[string, AssetOptionType]> = Object.values(
-      accountBalances,
-    ).map((balance) => {
-      const assetName = hexToUTF16String(balance.asset.name);
-      const confirmed = CurrencyUtils.render(
-        BigInt(balance.confirmed),
-        balance.asset.id,
-        balance.asset.verification,
-      );
-      return [
-        balance.asset.id,
-        {
-          assetName: assetName,
-          label: assetName + ` (${confirmed})`,
-          value: balance.asset.id,
-          asset: balance.asset,
-        },
-      ];
-    });
-    return new Map(entries);
-  }, [accountBalances]);
-
-  const assetOptions = useMemo(
-    () => Array.from(assetOptionsMap.values()),
-    [assetOptionsMap],
-  );
+  const { accountBalances, assetOptionsMap, assetOptions } =
+    useAccountAssets(selectedAccount);
 
   const assetAmountToSend = useMemo(() => {
     const assetToSend = assetOptionsMap.get(assetIdValue);
@@ -350,36 +303,12 @@ export function SendAssetsFormContent({
                 {...field}
                 value={field.value ?? ""}
                 onChange={(e) => {
-                  clearErrors("root.serverError");
-
-                  // remove any non-numeric characters except for periods
-                  const azValue = e.target.value.replace(/[^\d.]/g, "");
-
-                  // only allow one period
-                  if (azValue.split(".").length > 2) {
-                    e.preventDefault();
-                    return;
-                  }
-
-                  const assetToSend = assetOptionsMap.get(assetIdValue);
-                  const decimals =
-                    assetToSend?.asset.verification?.decimals ?? 0;
-
-                  let finalValue = azValue;
-
-                  if (decimals === 0) {
-                    // If decimals is 0, take the left side of the decimal.
-                    // If no decimal is present, this will still work correctly.
-                    finalValue = azValue.split(".")[0];
-                  } else {
-                    // Otherwise, take the left side of the decimal and up to the correct number of decimal places.
-                    const parts = azValue.split(".");
-                    if (parts[1]?.length > decimals) {
-                      finalValue = `${parts[0]}.${parts[1].slice(0, decimals)}`;
-                    }
-                  }
-
-                  field.onChange(finalValue);
+                  normalizeAmountInputChange({
+                    changeEvent: e,
+                    selectedAsset: assetOptionsMap.get(assetIdValue),
+                    onStart: () => clearErrors("root.serverError"),
+                    onChange: field.onChange,
+                  });
                 }}
                 onFocus={() => {
                   if (field.value === "0") {

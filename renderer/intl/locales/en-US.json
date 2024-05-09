@@ -280,6 +280,9 @@
   "Kkv03/": {
     "message": "Transaction Details"
   },
+  "Km+rD9": {
+    "message": "{balance} {asset} available"
+  },
   "L4MaM3": {
     "message": "Cores"
   },

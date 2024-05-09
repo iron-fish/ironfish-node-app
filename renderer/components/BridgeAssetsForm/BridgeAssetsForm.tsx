@@ -8,6 +8,7 @@ import { COLORS } from "@/ui/colors";
 import { Select } from "@/ui/Forms/Select/Select";
 
 import { AssetAmountInput } from "../AssetAmountInput/AssetAmountInput";
+import { useAccountAssets } from "../AssetAmountInput/utils";
 
 const messages = defineMessages({
   fromLabel: {
@@ -32,9 +33,28 @@ export function BridgeAssetsFormContent({
     });
   }, [accountsData]);
 
-  const { register, watch } = useForm();
+  const { register, watch } = useForm({
+    defaultValues: {
+      amount: "0",
+      fromAccount: accountOptions[0]?.value,
+      assetId: accountsData[0]?.balances.iron.asset.id,
+    },
+  });
 
+  const amountValue = watch("amount");
   const fromAccountValue = watch("fromAccount");
+  const assetIdValue = watch("assetId");
+
+  const selectedAccount = useMemo(() => {
+    return (
+      accountsData?.find((account) => account.name === fromAccountValue) ??
+      accountsData[0]
+    );
+  }, [accountsData, fromAccountValue]);
+
+  const { assetOptions, assetOptionsMap } = useAccountAssets(selectedAccount, {
+    balanceInLabel: false,
+  });
 
   return (
     <VStack gap={4} alignItems="stretch">
@@ -43,7 +63,6 @@ export function BridgeAssetsFormContent({
         value={fromAccountValue}
         label={formatMessage(messages.fromLabel)}
         options={accountOptions}
-        // error={errors.fromAccount?.message}
       />
       <VStack alignItems="stretch" gap="5px">
         <VStack
@@ -51,14 +70,28 @@ export function BridgeAssetsFormContent({
           borderRadius={4}
           bg={COLORS.GRAY_LIGHT}
           alignItems="stretch"
+          _dark={{
+            bg: "transparent",
+            border: `1px solid ${COLORS.DARK_MODE.GRAY_MEDIUM}`,
+          }}
         >
-          <AssetAmountInput selectedAsset="" assetOptions={[]} amountValue="" />
+          <AssetAmountInput
+            assetIdValue={assetIdValue}
+            assetOptions={assetOptions}
+            assetOptionsMap={assetOptionsMap}
+            amountValue={amountValue}
+            onAmountChange={(value) => console.log(value)}
+          />
         </VStack>
         <VStack
           p={8}
           borderRadius={4}
           bg={COLORS.GRAY_LIGHT}
           alignItems="stretch"
+          _dark={{
+            bg: "transparent",
+            border: `1px solid ${COLORS.DARK_MODE.GRAY_MEDIUM}`,
+          }}
         >
           <Select
             label="temp"
