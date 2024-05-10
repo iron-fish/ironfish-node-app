@@ -1,4 +1,4 @@
-import { TriangleDownIcon } from "@chakra-ui/icons";
+import { ChevronDownIcon } from "@chakra-ui/icons";
 import { Box } from "@chakra-ui/react";
 import * as RadixSelect from "@radix-ui/react-select";
 import React, { ComponentProps, ReactNode, forwardRef, useState } from "react";
@@ -19,10 +19,14 @@ type Props = FormFieldProps &
     name: string;
     options: Array<SelectOption>;
     onChange: UseFormRegisterReturn["onChange"];
+    triggerProps?: FormFieldProps["triggerProps"];
   };
 
 export const Select = forwardRef<typeof RadixSelect.Trigger, Props>(
-  function Select({ label, error, options, onChange, name, ...rest }, ref) {
+  function Select(
+    { label, error, options, onChange, name, triggerProps, ...rest },
+    ref,
+  ) {
     const [isOpen, setIsOpen] = useState(false);
 
     return (
@@ -38,10 +42,11 @@ export const Select = forwardRef<typeof RadixSelect.Trigger, Props>(
           label={label}
           error={error}
           icon={
-            <TriangleDownIcon
+            <ChevronDownIcon
               transform={`rotate(${isOpen ? "180" : "0"}deg)`}
-              boxSize={3}
-              mr={6}
+              boxSize={4}
+              mr={2}
+              color={COLORS.GRAY_MEDIUM}
             />
           }
           triggerProps={{
@@ -49,6 +54,7 @@ export const Select = forwardRef<typeof RadixSelect.Trigger, Props>(
             className: styles.SelectTrigger,
             ref,
             textAlign: "inherit",
+            ...triggerProps,
           }}
         >
           <RadixSelect.Value

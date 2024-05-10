@@ -7,10 +7,10 @@ import { MergeProps } from "@/utils/react";
 
 export type FormFieldProps = MergeProps<
   {
-    label: string | ReactNode;
+    label?: string | ReactNode;
     error?: string | FieldError | FieldErrorsImpl | null;
     icon?: ReactNode;
-    triggerProps?: StackProps & { ref: unknown };
+    triggerProps?: StackProps & { ref?: unknown };
     actions?: ReactNode;
   },
   StackProps
@@ -34,6 +34,7 @@ export function FormField({
         w="100%"
         border="1px solid"
         borderColor={error ? COLORS.RED : COLORS.BLACK}
+        bg={COLORS.WHITE}
         borderRadius={4}
         _dark={{
           bg: COLORS.DARK_MODE.GRAY_DARK,
@@ -45,7 +46,7 @@ export function FormField({
           flexGrow={1}
           w="100%"
           px={6}
-          py={3}
+          py={label ? 3 : "22px"}
           sx={{
             ":has(input:placeholder-shown:not(:focus)) :is(.label-wrapper)": {
               transform: "translateY(0.8em)",
@@ -53,19 +54,21 @@ export function FormField({
           }}
         >
           <HStack>
-            <Text
-              className="label-wrapper"
-              as="span"
-              fontSize="sm"
-              color={COLORS.GRAY_MEDIUM}
-              _dark={{
-                color: COLORS.DARK_MODE.GRAY_LIGHT,
-              }}
-              flexGrow={1}
-              transition="transform 0.2s ease-in-out"
-            >
-              {label}
-            </Text>
+            {label && (
+              <Text
+                className="label-wrapper"
+                as="span"
+                fontSize="sm"
+                color={COLORS.GRAY_MEDIUM}
+                _dark={{
+                  color: COLORS.DARK_MODE.GRAY_LIGHT,
+                }}
+                flexGrow={1}
+                transition="transform 0.2s ease-in-out"
+              >
+                {label}
+              </Text>
+            )}
 
             {actions && (
               <Box onClick={(e) => e.preventDefault()}>{actions}</Box>
