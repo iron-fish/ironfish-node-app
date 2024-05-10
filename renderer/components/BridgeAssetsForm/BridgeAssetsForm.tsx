@@ -1,4 +1,4 @@
-import { VStack } from "@chakra-ui/react";
+import { chakra, VStack } from "@chakra-ui/react";
 import { useMemo } from "react";
 import { useForm } from "react-hook-form";
 import { defineMessages, useIntl } from "react-intl";
@@ -57,52 +57,54 @@ export function BridgeAssetsFormContent({
   });
 
   return (
-    <VStack gap={4} alignItems="stretch">
-      <Select
-        {...register("fromAccount")}
-        value={fromAccountValue}
-        label={formatMessage(messages.fromLabel)}
-        options={accountOptions}
-      />
-      <VStack alignItems="stretch" gap="5px">
-        <VStack
-          p={8}
-          borderRadius={4}
-          bg={COLORS.GRAY_LIGHT}
-          alignItems="stretch"
-          _dark={{
-            bg: "transparent",
-            border: `1px solid ${COLORS.DARK_MODE.GRAY_MEDIUM}`,
-          }}
-        >
-          <AssetAmountInput
-            assetIdValue={assetIdValue}
-            assetOptions={assetOptions}
-            assetOptionsMap={assetOptionsMap}
-            amountValue={amountValue}
-            onAmountChange={(value) => console.log(value)}
-          />
-        </VStack>
-        <VStack
-          p={8}
-          borderRadius={4}
-          bg={COLORS.GRAY_LIGHT}
-          alignItems="stretch"
-          _dark={{
-            bg: "transparent",
-            border: `1px solid ${COLORS.DARK_MODE.GRAY_MEDIUM}`,
-          }}
-        >
-          <Select
-            label="temp"
-            value="temp"
-            options={[]}
-            name=""
-            onChange={async () => {}}
-          />
+    <chakra.form
+      onSubmit={(e) => {
+        e.preventDefault();
+        console.log("Handle submit...");
+      }}
+    >
+      <VStack gap={4} alignItems="stretch">
+        <Select
+          {...register("fromAccount")}
+          value={fromAccountValue}
+          label={formatMessage(messages.fromLabel)}
+          options={accountOptions}
+        />
+        <VStack alignItems="stretch" gap="5px">
+          <VStack
+            p={8}
+            borderRadius={4}
+            bg={COLORS.GRAY_LIGHT}
+            alignItems="stretch"
+            _dark={{
+              bg: "transparent",
+              border: `1px solid ${COLORS.DARK_MODE.GRAY_MEDIUM}`,
+            }}
+          >
+            <AssetAmountInput
+              assetOptions={assetOptions}
+              assetOptionsMap={assetOptionsMap}
+              amountValue={amountValue}
+              onAmountChange={(value) => console.log(value)}
+              assetIdValue={assetIdValue}
+              onAssetIdChange={async (value) => console.log(value)}
+            />
+          </VStack>
+          <VStack
+            p={8}
+            borderRadius={4}
+            bg={COLORS.GRAY_LIGHT}
+            alignItems="stretch"
+            _dark={{
+              bg: "transparent",
+              border: `1px solid ${COLORS.DARK_MODE.GRAY_MEDIUM}`,
+            }}
+          >
+            <span />
+          </VStack>
         </VStack>
       </VStack>
-    </VStack>
+    </chakra.form>
   );
 }
 

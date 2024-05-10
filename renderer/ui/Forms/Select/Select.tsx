@@ -1,4 +1,4 @@
-import { TriangleDownIcon } from "@chakra-ui/icons";
+import { ChevronDownIcon } from "@chakra-ui/icons";
 import { Box } from "@chakra-ui/react";
 import * as RadixSelect from "@radix-ui/react-select";
 import React, { ComponentProps, ReactNode, forwardRef, useState } from "react";
@@ -42,10 +42,11 @@ export const Select = forwardRef<typeof RadixSelect.Trigger, Props>(
           label={label}
           error={error}
           icon={
-            <TriangleDownIcon
+            <ChevronDownIcon
               transform={`rotate(${isOpen ? "180" : "0"}deg)`}
-              boxSize={3}
-              mr={6}
+              boxSize={4}
+              mr={2}
+              color={COLORS.GRAY_MEDIUM}
             />
           }
           triggerProps={{
