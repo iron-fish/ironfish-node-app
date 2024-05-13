@@ -7,6 +7,7 @@ import { TRPCRouterOutputs, trpcReact } from "@/providers/TRPCProvider";
 import { COLORS } from "@/ui/colors";
 import { Select } from "@/ui/Forms/Select/Select";
 import { TextInput } from "@/ui/Forms/TextInput/TextInput";
+import { useChainportData } from "@/utils/chainport/chainport";
 
 import { AssetAmountInput } from "../AssetAmountInput/AssetAmountInput";
 import { useAccountAssets } from "../AssetAmountInput/utils";
@@ -56,6 +57,10 @@ export function BridgeAssetsFormContent({
   const { assetOptions, assetOptionsMap } = useAccountAssets(selectedAccount, {
     balanceInLabel: false,
   });
+
+  const chainportData = useChainportData();
+
+  console.log(chainportData.data);
 
   return (
     <chakra.form
