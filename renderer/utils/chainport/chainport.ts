@@ -3,7 +3,22 @@ import axios from "axios";
 
 import { assertMetadataApiResponse, assertTokensApiResponse } from "./types";
 
-export function useChainportData(isDevNetwork = true) {
+export type ChainportToken = {
+  chainportId: number;
+  ironfishId: string;
+  symbol: string;
+  name: string;
+  decimals: number;
+  targetNetworks: {
+    chainportNetworkId: number;
+    chainId: number | null;
+    value: string;
+    label: string;
+    networkIcon: string;
+  }[];
+};
+
+export function useChainportTokens(isDevNetwork = true) {
   const TOKENS_ENDPOINT = `https://${
     isDevNetwork ? "preprod-" : ""
   }api.chainport.io/token/list?network_name=IRONFISH`;
@@ -11,8 +26,11 @@ export function useChainportData(isDevNetwork = true) {
     isDevNetwork ? "preprod-" : ""
   }api.chainport.io/meta`;
 
-  return useQuery({
-    queryKey: ["useChainportData", isDevNetwork],
+  return useQuery<{
+    chainportTokens: ChainportToken[];
+    chainportTokensMap: Map<string, ChainportToken>;
+  }>({
+    queryKey: ["useChainportTokens", isDevNetwork],
     queryFn: async () => {
       try {
         const [tokensResponse, metadataResponse] = await Promise.all([
@@ -22,28 +40,47 @@ export function useChainportData(isDevNetwork = true) {
         const tokensData = assertTokensApiResponse(tokensResponse.data);
         const chainportMeta = assertMetadataApiResponse(metadataResponse.data);
 
-        return tokensData.verified_tokens.map((token) => {
-          const targetNetworks = token.target_networks.map((networkId) => {
-            const networkDetails = chainportMeta.cp_network_ids[networkId];
-            if (!networkDetails) {
-              throw new Error(`Unknown network id: ${networkId}`);
-            }
-            return {
-              chainportNetworkId: networkId,
-              chainId: networkDetails.chain_id,
-              label: networkDetails.label,
-              networkIcon: networkDetails.network_icon,
-            };
-          });
+        const chainportTokens = tokensData.verified_tokens.map((token) => {
+          const targetNetworks = token.target_networks
+            .map((networkId) => {
+              const networkDetails = chainportMeta.cp_network_ids[networkId];
+              if (!networkDetails) {
+                throw new Error(`Unknown network id: ${networkId}`);
+              }
+              return {
+                chainportNetworkId: networkId,
+                label: networkDetails.label,
+                networkIcon: networkDetails.network_icon,
+                chainId: networkDetails.chain_id,
+                value: networkDetails.chain_id
+                  ? networkDetails.chain_id.toString()
+                  : "",
+              };
+            })
+            .filter((item) => {
+              return item.value !== null;
+            });
 
           return {
-            id: token.id,
+            chainportId: token.id,
+            ironfishId: token.web3_address,
             symbol: token.symbol,
             name: token.name,
             decimals: token.decimals,
             targetNetworks,
           };
         });
+
+        const tokenEntries = chainportTokens.map<[string, ChainportToken]>(
+          (token) => [token.ironfishId, token],
+        );
+        const chainportTokensMap: Map<string, ChainportToken> = new Map(
+          tokenEntries,
+        );
+        return {
+          chainportTokens,
+          chainportTokensMap,
+        };
       } catch (err) {
         console.error("Failed to fetch chainport data", err);
         throw err;

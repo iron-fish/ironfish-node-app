@@ -5,8 +5,8 @@ export function BridgeArrows(props: ComponentProps<typeof chakra.svg>) {
   return (
     <chakra.svg
       xmlns="http://www.w3.org/2000/svg"
-      width="22"
-      height="19"
+      width="22px"
+      height="19px"
       fill="none"
       {...props}
     >
