@@ -13,6 +13,7 @@ import {
 } from "@/utils/chainport/chainport";
 
 import { BridgeAssetsFormShell } from "./BridgeAssetsFormShell";
+import { BridgeConfirmationModal } from "./BridgeConfirmationModal";
 import { AssetAmountInput } from "../AssetAmountInput/AssetAmountInput";
 import { useAccountAssets } from "../AssetAmountInput/utils";
 
@@ -93,42 +94,45 @@ export function BridgeAssetsFormContent({
   }
 
   return (
-    <BridgeAssetsFormShell
-      fromAccountInput={
-        <Select
-          {...register("fromAccount")}
-          value={fromAccountValue}
-          label={formatMessage(messages.fromLabel)}
-          options={accountOptions}
-        />
-      }
-      assetAmountInput={
-        <AssetAmountInput
-          assetOptions={bridgeableAssets}
-          assetOptionsMap={assetOptionsMap}
-          amountValue={amountValue}
-          onAmountChange={(value) => console.log(value)}
-          assetIdValue={assetIdValue}
-          onAssetIdChange={async (value) => console.log(value)}
-        />
-      }
-      bridgeProviderInput={
-        <HStack gap={4}>
-          <TextInput isReadOnly label="Bridge Provider" value="Chainport" />
-          <Text color={COLORS.GRAY_MEDIUM}>
-            {formatMessage(messages.needHelp)}
-          </Text>
-        </HStack>
-      }
-      destinationNetworkInput={
-        <Select
-          {...register("destinationNetwork")}
-          value={destinationNetworkValue}
-          label="Destination network"
-          options={availableNetworks}
-        />
-      }
-    />
+    <>
+      <BridgeAssetsFormShell
+        fromAccountInput={
+          <Select
+            {...register("fromAccount")}
+            value={fromAccountValue}
+            label={formatMessage(messages.fromLabel)}
+            options={accountOptions}
+          />
+        }
+        assetAmountInput={
+          <AssetAmountInput
+            assetOptions={bridgeableAssets}
+            assetOptionsMap={assetOptionsMap}
+            amountValue={amountValue}
+            onAmountChange={(value) => console.log(value)}
+            assetIdValue={assetIdValue}
+            onAssetIdChange={async (value) => console.log(value)}
+          />
+        }
+        bridgeProviderInput={
+          <HStack gap={4}>
+            <TextInput isReadOnly label="Bridge Provider" value="Chainport" />
+            <Text color={COLORS.GRAY_MEDIUM}>
+              {formatMessage(messages.needHelp)}
+            </Text>
+          </HStack>
+        }
+        destinationNetworkInput={
+          <Select
+            {...register("destinationNetwork")}
+            value={destinationNetworkValue}
+            label="Destination network"
+            options={availableNetworks}
+          />
+        }
+      />
+      <BridgeConfirmationModal onClose={() => null} />
+    </>
   );
 }
 
