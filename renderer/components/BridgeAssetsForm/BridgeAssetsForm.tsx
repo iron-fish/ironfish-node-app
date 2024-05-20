@@ -1,7 +1,8 @@
-import { HStack, Skeleton, Text } from "@chakra-ui/react";
+import { HStack, Skeleton, Text, chakra } from "@chakra-ui/react";
 import { useMemo } from "react";
 import { useForm } from "react-hook-form";
 import { defineMessages, useIntl } from "react-intl";
+import { useToggle } from "usehooks-ts";
 
 import { TRPCRouterOutputs, trpcReact } from "@/providers/TRPCProvider";
 import { COLORS } from "@/ui/colors";
@@ -36,6 +37,7 @@ export function BridgeAssetsFormContent({
   chainportTokensMap: Map<string, ChainportToken>;
 }) {
   const { formatMessage } = useIntl();
+  const [isConfirmModalOpen, toggleIsConfirmModal] = useToggle();
 
   const accountOptions = useMemo(() => {
     return accountsData?.map((account) => {
@@ -95,43 +97,52 @@ export function BridgeAssetsFormContent({
 
   return (
     <>
-      <BridgeAssetsFormShell
-        fromAccountInput={
-          <Select
-            {...register("fromAccount")}
-            value={fromAccountValue}
-            label={formatMessage(messages.fromLabel)}
-            options={accountOptions}
-          />
-        }
-        assetAmountInput={
-          <AssetAmountInput
-            assetOptions={bridgeableAssets}
-            assetOptionsMap={assetOptionsMap}
-            amountValue={amountValue}
-            onAmountChange={(value) => console.log(value)}
-            assetIdValue={assetIdValue}
-            onAssetIdChange={async (value) => console.log(value)}
-          />
-        }
-        bridgeProviderInput={
-          <HStack gap={4}>
-            <TextInput isReadOnly label="Bridge Provider" value="Chainport" />
-            <Text color={COLORS.GRAY_MEDIUM}>
-              {formatMessage(messages.needHelp)}
-            </Text>
-          </HStack>
-        }
-        destinationNetworkInput={
-          <Select
-            {...register("destinationNetwork")}
-            value={destinationNetworkValue}
-            label="Destination network"
-            options={availableNetworks}
-          />
-        }
-      />
-      <BridgeConfirmationModal onClose={() => null} />
+      <chakra.form
+        onSubmit={(e) => {
+          e.preventDefault();
+          toggleIsConfirmModal();
+        }}
+      >
+        <BridgeAssetsFormShell
+          fromAccountInput={
+            <Select
+              {...register("fromAccount")}
+              value={fromAccountValue}
+              label={formatMessage(messages.fromLabel)}
+              options={accountOptions}
+            />
+          }
+          assetAmountInput={
+            <AssetAmountInput
+              assetOptions={bridgeableAssets}
+              assetOptionsMap={assetOptionsMap}
+              amountValue={amountValue}
+              onAmountChange={(value) => console.log(value)}
+              assetIdValue={assetIdValue}
+              onAssetIdChange={async (value) => console.log(value)}
+            />
+          }
+          bridgeProviderInput={
+            <HStack gap={4}>
+              <TextInput isReadOnly label="Bridge Provider" value="Chainport" />
+              <Text color={COLORS.GRAY_MEDIUM}>
+                {formatMessage(messages.needHelp)}
+              </Text>
+            </HStack>
+          }
+          destinationNetworkInput={
+            <Select
+              {...register("destinationNetwork")}
+              value={destinationNetworkValue}
+              label="Destination network"
+              options={availableNetworks}
+            />
+          }
+        />
+      </chakra.form>
+      {isConfirmModalOpen && (
+        <BridgeConfirmationModal onClose={toggleIsConfirmModal} />
+      )}
     </>
   );
 }

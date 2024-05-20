@@ -1,4 +1,4 @@
-import { Box, chakra, Flex, HStack, VStack } from "@chakra-ui/react";
+import { Box, Flex, HStack, VStack } from "@chakra-ui/react";
 import { ReactNode } from "react";
 import { defineMessages, useIntl } from "react-intl";
 
@@ -27,12 +27,7 @@ export function BridgeAssetsFormShell({
 }) {
   const { formatMessage } = useIntl();
   return (
-    <chakra.form
-      onSubmit={(e) => {
-        e.preventDefault();
-        console.log("Handle submit...");
-      }}
-    >
+    <Box>
       <VStack gap={4} alignItems="stretch">
         {fromAccountInput}
         <VStack alignItems="stretch" gap={0}>
@@ -87,6 +82,6 @@ export function BridgeAssetsFormShell({
           {formatMessage(messages.bridgeAssetSubmit)}
         </PillButton>
       </HStack>
-    </chakra.form>
+    </Box>
   );
 }
