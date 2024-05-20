@@ -21,6 +21,7 @@ import { PillButton } from "@/ui/PillButton/PillButton";
 import { BridgeArrows } from "@/ui/SVGs/BridgeArrows";
 
 import chainportIcon from "./assets/chainport-icon.png";
+import ironfishIcon from "./assets/ironfish-icon.png";
 
 type Props = {
   onClose: () => void;
@@ -55,7 +56,7 @@ export function BridgeConfirmationModal({ onClose }: Props) {
                 <Item
                   label="Source Network"
                   content="Iron Fish"
-                  icon={chainportIcon}
+                  icon={ironfishIcon}
                 />
               </GridItem>
               <GridItem>
@@ -90,7 +91,7 @@ export function BridgeConfirmationModal({ onClose }: Props) {
                 <Item
                   label="Source Network"
                   content="Iron Fish"
-                  icon={chainportIcon}
+                  icon={ironfishIcon}
                 />
               </GridItem>
               <GridItem>
@@ -164,7 +165,7 @@ function Item({ label, content, icon, href }: ItemProps) {
     <Box py={2}>
       <Text color={COLORS.GRAY_MEDIUM}>{label}</Text>
       <HStack gap={1.5} mt={1} {...maybeLinkProps}>
-        {icon && <Image src={chainportIcon} alt="" />}
+        {icon && <Image src={icon} alt="" />}
         <Text
           data-type="content"
           as="span"
