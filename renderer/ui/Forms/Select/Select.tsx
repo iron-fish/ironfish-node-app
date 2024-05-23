@@ -10,7 +10,7 @@ import { COLORS } from "@/ui/colors";
 import styles from "./select.module.css";
 import { FormField, FormFieldProps } from "../FormField/FormField";
 
-type SelectOption = { label: ReactNode; value: string };
+type SelectOption = { label: ReactNode; value: string; disabled?: boolean };
 
 type SelectRootProps = Simplify<ComponentProps<typeof RadixSelect.Root>>;
 
@@ -83,18 +83,27 @@ export const Select = forwardRef<typeof RadixSelect.Trigger, Props>(
                   borderColor: COLORS.WHITE,
                 }}
               >
-                {options.map(({ label, value }, i) => (
+                {options.map(({ label, value, disabled }, i) => (
                   <Box
                     key={i}
-                    cursor="pointer"
-                    _hover={{
-                      bg: COLORS.GRAY_LIGHT,
-                    }}
-                    _dark={{
-                      _hover: {
-                        bg: COLORS.DARK_MODE.GRAY_MEDIUM,
-                      },
-                    }}
+                    cursor={disabled ? "default" : "pointer"}
+                    opacity={disabled ? 0.5 : 1}
+                    _hover={
+                      disabled
+                        ? undefined
+                        : {
+                            bg: COLORS.GRAY_LIGHT,
+                          }
+                    }
+                    _dark={
+                      disabled
+                        ? undefined
+                        : {
+                            _hover: {
+                              bg: COLORS.DARK_MODE.GRAY_MEDIUM,
+                            },
+                          }
+                    }
                     _focusWithin={{
                       bg: COLORS.GRAY_LIGHT,
                       _dark: {
@@ -102,7 +111,7 @@ export const Select = forwardRef<typeof RadixSelect.Trigger, Props>(
                       },
                     }}
                   >
-                    <RadixSelect.Item value={value}>
+                    <RadixSelect.Item value={value} disabled={disabled}>
                       <Box px={4} py={3}>
                         <RadixSelect.ItemText>{label}</RadixSelect.ItemText>
                       </Box>

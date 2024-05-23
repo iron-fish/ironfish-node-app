@@ -18,12 +18,14 @@ export function BridgeAssetsFormShell({
   assetAmountInput,
   bridgeProviderInput,
   destinationNetworkInput,
+  targetAddressInput,
 }: {
   status?: "LOADING";
   fromAccountInput: ReactNode;
   assetAmountInput: ReactNode;
   bridgeProviderInput: ReactNode;
   destinationNetworkInput: ReactNode;
+  targetAddressInput: ReactNode;
 }) {
   const { formatMessage } = useIntl();
   return (
@@ -68,12 +70,14 @@ export function BridgeAssetsFormShell({
             borderRadius={4}
             bg={COLORS.GRAY_LIGHT}
             alignItems="stretch"
+            gap={4}
             _dark={{
               bg: "transparent",
               border: `1px solid ${COLORS.DARK_MODE.GRAY_MEDIUM}`,
             }}
           >
             <HStack>{destinationNetworkInput}</HStack>
+            <Box>{targetAddressInput}</Box>
           </VStack>
         </VStack>
       </VStack>

@@ -1,19 +1,20 @@
 import { HStack, Skeleton, Text, chakra } from "@chakra-ui/react";
-import { useMemo } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { useForm } from "react-hook-form";
 import { defineMessages, useIntl } from "react-intl";
-import { useToggle } from "usehooks-ts";
 
 import { TRPCRouterOutputs, trpcReact } from "@/providers/TRPCProvider";
 import { COLORS } from "@/ui/colors";
 import { Select } from "@/ui/Forms/Select/Select";
 import { TextInput } from "@/ui/Forms/TextInput/TextInput";
 import {
+  ChainportTargetNetwork,
   ChainportToken,
   useChainportTokens,
 } from "@/utils/chainport/chainport";
 
 import { BridgeAssetsFormShell } from "./BridgeAssetsFormShell";
+import { BridgeAssetsFormData } from "./bridgeAssetsSchema";
 import { BridgeConfirmationModal } from "./BridgeConfirmationModal";
 import { AssetAmountInput } from "../AssetAmountInput/AssetAmountInput";
 import { useAccountAssets } from "../AssetAmountInput/utils";
@@ -25,6 +26,12 @@ const messages = defineMessages({
   needHelp: {
     defaultMessage: "Need help?",
   },
+  bridgeProvider: {
+    defaultMessage: "Bridge Provider",
+  },
+  destinationNetwork: {
+    defaultMessage: "Destination network",
+  },
 });
 
 export function BridgeAssetsFormContent({
@@ -35,9 +42,12 @@ export function BridgeAssetsFormContent({
   accountsData: TRPCRouterOutputs["getAccounts"];
   chainportTokens: ChainportToken[];
   chainportTokensMap: Map<string, ChainportToken>;
+  chainportTargetNetworksMap: Map<string, ChainportTargetNetwork>;
 }) {
   const { formatMessage } = useIntl();
-  const [isConfirmModalOpen, toggleIsConfirmModal] = useToggle();
+
+  const [confirmationData, setConfirmationData] =
+    useState<BridgeAssetsFormData | null>(null);
 
   const accountOptions = useMemo(() => {
     return accountsData?.map((account) => {
@@ -54,12 +64,17 @@ export function BridgeAssetsFormContent({
     .get(defaultAssetId)
     ?.targetNetworks[0].value.toString();
 
-  const { register, watch } = useForm({
+  if (!defaultDestinationNetwork) {
+    throw new Error("No default destination network found");
+  }
+
+  const { register, watch, setValue } = useForm({
     defaultValues: {
       amount: "0",
       fromAccount: defaultFromAccount,
       assetId: defaultAssetId,
       destinationNetwork: defaultDestinationNetwork,
+      targetAddress: "",
     },
   });
 
@@ -67,6 +82,21 @@ export function BridgeAssetsFormContent({
   const fromAccountValue = watch("fromAccount");
   const assetIdValue = watch("assetId");
   const destinationNetworkValue = watch("destinationNetwork");
+  const targetAddress = watch("targetAddress");
+
+  // If the user selects a different asset, and that asset does not support the selected network,
+  // then we automatically switch to the first available network for that asset.
+  useEffect(() => {
+    const availableNetworks =
+      chainportTokensMap.get(assetIdValue)?.targetNetworks;
+    const selectedNetwork = availableNetworks?.find(
+      (network) => network.chainId?.toString() === destinationNetworkValue,
+    );
+
+    if (availableNetworks && !selectedNetwork) {
+      setValue("destinationNetwork", availableNetworks[0].value.toString());
+    }
+  }, [assetIdValue, chainportTokensMap, destinationNetworkValue, setValue]);
 
   const selectedAccount = useMemo(() => {
     return (
@@ -83,9 +113,20 @@ export function BridgeAssetsFormContent({
     const chainportAssetIds = new Set(
       chainportTokens.map((token) => token.ironfishId),
     );
-    return assetOptions.filter((asset) => {
-      return chainportAssetIds.has(asset.asset.id);
-    });
+    const withDisabledStatus = assetOptions
+      .map((item) => {
+        return {
+          ...item,
+          disabled: !chainportAssetIds.has(item.asset.id),
+        };
+      })
+      .toSorted((a, b) => {
+        if (a.disabled && !b.disabled) return 1;
+        if (!a.disabled && b.disabled) return -1;
+        return 0;
+      });
+
+    return withDisabledStatus;
   }, [chainportTokens, assetOptions]);
 
   const availableNetworks =
@@ -100,7 +141,14 @@ export function BridgeAssetsFormContent({
       <chakra.form
         onSubmit={(e) => {
           e.preventDefault();
-          toggleIsConfirmModal();
+
+          setConfirmationData({
+            amount: amountValue,
+            fromAccount: fromAccountValue,
+            assetId: assetIdValue,
+            destinationNetwork: destinationNetworkValue,
+            targetAddress: targetAddress,
+          });
         }}
       >
         <BridgeAssetsFormShell
@@ -117,14 +165,18 @@ export function BridgeAssetsFormContent({
               assetOptions={bridgeableAssets}
               assetOptionsMap={assetOptionsMap}
               amountValue={amountValue}
-              onAmountChange={(value) => console.log(value)}
+              onAmountChange={(value) => setValue("amount", value)}
               assetIdValue={assetIdValue}
-              onAssetIdChange={async (value) => console.log(value)}
+              onAssetIdChange={async (e) => setValue("assetId", e.target.value)}
             />
           }
           bridgeProviderInput={
             <HStack gap={4}>
-              <TextInput isReadOnly label="Bridge Provider" value="Chainport" />
+              <TextInput
+                isReadOnly
+                label={formatMessage(messages.bridgeProvider)}
+                value="Chainport"
+              />
               <Text color={COLORS.GRAY_MEDIUM}>
                 {formatMessage(messages.needHelp)}
               </Text>
@@ -134,14 +186,20 @@ export function BridgeAssetsFormContent({
             <Select
               {...register("destinationNetwork")}
               value={destinationNetworkValue}
-              label="Destination network"
+              label={formatMessage(messages.destinationNetwork)}
               options={availableNetworks}
             />
           }
+          targetAddressInput={
+            <TextInput {...register("targetAddress")} label="Target Address" />
+          }
         />
       </chakra.form>
-      {isConfirmModalOpen && (
-        <BridgeConfirmationModal onClose={toggleIsConfirmModal} />
+      {!!confirmationData && (
+        <BridgeConfirmationModal
+          onClose={() => setConfirmationData(null)}
+          formData={confirmationData}
+        />
       )}
     </>
   );
@@ -161,6 +219,7 @@ export function BridgeAssetsForm() {
         assetAmountInput={<Skeleton height={71} />}
         bridgeProviderInput={<Skeleton height={71} w="50%" />}
         destinationNetworkInput={<Skeleton height={71} w="50%" />}
+        targetAddressInput={<Skeleton height={71} w="100%" />}
       />
     );
   }
@@ -174,6 +233,7 @@ export function BridgeAssetsForm() {
       accountsData={filteredAccounts}
       chainportTokens={tokensData.chainportTokens}
       chainportTokensMap={tokensData.chainportTokensMap}
+      chainportTargetNetworksMap={tokensData.chainportNetworksMap}
     />
   );
 }

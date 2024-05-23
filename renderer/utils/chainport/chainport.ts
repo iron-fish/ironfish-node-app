@@ -18,6 +18,14 @@ export type ChainportToken = {
   }[];
 };
 
+export type ChainportTargetNetwork = {
+  chainportNetworkId: number;
+  label: string;
+  networkIcon: string;
+  chainId: number | null;
+  value: string;
+};
+
 export function useChainportTokens(isDevNetwork = true) {
   const TOKENS_ENDPOINT = `https://${
     isDevNetwork ? "preprod-" : ""
@@ -29,6 +37,7 @@ export function useChainportTokens(isDevNetwork = true) {
   return useQuery<{
     chainportTokens: ChainportToken[];
     chainportTokensMap: Map<string, ChainportToken>;
+    chainportNetworksMap: Map<string, ChainportTargetNetwork>;
   }>({
     queryKey: ["useChainportTokens", isDevNetwork],
     queryFn: async () => {
@@ -41,25 +50,26 @@ export function useChainportTokens(isDevNetwork = true) {
         const chainportMeta = assertMetadataApiResponse(metadataResponse.data);
 
         const chainportTokens = tokensData.verified_tokens.map((token) => {
-          const targetNetworks = token.target_networks
-            .map((networkId) => {
-              const networkDetails = chainportMeta.cp_network_ids[networkId];
-              if (!networkDetails) {
-                throw new Error(`Unknown network id: ${networkId}`);
-              }
-              return {
-                chainportNetworkId: networkId,
-                label: networkDetails.label,
-                networkIcon: networkDetails.network_icon,
-                chainId: networkDetails.chain_id,
-                value: networkDetails.chain_id
-                  ? networkDetails.chain_id.toString()
-                  : "",
-              };
-            })
-            .filter((item) => {
-              return item.value !== null;
-            });
+          const targetNetworks: Array<ChainportTargetNetwork> =
+            token.target_networks
+              .map((networkId) => {
+                const networkDetails = chainportMeta.cp_network_ids[networkId];
+                if (!networkDetails) {
+                  throw new Error(`Unknown network id: ${networkId}`);
+                }
+                return {
+                  chainportNetworkId: networkId,
+                  label: networkDetails.label,
+                  networkIcon: networkDetails.network_icon,
+                  chainId: networkDetails.chain_id,
+                  value: networkDetails.chain_id
+                    ? networkDetails.chain_id.toString()
+                    : "",
+                };
+              })
+              .filter((item) => {
+                return item.value !== null;
+              });
 
           return {
             chainportId: token.id,
@@ -77,9 +87,17 @@ export function useChainportTokens(isDevNetwork = true) {
         const chainportTokensMap: Map<string, ChainportToken> = new Map(
           tokenEntries,
         );
+        const networksEntries = chainportTokens.flatMap((token) =>
+          token.targetNetworks.map<[string, ChainportTargetNetwork]>(
+            (network) => [network.value, network],
+          ),
+        );
+        const chainportNetworksMap: Map<string, ChainportTargetNetwork> =
+          new Map(networksEntries);
         return {
           chainportTokens,
           chainportTokensMap,
+          chainportNetworksMap,
         };
       } catch (err) {
         console.error("Failed to fetch chainport data", err);

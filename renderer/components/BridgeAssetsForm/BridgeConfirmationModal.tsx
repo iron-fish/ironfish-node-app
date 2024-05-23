@@ -5,16 +5,11 @@ import {
   ModalContent,
   ModalOverlay,
   VStack,
-  Box,
-  Text,
-  HStack,
   Grid,
   GridItem,
   Flex,
   ModalFooter,
 } from "@chakra-ui/react";
-import Image, { StaticImageData } from "next/image";
-import { RxExternalLink } from "react-icons/rx";
 
 import { COLORS } from "@/ui/colors";
 import { PillButton } from "@/ui/PillButton/PillButton";
@@ -22,12 +17,16 @@ import { BridgeArrows } from "@/ui/SVGs/BridgeArrows";
 
 import chainportIcon from "./assets/chainport-icon.png";
 import ironfishIcon from "./assets/ironfish-icon.png";
+import { BridgeAssetsFormData } from "./bridgeAssetsSchema";
+import { LineItem, Divider } from "../LineItem/LineItem";
 
 type Props = {
+  formData: BridgeAssetsFormData;
   onClose: () => void;
 };
 
-export function BridgeConfirmationModal({ onClose }: Props) {
+export function BridgeConfirmationModal({ formData, onClose }: Props) {
+  console.log(formData);
   return (
     <Modal isOpen onClose={onClose}>
       <ModalOverlay />
@@ -38,11 +37,11 @@ export function BridgeConfirmationModal({ onClose }: Props) {
           </Heading>
 
           <VStack alignItems="stretch">
-            <Item label="From" content="Primary Account" />
+            <LineItem label="From" content={formData.fromAccount} />
 
             <Divider />
 
-            <Item
+            <LineItem
               label="Bridge Provider"
               content="Chainport"
               icon={chainportIcon}
@@ -53,14 +52,14 @@ export function BridgeConfirmationModal({ onClose }: Props) {
 
             <Grid templateColumns="auto 1fr auto">
               <GridItem>
-                <Item
+                <LineItem
                   label="Source Network"
                   content="Iron Fish"
                   icon={ironfishIcon}
                 />
               </GridItem>
               <GridItem>
-                <Item
+                <LineItem
                   label="Target Network"
                   content="Avalanche"
                   icon={chainportIcon}
@@ -88,16 +87,16 @@ export function BridgeConfirmationModal({ onClose }: Props) {
                 </Flex>
               </GridItem>
               <GridItem>
-                <Item
-                  label="Source Network"
-                  content="Iron Fish"
+                <LineItem
+                  label="Sending"
+                  content="123 $IRON"
                   icon={ironfishIcon}
                 />
               </GridItem>
               <GridItem>
-                <Item
-                  label="Target Network"
-                  content="Avalanche"
+                <LineItem
+                  label="Receiving"
+                  content="122.5 wIRON"
                   icon={chainportIcon}
                 />
               </GridItem>
@@ -105,7 +104,7 @@ export function BridgeConfirmationModal({ onClose }: Props) {
 
             <Divider />
 
-            <Item
+            <LineItem
               label="Target Address"
               content="0x0000000000000000000000000000000000000000"
               href="https://www.chainport.io/"
@@ -113,9 +112,12 @@ export function BridgeConfirmationModal({ onClose }: Props) {
 
             <Divider />
 
-            <Item label="Iron Fish transaction fee" content="0.0000002 $IRON" />
-            <Item label="Gas fee" content="0.04 $IRON" />
-            <Item label="Port fee" content="0.0093 $IRON" />
+            <LineItem
+              label="Iron Fish transaction fee"
+              content="0.0000002 $IRON"
+            />
+            <LineItem label="Gas fee" content="0.04 $IRON" />
+            <LineItem label="Port fee" content="0.0093 $IRON" />
 
             <Divider />
           </VStack>
@@ -127,6 +129,7 @@ export function BridgeConfirmationModal({ onClose }: Props) {
             variant="inverted"
             type="button"
             onClick={onClose}
+            border={0}
           >
             Cancel
           </PillButton>
@@ -143,47 +146,4 @@ export function BridgeConfirmationModal({ onClose }: Props) {
       </ModalContent>
     </Modal>
   );
-}
-
-type ItemProps = {
-  label: string;
-  content: string;
-  icon?: StaticImageData;
-  href?: string;
-};
-
-function Item({ label, content, icon, href }: ItemProps) {
-  const maybeLinkProps = href
-    ? ({
-        as: "a",
-        cursor: "pointer",
-        rel: "noreferrer",
-        href,
-      } as const)
-    : undefined;
-  return (
-    <Box py={2}>
-      <Text color={COLORS.GRAY_MEDIUM}>{label}</Text>
-      <HStack gap={1.5} mt={1} {...maybeLinkProps}>
-        {icon && <Image src={icon} alt="" />}
-        <Text
-          data-type="content"
-          as="span"
-          fontSize="md"
-          textDecoration={href ? "underline" : "none"}
-        >
-          {content}
-        </Text>
-        {href && (
-          <Box mt="1px" color={COLORS.GRAY_MEDIUM}>
-            <RxExternalLink />
-          </Box>
-        )}
-      </HStack>
-    </Box>
-  );
-}
-
-function Divider() {
-  return <Box borderBottom="1.5px dashed #DEDFE2" my={2} />;
 }
