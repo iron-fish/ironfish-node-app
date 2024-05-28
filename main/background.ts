@@ -91,10 +91,16 @@ function setAppMenu() {
   for (const menuItem of defaultMenu.items) {
     const newSubmenu = new Menu();
 
-    // @ts-expect-error subMenuItem.role should be forcereload instead of forceReload
     const filteredMenu =
       menuItem.submenu?.items.filter(
         (subMenuItem) =>
+          // We want to prevent the window from being reloaded since our dynamic routes aren't statically
+          // generated. This causes the app to 404 if the user reloads on a dynamic route. We tried calling
+          // preventDefault in beforeunload in the app and explicitly called window.destroy() in the window.close
+          // event on the main process, but that caused a crash in electron-trpc when closing the app while a TRPC
+          // subscription was active. Removing reload and forcereload also disables their keybindings, so it
+          // should prevent users from reloading the app.
+          // @ts-expect-error subMenuItem.role should be forcereload instead of forceReload
           subMenuItem.role != "reload" && subMenuItem.role != "forcereload",
       ) ?? [];
     for (const subMenuItem of filteredMenu) {
