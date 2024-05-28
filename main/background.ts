@@ -32,10 +32,6 @@ async function createWindow(handler: ReturnType<typeof createIPCHandler>) {
     window.maximize();
   });
 
-  window.once("closed", () => {
-    handler.detachWindow(window);
-  });
-
   if (isProd) {
     await window.loadURL("app://./home");
   } else {
