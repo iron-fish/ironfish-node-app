@@ -1,4 +1,11 @@
-import { BrowserWindow, app, nativeTheme, crashReporter } from "electron";
+import {
+  BrowserWindow,
+  app,
+  nativeTheme,
+  crashReporter,
+  Menu,
+  MenuItem,
+} from "electron";
 import log from "electron-log";
 import serve from "electron-serve";
 import { createIPCHandler } from "electron-trpc/main";
@@ -73,6 +80,39 @@ async function createThemeChangeHandler() {
   updateTitleBarOverlay();
 }
 
+function setAppMenu() {
+  const defaultMenu = Menu.getApplicationMenu();
+  if (!defaultMenu) {
+    log.warn("No default menu found");
+    return;
+  }
+
+  const newMenu = new Menu();
+  for (const menuItem of defaultMenu.items) {
+    const newSubmenu = new Menu();
+
+    // @ts-expect-error subMenuItem.role should be forcereload instead of forceReload
+    const filteredMenu =
+      menuItem.submenu?.items.filter(
+        (subMenuItem) =>
+          subMenuItem.role != "reload" && subMenuItem.role != "forcereload",
+      ) ?? [];
+    for (const subMenuItem of filteredMenu) {
+      newSubmenu.append(subMenuItem);
+    }
+
+    newMenu.append(
+      new MenuItem({
+        type: menuItem.type,
+        label: menuItem.label,
+        submenu: newSubmenu,
+      }),
+    );
+  }
+
+  Menu.setApplicationMenu(newMenu);
+}
+
 app.whenReady().then(() => {
   if (isProd) {
     updater.init();
@@ -80,6 +120,7 @@ app.whenReady().then(() => {
 
   createThemeChangeHandler();
   setNativeThemeSource();
+  setAppMenu();
   migrateNodeAppBetaContacts();
 
   const handler = createIPCHandler({ router });
