@@ -147,7 +147,6 @@ export function BridgeAssetsFormContent({
   }
 
   const selectedAsset = assetOptionsMap.get(assetIdValue);
-  console.log(selectedAsset?.confirmedBalance, amountValue);
 
   return (
     <>

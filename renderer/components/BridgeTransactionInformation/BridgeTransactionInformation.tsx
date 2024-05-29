@@ -51,10 +51,11 @@ export function BridgeTransactionInformation({ transaction, ...rest }: Props) {
     trpcReact.getChainportTransactionStatus.useQuery({
       transactionHash: transaction.hash,
     });
+
   const { data: chainportMeta } = trpcReact.getChainportMeta.useQuery();
   const { data: bridgeNoteMemo } = trpcReact.decodeMemo.useQuery({
     // @todo: Figure out how to do this without hardcoding the index
-    memo: transaction.notes![1].memoHex,
+    memo: transaction.notes![transaction.type === "send" ? 1 : 0].memoHex,
   });
 
   const targetNetwork = useMemo(() => {
@@ -70,7 +71,7 @@ export function BridgeTransactionInformation({ transaction, ...rest }: Props) {
 
     const baseUrl =
       chainportMeta.cp_network_ids[chainportStatus.target_network_id ?? ""]
-        .explorer_url;
+        ?.explorer_url;
 
     return baseUrl + "tx/" + chainportStatus.target_tx_hash;
   }, [chainportMeta, chainportStatus]);
