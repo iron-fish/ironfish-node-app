@@ -2,6 +2,7 @@ import { Box, HStack, Heading, Skeleton } from "@chakra-ui/react";
 import { useRouter } from "next/router";
 import { defineMessages, useIntl } from "react-intl";
 
+import { BridgeTransactionInformation } from "@/components/BridgeTransactionInformation/BridgeTransactionInformation";
 import { CopyAddress } from "@/components/CopyAddress/CopyAddress";
 import { NotesList } from "@/components/NotesList/NotesList";
 import { TransactionInformation } from "@/components/TransactionInformation/TransactionInformation";
@@ -44,19 +45,6 @@ function SingleTransactionContent({
 
   const isChainportTransaction =
     !!transactionData && isChainportTx(transactionData);
-
-  const { data: chainportTransactionStatus } =
-    trpcReact.getChainportTransactionStatus.useQuery(
-      { transactionHash },
-      {
-        enabled: isChainportTransaction,
-      },
-    );
-
-  console.log({
-    isChainportTransaction,
-    chainportTransactionStatus,
-  });
 
   if (!accountData) {
     return null;
@@ -102,8 +90,6 @@ function SingleTransactionContent({
 
   const showSelfSendNotes = regularNotes.length > 0 && selfSendNotes.length > 0;
 
-  console.log({ isChainportTransaction });
-
   return (
     <MainLayout
       backLinkProps={{
@@ -122,6 +108,12 @@ function SingleTransactionContent({
         transaction={transactionData.transaction}
         mb={16}
       />
+      {isChainportTransaction && (
+        <BridgeTransactionInformation
+          transaction={transactionData.transaction}
+          mb={16}
+        />
+      )}
       <NotesList
         heading={formatMessage(messages.transactionNotes)}
         notes={showSelfSendNotes ? regularNotes : transactionData.notes}

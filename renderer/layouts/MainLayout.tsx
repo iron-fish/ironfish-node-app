@@ -16,6 +16,7 @@ import { LanguageSelector } from "@/components/LanguageSelector/LanguageSelector
 import { NetworkSelector } from "@/components/NetworkSelector/NetworkSelector";
 import { StatusIndicator } from "@/components/StatusIndicator/StatusIndicator";
 import { TestnetBanner } from "@/components/TestnetBanner/TestnetBanner";
+import { trpcReact } from "@/providers/TRPCProvider";
 import { ChakraLink } from "@/ui/ChakraLink/ChakraLink";
 import { COLORS } from "@/ui/colors";
 import { DarkModeSwitch } from "@/ui/DarkModeSwitch/DarkModeSwitch";
@@ -72,6 +73,7 @@ const LINKS = [
     icon: <ArrowReceive />,
   },
   {
+    id: "bridge",
     label: messages.bridge,
     href: "/bridge",
     icon: <BridgeArrows />,
@@ -119,6 +121,7 @@ function ResponsiveLogo() {
 function Sidebar() {
   const router = useRouter();
   const { formatMessage } = useIntl();
+  const { data } = trpcReact.getNetworkInfo.useQuery();
 
   return (
     <Flex flexDirection="column" alignItems="stretch" w="100%">
@@ -126,7 +129,12 @@ function Sidebar() {
         <ResponsiveLogo />
       </Box>
       <VStack alignItems="flex-start" flexGrow={1}>
-        {LINKS.map(({ label, href, icon }) => {
+        {LINKS.map(({ label, href, icon, id }) => {
+          // Bridge should only show up on testnet for now
+          if (id === "bridge" && data?.networkId !== 0) {
+            return null;
+          }
+
           const isActive = router.pathname.startsWith(href);
           return (
             <ChakraLink
@@ -212,60 +220,64 @@ export default function MainLayout({ children, backLinkProps }: Props) {
         bg: COLORS.DARK_MODE.BG,
       }}
     >
-      <Grid height="100%" templateRows="auto 1fr" templateColumns="1fr" gap={0}>
+      <VStack alignItems="stretch" h="100%">
+        <TestnetBanner />
+        <Grid flexGrow={1} templateColumns="auto 1fr" overflow="auto">
+          <GridItem
+            h="100%"
+            overflow="auto"
+            w={{
+              base: "auto",
+              md: "265px",
+            }}
+            px={4}
+            pt="50px"
+            pb={{
+              base: 8,
+              md: 6,
+            }}
+            display="flex"
+            alignItems="stretch"
+          >
+            <Sidebar />
+          </GridItem>
+          <GridItem
+            px={6}
+            pt={10}
+            pb={8}
+            h="100%"
+            overflow="auto"
+            ref={(r) => setScrollElement(r)}
+          >
+            <ScrollElementContext.Provider value={scrollElement}>
+              <Box
+                mx="auto"
+                maxWidth={{
+                  base: "100%",
+                  xl: "1048px",
+                  "2xl": "1280px",
+                }}
+              >
+                {backLinkProps && (
+                  <BackButton
+                    href={backLinkProps.href}
+                    label={backLinkProps.label}
+                  />
+                )}
+                {children}
+              </Box>
+            </ScrollElementContext.Provider>
+          </GridItem>
+        </Grid>
+      </VStack>
+      {/* <Grid height="100%" templateRows="auto 1fr" templateColumns="1fr" gap={0}>
         <GridItem>
           <TestnetBanner />
         </GridItem>
         <GridItem>
-          <Grid height="100%" templateColumns="auto 1fr">
-            <GridItem
-              h="100%"
-              overflow="auto"
-              w={{
-                base: "auto",
-                md: "265px",
-              }}
-              px={4}
-              pt="50px"
-              pb={{
-                base: 8,
-                md: 6,
-              }}
-              display="flex"
-              alignItems="stretch"
-            >
-              <Sidebar />
-            </GridItem>
-            <GridItem
-              px={6}
-              pt={10}
-              pb={8}
-              h="100%"
-              overflow="auto"
-              ref={(r) => setScrollElement(r)}
-            >
-              <ScrollElementContext.Provider value={scrollElement}>
-                <Box
-                  mx="auto"
-                  maxWidth={{
-                    base: "100%",
-                    xl: "1048px",
-                    "2xl": "1280px",
-                  }}
-                >
-                  {backLinkProps && (
-                    <BackButton
-                      href={backLinkProps.href}
-                      label={backLinkProps.label}
-                    />
-                  )}
-                  {children}
-                </Box>
-              </ScrollElementContext.Provider>
-            </GridItem>
-          </Grid>
+          
         </GridItem>
-      </Grid>
+      </Grid> */}
     </WithDraggableArea>
   );
 }

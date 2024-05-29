@@ -8,6 +8,7 @@ import {
   handleSendChainportBridgeTransactionInput,
 } from "./handleSendChainportBridgeTransaction";
 import { buildTransactionRequestParamsInputs } from "./utils/buildTransactionRequestParams";
+import { ChainportMemoMetadata } from "./utils/ChainportMemoMetadata";
 import { getChainportEndpoints } from "./utils/getChainportEndpoints";
 import {
   ChainportBridgeTransaction,
@@ -138,5 +139,28 @@ export const chainportRouter = t.router({
         opts.input.transactionHash,
       );
       return result;
+    }),
+  getChainportMeta: t.procedure.query(async () => {
+    const { metadataEndpoint } = await getChainportEndpoints();
+    const response = await axios.get(metadataEndpoint);
+    const data = assertMetadataApiResponse(response.data);
+    return data;
+  }),
+  decodeMemo: t.procedure
+    .input(
+      z.object({
+        memo: z.string(),
+      }),
+    )
+    .query(async (opts) => {
+      try {
+        console.log(opts.input.memo);
+        const result = ChainportMemoMetadata.decode(
+          Buffer.from(opts.input.memo).toString(),
+        );
+        return result;
+      } catch (_err) {
+        return null;
+      }
     }),
 });

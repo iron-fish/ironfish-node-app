@@ -57,6 +57,9 @@
   "3/a0Ho": {
     "message": "We're not able to download release notes right now."
   },
+  "3KdqXd": {
+    "message": "Destination Txn Hash"
+  },
   "3OLlCN": {
     "message": "From/To"
   },
@@ -454,6 +457,9 @@
   "UTOugV": {
     "message": "Your Assets"
   },
+  "Uh1bJh": {
+    "message": "Bridge Information"
+  },
   "Uziuar": {
     "message": "Change Network"
   },
@@ -549,6 +555,9 @@
   },
   "dTSUUK": {
     "message": "If you remove this account without exporting it first, YOU WILL LOSE ACCESS TO IT."
+  },
+  "e6HIlS": {
+    "message": "Destination Address"
   },
   "e6Ph5+": {
     "message": "Address"
