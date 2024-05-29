@@ -1,4 +1,12 @@
-import { Heading, VStack, Grid, GridItem, Flex } from "@chakra-ui/react";
+import {
+  Heading,
+  VStack,
+  Grid,
+  GridItem,
+  Flex,
+  Code,
+  Text,
+} from "@chakra-ui/react";
 import { ReactNode } from "react";
 import { defineMessages, useIntl } from "react-intl";
 
@@ -72,6 +80,7 @@ type Props = {
   feeRate: string;
   onFeeRateChange: (nextValue: "slow" | "average" | "fast") => void;
   txDetails?: TxDetails;
+  error?: string;
 };
 
 export function StepIdle({
@@ -87,6 +96,7 @@ export function StepIdle({
   feeRate,
   onFeeRateChange,
   txDetails,
+  error,
 }: Props) {
   const { formatMessage } = useIntl();
 
@@ -229,6 +239,20 @@ export function StepIdle({
         />
 
         <Divider />
+
+        {error && (
+          <Code
+            colorScheme="red"
+            p={4}
+            maxH="400px"
+            maxW="100%"
+            w="100%"
+            overflow="auto"
+            mb={6}
+          >
+            <Text>{error}</Text>
+          </Code>
+        )}
       </VStack>
     </>
   );

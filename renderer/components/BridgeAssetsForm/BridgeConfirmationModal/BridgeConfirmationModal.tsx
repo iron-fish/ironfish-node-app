@@ -120,7 +120,7 @@ export function BridgeConfirmationModal({
     error: submitError,
   } = trpcReact.sendChainportBridgeTransaction.useMutation();
 
-  const { data: estimatedFeesData } =
+  const { data: estimatedFeesData, error: estimatedFeesError } =
     trpcReact.getChainportBridgeTransactionEstimatedFees.useQuery(
       {
         fromAccount: formData.fromAccount,
@@ -130,8 +130,6 @@ export function BridgeConfirmationModal({
         enabled: isSubmitIdle && !!txDetails,
       },
     );
-
-  console.log({ submitBridgeTransactionData });
 
   const amountToReceive = useMemo(() => {
     if (isTransactionDetailsLoading || !txDetails) {
@@ -243,6 +241,7 @@ export function BridgeConfirmationModal({
                 setFeeRate(nextValue);
               }}
               txDetails={txDetails}
+              error={estimatedFeesError?.message}
             />
           )}
           {isSubmitLoading && (

@@ -75,6 +75,7 @@ export function BridgeAssetsFormContent({
     register,
     watch,
     setValue,
+    setError,
     handleSubmit,
     clearErrors,
     control,
@@ -146,11 +147,23 @@ export function BridgeAssetsFormContent({
   }
 
   const selectedAsset = assetOptionsMap.get(assetIdValue);
+  console.log(selectedAsset?.confirmedBalance, amountValue);
 
   return (
     <>
       <chakra.form
         onSubmit={handleSubmit((data) => {
+          if (
+            parseFloat(data.amount) >
+            parseFloat(selectedAsset!.confirmedBalance)
+          ) {
+            setError("amount", {
+              type: "custom",
+              message: "Amount exceeds available balance",
+            });
+            return;
+          }
+
           setConfirmationData({
             amount: data.amount,
             fromAccount: data.fromAccount,
@@ -213,21 +226,21 @@ export function BridgeAssetsFormContent({
                         borderBottomRightRadius: 0,
                         borderRightWidth: 0,
                       }}
-                      rightElement={
-                        selectedAsset ? (
-                          <Text
-                            as="button"
-                            type="button"
-                            color={COLORS.VIOLET}
-                            onClick={(e) => {
-                              e.stopPropagation();
-                              field.onChange(selectedAsset.confirmedBalance);
-                            }}
-                          >
-                            MAX
-                          </Text>
-                        ) : null
-                      }
+                      // rightElement={
+                      //   selectedAsset ? (
+                      //     <Text
+                      //       as="button"
+                      //       type="button"
+                      //       color={COLORS.VIOLET}
+                      //       onClick={(e) => {
+                      //         e.stopPropagation();
+                      //         field.onChange(selectedAsset.confirmedBalance);
+                      //       }}
+                      //     >
+                      //       MAX
+                      //     </Text>
+                      //   ) : null
+                      // }
                     />
                   }
                 />
@@ -283,8 +296,6 @@ export function BridgeAssetsForm() {
   const filteredAccounts = accountsData?.filter((a) => !a.status.viewOnly);
   const { data: tokensData, isLoading: isChainportLoading } =
     trpcReact.getChainportTokens.useQuery();
-
-  console.log({ tokensData });
 
   if (!filteredAccounts || isChainportLoading) {
     return (
