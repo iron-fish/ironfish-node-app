@@ -1,4 +1,11 @@
-import { BrowserWindow, app, nativeTheme, crashReporter } from "electron";
+import {
+  BrowserWindow,
+  app,
+  nativeTheme,
+  crashReporter,
+  Menu,
+  MenuItem,
+} from "electron";
 import log from "electron-log";
 import serve from "electron-serve";
 import { createIPCHandler } from "electron-trpc/main";
@@ -73,6 +80,45 @@ async function createThemeChangeHandler() {
   updateTitleBarOverlay();
 }
 
+function setAppMenu() {
+  const defaultMenu = Menu.getApplicationMenu();
+  if (!defaultMenu) {
+    log.warn("No default menu found");
+    return;
+  }
+
+  const newMenu = new Menu();
+  for (const menuItem of defaultMenu.items) {
+    const newSubmenu = new Menu();
+
+    const filteredMenu =
+      menuItem.submenu?.items.filter(
+        (subMenuItem) =>
+          // We want to prevent the window from being reloaded since our dynamic routes aren't statically
+          // generated. This causes the app to 404 if the user reloads on a dynamic route. We tried calling
+          // preventDefault in beforeunload in the app and explicitly called window.destroy() in the window.close
+          // event on the main process, but that caused a crash in electron-trpc when closing the app while a TRPC
+          // subscription was active. Removing reload and forcereload also disables their keybindings, so it
+          // should prevent users from reloading the app.
+          // @ts-expect-error subMenuItem.role should be forcereload instead of forceReload
+          subMenuItem.role != "reload" && subMenuItem.role != "forcereload",
+      ) ?? [];
+    for (const subMenuItem of filteredMenu) {
+      newSubmenu.append(subMenuItem);
+    }
+
+    newMenu.append(
+      new MenuItem({
+        type: menuItem.type,
+        label: menuItem.label,
+        submenu: newSubmenu,
+      }),
+    );
+  }
+
+  Menu.setApplicationMenu(newMenu);
+}
+
 app.whenReady().then(() => {
   if (isProd) {
     updater.init();
@@ -80,6 +126,7 @@ app.whenReady().then(() => {
 
   createThemeChangeHandler();
   setNativeThemeSource();
+  setAppMenu();
   migrateNodeAppBetaContacts();
 
   const handler = createIPCHandler({ router });

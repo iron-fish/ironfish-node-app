@@ -1,7 +1,6 @@
 import { ChakraProvider } from "@chakra-ui/react";
 import { AppProps } from "next/app";
 import Head from "next/head";
-import { useEffect } from "react";
 import { useIsClient } from "usehooks-ts";
 
 import { ErrorBoundary } from "@/components/ErrorBoundary/ErrorBoundary";
@@ -51,17 +50,6 @@ const systemColorModeManager = new SystemColorModeManager();
 
 export default function MyApp({ Component, pageProps }: AppProps) {
   const isClient = useIsClient();
-
-  useEffect(() => {
-    // Prevent window from unloading (i.e. closing or being reloaded). This is due to dynamic routes not
-    // being statically generated, which causes the app to 404 if the user reloads on a dynamic route.
-    // Closing the window is handled by the main process, which listens for the "close" event and destroys
-    // the window.
-    window.addEventListener("beforeunload", (e) => {
-      e.preventDefault();
-      e.returnValue = true;
-    });
-  }, []);
 
   if (!isClient) {
     return null;
