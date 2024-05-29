@@ -61,6 +61,9 @@ export function BridgeAssetsFormShell({
               left="50%"
               top="50%"
               transform="translateX(-50%) translateY(-50%)"
+              _dark={{
+                borderColor: COLORS.DARK_MODE.GRAY_MEDIUM,
+              }}
             >
               <BridgeArrows />
             </Flex>

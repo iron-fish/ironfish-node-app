@@ -1,6 +1,7 @@
 import { HStack, Skeleton, Text, chakra } from "@chakra-ui/react";
+import { zodResolver } from "@hookform/resolvers/zod";
 import { useEffect, useMemo, useState } from "react";
-import { useForm } from "react-hook-form";
+import { Controller, useForm } from "react-hook-form";
 import { defineMessages, useIntl } from "react-intl";
 
 import { TRPCRouterOutputs, trpcReact } from "@/providers/TRPCProvider";
@@ -9,10 +10,13 @@ import { Select } from "@/ui/Forms/Select/Select";
 import { TextInput } from "@/ui/Forms/TextInput/TextInput";
 
 import { BridgeAssetsFormShell } from "./BridgeAssetsFormShell";
-import { BridgeAssetsFormData } from "./bridgeAssetsSchema";
+import { BridgeAssetsFormData, bridgeAssetsSchema } from "./bridgeAssetsSchema";
 import { BridgeConfirmationModal } from "./BridgeConfirmationModal/BridgeConfirmationModal";
 import { AssetAmountInput } from "../AssetAmountInput/AssetAmountInput";
-import { useAccountAssets } from "../AssetAmountInput/utils";
+import {
+  normalizeAmountInputChange,
+  useAccountAssets,
+} from "../AssetAmountInput/utils";
 
 const messages = defineMessages({
   fromLabel: {
@@ -67,7 +71,16 @@ export function BridgeAssetsFormContent({
     throw new Error("No default destination network found");
   }
 
-  const { register, watch, setValue } = useForm({
+  const {
+    register,
+    watch,
+    setValue,
+    handleSubmit,
+    clearErrors,
+    control,
+    formState: { errors: formErrors },
+  } = useForm({
+    resolver: zodResolver(bridgeAssetsSchema),
     defaultValues: {
       amount: "0",
       fromAccount: defaultFromAccount,
@@ -81,7 +94,6 @@ export function BridgeAssetsFormContent({
   const fromAccountValue = watch("fromAccount");
   const assetIdValue = watch("assetId");
   const destinationNetworkValue = watch("destinationNetwork");
-  const targetAddress = watch("targetAddress");
 
   // If the user selects a different asset, and that asset does not support the selected network,
   // then we automatically switch to the first available network for that asset.
@@ -133,20 +145,20 @@ export function BridgeAssetsFormContent({
     throw new Error("No available networks found");
   }
 
+  const selectedAsset = assetOptionsMap.get(assetIdValue);
+
   return (
     <>
       <chakra.form
-        onSubmit={(e) => {
-          e.preventDefault();
-
+        onSubmit={handleSubmit((data) => {
           setConfirmationData({
-            amount: amountValue,
-            fromAccount: fromAccountValue,
-            assetId: assetIdValue,
-            destinationNetwork: destinationNetworkValue,
-            targetAddress: targetAddress,
+            amount: data.amount,
+            fromAccount: data.fromAccount,
+            assetId: data.assetId,
+            destinationNetwork: data.destinationNetwork,
+            targetAddress: data.targetAddress,
           });
-        }}
+        })}
       >
         <BridgeAssetsFormShell
           fromAccountInput={
@@ -158,13 +170,68 @@ export function BridgeAssetsFormContent({
             />
           }
           assetAmountInput={
-            <AssetAmountInput
-              assetOptions={bridgeableAssets}
-              assetOptionsMap={assetOptionsMap}
-              amountValue={amountValue}
-              onAmountChange={(value) => setValue("amount", value)}
-              assetIdValue={assetIdValue}
-              onAssetIdChange={async (e) => setValue("assetId", e.target.value)}
+            <Controller
+              name="amount"
+              control={control}
+              render={({ field }) => (
+                <AssetAmountInput
+                  assetOptions={bridgeableAssets}
+                  assetOptionsMap={assetOptionsMap}
+                  assetIdValue={assetIdValue}
+                  onAssetIdChange={async (e) =>
+                    setValue("assetId", e.target.value)
+                  }
+                  error={formErrors.amount?.message}
+                  inputElement={
+                    <TextInput
+                      {...field}
+                      aria-label="Amount"
+                      value={amountValue}
+                      onChange={(e) => {
+                        normalizeAmountInputChange({
+                          changeEvent: e,
+                          selectedAsset: assetOptionsMap.get(assetIdValue),
+                          onStart: () => clearErrors("root.serverError"),
+                          onChange: field.onChange,
+                        });
+                      }}
+                      onFocus={() => {
+                        if (amountValue === "0") {
+                          field.onChange("");
+                        }
+                      }}
+                      onBlur={() => {
+                        if (!amountValue) {
+                          field.onChange("0");
+                        }
+                        if (amountValue.endsWith(".")) {
+                          field.onChange(amountValue.slice(0, -1));
+                        }
+                      }}
+                      triggerProps={{
+                        borderTopRightRadius: 0,
+                        borderBottomRightRadius: 0,
+                        borderRightWidth: 0,
+                      }}
+                      rightElement={
+                        selectedAsset ? (
+                          <Text
+                            as="button"
+                            type="button"
+                            color={COLORS.VIOLET}
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              field.onChange(selectedAsset.confirmedBalance);
+                            }}
+                          >
+                            MAX
+                          </Text>
+                        ) : null
+                      }
+                    />
+                  }
+                />
+              )}
             />
           }
           bridgeProviderInput={
@@ -188,7 +255,11 @@ export function BridgeAssetsFormContent({
             />
           }
           targetAddressInput={
-            <TextInput {...register("targetAddress")} label="Target Address" />
+            <TextInput
+              {...register("targetAddress")}
+              label="Target Address"
+              error={formErrors.targetAddress?.message}
+            />
           }
         />
       </chakra.form>

@@ -4,9 +4,8 @@ import { defineMessages, useIntl } from "react-intl";
 
 import { COLORS } from "@/ui/colors";
 import { Select } from "@/ui/Forms/Select/Select";
-import { TextInput } from "@/ui/Forms/TextInput/TextInput";
 
-import { normalizeAmountInputChange, AssetOptionType } from "./utils";
+import { AssetOptionType } from "./utils";
 
 const messages = defineMessages({
   balanceAvailable: {
@@ -15,22 +14,18 @@ const messages = defineMessages({
 });
 
 type Props = {
+  inputElement: JSX.Element;
   assetOptions: AssetOptionType[];
   assetOptionsMap: Map<string, AssetOptionType>;
-  amountValue: string;
-  onAmountChangeStart?: () => void;
-  onAmountChange: (value: string) => void;
   assetIdValue: string;
   onAssetIdChange: UseFormRegisterReturn["onChange"];
   error?: string;
 };
 
 export function AssetAmountInput({
+  inputElement,
   assetOptions,
   assetOptionsMap,
-  amountValue,
-  onAmountChangeStart,
-  onAmountChange,
   assetIdValue,
   onAssetIdChange,
   error,
@@ -42,54 +37,7 @@ export function AssetAmountInput({
   return (
     <VStack alignItems="stretch">
       <HStack gap={0}>
-        <Box flexGrow={1}>
-          <TextInput
-            aria-label="Amount"
-            value={amountValue}
-            onChange={(e) => {
-              normalizeAmountInputChange({
-                changeEvent: e,
-                selectedAsset,
-                onChange: (value) => onAmountChange(value),
-                onStart: onAmountChangeStart,
-              });
-            }}
-            onFocus={() => {
-              if (amountValue === "0") {
-                onAmountChange("");
-              }
-            }}
-            onBlur={() => {
-              if (!amountValue) {
-                onAmountChange("0");
-              }
-              if (amountValue.endsWith(".")) {
-                onAmountChange(amountValue.slice(0, -1));
-              }
-            }}
-            error={error}
-            triggerProps={{
-              borderTopRightRadius: 0,
-              borderBottomRightRadius: 0,
-              borderRightWidth: 0,
-            }}
-            rightElement={
-              selectedAsset ? (
-                <Text
-                  as="button"
-                  type="button"
-                  color={COLORS.VIOLET}
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    onAmountChange(selectedAsset.confirmedBalance);
-                  }}
-                >
-                  MAX
-                </Text>
-              ) : null
-            }
-          />
-        </Box>
+        <Box flexGrow={1}>{inputElement}</Box>
         <Select
           aria-label="Asset"
           value={assetIdValue}
@@ -108,6 +56,19 @@ export function AssetAmountInput({
             asset: selectedAsset.assetName,
             balance: selectedAsset.confirmedBalance,
           })}
+        </Text>
+      )}
+      {error && (
+        <Text
+          color={COLORS.RED}
+          fontSize="sm"
+          textAlign="left"
+          w="100%"
+          _dark={{
+            color: COLORS.RED,
+          }}
+        >
+          {error}
         </Text>
       )}
     </VStack>
