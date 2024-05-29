@@ -1,5 +1,28 @@
 import { z } from "zod";
 
+export type ChainportToken = {
+  chainportId: number;
+  ironfishId: string;
+  symbol: string;
+  name: string;
+  decimals: number;
+  targetNetworks: {
+    chainportNetworkId: number;
+    chainId: number | null;
+    value: string;
+    label: string;
+    networkIcon: string;
+  }[];
+};
+
+export type ChainportTargetNetwork = {
+  chainportNetworkId: number;
+  label: string;
+  networkIcon: string;
+  chainId: number | null;
+  value: string;
+};
+
 const MetadataApiResponseSchema = z.object({
   maintenance: z.boolean(),
   sorted_networks: z.array(z.string()),
@@ -82,3 +105,22 @@ export type TokensApiResponse = z.infer<typeof TokensApiResponseSchema>;
 export function assertTokensApiResponse(data: unknown): TokensApiResponse {
   return TokensApiResponseSchema.parse(data);
 }
+
+export type ChainportBridgeTransaction = {
+  bridge_output: {
+    publicAddress: string;
+    amount: string;
+    memoHex: string;
+    assetId: string;
+  };
+  gas_fee_output: {
+    publicAddress: string;
+    amount: string;
+    memo: string;
+  };
+  bridge_fee: {
+    source_token_fee_amount: number | null;
+    portx_fee_amount: number;
+    is_portx_fee_payment: boolean;
+  };
+};

@@ -1,4 +1,4 @@
-import { Box, chakra, Flex, HStack, VStack } from "@chakra-ui/react";
+import { Box, Flex, HStack, VStack } from "@chakra-ui/react";
 import { ReactNode } from "react";
 import { defineMessages, useIntl } from "react-intl";
 
@@ -18,21 +18,18 @@ export function BridgeAssetsFormShell({
   assetAmountInput,
   bridgeProviderInput,
   destinationNetworkInput,
+  targetAddressInput,
 }: {
   status?: "LOADING";
   fromAccountInput: ReactNode;
   assetAmountInput: ReactNode;
   bridgeProviderInput: ReactNode;
   destinationNetworkInput: ReactNode;
+  targetAddressInput: ReactNode;
 }) {
   const { formatMessage } = useIntl();
   return (
-    <chakra.form
-      onSubmit={(e) => {
-        e.preventDefault();
-        console.log("Handle submit...");
-      }}
-    >
+    <Box>
       <VStack gap={4} alignItems="stretch">
         {fromAccountInput}
         <VStack alignItems="stretch" gap={0}>
@@ -64,6 +61,9 @@ export function BridgeAssetsFormShell({
               left="50%"
               top="50%"
               transform="translateX(-50%) translateY(-50%)"
+              _dark={{
+                borderColor: COLORS.DARK_MODE.GRAY_MEDIUM,
+              }}
             >
               <BridgeArrows />
             </Flex>
@@ -73,12 +73,14 @@ export function BridgeAssetsFormShell({
             borderRadius={4}
             bg={COLORS.GRAY_LIGHT}
             alignItems="stretch"
+            gap={4}
             _dark={{
               bg: "transparent",
               border: `1px solid ${COLORS.DARK_MODE.GRAY_MEDIUM}`,
             }}
           >
             <HStack>{destinationNetworkInput}</HStack>
+            <Box>{targetAddressInput}</Box>
           </VStack>
         </VStack>
       </VStack>
@@ -87,6 +89,6 @@ export function BridgeAssetsFormShell({
           {formatMessage(messages.bridgeAssetSubmit)}
         </PillButton>
       </HStack>
-    </chakra.form>
+    </Box>
   );
 }

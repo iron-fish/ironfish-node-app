@@ -1,4 +1,5 @@
 import { accountRouter } from "./accounts";
+import { chainportRouter } from "./chainport";
 import { contactsRouter } from "./contacts";
 import { intlRouter } from "./intl";
 import { ironfishRouter } from "./ironfish";
@@ -19,6 +20,7 @@ export const router = t.mergeRouters(
   contactsRouter,
   updateRouter,
   intlRouter,
+  chainportRouter,
 );
 
 export type AppRouter = typeof router;

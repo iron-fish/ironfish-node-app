@@ -51,6 +51,9 @@
   "2qzbcD": {
     "message": "Min Peers"
   },
+  "3+EYHL": {
+    "message": "Target Network"
+  },
   "3/a0Ho": {
     "message": "We're not able to download release notes right now."
   },
@@ -68,6 +71,9 @@
   },
   "47FYwb": {
     "message": "Cancel"
+  },
+  "4V/PNA": {
+    "message": "Confirm & Bridge"
   },
   "4l6vz1": {
     "message": "Copy"
@@ -119,6 +125,9 @@
   },
   "6q3tCn": {
     "message": "Connecting"
+  },
+  "7/GPHF": {
+    "message": "Iron Fish transaction fee"
   },
   "711SFa": {
     "message": "The Iron Fish Node App supports {networkCount} networks."
@@ -183,6 +192,9 @@
   "BxM6mJ": {
     "message": "Lowest to highest balance"
   },
+  "C2CIgC": {
+    "message": "Sending"
+  },
   "C43FrR": {
     "message": "Amount:"
   },
@@ -194,6 +206,9 @@
   },
   "D5NqQO": {
     "message": "Memo"
+  },
+  "DOMotB": {
+    "message": "Target Address"
   },
   "Dh1MGS": {
     "message": "Account Syncing"
@@ -271,6 +286,9 @@
     "description": "Change as in the money that is returned to the sender after a transaction",
     "message": "Change"
   },
+  "KJMlfb": {
+    "message": "Destination network"
+  },
   "KN7zKn": {
     "message": "Error"
   },
@@ -289,6 +307,9 @@
   "LP4H/8": {
     "message": "Scanning blocks: {sequence} / {totalSequence}"
   },
+  "LPYoBI": {
+    "message": "Bridge fee"
+  },
   "LPlno7": {
     "message": "Multiple recipients"
   },
@@ -297,6 +318,9 @@
   },
   "Ld49Lh": {
     "message": "What would you like to name this account? This name is only visible to you."
+  },
+  "M+isB1": {
+    "message": "Bridge Provider"
   },
   "MDZ4hi": {
     "message": "Already have an account? Enter your recovery credentials and continue using your account as expected."
@@ -309,6 +333,9 @@
   },
   "MZCNjq": {
     "message": "Bridge"
+  },
+  "Muzvyz": {
+    "message": "Confirm Bridge Transaction"
   },
   "N0KGQj": {
     "message": "Block Graffiti"
@@ -327,6 +354,9 @@
   },
   "O+Q7TL": {
     "message": "Submitted Sequence"
+  },
+  "OEEl0G": {
+    "message": "Receiving"
   },
   "OfA95/": {
     "message": "Selected file: {fileName}"
@@ -547,6 +577,9 @@
   "g/oZa8": {
     "message": "Waiting for peers to sync from"
   },
+  "gC6/qK": {
+    "message": "Source Network"
+  },
   "gcuDcH": {
     "message": "Sent"
   },
@@ -696,6 +729,9 @@
   },
   "uT4OlP": {
     "message": "Fee"
+  },
+  "vEiG+a": {
+    "message": "Gas fee"
   },
   "vNT9Ip": {
     "message": "Mnemonic Phrase"
