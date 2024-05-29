@@ -284,6 +284,8 @@ export function BridgeAssetsForm() {
   const { data: tokensData, isLoading: isChainportLoading } =
     trpcReact.getChainportTokens.useQuery();
 
+  console.log({ tokensData });
+
   if (!filteredAccounts || isChainportLoading) {
     return (
       <BridgeAssetsFormShell

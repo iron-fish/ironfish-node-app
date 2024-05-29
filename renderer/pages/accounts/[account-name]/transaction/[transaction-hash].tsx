@@ -7,6 +7,7 @@ import { NotesList } from "@/components/NotesList/NotesList";
 import { TransactionInformation } from "@/components/TransactionInformation/TransactionInformation";
 import MainLayout from "@/layouts/MainLayout";
 import { trpcReact } from "@/providers/TRPCProvider";
+import { isChainportTx } from "@/utils/chainport/isChainportTx";
 import { asQueryString } from "@/utils/parseRouteQuery";
 
 const messages = defineMessages({
@@ -39,6 +40,22 @@ function SingleTransactionContent({
   const { data: transactionData } = trpcReact.getTransaction.useQuery({
     accountName,
     transactionHash,
+  });
+
+  const isChainportTransaction =
+    !!transactionData && isChainportTx(transactionData);
+
+  const { data: chainportTransactionStatus } =
+    trpcReact.getChainportTransactionStatus.useQuery(
+      { transactionHash },
+      {
+        enabled: isChainportTransaction,
+      },
+    );
+
+  console.log({
+    isChainportTransaction,
+    chainportTransactionStatus,
   });
 
   if (!accountData) {
@@ -84,6 +101,8 @@ function SingleTransactionContent({
   );
 
   const showSelfSendNotes = regularNotes.length > 0 && selfSendNotes.length > 0;
+
+  console.log({ isChainportTransaction });
 
   return (
     <MainLayout

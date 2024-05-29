@@ -41,6 +41,12 @@ export const messages = defineMessages({
     description:
       "Change as in the money that is returned to the sender after a transaction",
   },
+  bridgeSent: {
+    defaultMessage: "Bridge sent",
+  },
+  bridgeReceived: {
+    defaultMessage: "Bridge received",
+  },
 });
 
 export function useHeadingsText() {
