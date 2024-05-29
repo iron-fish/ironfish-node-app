@@ -1,13 +1,14 @@
-import { Box, Text, HStack } from "@chakra-ui/react";
-import Image, { StaticImageData } from "next/image";
+import { Box, Text, HStack, Image as ChakraImage } from "@chakra-ui/react";
+import NextImage, { StaticImageData } from "next/image";
+import { ReactNode, useMemo } from "react";
 import { RxExternalLink } from "react-icons/rx";
 
 import { COLORS } from "@/ui/colors";
 
 type LineItemProps = {
   label: string;
-  content: string;
-  icon?: StaticImageData;
+  content: ReactNode;
+  icon?: StaticImageData | string;
   href?: string;
 };
 
@@ -20,11 +21,20 @@ export function LineItem({ label, content, icon, href }: LineItemProps) {
         href,
       } as const)
     : undefined;
+
+  const iconImage = useMemo(() => {
+    if (!icon) return null;
+    if (typeof icon === "string") {
+      return <ChakraImage src={icon} alt="" boxSize="24px" />;
+    }
+    return <NextImage src={icon} alt="" height={24} width={24} />;
+  }, [icon]);
+
   return (
     <Box py={2}>
       <Text color={COLORS.GRAY_MEDIUM}>{label}</Text>
       <HStack gap={1.5} mt={1} {...maybeLinkProps}>
-        {icon && <Image src={icon} alt="" />}
+        {iconImage}
         <Text
           data-type="content"
           as="span"

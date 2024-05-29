@@ -57,7 +57,6 @@ export function useAccountAssets(
           value: balance.asset.id,
           asset: balance.asset,
           confirmedBalance: confirmed,
-          disabled: true,
         },
       ];
     });

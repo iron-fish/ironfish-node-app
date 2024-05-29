@@ -7,11 +7,6 @@ import { TRPCRouterOutputs, trpcReact } from "@/providers/TRPCProvider";
 import { COLORS } from "@/ui/colors";
 import { Select } from "@/ui/Forms/Select/Select";
 import { TextInput } from "@/ui/Forms/TextInput/TextInput";
-import {
-  ChainportTargetNetwork,
-  ChainportToken,
-  useChainportTokens,
-} from "@/utils/chainport/chainport";
 
 import { BridgeAssetsFormShell } from "./BridgeAssetsFormShell";
 import { BridgeAssetsFormData } from "./bridgeAssetsSchema";
@@ -34,15 +29,20 @@ const messages = defineMessages({
   },
 });
 
+type ChainportToken =
+  TRPCRouterOutputs["getChainportTokens"]["chainportTokens"][number];
+type ChainportTargetNetwork = ChainportToken["targetNetworks"][number];
+
 export function BridgeAssetsFormContent({
   accountsData,
   chainportTokens,
   chainportTokensMap,
+  chainportTargetNetworksMap,
 }: {
   accountsData: TRPCRouterOutputs["getAccounts"];
   chainportTokens: ChainportToken[];
-  chainportTokensMap: Map<string, ChainportToken>;
-  chainportTargetNetworksMap: Map<string, ChainportTargetNetwork>;
+  chainportTokensMap: Record<string, ChainportToken>;
+  chainportTargetNetworksMap: Record<string, ChainportTargetNetwork>;
 }) {
   const { formatMessage } = useIntl();
 
@@ -60,9 +60,8 @@ export function BridgeAssetsFormContent({
 
   const defaultFromAccount = accountOptions[0]?.value;
   const defaultAssetId = accountsData[0]?.balances.iron.asset.id;
-  const defaultDestinationNetwork = chainportTokensMap
-    .get(defaultAssetId)
-    ?.targetNetworks[0].value.toString();
+  const defaultDestinationNetwork =
+    chainportTokensMap[defaultAssetId]?.targetNetworks[0].value.toString();
 
   if (!defaultDestinationNetwork) {
     throw new Error("No default destination network found");
@@ -87,8 +86,7 @@ export function BridgeAssetsFormContent({
   // If the user selects a different asset, and that asset does not support the selected network,
   // then we automatically switch to the first available network for that asset.
   useEffect(() => {
-    const availableNetworks =
-      chainportTokensMap.get(assetIdValue)?.targetNetworks;
+    const availableNetworks = chainportTokensMap[assetIdValue]?.targetNetworks;
     const selectedNetwork = availableNetworks?.find(
       (network) => network.chainId?.toString() === destinationNetworkValue,
     );
@@ -129,8 +127,7 @@ export function BridgeAssetsFormContent({
     return withDisabledStatus;
   }, [chainportTokens, assetOptions]);
 
-  const availableNetworks =
-    chainportTokensMap.get(assetIdValue)?.targetNetworks;
+  const availableNetworks = chainportTokensMap[assetIdValue]?.targetNetworks;
 
   if (!availableNetworks) {
     throw new Error("No available networks found");
@@ -199,6 +196,11 @@ export function BridgeAssetsFormContent({
         <BridgeConfirmationModal
           onClose={() => setConfirmationData(null)}
           formData={confirmationData}
+          targetNetwork={
+            chainportTargetNetworksMap[confirmationData.destinationNetwork]!
+          }
+          selectedAsset={assetOptionsMap.get(confirmationData.assetId)!}
+          chainportToken={chainportTokensMap[confirmationData.assetId]!}
         />
       )}
     </>
@@ -209,7 +211,7 @@ export function BridgeAssetsForm() {
   const { data: accountsData } = trpcReact.getAccounts.useQuery();
   const filteredAccounts = accountsData?.filter((a) => !a.status.viewOnly);
   const { data: tokensData, isLoading: isChainportLoading } =
-    useChainportTokens();
+    trpcReact.getChainportTokens.useQuery();
 
   if (!filteredAccounts || isChainportLoading) {
     return (

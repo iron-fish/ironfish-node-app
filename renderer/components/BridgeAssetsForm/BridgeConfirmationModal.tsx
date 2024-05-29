@@ -9,29 +9,175 @@ import {
   GridItem,
   Flex,
   ModalFooter,
+  Skeleton,
+  Box,
+  Spinner,
 } from "@chakra-ui/react";
+import { useMemo, useState } from "react";
+import { defineMessages, useIntl } from "react-intl";
 
+import { trpcReact, TRPCRouterOutputs } from "@/providers/TRPCProvider";
 import { COLORS } from "@/ui/colors";
+import { Select } from "@/ui/Forms/Select/Select";
 import { PillButton } from "@/ui/PillButton/PillButton";
 import { BridgeArrows } from "@/ui/SVGs/BridgeArrows";
+import { CurrencyUtils } from "@/utils/currency";
+import { formatOre } from "@/utils/ironUtils";
 
 import chainportIcon from "./assets/chainport-icon.png";
 import ironfishIcon from "./assets/ironfish-icon.png";
 import { BridgeAssetsFormData } from "./bridgeAssetsSchema";
+import { AssetOptionType } from "../AssetAmountInput/utils";
 import { LineItem, Divider } from "../LineItem/LineItem";
 
+const messages = defineMessages({
+  feeLabel: {
+    defaultMessage: "Iron Fish transaction fee",
+  },
+  slowFeeLabel: {
+    defaultMessage: "Slow",
+  },
+  averageFeeLabel: {
+    defaultMessage: "Average",
+  },
+  fastFeeLabel: {
+    defaultMessage: "Fast",
+  },
+});
+
+type ChainportToken =
+  TRPCRouterOutputs["getChainportTokens"]["chainportTokens"][number];
+type ChainportTargetNetwork = ChainportToken["targetNetworks"][number];
+
 type Props = {
-  formData: BridgeAssetsFormData;
   onClose: () => void;
+  formData: BridgeAssetsFormData;
+  targetNetwork: ChainportTargetNetwork;
+  selectedAsset: AssetOptionType;
+  chainportToken: ChainportToken;
 };
 
-export function BridgeConfirmationModal({ formData, onClose }: Props) {
-  console.log(formData);
+export function BridgeConfirmationModal({
+  onClose,
+  formData,
+  targetNetwork,
+  selectedAsset,
+  chainportToken,
+}: Props) {
+  const { formatMessage } = useIntl();
+  const [feeRate, setFeeRate] = useState<"slow" | "average" | "fast">(
+    "average",
+  );
+
+  const [convertedAmount, convertedAmountError] = CurrencyUtils.tryMajorToMinor(
+    formData.amount,
+    selectedAsset.asset.id,
+    selectedAsset.asset.verification,
+  );
+
+  if (convertedAmountError) {
+    throw convertedAmountError;
+  }
+
+  const {
+    data: txDetails,
+    isLoading: isTransactionDetailsLoading,
+    isError: isTransactionDetailError,
+  } = trpcReact.getChainportBridgeTransactionDetails.useQuery({
+    amount: convertedAmount.toString(),
+    assetId: chainportToken.ironfishId,
+    to: formData.targetAddress,
+    selectedNetwork: targetNetwork.chainportNetworkId.toString(),
+  });
+
+  const { data: estimatedFeesData } =
+    trpcReact.getChainportBridgeTransactionEstimatedFees.useQuery(
+      {
+        fromAccount: formData.fromAccount,
+        txDetails: txDetails!,
+      },
+      {
+        enabled: !!txDetails,
+      },
+    );
+
+  const { mutate: submitBridgeTransaction } =
+    trpcReact.sendChainportBridgeTransaction.useMutation();
+
+  const amountToReceive = useMemo(() => {
+    if (isTransactionDetailsLoading || !txDetails) {
+      return <Skeleton>PLACEHOLDER</Skeleton>;
+    }
+
+    const bridgeAmount =
+      BigInt(txDetails.bridge_output.amount) -
+      BigInt(txDetails.bridge_fee.source_token_fee_amount ?? 0);
+
+    const convertedAmount = CurrencyUtils.render(
+      bridgeAmount,
+      selectedAsset.asset.id,
+      selectedAsset.asset.verification,
+    );
+
+    return convertedAmount + " " + chainportToken.symbol;
+  }, [
+    selectedAsset.asset.id,
+    selectedAsset.asset.verification,
+    txDetails,
+    chainportToken.symbol,
+    isTransactionDetailsLoading,
+  ]);
+
+  const chainportGasFee = useMemo(() => {
+    if (isTransactionDetailsLoading || !txDetails) {
+      return <Skeleton>123 FOO</Skeleton>;
+    }
+
+    return `${formatOre(txDetails.gas_fee_output.amount ?? 0)} $IRON`;
+  }, [isTransactionDetailsLoading, txDetails]);
+
+  const chainportBridgeFee = useMemo(() => {
+    if (isTransactionDetailsLoading || !txDetails) {
+      return <Skeleton>123 FOO</Skeleton>;
+    }
+
+    if (txDetails.bridge_fee.is_portx_fee_payment) {
+      const fee = CurrencyUtils.render(
+        BigInt(txDetails.bridge_fee.portx_fee_amount),
+        undefined,
+        {
+          decimals: 18,
+        },
+      );
+      return `${fee} PORTX`;
+    }
+
+    return `${formatOre(
+      txDetails.bridge_fee.source_token_fee_amount ?? 0,
+    )} $IRON`;
+  }, [isTransactionDetailsLoading, txDetails]);
+
   return (
     <Modal isOpen onClose={onClose}>
       <ModalOverlay />
-      <ModalContent maxW="100%" width="600px">
-        <ModalBody px={16} pt={16}>
+      <ModalContent maxW="100%" width="600px" position="relative">
+        {isTransactionDetailsLoading && (
+          <Box
+            position="absolute"
+            inset={0}
+            zIndex={9}
+            display="flex"
+            justifyContent="center"
+            alignItems="center"
+          >
+            <Spinner />
+          </Box>
+        )}
+        <ModalBody
+          px={16}
+          pt={16}
+          opacity={isTransactionDetailsLoading ? 0.6 : 1}
+        >
           <Heading fontSize="2xl" mb={8}>
             Confirm Bridge Transaction
           </Heading>
@@ -61,8 +207,8 @@ export function BridgeConfirmationModal({ formData, onClose }: Props) {
               <GridItem>
                 <LineItem
                   label="Target Network"
-                  content="Avalanche"
-                  icon={chainportIcon}
+                  content={targetNetwork.label}
+                  icon={targetNetwork.networkIcon}
                 />
               </GridItem>
               <GridItem
@@ -89,14 +235,14 @@ export function BridgeConfirmationModal({ formData, onClose }: Props) {
               <GridItem>
                 <LineItem
                   label="Sending"
-                  content="123 $IRON"
+                  content={`${formData.amount} ${selectedAsset.assetName}`}
                   icon={ironfishIcon}
                 />
               </GridItem>
               <GridItem>
                 <LineItem
                   label="Receiving"
-                  content="122.5 wIRON"
+                  content={amountToReceive}
                   icon={chainportIcon}
                 />
               </GridItem>
@@ -104,20 +250,46 @@ export function BridgeConfirmationModal({ formData, onClose }: Props) {
 
             <Divider />
 
-            <LineItem
-              label="Target Address"
-              content="0x0000000000000000000000000000000000000000"
-              href="https://www.chainport.io/"
-            />
+            <LineItem label="Target Address" content={formData.targetAddress} />
 
             <Divider />
 
-            <LineItem
-              label="Iron Fish transaction fee"
-              content="0.0000002 $IRON"
+            <Select
+              name="fees"
+              value={feeRate}
+              onChange={async (e) => {
+                setFeeRate(e.target.value);
+              }}
+              label={formatMessage(messages.feeLabel)}
+              options={[
+                {
+                  label:
+                    formatMessage(messages.slowFeeLabel) +
+                    (estimatedFeesData
+                      ? ` (${formatOre(estimatedFeesData.slow)} $IRON)`
+                      : ""),
+                  value: "slow",
+                },
+                {
+                  label:
+                    formatMessage(messages.averageFeeLabel) +
+                    (estimatedFeesData
+                      ? ` (${formatOre(estimatedFeesData.average)} $IRON)`
+                      : ""),
+                  value: "average",
+                },
+                {
+                  label:
+                    formatMessage(messages.fastFeeLabel) +
+                    (estimatedFeesData
+                      ? ` (${formatOre(estimatedFeesData.fast)} $IRON)`
+                      : ""),
+                  value: "fast",
+                },
+              ]}
             />
-            <LineItem label="Gas fee" content="0.04 $IRON" />
-            <LineItem label="Port fee" content="0.0093 $IRON" />
+            <LineItem label="Gas fee" content={chainportGasFee} />
+            <LineItem label="Bridge fee" content={chainportBridgeFee} />
 
             <Divider />
           </VStack>
@@ -137,8 +309,15 @@ export function BridgeConfirmationModal({ formData, onClose }: Props) {
             size="sm"
             type="button"
             onClick={() => {
-              console.log("submit tx");
+              if (!txDetails || !estimatedFeesData) return;
+
+              submitBridgeTransaction({
+                fromAccount: formData.fromAccount,
+                txDetails,
+                fee: estimatedFeesData[feeRate],
+              });
             }}
+            isDisabled={isTransactionDetailsLoading || isTransactionDetailError}
           >
             Confirm & Bridge
           </PillButton>
