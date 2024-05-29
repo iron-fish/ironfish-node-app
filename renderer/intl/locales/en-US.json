@@ -51,6 +51,9 @@
   "2qzbcD": {
     "message": "Min Peers"
   },
+  "3+EYHL": {
+    "message": "Target Network"
+  },
   "3/a0Ho": {
     "message": "We're not able to download release notes right now."
   },
@@ -68,6 +71,9 @@
   },
   "47FYwb": {
     "message": "Cancel"
+  },
+  "4V/PNA": {
+    "message": "Confirm & Bridge"
   },
   "4l6vz1": {
     "message": "Copy"
@@ -186,6 +192,9 @@
   "BxM6mJ": {
     "message": "Lowest to highest balance"
   },
+  "C2CIgC": {
+    "message": "Sending"
+  },
   "C43FrR": {
     "message": "Amount:"
   },
@@ -197,6 +206,9 @@
   },
   "D5NqQO": {
     "message": "Memo"
+  },
+  "DOMotB": {
+    "message": "Target Address"
   },
   "Dh1MGS": {
     "message": "Account Syncing"
@@ -295,6 +307,9 @@
   "LP4H/8": {
     "message": "Scanning blocks: {sequence} / {totalSequence}"
   },
+  "LPYoBI": {
+    "message": "Bridge fee"
+  },
   "LPlno7": {
     "message": "Multiple recipients"
   },
@@ -319,6 +334,9 @@
   "MZCNjq": {
     "message": "Bridge"
   },
+  "Muzvyz": {
+    "message": "Confirm Bridge Transaction"
+  },
   "N0KGQj": {
     "message": "Block Graffiti"
   },
@@ -336,6 +354,9 @@
   },
   "O+Q7TL": {
     "message": "Submitted Sequence"
+  },
+  "OEEl0G": {
+    "message": "Receiving"
   },
   "OfA95/": {
     "message": "Selected file: {fileName}"
@@ -556,6 +577,9 @@
   "g/oZa8": {
     "message": "Waiting for peers to sync from"
   },
+  "gC6/qK": {
+    "message": "Source Network"
+  },
   "gcuDcH": {
     "message": "Sent"
   },
@@ -705,6 +729,9 @@
   },
   "uT4OlP": {
     "message": "Fee"
+  },
+  "vEiG+a": {
+    "message": "Gas fee"
   },
   "vNT9Ip": {
     "message": "Mnemonic Phrase"

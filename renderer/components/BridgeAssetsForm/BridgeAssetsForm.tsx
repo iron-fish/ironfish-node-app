@@ -10,7 +10,7 @@ import { TextInput } from "@/ui/Forms/TextInput/TextInput";
 
 import { BridgeAssetsFormShell } from "./BridgeAssetsFormShell";
 import { BridgeAssetsFormData } from "./bridgeAssetsSchema";
-import { BridgeConfirmationModal } from "./BridgeConfirmationModal";
+import { BridgeConfirmationModal } from "./BridgeConfirmationModal/BridgeConfirmationModal";
 import { AssetAmountInput } from "../AssetAmountInput/AssetAmountInput";
 import { useAccountAssets } from "../AssetAmountInput/utils";
 
