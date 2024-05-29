@@ -154,7 +154,6 @@ export const chainportRouter = t.router({
     )
     .query(async (opts) => {
       try {
-        console.log(opts.input.memo);
         const result = ChainportMemoMetadata.decode(
           Buffer.from(opts.input.memo).toString(),
         );
