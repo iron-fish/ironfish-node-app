@@ -124,3 +124,16 @@ export type ChainportBridgeTransaction = {
     is_portx_fee_payment: boolean;
   };
 };
+
+export type ChainportTransactionStatus = {
+  base_network_id?: number;
+  base_tx_hash?: string;
+  base_tx_status?: number;
+  base_token_address?: string;
+  target_network_id?: number;
+  target_tx_hash?: string;
+  target_tx_status?: number;
+  target_token_address?: string;
+  created_at?: string;
+  port_in_ack?: boolean;
+};

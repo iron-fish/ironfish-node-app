@@ -2,11 +2,14 @@ import axios from "axios";
 import { z } from "zod";
 
 import { handleGetChainportBridgeTransactionEstimatedFees } from "./handleGetChainportBridgeTransactionEstimatedFees";
+import { handleGetChainportTransactionStatus } from "./handleGetChainportTransactionStatus";
 import {
   handleSendChainportBridgeTransaction,
   handleSendChainportBridgeTransactionInput,
 } from "./handleSendChainportBridgeTransaction";
 import { buildTransactionRequestParamsInputs } from "./utils/buildTransactionRequestParams";
+import { ChainportMemoMetadata } from "./utils/ChainportMemoMetadata";
+import { getChainportEndpoints } from "./utils/getChainportEndpoints";
 import {
   ChainportBridgeTransaction,
   ChainportTargetNetwork,
@@ -14,30 +17,7 @@ import {
   assertMetadataApiResponse,
   assertTokensApiResponse,
 } from "../../../shared/chainport";
-import { manager } from "../manager";
 import { t } from "../trpc";
-
-async function getChainportEndpoints() {
-  const ironfish = await manager.getIronfish();
-  const rpcClient = await ironfish.rpcClient();
-  const response = await rpcClient.chain.getNetworkInfo();
-  const prefix = {
-    "0": "preprod-",
-    "1": "",
-  }[response.content.networkId.toString()];
-
-  if (typeof prefix !== "string") {
-    throw new Error(
-      `Iron Fish node is currently using an unknown network id: ${response.content.networkId}`,
-    );
-  }
-
-  const baseUrl = `https://${prefix}api.chainport.io`;
-  const tokensEndpoint = `${baseUrl}/token/list?network_name=IRONFISH`;
-  const metadataEndpoint = `${baseUrl}/meta`;
-
-  return { baseUrl, tokensEndpoint, metadataEndpoint };
-}
 
 export const chainportRouter = t.router({
   getChainportEndpoints: t.procedure.query(async () => {
@@ -147,5 +127,39 @@ export const chainportRouter = t.router({
     .mutation(async (opts) => {
       const result = await handleSendChainportBridgeTransaction(opts.input);
       return result;
+    }),
+  getChainportTransactionStatus: t.procedure
+    .input(
+      z.object({
+        transactionHash: z.string(),
+      }),
+    )
+    .query(async (opts) => {
+      const result = handleGetChainportTransactionStatus(
+        opts.input.transactionHash,
+      );
+      return result;
+    }),
+  getChainportMeta: t.procedure.query(async () => {
+    const { metadataEndpoint } = await getChainportEndpoints();
+    const response = await axios.get(metadataEndpoint);
+    const data = assertMetadataApiResponse(response.data);
+    return data;
+  }),
+  decodeMemo: t.procedure
+    .input(
+      z.object({
+        memo: z.string(),
+      }),
+    )
+    .query(async (opts) => {
+      try {
+        const result = ChainportMemoMetadata.decode(
+          Buffer.from(opts.input.memo).toString(),
+        );
+        return result;
+      } catch (_err) {
+        return null;
+      }
     }),
 });
