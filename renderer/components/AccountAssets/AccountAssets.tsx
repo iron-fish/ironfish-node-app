@@ -176,7 +176,9 @@ export function AccountAssets({ accountName }: { accountName: string }) {
                         borderRadius="4px"
                       >
                         <Text fontSize="lg" flexGrow={1} as="span">
-                          {balance.asset.verification ? "✔ " : ""}
+                          {balance.asset.verification.status === "verified"
+                            ? "✔ "
+                            : ""}
                           {CurrencyUtils.shortSymbol(assetId, asset)}
                         </Text>
                         <Text fontSize="lg">{majorString}</Text>
