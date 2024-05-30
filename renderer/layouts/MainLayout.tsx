@@ -203,60 +203,56 @@ export default function MainLayout({ children, backLinkProps }: Props) {
         bg: COLORS.DARK_MODE.BG,
       }}
     >
-      <Grid height="100%" templateRows="auto 1fr" templateColumns="1fr" gap={0}>
-        <GridItem>
-          <TestnetBanner />
-        </GridItem>
-        <GridItem>
-          <Grid height="100%" templateColumns="auto 1fr">
-            <GridItem
-              h="100%"
-              overflow="auto"
-              w={{
-                base: "auto",
-                md: "265px",
-              }}
-              px={4}
-              pt="50px"
-              pb={{
-                base: 8,
-                md: 6,
-              }}
-              display="flex"
-              alignItems="stretch"
-            >
-              <Sidebar />
-            </GridItem>
-            <GridItem
-              px={6}
-              pt={10}
-              pb={8}
-              h="100%"
-              overflow="auto"
-              ref={(r) => setScrollElement(r)}
-            >
-              <ScrollElementContext.Provider value={scrollElement}>
-                <Box
-                  mx="auto"
-                  maxWidth={{
-                    base: "100%",
-                    xl: "1048px",
-                    "2xl": "1280px",
-                  }}
-                >
-                  {backLinkProps && (
-                    <BackButton
-                      href={backLinkProps.href}
-                      label={backLinkProps.label}
-                    />
-                  )}
-                  {children}
-                </Box>
-              </ScrollElementContext.Provider>
-            </GridItem>
-          </Grid>
-        </GridItem>
-      </Grid>
+      <VStack alignItems="stretch" h="100%">
+        <TestnetBanner />
+        <Grid flexGrow={1} templateColumns="auto 1fr" overflow="auto">
+          <GridItem
+            h="100%"
+            overflow="auto"
+            w={{
+              base: "auto",
+              md: "265px",
+            }}
+            px={4}
+            pt="50px"
+            pb={{
+              base: 8,
+              md: 6,
+            }}
+            display="flex"
+            alignItems="stretch"
+          >
+            <Sidebar />
+          </GridItem>
+          <GridItem
+            px={6}
+            pt={10}
+            pb={8}
+            h="100%"
+            overflow="auto"
+            ref={(r) => setScrollElement(r)}
+          >
+            <ScrollElementContext.Provider value={scrollElement}>
+              <Box
+                mx="auto"
+                maxWidth={{
+                  base: "100%",
+                  xl: "1048px",
+                  "2xl": "1280px",
+                }}
+              >
+                {backLinkProps && (
+                  <BackButton
+                    href={backLinkProps.href}
+                    label={backLinkProps.label}
+                  />
+                )}
+                {children}
+              </Box>
+            </ScrollElementContext.Provider>
+          </GridItem>
+        </Grid>
+      </VStack>
     </WithDraggableArea>
   );
 }
