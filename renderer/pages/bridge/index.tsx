@@ -1,11 +1,11 @@
-import { Heading, Text, Flex, Box } from "@chakra-ui/react";
-import Image from "next/image";
+import { Heading } from "@chakra-ui/react";
 import { defineMessages, useIntl } from "react-intl";
 
 import { BridgeAssetsForm } from "@/components/BridgeAssetsForm/BridgeAssetsForm";
+import { RetryBoundary } from "@/components/ErrorBoundary/RetryBoundary";
 import rainbowFish from "@/images/rainbow-fish.svg";
 import MainLayout from "@/layouts/MainLayout";
-import { COLORS } from "@/ui/colors";
+import { WithExplanatorySidebar } from "@/layouts/WithExplanatorySidebar";
 
 const messages = defineMessages({
   heading: {
@@ -29,26 +29,15 @@ export default function Bridge() {
         {formatMessage(messages.heading)}
       </Heading>
 
-      <Flex gap={16}>
-        <Box maxW="592px" w="100%">
+      <WithExplanatorySidebar
+        heading={formatMessage(messages.aboutHeading)}
+        description={formatMessage(messages.aboutContent)}
+        imgSrc={rainbowFish}
+      >
+        <RetryBoundary>
           <BridgeAssetsForm />
-        </Box>
-        <Box>
-          <Heading fontSize="2xl" mb={4}>
-            {formatMessage(messages.aboutHeading)}
-          </Heading>
-          <Text
-            fontSize="sm"
-            maxW="340px"
-            mb={8}
-            color={COLORS.GRAY_MEDIUM}
-            _dark={{ color: COLORS.DARK_MODE.GRAY_LIGHT }}
-          >
-            {formatMessage(messages.aboutContent)}
-          </Text>
-          <Image src={rainbowFish} alt="" />
-        </Box>
-      </Flex>
+        </RetryBoundary>
+      </WithExplanatorySidebar>
     </MainLayout>
   );
 }

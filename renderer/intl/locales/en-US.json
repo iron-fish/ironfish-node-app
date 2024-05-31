@@ -460,6 +460,9 @@
   "Uh1bJh": {
     "message": "Bridge Information"
   },
+  "Uvwn4S": {
+    "message": "Something went wrong while rendering this component. Please try again. If the issue persists, report the issue on <link>Discord</link>."
+  },
   "Uziuar": {
     "message": "Change Network"
   },
@@ -744,6 +747,9 @@
   },
   "uT4OlP": {
     "message": "Fee"
+  },
+  "uuDgUP": {
+    "message": "An error occured"
   },
   "vEiG+a": {
     "message": "Gas fee"
