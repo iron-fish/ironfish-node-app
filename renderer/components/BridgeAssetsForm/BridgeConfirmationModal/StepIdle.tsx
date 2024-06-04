@@ -10,6 +10,8 @@ import {
 import { ReactNode } from "react";
 import { defineMessages, useIntl } from "react-intl";
 
+import chainportIcon from "@/images/chainport/chainport-icon-lg.png";
+import ironfishIcon from "@/images/chainport/ironfish-icon.png";
 import { trpcReact, TRPCRouterOutputs } from "@/providers/TRPCProvider";
 import { COLORS } from "@/ui/colors";
 import { Select } from "@/ui/Forms/Select/Select";
@@ -17,8 +19,6 @@ import { BridgeArrows } from "@/ui/SVGs/BridgeArrows";
 import { formatOre } from "@/utils/ironUtils";
 
 import { LineItem, Divider } from "../../LineItem/LineItem";
-import chainportIcon from "../assets/chainport-icon.png";
-import ironfishIcon from "../assets/ironfish-icon.png";
 
 const messages = defineMessages({
   heading: {

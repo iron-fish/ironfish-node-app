@@ -13,7 +13,7 @@ import NextImage from "next/image";
 import { useMemo } from "react";
 import { defineMessages, useIntl } from "react-intl";
 
-import chainportIcon from "@/images/chainport/chainport-icon.png";
+import chainportIcon from "@/images/chainport/chainport-icon-lg.png";
 import { trpcReact, TRPCRouterOutputs } from "@/providers/TRPCProvider";
 import { COLORS } from "@/ui/colors";
 import { ShadowCard } from "@/ui/ShadowCard/ShadowCard";
@@ -28,6 +28,9 @@ const messages = defineMessages({
   },
   status: {
     defaultMessage: "Status",
+  },
+  senderAddress: {
+    defaultMessage: "Sender Address",
   },
   destinationAddress: {
     defaultMessage: "Destination Address",
@@ -44,19 +47,30 @@ type Props = BoxProps & {
   transaction: Transaction;
 };
 
+const IRONFISH_NETWORK_ID = 22;
+
 export function BridgeTransactionInformation({ transaction, ...rest }: Props) {
   const { formatMessage } = useIntl();
-
-  const { data: chainportStatus, isLoading: isChainportStatusLoading } =
-    trpcReact.getChainportTransactionStatus.useQuery({
-      transactionHash: transaction.hash,
-    });
+  const isSend = transaction.type === "send";
 
   const { data: chainportMeta } = trpcReact.getChainportMeta.useQuery();
   const { data: bridgeNoteMemo } = trpcReact.decodeMemo.useQuery({
     // @todo: Figure out how to do this without hardcoding the index
-    memo: transaction.notes![transaction.type === "send" ? 1 : 0].memoHex,
+    memo: transaction.notes![isSend ? 1 : 0].memoHex,
   });
+
+  const baseNetworkId = isSend ? IRONFISH_NETWORK_ID : bridgeNoteMemo?.[0];
+
+  const { data: chainportStatus, isLoading: isChainportStatusLoading } =
+    trpcReact.getChainportTransactionStatus.useQuery(
+      {
+        transactionHash: transaction.hash,
+        baseNetworkId: baseNetworkId ?? 0,
+      },
+      {
+        enabled: !!baseNetworkId,
+      },
+    );
 
   const targetNetwork = useMemo(() => {
     if (!chainportStatus || !chainportMeta) return null;
@@ -105,7 +119,7 @@ export function BridgeTransactionInformation({ transaction, ...rest }: Props) {
                   {formatMessage(messages.status)}
                 </Text>
                 <Box fontSize="md">
-                  {chainportStatus?.target_tx_status === 1
+                  {!isSend || chainportStatus?.target_tx_status === 1
                     ? "Success"
                     : "Pending"}
                 </Box>
@@ -138,7 +152,11 @@ export function BridgeTransactionInformation({ transaction, ...rest }: Props) {
                     color: COLORS.DARK_MODE.GRAY_LIGHT,
                   }}
                 >
-                  {formatMessage(messages.destinationAddress)}
+                  {formatMessage(
+                    isSend
+                      ? messages.destinationAddress
+                      : messages.senderAddress,
+                  )}
                 </Text>
                 <Box fontSize="md">
                   {bridgeNoteMemo
@@ -150,17 +168,19 @@ export function BridgeTransactionInformation({ transaction, ...rest }: Props) {
                     : "—"}
                 </Box>
               </VStack>
-              <Image
-                width="48px"
-                height="48px"
-                src={targetNetwork?.network_icon}
-                alt=""
-              />
+              {isSend && (
+                <Image
+                  width="48px"
+                  height="48px"
+                  src={targetNetwork?.network_icon}
+                  alt=""
+                />
+              )}
             </HStack>
           </ShadowCard>
         </GridItem>
 
-        <GridItem display="flex" alignItems="stretch">
+        <GridItem display={isSend ? "flex" : "none"} alignItems="stretch">
           <ShadowCard
             contentContainerProps={{
               p: 8,

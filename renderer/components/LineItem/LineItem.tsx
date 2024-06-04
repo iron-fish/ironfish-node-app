@@ -18,6 +18,7 @@ export function LineItem({ label, content, icon, href }: LineItemProps) {
         as: "a",
         cursor: "pointer",
         rel: "noreferrer",
+        target: "_blank",
         href,
       } as const)
     : undefined;

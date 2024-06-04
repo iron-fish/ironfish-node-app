@@ -166,7 +166,7 @@ export function NoteRow({
         {formatDate(timestamp)}
       </Text>,
       <Text as="span" key={key++}>
-        {!memo
+        {!memo || isBridge
           ? "—"
           : Array.isArray(memo)
           ? formatMessage(messages.multipleMemos)
@@ -178,6 +178,7 @@ export function NoteRow({
     assetId,
     formatMessage,
     from,
+    isBridge,
     memo,
     statusDisplay.icon,
     statusDisplay.message,

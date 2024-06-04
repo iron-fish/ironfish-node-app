@@ -225,21 +225,6 @@ export function BridgeAssetsFormContent({
                         borderBottomRightRadius: 0,
                         borderRightWidth: 0,
                       }}
-                      // rightElement={
-                      //   selectedAsset ? (
-                      //     <Text
-                      //       as="button"
-                      //       type="button"
-                      //       color={COLORS.VIOLET}
-                      //       onClick={(e) => {
-                      //         e.stopPropagation();
-                      //         field.onChange(selectedAsset.confirmedBalance);
-                      //       }}
-                      //     >
-                      //       MAX
-                      //     </Text>
-                      //   ) : null
-                      // }
                     />
                   }
                 />
@@ -253,7 +238,17 @@ export function BridgeAssetsFormContent({
                 label={formatMessage(messages.bridgeProvider)}
                 value="Chainport"
               />
-              <Text color={COLORS.GRAY_MEDIUM}>
+              <Text
+                color={COLORS.GRAY_MEDIUM}
+                as="a"
+                href="https://helpdesk.chainport.io/"
+                target="_blank"
+                rel="noreferrer"
+                cursor="pointer"
+                _hover={{
+                  textDecoration: "underline",
+                }}
+              >
                 {formatMessage(messages.needHelp)}
               </Text>
             </HStack>

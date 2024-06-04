@@ -8,7 +8,7 @@ import {
   handleSendChainportBridgeTransactionInput,
 } from "./handleSendChainportBridgeTransaction";
 import { buildTransactionRequestParamsInputs } from "./utils/buildTransactionRequestParams";
-import { ChainportMemoMetadata } from "./utils/ChainportMemoMetadata";
+import { decodeChainportMemo } from "./utils/decodeChainportMemo";
 import { getChainportEndpoints } from "./utils/getChainportEndpoints";
 import {
   ChainportBridgeTransaction,
@@ -132,12 +132,14 @@ export const chainportRouter = t.router({
     .input(
       z.object({
         transactionHash: z.string(),
+        baseNetworkId: z.number(),
       }),
     )
     .query(async (opts) => {
-      const result = handleGetChainportTransactionStatus(
-        opts.input.transactionHash,
-      );
+      const result = handleGetChainportTransactionStatus({
+        txHash: opts.input.transactionHash,
+        baseNetworkId: opts.input.baseNetworkId,
+      });
       return result;
     }),
   getChainportMeta: t.procedure.query(async () => {
@@ -154,7 +156,11 @@ export const chainportRouter = t.router({
     )
     .query(async (opts) => {
       try {
-        const result = ChainportMemoMetadata.decode(
+        console.log({
+          memo: opts.input.memo,
+          buffer: Buffer.from(opts.input.memo).toString(),
+        });
+        const result = decodeChainportMemo(
           Buffer.from(opts.input.memo).toString(),
         );
         return result;
