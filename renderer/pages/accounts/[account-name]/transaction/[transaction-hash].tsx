@@ -3,6 +3,7 @@ import { useRouter } from "next/router";
 import { defineMessages, useIntl } from "react-intl";
 
 import { BridgeTransactionInformation } from "@/components/BridgeTransactionInformation/BridgeTransactionInformation";
+import { BridgeTransactionProgressIndicator } from "@/components/BridgeTransactionProgressIndicator/BridgeTransactionProgressIndicator";
 import { CopyAddress } from "@/components/CopyAddress/CopyAddress";
 import { NotesList } from "@/components/NotesList/NotesList";
 import { TransactionInformation } from "@/components/TransactionInformation/TransactionInformation";
@@ -104,6 +105,12 @@ function SingleTransactionContent({
           transform="translateY(0.4em)"
         />
       </HStack>
+      {isChainportTransaction &&
+        transactionData.transaction.type === "send" && (
+          <BridgeTransactionProgressIndicator
+            transaction={transactionData.transaction}
+          />
+        )}
       <TransactionInformation
         transaction={transactionData.transaction}
         mb={16}

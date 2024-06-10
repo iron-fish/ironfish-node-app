@@ -9,6 +9,7 @@ export const COLORS = {
   LIGHT_BLUE: "#2C72FF",
   DEEP_BLUE: "#1D0070",
   RED: "#F15929",
+  PISTACHIO: "#C7F182",
 
   SKY_BLUE: "#D3F9FF",
   DARK_BLUE: "#005664",

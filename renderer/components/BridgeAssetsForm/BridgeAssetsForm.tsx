@@ -124,7 +124,7 @@ export function BridgeAssetsFormContent({
     const chainportAssetIds = new Set(
       chainportTokens.map((token) => token.ironfishId),
     );
-    const withDisabledStatus = assetOptions
+    const withAdditionalFields = assetOptions
       .map((item) => {
         return {
           ...item,
@@ -137,7 +137,7 @@ export function BridgeAssetsFormContent({
         return 0;
       });
 
-    return withDisabledStatus;
+    return withAdditionalFields;
   }, [chainportTokens, assetOptions]);
 
   const availableNetworks = chainportTokensMap[assetIdValue]?.targetNetworks;
@@ -190,9 +190,10 @@ export function BridgeAssetsFormContent({
                   assetOptions={bridgeableAssets}
                   assetOptionsMap={assetOptionsMap}
                   assetIdValue={assetIdValue}
-                  onAssetIdChange={async (e) =>
-                    setValue("assetId", e.target.value)
-                  }
+                  onAssetIdChange={async (e) => {
+                    setValue("assetId", e.target.value);
+                    field.onChange("0");
+                  }}
                   error={formErrors.amount?.message}
                   inputElement={
                     <TextInput
@@ -205,6 +206,8 @@ export function BridgeAssetsFormContent({
                           selectedAsset: assetOptionsMap.get(assetIdValue),
                           onStart: () => clearErrors("root.serverError"),
                           onChange: field.onChange,
+                          decimalsOverride:
+                            chainportTokensMap[assetIdValue].decimals,
                         });
                       }}
                       onFocus={() => {

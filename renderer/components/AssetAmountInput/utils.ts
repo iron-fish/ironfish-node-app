@@ -80,11 +80,13 @@ export function normalizeAmountInputChange({
   selectedAsset,
   onChange,
   onStart,
+  decimalsOverride,
 }: {
   changeEvent: ChangeEvent<HTMLInputElement>;
   selectedAsset: AssetOptionType | undefined;
   onChange: (value: string) => void;
   onStart?: () => void;
+  decimalsOverride?: number;
 }) {
   onStart?.();
 
@@ -99,7 +101,8 @@ export function normalizeAmountInputChange({
     changeEvent.preventDefault();
     return;
   }
-  const decimals = selectedAsset.asset.verification?.decimals ?? 0;
+  const decimals =
+    decimalsOverride ?? selectedAsset.asset.verification?.decimals ?? 0;
 
   let finalValue = azValue;
 
