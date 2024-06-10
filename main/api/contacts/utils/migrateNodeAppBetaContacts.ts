@@ -3,9 +3,8 @@ import os from "os";
 import path from "path";
 
 import NeDBStorage from "nedb";
-import { v4 as uuidv4 } from "uuid";
 
-import { store } from "..";
+import { contactsStoreUtil } from "./contactsStoreUtil";
 
 type BetaContact = {
   name: string;
@@ -58,23 +57,8 @@ function deleteNodeAppBetaContacts(): void {
 
 export async function migrateNodeAppBetaContacts() {
   const betaContacts = await getNodeAppBetaContacts();
-  const contacts = store.get("contacts", []);
-  const addressLookup = new Set(contacts.map((contact) => contact.address));
-
-  let order = 0;
-
-  for (const contact of betaContacts) {
-    if (!addressLookup.has(contact.address)) {
-      contacts.push({
-        id: uuidv4(),
-        name: contact.name,
-        address: contact.address,
-        order: order++,
-      });
-    }
-  }
-
-  store.set("contacts", contacts);
+  contactsStoreUtil.batchAddNodeAppBetaContacts(betaContacts);
   deleteNodeAppBetaContacts();
-  return contacts;
+
+  return contactsStoreUtil.getContacts();
 }

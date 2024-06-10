@@ -54,6 +54,9 @@ const messages = defineMessages({
   address: {
     defaultMessage: "Address",
   },
+  duplicateContactError: {
+    defaultMessage: "A contact with that address already exists.",
+  },
 });
 
 type Props = {
@@ -83,6 +86,7 @@ export function AddContactModal({ isOpen, onClose }: Props) {
     isError,
     isSuccess,
     reset: resetMutation,
+    error,
   } = trpcReact.addContact.useMutation();
 
   const {
@@ -150,7 +154,11 @@ export function AddContactModal({ isOpen, onClose }: Props) {
                 {formatMessage(messages.addContactError)}
               </Heading>
               <Text fontSize="md">
-                {formatMessage(messages.somethingWentWrong)}
+                {formatMessage(
+                  error.message === "DUPLICATE_CONTACT_ERROR"
+                    ? messages.duplicateContactError
+                    : messages.somethingWentWrong,
+                )}
               </Text>
             </>
           )}
