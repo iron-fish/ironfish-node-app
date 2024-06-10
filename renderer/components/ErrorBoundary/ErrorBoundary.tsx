@@ -82,9 +82,9 @@ export class ErrorBoundary extends Component<Props, State> {
     log.error(error, info.componentStack);
   }
 
-  clearError() {
+  clearError = () => {
     this.setState({ error: null });
-  }
+  };
 
   render() {
     const { children, fallback } = this.props;

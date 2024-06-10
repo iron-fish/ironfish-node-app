@@ -37,14 +37,12 @@ type ChainportToken =
   TRPCRouterOutputs["getChainportTokens"]["chainportTokens"][number];
 type ChainportTargetNetwork = ChainportToken["targetNetworks"][number];
 
-export function BridgeAssetsFormContent({
+function BridgeAssetsFormContent({
   accountsData,
-  chainportTokens,
   chainportTokensMap,
   chainportTargetNetworksMap,
 }: {
   accountsData: TRPCRouterOutputs["getAccounts"];
-  chainportTokens: ChainportToken[];
   chainportTokensMap: Record<string, ChainportToken>;
   chainportTargetNetworksMap: Record<string, ChainportTargetNetwork>;
 }) {
@@ -121,14 +119,18 @@ export function BridgeAssetsFormContent({
   });
 
   const bridgeableAssets = useMemo(() => {
-    const chainportAssetIds = new Set(
-      chainportTokens.map((token) => token.ironfishId),
-    );
+    const currentNetwork = chainportTargetNetworksMap[destinationNetworkValue];
+
     const withAdditionalFields = assetOptions
       .map((item) => {
+        const isBridgableForNetwork = chainportTokensMap[
+          item.asset.id
+        ]?.targetNetworks.some(
+          (network) => network.chainId === currentNetwork.chainId,
+        );
         return {
           ...item,
-          disabled: !chainportAssetIds.has(item.asset.id),
+          disabled: !isBridgableForNetwork,
         };
       })
       .toSorted((a, b) => {
@@ -138,7 +140,12 @@ export function BridgeAssetsFormContent({
       });
 
     return withAdditionalFields;
-  }, [chainportTokens, assetOptions]);
+  }, [
+    chainportTargetNetworksMap,
+    destinationNetworkValue,
+    chainportTokensMap,
+    assetOptions,
+  ]);
 
   const availableNetworks = chainportTokensMap[assetIdValue]?.targetNetworks;
 
@@ -314,7 +321,6 @@ export function BridgeAssetsForm() {
   return (
     <BridgeAssetsFormContent
       accountsData={filteredAccounts}
-      chainportTokens={tokensData.chainportTokens}
       chainportTokensMap={tokensData.chainportTokensMap}
       chainportTargetNetworksMap={tokensData.chainportNetworksMap}
     />
