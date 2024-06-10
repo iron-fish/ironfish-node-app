@@ -502,6 +502,9 @@
   "X+BJ/8": {
     "message": "Other Assets"
   },
+  "XIdw3B": {
+    "message": "A contact with that address already exists."
+  },
   "XLvNHQ": {
     "message": "Please write down this recovery phrase and keep it in a safe place. You will need it to recover your account."
   },
