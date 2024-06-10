@@ -270,14 +270,6 @@ export default function MainLayout({ children, backLinkProps }: Props) {
           </GridItem>
         </Grid>
       </VStack>
-      {/* <Grid height="100%" templateRows="auto 1fr" templateColumns="1fr" gap={0}>
-        <GridItem>
-          <TestnetBanner />
-        </GridItem>
-        <GridItem>
-          
-        </GridItem>
-      </Grid> */}
     </WithDraggableArea>
   );
 }
