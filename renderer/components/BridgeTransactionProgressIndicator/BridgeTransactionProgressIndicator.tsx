@@ -159,7 +159,7 @@ function Step({
         width={ICON_SIZE}
         _dark={{
           bg: {
-            pending: "pink",
+            pending: "transparent",
             complete: COLORS.DARK_MODE.BG,
             failed: COLORS.DARK_MODE.BG,
           }[status],

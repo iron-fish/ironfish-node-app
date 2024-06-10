@@ -184,7 +184,9 @@ export function BridgeTransactionInformationShell({
                   </VStack>
                 </Box>
               </VStack>
-              <Image width="48px" height="48px" src={networkIcon} alt="" />
+              {networkIcon && (
+                <Image width="48px" height="48px" src={networkIcon} alt="" />
+              )}
             </HStack>
           </ShadowCard>
         </GridItem>
