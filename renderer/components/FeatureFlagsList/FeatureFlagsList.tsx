@@ -23,7 +23,7 @@ const messages = defineMessages({
 export function FeatureFlagsList() {
   const { flags, toggleFlag } = useFeatureFlags();
   const { formatMessage } = useIntl();
-  console.log({ flags });
+
   return (
     <Box alignItems="stretch">
       <Heading fontSize="xl" mb={4}>
