@@ -8,6 +8,9 @@
   "+gH1Ai": {
     "message": "Node Name"
   },
+  "+mLiOr": {
+    "message": "Feature flags"
+  },
   "/0TOL5": {
     "message": "Amount"
   },
@@ -56,6 +59,9 @@
   },
   "3OLlCN": {
     "message": "From/To"
+  },
+  "3Rx6Qo": {
+    "message": "Advanced"
   },
   "3VI9mt": {
     "message": "Save Changes"
@@ -309,6 +315,9 @@
   },
   "N0bVvU": {
     "message": "Error copied to clipboard"
+  },
+  "NTPwsP": {
+    "message": "Feature flags allow you to enable or disable experimental features. These features are not fully tested and may not work as expected."
   },
   "NX/nQR": {
     "message": "Changing node settings can optimize performance, improve connectivity, enhance security, and manage resources effectively."

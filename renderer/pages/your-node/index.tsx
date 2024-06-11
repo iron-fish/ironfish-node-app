@@ -8,6 +8,7 @@ import {
 } from "@chakra-ui/react";
 import { defineMessages, useIntl } from "react-intl";
 
+import { FeatureFlagsList } from "@/components/FeatureFlagsList/FeatureFlagsList";
 import { NodeOverview } from "@/components/NodeOverview/NodeOverview";
 import { NodeResources } from "@/components/NodeResources/NodeResources";
 import { NodeSettings } from "@/components/NodeSettings/NodeSettings";
@@ -31,6 +32,9 @@ const messages = defineMessages({
   nodeSettings: {
     defaultMessage: "Node Settings",
   },
+  advanced: {
+    defaultMessage: "Advanced",
+  },
   nodeSettingsDescription: {
     defaultMessage:
       "Changing node settings can optimize performance, improve connectivity, enhance security, and manage resources effectively.",
@@ -50,6 +54,7 @@ export default function YourNode() {
           <Tab>{formatMessage(messages.overview)}</Tab>
           <Tab>{formatMessage(messages.settings)}</Tab>
           <Tab>{formatMessage(messages.resources)}</Tab>
+          <Tab>{formatMessage(messages.advanced)}</Tab>
         </TabList>
 
         <TabPanels>
@@ -67,6 +72,9 @@ export default function YourNode() {
           </TabPanel>
           <TabPanel p={0}>
             <NodeResources />
+          </TabPanel>
+          <TabPanel p={0}>
+            <FeatureFlagsList />
           </TabPanel>
         </TabPanels>
       </Tabs>

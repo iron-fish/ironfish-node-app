@@ -16,6 +16,7 @@ import { LanguageSelector } from "@/components/LanguageSelector/LanguageSelector
 import { NetworkSelector } from "@/components/NetworkSelector/NetworkSelector";
 import { StatusIndicator } from "@/components/StatusIndicator/StatusIndicator";
 import { TestnetBanner } from "@/components/TestnetBanner/TestnetBanner";
+import { useFeatureFlags } from "@/providers/FeatureFlagsProvider";
 import { ChakraLink } from "@/ui/ChakraLink/ChakraLink";
 import { COLORS } from "@/ui/colors";
 import { DarkModeSwitch } from "@/ui/DarkModeSwitch/DarkModeSwitch";
@@ -111,9 +112,11 @@ function Sidebar() {
   const router = useRouter();
   const { formatMessage } = useIntl();
 
+  const { flags } = useFeatureFlags();
+
   return (
     <Flex flexDirection="column" alignItems="stretch" w="100%">
-      <Box pl={4} mb={10}>
+      <Box pl={4} mb={10} color={flags.demoFlag ? "lime" : undefined}>
         <ResponsiveLogo />
       </Box>
       <VStack alignItems="flex-start" flexGrow={1}>
