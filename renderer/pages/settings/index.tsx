@@ -12,6 +12,7 @@ import { FeatureFlagsList } from "@/components/FeatureFlagsList/FeatureFlagsList
 import { LanguageSelector } from "@/components/LanguageSelector/LanguageSelector";
 import { NetworkSelector } from "@/components/NetworkSelector/NetworkSelector";
 import candyIronFish from "@/images/candy-iron-fish.svg";
+import flagFish from "@/images/flag-fish.svg";
 import languageBubble from "@/images/language-bubble.svg";
 import sunMoon from "@/images/sun-moon.svg";
 import MainLayout from "@/layouts/MainLayout";
@@ -104,7 +105,7 @@ export default function YourNode() {
               <WithExplanatorySidebar
                 heading={formatMessage(messages.featureFlagsTab)}
                 description={formatMessage(messages.featureFlagsDescription)}
-                imgSrc={sunMoon}
+                imgSrc={flagFish}
               >
                 <FeatureFlagsList />
               </WithExplanatorySidebar>
