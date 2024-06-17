@@ -53,7 +53,7 @@ const messages = defineMessages({
   },
 });
 
-export default function YourNode() {
+export default function Settings() {
   const { formatMessage } = useIntl();
   const { areFlagsEnabled } = useFeatureFlags();
 
