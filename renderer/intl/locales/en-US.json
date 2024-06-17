@@ -8,6 +8,9 @@
   "+gH1Ai": {
     "message": "Node Name"
   },
+  "+mLiOr": {
+    "message": "Feature flags"
+  },
   "/0TOL5": {
     "message": "Amount"
   },
@@ -62,6 +65,9 @@
   },
   "3WkdVP": {
     "message": "Account Name"
+  },
+  "3cc4Ct": {
+    "message": "Light"
   },
   "3euoRJ": {
     "message": "Recovery Phrase"
@@ -240,6 +246,9 @@
   "HtgUU8": {
     "message": "Type ''{accountName}'' to remove"
   },
+  "I3JhPS": {
+    "message": "Network"
+  },
   "Iso3pe": {
     "message": "Testnet"
   },
@@ -310,6 +319,9 @@
   "N0bVvU": {
     "message": "Error copied to clipboard"
   },
+  "NTPwsP": {
+    "message": "Feature flags allow you to enable or disable experimental features. These features are not fully tested and may not work as expected."
+  },
   "NX/nQR": {
     "message": "Changing node settings can optimize performance, improve connectivity, enhance security, and manage resources effectively."
   },
@@ -337,11 +349,20 @@
   "P7PLVj": {
     "message": "Date"
   },
+  "PLUyno": {
+    "message": "Switch between light and dark mode."
+  },
+  "Pe0ogR": {
+    "message": "Theme"
+  },
   "Pq25uf": {
     "message": "Reset Node"
   },
   "Q/MbJP": {
     "message": "Please keep this phrase stored somewhere safe."
+  },
+  "QAfX0s": {
+    "message": "The Iron Fish Node App supports multiple languages. If your preferred language isn't listed, please reach out and let us know!"
   },
   "QS9NTE": {
     "message": "Account name — A to Z"
@@ -664,6 +685,9 @@
   "rqrhXg": {
     "message": "Confirm Your Recovery Phrase"
   },
+  "tOdNiY": {
+    "message": "Dark"
+  },
   "tU2A8W": {
     "message": "View in Block Explorer"
   },
@@ -712,6 +736,9 @@
   "xmcVZ0": {
     "message": "Search"
   },
+  "y1Z3or": {
+    "message": "Language"
+  },
   "y3LzSM": {
     "message": "Max Peers"
   },
@@ -732,6 +759,9 @@
   },
   "zCTaQX": {
     "message": "View only accounts cannot send transactions"
+  },
+  "zELoFl": {
+    "message": "You can choose between Mainnet, our live network where real transactions take place, and Testnet, a safe environment ideal for experimenting with new features and learning to use the node app without any risk."
   },
   "zFegDD": {
     "message": "Contact"

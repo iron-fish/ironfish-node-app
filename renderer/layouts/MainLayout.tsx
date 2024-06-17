@@ -11,21 +11,20 @@ import { useRouter } from "next/router";
 import { createContext, ReactNode, useContext, useState } from "react";
 import { defineMessages, useIntl } from "react-intl";
 
+import { ReleaseNotesLink } from "@/components/AppSettings/SidebarBottomLinks/ReleaseNotesLink";
+import { SettingsLink } from "@/components/AppSettings/SidebarBottomLinks/SettingsLink";
 import { BackButton } from "@/components/BackButton/BackButton";
-import { LanguageSelector } from "@/components/LanguageSelector/LanguageSelector";
-import { NetworkSelector } from "@/components/NetworkSelector/NetworkSelector";
 import { StatusIndicator } from "@/components/StatusIndicator/StatusIndicator";
 import { TestnetBanner } from "@/components/TestnetBanner/TestnetBanner";
+import { useFeatureFlags } from "@/providers/FeatureFlagsProvider";
 import { ChakraLink } from "@/ui/ChakraLink/ChakraLink";
 import { COLORS } from "@/ui/colors";
-import { DarkModeSwitch } from "@/ui/DarkModeSwitch/DarkModeSwitch";
 import { AddressBook } from "@/ui/SVGs/AddressBook";
 import { ArrowReceive } from "@/ui/SVGs/ArrowReceive";
 import { ArrowSend } from "@/ui/SVGs/ArrowSend";
 import { House } from "@/ui/SVGs/House";
 import { LogoLg } from "@/ui/SVGs/LogoLg";
 import { LogoSm } from "@/ui/SVGs/LogoSm";
-import { ReleaseNotes } from "@/ui/SVGs/ReleaseNotes";
 import { YourNode } from "@/ui/SVGs/YourNode";
 
 import { WithDraggableArea } from "./WithDraggableArea";
@@ -45,9 +44,6 @@ const messages = defineMessages({
   },
   yourNode: {
     defaultMessage: "Your Node",
-  },
-  releaseNotes: {
-    defaultMessage: "Release Notes",
   },
 });
 
@@ -76,11 +72,6 @@ const LINKS = [
     label: messages.yourNode,
     href: "/your-node",
     icon: <YourNode />,
-  },
-  {
-    label: messages.releaseNotes,
-    href: "/release-notes",
-    icon: <ReleaseNotes />,
   },
 ];
 
@@ -111,9 +102,15 @@ function Sidebar() {
   const router = useRouter();
   const { formatMessage } = useIntl();
 
+  const { flags } = useFeatureFlags();
+
   return (
     <Flex flexDirection="column" alignItems="stretch" w="100%">
-      <Box pl={4} mb={10}>
+      <Box
+        pl={4}
+        mb={10}
+        color={flags.demoFlag.enabled ? "#2C72FF" : undefined}
+      >
         <ResponsiveLogo />
       </Box>
       <VStack alignItems="flex-start" flexGrow={1}>
@@ -169,9 +166,8 @@ function Sidebar() {
       </VStack>
       <VStack alignItems="center" gap={4}>
         <StatusIndicator />
-        <NetworkSelector />
-        <LanguageSelector />
-        <DarkModeSwitch />
+        <ReleaseNotesLink />
+        <SettingsLink />
       </VStack>
     </Flex>
   );
