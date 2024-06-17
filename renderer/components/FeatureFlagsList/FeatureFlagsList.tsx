@@ -2,46 +2,59 @@ import {
   FormControl,
   FormLabel,
   Switch,
-  Heading,
+  HStack,
+  VStack,
   Text,
-  Box,
 } from "@chakra-ui/react";
-import { defineMessages, useIntl } from "react-intl";
 
 import { useFeatureFlags } from "@/providers/FeatureFlagsProvider";
+import { COLORS } from "@/ui/colors";
 
-const messages = defineMessages({
-  featureFlags: {
-    defaultMessage: "Feature flags",
-  },
-  featureFlagsDescription: {
-    defaultMessage:
-      "Feature flags allow you to enable or disable experimental features. These features are not fully tested and may not work as expected.",
-  },
-});
+import { SettingsCard } from "../AppSettings/SettingsCard";
 
 export function FeatureFlagsList() {
   const { flags, toggleFlag } = useFeatureFlags();
-  const { formatMessage } = useIntl();
 
   return (
-    <Box alignItems="stretch">
-      <Heading fontSize="xl" mb={4}>
-        Feature flags
-      </Heading>
-      <Text maxW="50ch">{formatMessage(messages.featureFlagsDescription)}</Text>
-      {Object.entries(flags).map(([key, value]) => {
+    <VStack alignItems="stretch" gap={4}>
+      {Object.entries(flags).map(([key, flag]) => {
         return (
-          <FormControl key={key} mt={8} display="flex" alignItems="center">
-            <Switch
-              mr={4}
-              onChange={() => toggleFlag(key as keyof typeof flags)}
-              checked={value}
-            />
-            <FormLabel mb={0}>{key}</FormLabel>
+          <FormControl key={key}>
+            <SettingsCard>
+              <HStack justifyContent="space-between" gap={4}>
+                <VStack>
+                  <FormLabel>
+                    <Text
+                      display="block"
+                      as="span"
+                      fontSize="md"
+                      _dark={{
+                        color: COLORS.WHITE,
+                      }}
+                    >
+                      {flag.name}
+                    </Text>
+                    <Text
+                      as="span"
+                      color={COLORS.GRAY_MEDIUM}
+                      _dark={{
+                        color: COLORS.DARK_MODE.GRAY_LIGHT,
+                      }}
+                    >
+                      {flag.description}
+                    </Text>
+                  </FormLabel>
+                </VStack>
+                <Switch
+                  mr={4}
+                  onChange={() => toggleFlag(key as keyof typeof flags)}
+                  isChecked={flag.enabled}
+                />
+              </HStack>
+            </SettingsCard>
           </FormControl>
         );
       })}
-    </Box>
+    </VStack>
   );
 }
