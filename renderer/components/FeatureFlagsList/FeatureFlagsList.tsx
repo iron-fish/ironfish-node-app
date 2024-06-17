@@ -23,7 +23,7 @@ export function FeatureFlagsList() {
             <SettingsCard>
               <HStack justifyContent="space-between" gap={4}>
                 <VStack>
-                  <FormLabel>
+                  <FormLabel mb={0}>
                     <Text
                       display="block"
                       as="span"
