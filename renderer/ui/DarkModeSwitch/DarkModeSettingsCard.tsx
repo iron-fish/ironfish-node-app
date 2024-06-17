@@ -1,11 +1,26 @@
-import { HStack, Text } from "@chakra-ui/react";
+import { HStack, Text, useColorMode } from "@chakra-ui/react";
+import { defineMessages, useIntl } from "react-intl";
 
 import { SettingsCard } from "@/components/AppSettings/SettingsCard";
 
 import { DarkModeSwitch } from "./DarkModeSwitch";
 import { COLORS } from "../colors";
 
+const messages = defineMessages({
+  theme: {
+    defaultMessage: "Theme",
+  },
+  light: {
+    defaultMessage: "Light",
+  },
+  dark: {
+    defaultMessage: "Dark",
+  },
+});
+
 export function DarkModeSettingsCard() {
+  const { colorMode } = useColorMode();
+  const { formatMessage } = useIntl();
   return (
     <SettingsCard>
       <HStack>
@@ -17,7 +32,7 @@ export function DarkModeSettingsCard() {
               color: COLORS.DARK_MODE.GRAY_LIGHT,
             }}
           >
-            Theme:
+            {formatMessage(messages.theme)}:
           </Text>
           <Text
             fontSize="md"
@@ -25,7 +40,9 @@ export function DarkModeSettingsCard() {
               color: COLORS.WHITE,
             }}
           >
-            Light
+            {colorMode === "light"
+              ? formatMessage(messages.light)
+              : formatMessage(messages.dark)}
           </Text>
         </HStack>
         <DarkModeSwitch />
