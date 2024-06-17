@@ -61,6 +61,7 @@ export function FileImport({ onImport, onCancel, isLoading, error }: Props) {
         <HStack>
           <CustomNameChip />
           <Switch
+            size="md"
             isChecked={isCustomNameEnabled}
             onChange={(e) => setIsCustomNameEnabled(e.target.checked)}
           />

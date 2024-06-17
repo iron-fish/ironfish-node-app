@@ -5,6 +5,7 @@ import { useIsClient } from "usehooks-ts";
 
 import { ErrorBoundary } from "@/components/ErrorBoundary/ErrorBoundary";
 import { IntlProvider } from "@/intl/IntlProvider";
+import { FeatureFlagsProvider } from "@/providers/FeatureFlagsProvider";
 import { TRPCProvider } from "@/providers/TRPCProvider";
 import { LoadFonts } from "@/ui/LoadFonts/LoadFonts";
 import theme from "@/ui/theme";
@@ -61,15 +62,20 @@ export default function MyApp({ Component, pageProps }: AppProps) {
         <title>Iron Fish Node App</title>
       </Head>
       <LoadFonts />
-      <TRPCProvider>
-        <ChakraProvider theme={theme} colorModeManager={systemColorModeManager}>
-          <IntlProvider>
-            <ErrorBoundary>
-              <Component {...pageProps} />
-            </ErrorBoundary>
-          </IntlProvider>
-        </ChakraProvider>
-      </TRPCProvider>
+      <FeatureFlagsProvider>
+        <TRPCProvider>
+          <ChakraProvider
+            theme={theme}
+            colorModeManager={systemColorModeManager}
+          >
+            <IntlProvider>
+              <ErrorBoundary>
+                <Component {...pageProps} />
+              </ErrorBoundary>
+            </IntlProvider>
+          </ChakraProvider>
+        </TRPCProvider>
+      </FeatureFlagsProvider>
     </>
   );
 }

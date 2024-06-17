@@ -21,6 +21,8 @@ export const COLORS = {
 
   LINK: "#2C72FF",
 
+  PISTACHIO: "#C7F182",
+
   DARK_MODE: {
     BG: "#101010",
     GRAY_LIGHT: "#ADAEB4",

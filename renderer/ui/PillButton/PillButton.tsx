@@ -22,6 +22,11 @@ const VARIANT_PROPS = {
         bg: "rgba(0, 0, 0, 0.8)",
         borderColor: "rgba(0, 0, 0, 0.8)",
       },
+      _disabled: {
+        bg: COLORS.GRAY_LIGHT,
+        color: COLORS.GRAY_MEDIUM,
+        pointerEvents: "none",
+      },
     },
     dark: {
       bg: "white",
@@ -30,6 +35,11 @@ const VARIANT_PROPS = {
       _hover: {
         bg: "rgba(255, 255, 255, 0.9)",
         borderColor: "rgba(255, 255, 255, 0.9)",
+      },
+      _disabled: {
+        bg: COLORS.DARK_MODE.GRAY_MEDIUM,
+        color: COLORS.DARK_MODE.GRAY_LIGHT,
+        pointerEvents: "none",
       },
     },
   },
@@ -43,6 +53,10 @@ const VARIANT_PROPS = {
       _hover: {
         bg: "rgba(0, 0, 0, 0.05)",
       },
+      _disabled: {
+        opacity: 0.6,
+        pointerEvents: "none",
+      },
     },
     dark: {
       bg: COLORS.DARK_MODE.BG,
@@ -53,6 +67,10 @@ const VARIANT_PROPS = {
       _hover: {
         bg: "rgba(255, 255, 255, 0.1)",
         borderColor: COLORS.WHITE,
+      },
+      _disabled: {
+        opacity: 0.6,
+        pointerEvents: "none",
       },
     },
   },
@@ -92,10 +110,6 @@ export function PillButton({
       cursor="pointer"
       {...VARIANT_PROPS[variant].light}
       _dark={VARIANT_PROPS[variant].dark}
-      _disabled={{
-        opacity: 0.6,
-        pointerEvents: "none",
-      }}
       {...SIZE_PROPS[size]}
       {...props}
     >

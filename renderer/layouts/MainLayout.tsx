@@ -11,15 +11,15 @@ import { useRouter } from "next/router";
 import { createContext, ReactNode, useContext, useState } from "react";
 import { defineMessages, useIntl } from "react-intl";
 
+import { ReleaseNotesLink } from "@/components/AppSettings/SidebarBottomLinks/ReleaseNotesLink";
+import { SettingsLink } from "@/components/AppSettings/SidebarBottomLinks/SettingsLink";
 import { BackButton } from "@/components/BackButton/BackButton";
-import { LanguageSelector } from "@/components/LanguageSelector/LanguageSelector";
-import { NetworkSelector } from "@/components/NetworkSelector/NetworkSelector";
 import { StatusIndicator } from "@/components/StatusIndicator/StatusIndicator";
 import { TestnetBanner } from "@/components/TestnetBanner/TestnetBanner";
+import { useFeatureFlags } from "@/providers/FeatureFlagsProvider";
 import { trpcReact } from "@/providers/TRPCProvider";
 import { ChakraLink } from "@/ui/ChakraLink/ChakraLink";
 import { COLORS } from "@/ui/colors";
-import { DarkModeSwitch } from "@/ui/DarkModeSwitch/DarkModeSwitch";
 import { AddressBook } from "@/ui/SVGs/AddressBook";
 import { ArrowReceive } from "@/ui/SVGs/ArrowReceive";
 import { ArrowSend } from "@/ui/SVGs/ArrowSend";
@@ -27,7 +27,6 @@ import { BridgeArrows } from "@/ui/SVGs/BridgeArrows";
 import { House } from "@/ui/SVGs/House";
 import { LogoLg } from "@/ui/SVGs/LogoLg";
 import { LogoSm } from "@/ui/SVGs/LogoSm";
-import { ReleaseNotes } from "@/ui/SVGs/ReleaseNotes";
 import { YourNode } from "@/ui/SVGs/YourNode";
 
 import { WithDraggableArea } from "./WithDraggableArea";
@@ -50,9 +49,6 @@ const messages = defineMessages({
   },
   yourNode: {
     defaultMessage: "Your Node",
-  },
-  releaseNotes: {
-    defaultMessage: "Release Notes",
   },
 });
 
@@ -88,11 +84,6 @@ const LINKS = [
     href: "/your-node",
     icon: <YourNode />,
   },
-  {
-    label: messages.releaseNotes,
-    href: "/release-notes",
-    icon: <ReleaseNotes />,
-  },
 ];
 
 function ResponsiveLogo() {
@@ -123,15 +114,26 @@ function Sidebar() {
   const { formatMessage } = useIntl();
   const { data } = trpcReact.getNetworkInfo.useQuery();
 
+  const { flags } = useFeatureFlags();
+
+  console.log(flags);
+
   return (
     <Flex flexDirection="column" alignItems="stretch" w="100%">
-      <Box pl={4} mb={10}>
+      <Box
+        pl={4}
+        mb={10}
+        color={flags.demoFlag.enabled ? "#2C72FF" : undefined}
+      >
         <ResponsiveLogo />
       </Box>
       <VStack alignItems="flex-start" flexGrow={1}>
         {LINKS.map(({ label, href, icon, id }) => {
-          // Bridge should only show up on testnet for now
-          if (id === "bridge" && data?.networkId !== 0) {
+          // The bridge tab is only visible if the flag is enabled and we're not on mainnet
+          if (
+            id === "bridge" &&
+            (!flags.chainportBridge.enabled || data?.networkId !== 0)
+          ) {
             return null;
           }
 
@@ -186,9 +188,8 @@ function Sidebar() {
       </VStack>
       <VStack alignItems="center" gap={4}>
         <StatusIndicator />
-        <NetworkSelector />
-        <LanguageSelector />
-        <DarkModeSwitch />
+        <ReleaseNotesLink />
+        <SettingsLink />
       </VStack>
     </Flex>
   );
