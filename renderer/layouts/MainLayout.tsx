@@ -11,7 +11,8 @@ import { useRouter } from "next/router";
 import { createContext, ReactNode, useContext, useState } from "react";
 import { defineMessages, useIntl } from "react-intl";
 
-import { SettingsLink } from "@/components/AppSettings/SettingsLink";
+import { ReleaseNotesLink } from "@/components/AppSettings/SidebarBottomLinks/ReleaseNotesLink";
+import { SettingsLink } from "@/components/AppSettings/SidebarBottomLinks/SettingsLink";
 import { BackButton } from "@/components/BackButton/BackButton";
 import { StatusIndicator } from "@/components/StatusIndicator/StatusIndicator";
 import { TestnetBanner } from "@/components/TestnetBanner/TestnetBanner";
@@ -24,7 +25,6 @@ import { ArrowSend } from "@/ui/SVGs/ArrowSend";
 import { House } from "@/ui/SVGs/House";
 import { LogoLg } from "@/ui/SVGs/LogoLg";
 import { LogoSm } from "@/ui/SVGs/LogoSm";
-import { ReleaseNotes } from "@/ui/SVGs/ReleaseNotes";
 import { YourNode } from "@/ui/SVGs/YourNode";
 
 import { WithDraggableArea } from "./WithDraggableArea";
@@ -44,9 +44,6 @@ const messages = defineMessages({
   },
   yourNode: {
     defaultMessage: "Your Node",
-  },
-  releaseNotes: {
-    defaultMessage: "Release Notes",
   },
 });
 
@@ -75,11 +72,6 @@ const LINKS = [
     label: messages.yourNode,
     href: "/your-node",
     icon: <YourNode />,
-  },
-  {
-    label: messages.releaseNotes,
-    href: "/release-notes",
-    icon: <ReleaseNotes />,
   },
 ];
 
@@ -174,6 +166,7 @@ function Sidebar() {
       </VStack>
       <VStack alignItems="center" gap={4}>
         <StatusIndicator />
+        <ReleaseNotesLink />
         <SettingsLink />
       </VStack>
     </Flex>
