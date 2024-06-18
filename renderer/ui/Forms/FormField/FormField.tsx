@@ -12,6 +12,7 @@ export type FormFieldProps = MergeProps<
     icon?: ReactNode;
     triggerProps?: StackProps & { ref?: unknown };
     actions?: ReactNode;
+    renderChildren?: (children: ReactNode) => ReactNode;
   },
   StackProps
 >;
@@ -23,6 +24,7 @@ export function FormField({
   icon,
   triggerProps,
   actions,
+  renderChildren,
   ...rest
 }: FormFieldProps & {
   children: ReactNode;
@@ -74,7 +76,7 @@ export function FormField({
               <Box onClick={(e) => e.preventDefault()}>{actions}</Box>
             )}
           </HStack>
-          {children}
+          {renderChildren ? renderChildren(children) : children}
         </Box>
         {icon && <Box pr={4}>{icon}</Box>}
       </HStack>

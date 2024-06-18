@@ -1,9 +1,19 @@
-import { HStack, Skeleton, Text, chakra } from "@chakra-ui/react";
+import {
+  HStack,
+  Skeleton,
+  Text,
+  chakra,
+  Image as ChakraImage,
+} from "@chakra-ui/react";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useEffect, useMemo, useState } from "react";
+import { ItemText } from "@radix-ui/react-select";
+import Image from "next/image";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import { Controller, useForm } from "react-hook-form";
 import { defineMessages, useIntl } from "react-intl";
 
+import chainportIcon from "@/images/chainport/chainport-icon-lg.png";
+import verifiedIcon from "@/images/verified-icon.svg";
 import { TRPCRouterOutputs, trpcReact } from "@/providers/TRPCProvider";
 import { COLORS } from "@/ui/colors";
 import { Select } from "@/ui/Forms/Select/Select";
@@ -80,6 +90,7 @@ function BridgeAssetsFormContent({
     formState: { errors: formErrors },
   } = useForm({
     resolver: zodResolver(bridgeAssetsSchema),
+    mode: "onBlur",
     defaultValues: {
       amount: "0",
       fromAccount: defaultFromAccount,
@@ -118,9 +129,9 @@ function BridgeAssetsFormContent({
     balanceInLabel: false,
   });
 
-  const bridgeableAssets = useMemo(() => {
-    const currentNetwork = chainportTargetNetworksMap[destinationNetworkValue];
+  const currentNetwork = chainportTargetNetworksMap[destinationNetworkValue];
 
+  const bridgeableAssets = useMemo(() => {
     const withAdditionalFields = assetOptions
       .map((item) => {
         const isBridgableForNetwork = chainportTokensMap[
@@ -130,6 +141,14 @@ function BridgeAssetsFormContent({
         );
         return {
           ...item,
+          label: (
+            <HStack>
+              <ItemText>{item.label}</ItemText>
+              {item.asset.verification.status === "verified" && (
+                <Image src={verifiedIcon} alt="" />
+              )}
+            </HStack>
+          ),
           disabled: !isBridgableForNetwork,
         };
       })
@@ -140,12 +159,7 @@ function BridgeAssetsFormContent({
       });
 
     return withAdditionalFields;
-  }, [
-    chainportTargetNetworksMap,
-    destinationNetworkValue,
-    chainportTokensMap,
-    assetOptions,
-  ]);
+  }, [chainportTokensMap, assetOptions, currentNetwork]);
 
   const availableNetworks = chainportTokensMap[assetIdValue]?.targetNetworks;
 
@@ -155,18 +169,30 @@ function BridgeAssetsFormContent({
 
   const selectedAsset = assetOptionsMap.get(assetIdValue);
 
+  const handleIfAmountExceedsBalance = useCallback(
+    (amount: string) => {
+      const parsed = parseFloat(amount);
+      const exceedsBalance =
+        !isNaN(parsed) && parsed > parseFloat(selectedAsset!.confirmedBalance);
+
+      if (exceedsBalance) {
+        setError("amount", {
+          type: "custom",
+          message: "Amount exceeds available balance",
+        });
+        return true;
+      }
+
+      return false;
+    },
+    [selectedAsset, setError],
+  );
+
   return (
     <>
       <chakra.form
         onSubmit={handleSubmit((data) => {
-          if (
-            parseFloat(data.amount) >
-            parseFloat(selectedAsset!.confirmedBalance)
-          ) {
-            setError("amount", {
-              type: "custom",
-              message: "Amount exceeds available balance",
-            });
+          if (handleIfAmountExceedsBalance(data.amount)) {
             return;
           }
 
@@ -221,14 +247,22 @@ function BridgeAssetsFormContent({
                         if (amountValue === "0") {
                           field.onChange("");
                         }
+                        clearErrors("amount");
                       }}
                       onBlur={() => {
                         if (!amountValue) {
                           field.onChange("0");
                         }
+
+                        const value = amountValue.endsWith(".")
+                          ? amountValue.slice(0, -1)
+                          : amountValue;
+
                         if (amountValue.endsWith(".")) {
-                          field.onChange(amountValue.slice(0, -1));
+                          field.onChange(value);
                         }
+
+                        handleIfAmountExceedsBalance(value);
                       }}
                       triggerProps={{
                         borderTopRightRadius: 0,
@@ -247,6 +281,12 @@ function BridgeAssetsFormContent({
                 isReadOnly
                 label={formatMessage(messages.bridgeProvider)}
                 value="Chainport"
+                renderChildren={(children) => (
+                  <HStack>
+                    <Image src={chainportIcon} alt="" height={24} width={24} />
+                    {children}
+                  </HStack>
+                )}
               />
               <Text
                 color={COLORS.GRAY_MEDIUM}
@@ -269,6 +309,15 @@ function BridgeAssetsFormContent({
               value={destinationNetworkValue}
               label={formatMessage(messages.destinationNetwork)}
               options={availableNetworks}
+              renderChildren={(children) => (
+                <HStack>
+                  <ChakraImage
+                    src={currentNetwork.networkIcon}
+                    boxSize="24px"
+                  />
+                  {children}
+                </HStack>
+              )}
             />
           }
           targetAddressInput={

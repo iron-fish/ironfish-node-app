@@ -1,7 +1,9 @@
 import { Box, HStack, Text, VStack } from "@chakra-ui/react";
+import Image from "next/image";
 import { UseFormRegisterReturn } from "react-hook-form";
 import { defineMessages, useIntl } from "react-intl";
 
+import verifiedIcon from "@/images/verified-icon.svg";
 import { COLORS } from "@/ui/colors";
 import { Select } from "@/ui/Forms/Select/Select";
 
@@ -48,6 +50,14 @@ export function AssetAmountInput({
             borderTopLeftRadius: 0,
             borderBottomLeftRadius: 0,
           }}
+          renderChildren={(children) => (
+            <HStack minWidth="100px">
+              {children}
+              {selectedAsset?.asset.verification.status === "verified" && (
+                <Image src={verifiedIcon} alt="" />
+              )}
+            </HStack>
+          )}
         />
       </HStack>
       {selectedAsset && (

@@ -35,6 +35,7 @@ export function BridgeAssetsFormShell({
         <VStack alignItems="stretch" gap={0}>
           <VStack
             p={8}
+            pb="54px"
             borderRadius={4}
             bg={COLORS.GRAY_LIGHT}
             alignItems="stretch"
@@ -70,6 +71,7 @@ export function BridgeAssetsFormShell({
           </Box>
           <VStack
             p={8}
+            pt="54px"
             borderRadius={4}
             bg={COLORS.GRAY_LIGHT}
             alignItems="stretch"

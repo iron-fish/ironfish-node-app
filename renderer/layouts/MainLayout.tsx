@@ -116,8 +116,6 @@ function Sidebar() {
 
   const { flags } = useFeatureFlags();
 
-  console.log(flags);
-
   return (
     <Flex flexDirection="column" alignItems="stretch" w="100%">
       <Box

@@ -1,4 +1,4 @@
-import { ChangeEvent, useMemo } from "react";
+import { ChangeEvent, ReactNode, useMemo } from "react";
 
 import { TRPCRouterOutputs } from "@/providers/TRPCProvider";
 import { CurrencyUtils } from "@/utils/currency";
@@ -9,7 +9,7 @@ type BalanceType = AccountType["balances"]["iron"];
 type AssetType = BalanceType["asset"];
 export type AssetOptionType = {
   assetName: string;
-  label: string;
+  label: ReactNode;
   value: string;
   asset: AssetType;
   confirmedBalance: string;

@@ -24,7 +24,16 @@ type Props = FormFieldProps &
 
 export const Select = forwardRef<typeof RadixSelect.Trigger, Props>(
   function Select(
-    { label, error, options, onChange, name, triggerProps, ...rest },
+    {
+      label,
+      error,
+      options,
+      onChange,
+      name,
+      triggerProps,
+      renderChildren,
+      ...rest
+    },
     ref,
   ) {
     const [isOpen, setIsOpen] = useState(false);
@@ -56,6 +65,7 @@ export const Select = forwardRef<typeof RadixSelect.Trigger, Props>(
             textAlign: "inherit",
             ...triggerProps,
           }}
+          renderChildren={renderChildren}
         >
           <RadixSelect.Value
             placeholder="Select..."
@@ -113,7 +123,11 @@ export const Select = forwardRef<typeof RadixSelect.Trigger, Props>(
                   >
                     <RadixSelect.Item value={value} disabled={disabled}>
                       <Box px={4} py={3}>
-                        <RadixSelect.ItemText>{label}</RadixSelect.ItemText>
+                        {typeof label === "string" ? (
+                          <RadixSelect.ItemText>{label}</RadixSelect.ItemText>
+                        ) : (
+                          label
+                        )}
                       </Box>
                     </RadixSelect.Item>
                   </Box>

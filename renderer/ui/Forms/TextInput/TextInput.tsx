@@ -5,7 +5,7 @@ import { FormField, FormFieldProps } from "../FormField/FormField";
 
 type FormFieldPassthrough = Pick<
   FormFieldProps,
-  "label" | "error" | "icon" | "triggerProps"
+  "label" | "error" | "icon" | "triggerProps" | "renderChildren"
 >;
 
 export type TextInputProps = FormFieldPassthrough &
@@ -15,7 +15,15 @@ export type TextInputProps = FormFieldPassthrough &
 
 export const TextInput = forwardRef<HTMLInputElement, TextInputProps>(
   function TextInput(
-    { label, error, icon, triggerProps, type = "text", ...rest },
+    {
+      label,
+      error,
+      icon,
+      triggerProps,
+      type = "text",
+      renderChildren,
+      ...rest
+    },
     ref,
   ) {
     return (
@@ -24,6 +32,7 @@ export const TextInput = forwardRef<HTMLInputElement, TextInputProps>(
         error={error}
         icon={icon}
         triggerProps={triggerProps}
+        renderChildren={renderChildren}
       >
         <HStack>
           <Input

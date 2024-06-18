@@ -116,6 +116,7 @@ export function SendAssetsFormContent({
     setValue,
   } = useForm<TransactionFormData>({
     resolver: zodResolver(transactionSchema),
+    mode: "onBlur",
     defaultValues: {
       amount: "0",
       fromAccount: defaultAccount,
