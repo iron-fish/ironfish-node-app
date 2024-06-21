@@ -48,8 +48,14 @@ const messages = defineMessages({
   gasFeeLabel: {
     defaultMessage: "Gas fee",
   },
+  gasFeeTooltip: {
+    defaultMessage: "The fee for transacting on the destination chain",
+  },
   bridgeFeeLabel: {
     defaultMessage: "Bridge fee",
+  },
+  bridgeFeeTooltip: {
+    defaultMessage: "The bridge provider's fee",
   },
   feeLabel: {
     defaultMessage: "Iron Fish transaction fee",
@@ -231,10 +237,12 @@ export function StepIdle({
         />
         <LineItem
           label={formatMessage(messages.gasFeeLabel)}
+          tooltip={formatMessage(messages.gasFeeTooltip)}
           content={chainportGasFee}
         />
         <LineItem
           label={formatMessage(messages.bridgeFeeLabel)}
+          tooltip={formatMessage(messages.bridgeFeeTooltip)}
           content={chainportBridgeFee}
         />
 

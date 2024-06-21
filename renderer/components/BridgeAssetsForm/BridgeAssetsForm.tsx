@@ -7,6 +7,7 @@ import {
 } from "@chakra-ui/react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { ItemText } from "@radix-ui/react-select";
+import { isAddress } from "ethers";
 import Image from "next/image";
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { Controller, useForm } from "react-hook-form";
@@ -104,6 +105,7 @@ function BridgeAssetsFormContent({
   const fromAccountValue = watch("fromAccount");
   const assetIdValue = watch("assetId");
   const destinationNetworkValue = watch("destinationNetwork");
+  const targetAddress = watch("targetAddress");
 
   // If the user selects a different asset, and that asset does not support the selected network,
   // then we automatically switch to the first available network for that asset.
@@ -187,6 +189,21 @@ function BridgeAssetsFormContent({
     },
     [selectedAsset, setError],
   );
+
+  const targetAddressIcon = useMemo(() => {
+    if (targetAddress.length === 0) {
+      return null;
+    }
+
+    return targetAddress.length > 0 && isAddress(targetAddress) ? (
+      <chakra.svg width="18" height="13" viewBox="0 0 18 13" fill="none" mr={1}>
+        <path
+          d="M6.54961 13L0.849609 7.29998L2.27461 5.87498L6.54961 10.15L15.7246 0.974976L17.1496 2.39998L6.54961 13Z"
+          fill="#6A991C"
+        />
+      </chakra.svg>
+    ) : null;
+  }, [targetAddress]);
 
   return (
     <>
@@ -298,6 +315,9 @@ function BridgeAssetsFormContent({
                 _hover={{
                   textDecoration: "underline",
                 }}
+                _dark={{
+                  color: COLORS.DARK_MODE.GRAY_LIGHT,
+                }}
               >
                 {formatMessage(messages.needHelp)}
               </Text>
@@ -325,6 +345,7 @@ function BridgeAssetsFormContent({
               {...register("targetAddress")}
               label="Target Address"
               error={formErrors.targetAddress?.message}
+              icon={targetAddressIcon}
             />
           }
         />

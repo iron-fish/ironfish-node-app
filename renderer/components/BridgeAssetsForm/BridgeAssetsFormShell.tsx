@@ -53,7 +53,7 @@ export function BridgeAssetsFormShell({
               bg="#F3DEF5"
               color={COLORS.ORCHID}
               border="3px solid white"
-              borderRadius={4}
+              borderRadius={8}
               alignItems="center"
               justifyContent="center"
               position="absolute"
@@ -64,6 +64,8 @@ export function BridgeAssetsFormShell({
               transform="translateX(-50%) translateY(-50%)"
               _dark={{
                 borderColor: COLORS.DARK_MODE.GRAY_MEDIUM,
+                bg: "#431848",
+                color: "#D657D9",
               }}
             >
               <BridgeArrows />

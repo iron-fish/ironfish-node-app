@@ -1,4 +1,4 @@
-import { Box, Flex, HStack, Text } from "@chakra-ui/react";
+import { Box, Flex, HStack, Text, useColorMode } from "@chakra-ui/react";
 import { useMemo } from "react";
 import { IoMdCheckmark } from "react-icons/io";
 import { defineMessages, useIntl } from "react-intl";
@@ -29,7 +29,8 @@ const STEPS = [
   "complete",
 ];
 
-const BAR_BG = "#D9D9D9";
+const BAR_BG_LIGHT = "#D9D9D9";
+const BAR_BG_DARK = COLORS.DARK_MODE.GRAY_MEDIUM;
 const ICON_SIZE = "24px";
 const PENDING_SIZE = "16px";
 
@@ -84,16 +85,22 @@ export function BridgeTransactionProgressIndicator({ transaction }: Props) {
           position="absolute"
           height="4px"
           width={`calc(100% - ${PENDING_SIZE})`}
-          bg={BAR_BG}
           top="50%"
           left="50%"
           transform="translate(-50%, -50%)"
+          bg={BAR_BG_LIGHT}
+          _dark={{
+            bg: BAR_BG_DARK,
+          }}
         >
           <Box
             height="100%"
             width={`${progressWidth}%`}
-            backgroundImage={`linear-gradient(90deg, ${COLORS.PISTACHIO} 50%, ${COLORS.GREEN_DARK} 0)`}
+            backgroundColor={COLORS.GREEN_DARK}
             backgroundSize="4px 100%"
+            _dark={{
+              backgroundColor: COLORS.DARK_MODE.GREEN_LIGHT,
+            }}
           />
         </Box>
       </HStack>
@@ -110,6 +117,8 @@ function Step({
   status: "pending" | "complete" | "failed";
   align?: "center" | "left" | "right";
 }) {
+  const { colorMode } = useColorMode();
+
   const labelPositionStyles = useMemo(() => {
     if (align === "center") {
       return {
@@ -132,12 +141,21 @@ function Step({
   const indicator = useMemo(() => {
     const borderColor = {
       pending: "transparent",
-      complete: COLORS.GREEN_DARK,
+      complete: colorMode === "light" ? COLORS.GREEN_DARK : COLORS.PISTACHIO,
       failed: COLORS.RED,
     }[status] as string;
 
     const icon = {
-      pending: <Box boxSize={PENDING_SIZE} bg={BAR_BG} borderRadius="full" />,
+      pending: (
+        <Box
+          boxSize={PENDING_SIZE}
+          borderRadius="full"
+          bg={BAR_BG_LIGHT}
+          _dark={{
+            bg: BAR_BG_DARK,
+          }}
+        />
+      ),
       complete: <IoMdCheckmark color={borderColor} />,
       failed: <IoMdCheckmark color={borderColor} />,
     }[status];
@@ -168,7 +186,7 @@ function Step({
         {icon}
       </Flex>
     );
-  }, [status]);
+  }, [status, colorMode]);
 
   return (
     <Box position="relative" zIndex={1}>

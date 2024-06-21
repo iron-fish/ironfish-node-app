@@ -580,6 +580,9 @@
   "c/KktL": {
     "message": "Resources"
   },
+  "cwqQqt": {
+    "message": "The fee for transacting on the destination chain"
+  },
   "dM+p3/": {
     "message": "From"
   },
@@ -702,6 +705,9 @@
   },
   "mzRLqs": {
     "message": "Download in progress..."
+  },
+  "niH3/k": {
+    "message": "The bridge provider's fee"
   },
   "nkeKcx": {
     "message": "Head Hash"

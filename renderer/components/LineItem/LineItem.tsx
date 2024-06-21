@@ -1,6 +1,14 @@
-import { Box, Text, HStack, Image as ChakraImage } from "@chakra-ui/react";
+import {
+  Box,
+  Text,
+  HStack,
+  Image as ChakraImage,
+  Tooltip,
+  chakra,
+} from "@chakra-ui/react";
 import NextImage, { StaticImageData } from "next/image";
 import { ReactNode, useMemo } from "react";
+import { IoMdInformationCircleOutline } from "react-icons/io";
 import { RxExternalLink } from "react-icons/rx";
 
 import { COLORS } from "@/ui/colors";
@@ -8,11 +16,18 @@ import { COLORS } from "@/ui/colors";
 type LineItemProps = {
   label: string;
   content: ReactNode;
+  tooltip?: string;
   icon?: StaticImageData | string;
   href?: string;
 };
 
-export function LineItem({ label, content, icon, href }: LineItemProps) {
+export function LineItem({
+  label,
+  tooltip,
+  content,
+  icon,
+  href,
+}: LineItemProps) {
   const maybeLinkProps = href
     ? ({
         as: "a",
@@ -33,7 +48,23 @@ export function LineItem({ label, content, icon, href }: LineItemProps) {
 
   return (
     <Box py={2}>
-      <Text color={COLORS.GRAY_MEDIUM}>{label}</Text>
+      <HStack alignItems="center">
+        <Text
+          color={COLORS.GRAY_MEDIUM}
+          _dark={{
+            color: COLORS.DARK_MODE.GRAY_LIGHT,
+          }}
+        >
+          {label}
+        </Text>
+        {tooltip ? (
+          <Tooltip label={tooltip} placement="top">
+            <chakra.div mb="2px">
+              <IoMdInformationCircleOutline />
+            </chakra.div>
+          </Tooltip>
+        ) : null}
+      </HStack>
       <HStack gap={1.5} mt={1} {...maybeLinkProps}>
         {iconImage}
         <Text
@@ -55,5 +86,13 @@ export function LineItem({ label, content, icon, href }: LineItemProps) {
 }
 
 export function Divider() {
-  return <Box borderBottom="1.5px dashed #DEDFE2" my={2} />;
+  return (
+    <Box
+      borderBottom="1.5px dashed #DEDFE2"
+      my={2}
+      _dark={{
+        borderColor: COLORS.DARK_MODE.GRAY_MEDIUM,
+      }}
+    />
+  );
 }
