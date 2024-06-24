@@ -14,6 +14,7 @@ import {
 import { BsThreeDots } from "react-icons/bs";
 import { defineMessages, useIntl } from "react-intl";
 
+import { AddAccountDropdown } from "@/components/AddAccountDropdown/AddAccountDropdown";
 import { CreateAccountModal } from "@/components/CreateAccountModal/CreateAccountModal";
 import { ImportAccountModal } from "@/components/ImportAccountModal/ImportAccountModal";
 import { UserAccountsList } from "@/components/UserAccountsList/UserAccountsList";
@@ -75,6 +76,7 @@ function CreateImportActions() {
           <ImportAccount />
           {formatMessage(messages.importAccount)}
         </PillButton>
+        <AddAccountDropdown />
       </HStack>
 
       <Box
