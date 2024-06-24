@@ -1,5 +1,6 @@
-import { getAddress } from "ethers";
 import { z } from "zod";
+
+import { getChecksumAddress } from "@/utils/ethereumAddressUtils";
 
 export const bridgeAssetsSchema = z.object({
   fromAccount: z.string().min(1),
@@ -16,18 +17,10 @@ export const bridgeAssetsSchema = z.object({
   destinationNetwork: z.string().min(1),
   targetAddress: z.string().superRefine((value, ctx) => {
     try {
-      getAddress(value);
+      getChecksumAddress(value);
     } catch (err) {
-      let message = "Please provide a valid address";
-
-      if (
-        err instanceof Error &&
-        "shortMessage" in err &&
-        typeof err.shortMessage === "string" &&
-        err.shortMessage === "bad address checksum"
-      ) {
-        message = "This address does not have a valid checksum";
-      }
+      const message =
+        err instanceof Error ? err.message : "Please provide a valid address";
 
       ctx.addIssue({
         code: z.ZodIssueCode.custom,

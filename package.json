@@ -23,7 +23,8 @@
   "license": "MPL-2.0",
   "dependencies": {
     "@ironfish/sdk": "2.2.0",
-    "electron-serve": "^1.1.0"
+    "electron-serve": "^1.1.0",
+    "keccak": "^3.0.4"
   },
   "devDependencies": {
     "@chakra-ui/icons": "^2.1.1",
@@ -41,6 +42,7 @@
     "@trpc/client": "^10.38.5",
     "@trpc/react-query": "^10.38.5",
     "@trpc/server": "^10.38.5",
+    "@types/keccak": "^3.0.4",
     "@types/lodash-es": "^4.17.9",
     "@types/nedb": "^1.8.14",
     "@types/node": "^18.0.0",
