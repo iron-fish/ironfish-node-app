@@ -1,4 +1,4 @@
-import { TriangleDownIcon } from "@chakra-ui/icons";
+import { ChevronDownIcon } from "@chakra-ui/icons";
 import { Box } from "@chakra-ui/react";
 import * as RadixSelect from "@radix-ui/react-select";
 import React, { ComponentProps, ReactNode, forwardRef, useState } from "react";
@@ -10,7 +10,7 @@ import { COLORS } from "@/ui/colors";
 import styles from "./select.module.css";
 import { FormField, FormFieldProps } from "../FormField/FormField";
 
-type SelectOption = { label: ReactNode; value: string };
+type SelectOption = { label: ReactNode; value: string; disabled?: boolean };
 
 type SelectRootProps = Simplify<ComponentProps<typeof RadixSelect.Root>>;
 
@@ -19,10 +19,23 @@ type Props = FormFieldProps &
     name: string;
     options: Array<SelectOption>;
     onChange: UseFormRegisterReturn["onChange"];
+    triggerProps?: FormFieldProps["triggerProps"];
   };
 
 export const Select = forwardRef<typeof RadixSelect.Trigger, Props>(
-  function Select({ label, error, options, onChange, name, ...rest }, ref) {
+  function Select(
+    {
+      label,
+      error,
+      options,
+      onChange,
+      name,
+      triggerProps,
+      renderChildren,
+      ...rest
+    },
+    ref,
+  ) {
     const [isOpen, setIsOpen] = useState(false);
 
     return (
@@ -38,10 +51,11 @@ export const Select = forwardRef<typeof RadixSelect.Trigger, Props>(
           label={label}
           error={error}
           icon={
-            <TriangleDownIcon
+            <ChevronDownIcon
               transform={`rotate(${isOpen ? "180" : "0"}deg)`}
-              boxSize={3}
-              mr={6}
+              boxSize={4}
+              mr={2}
+              color={COLORS.GRAY_MEDIUM}
             />
           }
           triggerProps={{
@@ -49,7 +63,9 @@ export const Select = forwardRef<typeof RadixSelect.Trigger, Props>(
             className: styles.SelectTrigger,
             ref,
             textAlign: "inherit",
+            ...triggerProps,
           }}
+          renderChildren={renderChildren}
         >
           <RadixSelect.Value
             placeholder="Select..."
@@ -77,18 +93,27 @@ export const Select = forwardRef<typeof RadixSelect.Trigger, Props>(
                   borderColor: COLORS.WHITE,
                 }}
               >
-                {options.map(({ label, value }, i) => (
+                {options.map(({ label, value, disabled }, i) => (
                   <Box
                     key={i}
-                    cursor="pointer"
-                    _hover={{
-                      bg: COLORS.GRAY_LIGHT,
-                    }}
-                    _dark={{
-                      _hover: {
-                        bg: COLORS.DARK_MODE.GRAY_MEDIUM,
-                      },
-                    }}
+                    cursor={disabled ? "default" : "pointer"}
+                    opacity={disabled ? 0.5 : 1}
+                    _hover={
+                      disabled
+                        ? undefined
+                        : {
+                            bg: COLORS.GRAY_LIGHT,
+                          }
+                    }
+                    _dark={
+                      disabled
+                        ? undefined
+                        : {
+                            _hover: {
+                              bg: COLORS.DARK_MODE.GRAY_MEDIUM,
+                            },
+                          }
+                    }
                     _focusWithin={{
                       bg: COLORS.GRAY_LIGHT,
                       _dark: {
@@ -96,9 +121,13 @@ export const Select = forwardRef<typeof RadixSelect.Trigger, Props>(
                       },
                     }}
                   >
-                    <RadixSelect.Item value={value}>
+                    <RadixSelect.Item value={value} disabled={disabled}>
                       <Box px={4} py={3}>
-                        <RadixSelect.ItemText>{label}</RadixSelect.ItemText>
+                        {typeof label === "string" ? (
+                          <RadixSelect.ItemText>{label}</RadixSelect.ItemText>
+                        ) : (
+                          label
+                        )}
                       </Box>
                     </RadixSelect.Item>
                   </Box>

@@ -22,6 +22,7 @@ import { COLORS } from "@/ui/colors";
 import { AddressBook } from "@/ui/SVGs/AddressBook";
 import { ArrowReceive } from "@/ui/SVGs/ArrowReceive";
 import { ArrowSend } from "@/ui/SVGs/ArrowSend";
+import { BridgeArrows } from "@/ui/SVGs/BridgeArrows";
 import { House } from "@/ui/SVGs/House";
 import { LogoLg } from "@/ui/SVGs/LogoLg";
 import { LogoSm } from "@/ui/SVGs/LogoSm";
@@ -38,6 +39,9 @@ const messages = defineMessages({
   },
   receive: {
     defaultMessage: "Receive",
+  },
+  bridge: {
+    defaultMessage: "Bridge",
   },
   addressBook: {
     defaultMessage: "Address Book",
@@ -62,6 +66,12 @@ const LINKS = [
     label: messages.receive,
     href: "/receive",
     icon: <ArrowReceive />,
+  },
+  {
+    id: "bridge",
+    label: messages.bridge,
+    href: "/bridge",
+    icon: <BridgeArrows />,
   },
   {
     label: messages.addressBook,
@@ -114,7 +124,12 @@ function Sidebar() {
         <ResponsiveLogo />
       </Box>
       <VStack alignItems="flex-start" flexGrow={1}>
-        {LINKS.map(({ label, href, icon }) => {
+        {LINKS.map(({ label, href, icon, id }) => {
+          // The bridge tab is only visible if the flag is enabled and we're not on mainnet
+          if (id === "bridge" && !flags.chainportBridge.enabled) {
+            return null;
+          }
+
           const isActive = router.pathname.startsWith(href);
           return (
             <ChakraLink

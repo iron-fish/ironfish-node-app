@@ -15,6 +15,12 @@ const FLAGS_DEFINITION = [
     description: "Turning this flag on will make the logo blue.",
     key: "demoFlag",
   },
+  {
+    name: "Chainport Bridge",
+    description:
+      "Turning this flag on will show the Bridge navigation item in the sidebar if the current network is Testnet.",
+    key: "chainportBridge",
+  },
 ] as const;
 
 type FlagsDefinition = Writable<(typeof FLAGS_DEFINITION)[number]>;

@@ -5,9 +5,11 @@ export const COLORS = {
   GRAY_MEDIUM: "#7F7F7F",
 
   VIOLET: "#DE83F0",
+  ORCHID: "#D657D9",
   LIGHT_BLUE: "#2C72FF",
   DEEP_BLUE: "#1D0070",
   RED: "#F15929",
+  PISTACHIO: "#C7F182",
 
   SKY_BLUE: "#D3F9FF",
   DARK_BLUE: "#005664",
@@ -18,8 +20,6 @@ export const COLORS = {
   YELLOW_DARK: "#887D09",
 
   LINK: "#2C72FF",
-
-  PISTACHIO: "#C7F182",
 
   DARK_MODE: {
     BG: "#101010",
@@ -32,6 +32,7 @@ export const COLORS = {
     GREEN_DARK: "#242C18",
     YELLOW_LIGHT: "#E3DB7C",
     YELLOW_DARK: "#4B4608",
+    RED: "#C84C1B",
   } as const,
 } as const;
 
