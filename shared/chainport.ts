@@ -74,7 +74,14 @@ const MetadataApiResponseSchema = z.object({
 export type MetaApiResponse = z.infer<typeof MetadataApiResponseSchema>;
 
 export function assertMetadataApiResponse(data: unknown): MetaApiResponse {
-  return MetadataApiResponseSchema.parse(data);
+  try {
+    return MetadataApiResponseSchema.parse(data);
+  } catch (err) {
+    throw new Error(`Chainport metadata is not formatted correctly
+
+${err}
+`);
+  }
 }
 
 const TokensApiResponseSchema = z.object({
@@ -103,7 +110,14 @@ const TokensApiResponseSchema = z.object({
 export type TokensApiResponse = z.infer<typeof TokensApiResponseSchema>;
 
 export function assertTokensApiResponse(data: unknown): TokensApiResponse {
-  return TokensApiResponseSchema.parse(data);
+  try {
+    return TokensApiResponseSchema.parse(data);
+  } catch (err) {
+    throw new Error(`Chainport tokens data is not formatted correctly.
+
+${err}
+`);
+  }
 }
 
 export type ChainportBridgeTransaction = {

@@ -42,6 +42,9 @@ const messages = defineMessages({
   destinationNetwork: {
     defaultMessage: "Destination network",
   },
+  networkErrorMessage: {
+    defaultMessage: "A network error occured, please try again",
+  },
 });
 
 type ChainportToken =
@@ -61,6 +64,7 @@ function BridgeAssetsFormContent({
 
   const [confirmationData, setConfirmationData] =
     useState<BridgeAssetsFormData | null>(null);
+  const [transactionDetailsError, setTransactionDetailsError] = useState("");
 
   const accountOptions = useMemo(() => {
     return accountsData?.map((account) => {
@@ -209,6 +213,8 @@ function BridgeAssetsFormContent({
     <>
       <chakra.form
         onSubmit={handleSubmit((data) => {
+          setTransactionDetailsError("");
+
           if (handleIfAmountExceedsBalance(data.amount)) {
             return;
           }
@@ -348,6 +354,7 @@ function BridgeAssetsFormContent({
               icon={targetAddressIcon}
             />
           }
+          topLevelErrorMessage={transactionDetailsError}
         />
       </chakra.form>
       {!!confirmationData && (
@@ -359,6 +366,9 @@ function BridgeAssetsFormContent({
           }
           selectedAsset={assetOptionsMap.get(confirmationData.assetId)!}
           chainportToken={chainportTokensMap[confirmationData.assetId]!}
+          handleTransactionDetailsError={(errorMessage) =>
+            setTransactionDetailsError(errorMessage)
+          }
         />
       )}
     </>
@@ -368,8 +378,12 @@ function BridgeAssetsFormContent({
 export function BridgeAssetsForm() {
   const { data: accountsData } = trpcReact.getAccounts.useQuery();
   const filteredAccounts = accountsData?.filter((a) => !a.status.viewOnly);
-  const { data: tokensData, isLoading: isChainportLoading } =
-    trpcReact.getChainportTokens.useQuery();
+  const {
+    data: tokensData,
+    isLoading: isChainportLoading,
+    isError: isTokensError,
+    error: tokensError,
+  } = trpcReact.getChainportTokens.useQuery();
 
   if (!filteredAccounts || isChainportLoading) {
     return (
@@ -384,8 +398,8 @@ export function BridgeAssetsForm() {
     );
   }
 
-  if (!tokensData) {
-    throw new Error("Chainport data not found");
+  if (isTokensError) {
+    throw new Error(tokensError.message ?? "Chainport data not found");
   }
 
   return (

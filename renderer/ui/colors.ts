@@ -32,6 +32,7 @@ export const COLORS = {
     GREEN_DARK: "#242C18",
     YELLOW_LIGHT: "#E3DB7C",
     YELLOW_DARK: "#4B4608",
+    RED: "#C84C1B",
   } as const,
 } as const;
 

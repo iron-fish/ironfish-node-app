@@ -12,7 +12,7 @@ import {
   Text,
 } from "@chakra-ui/react";
 import { useRouter } from "next/router";
-import { useCallback, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import { defineMessages, useIntl } from "react-intl";
 
 import { trpcReact, TRPCRouterOutputs } from "@/providers/TRPCProvider";
@@ -35,8 +35,8 @@ const messages = defineMessages({
     defaultMessage:
       "Your transaction has been submitted. It may take a few minutes until it is confirmed. This transaction will appear in your activity as pending until it is confirmed.",
   },
-  transactionError: {
-    defaultMessage: "Transaction Error",
+  errorHeading: {
+    defaultMessage: "An error occurred",
   },
   transactionErrorText: {
     defaultMessage:
@@ -72,6 +72,7 @@ type Props = {
   targetNetwork: ChainportTargetNetwork;
   selectedAsset: AssetOptionType;
   chainportToken: ChainportToken;
+  handleTransactionDetailsError: (error: string) => void;
 };
 
 export function BridgeConfirmationModal({
@@ -80,6 +81,7 @@ export function BridgeConfirmationModal({
   targetNetwork,
   selectedAsset,
   chainportToken,
+  handleTransactionDetailsError,
 }: Props) {
   const { formatMessage } = useIntl();
   const router = useRouter();
@@ -102,12 +104,32 @@ export function BridgeConfirmationModal({
     data: txDetails,
     isLoading: isTransactionDetailsLoading,
     isError: isTransactionDetailError,
-  } = trpcReact.getChainportBridgeTransactionDetails.useQuery({
-    amount: convertedAmount.toString(),
-    assetId: chainportToken.ironfishId,
-    to: formData.targetAddress,
-    selectedNetwork: targetNetwork.chainportNetworkId.toString(),
-  });
+    error: transactionDetailError,
+  } = trpcReact.getChainportBridgeTransactionDetails.useQuery(
+    {
+      amount: convertedAmount.toString(),
+      assetId: chainportToken.ironfishId,
+      to: formData.targetAddress,
+      selectedNetwork: targetNetwork.chainportNetworkId.toString(),
+    },
+    {
+      retry: false,
+      refetchOnWindowFocus: false,
+      cacheTime: 0,
+    },
+  );
+
+  useEffect(() => {
+    if (isTransactionDetailError) {
+      onClose();
+      handleTransactionDetailsError(transactionDetailError.message);
+    }
+  }, [
+    onClose,
+    handleTransactionDetailsError,
+    isTransactionDetailError,
+    transactionDetailError?.message,
+  ]);
 
   const {
     mutate: submitBridgeTransaction,
@@ -267,7 +289,7 @@ export function BridgeConfirmationModal({
           {isSubmitError && (
             <>
               <Heading fontSize="2xl" mb={8}>
-                {formatMessage(messages.transactionError)}
+                {formatMessage(messages.errorHeading)}
               </Heading>
               <Text fontSize="md">
                 {formatMessage(messages.transactionErrorText)}

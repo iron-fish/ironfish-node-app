@@ -724,6 +724,9 @@
   "omnNfq": {
     "message": "About Fees"
   },
+  "ox304v": {
+    "message": "An error occurred"
+  },
   "p8bsw4": {
     "message": "Transaction Error"
   },
@@ -771,6 +774,9 @@
   },
   "rqrhXg": {
     "message": "Confirm Your Recovery Phrase"
+  },
+  "s3kz6s": {
+    "message": "A network error occured, please try again"
   },
   "tOdNiY": {
     "message": "Dark"

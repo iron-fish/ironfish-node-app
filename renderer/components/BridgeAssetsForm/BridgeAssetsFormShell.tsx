@@ -1,4 +1,4 @@
-import { Box, Flex, HStack, VStack } from "@chakra-ui/react";
+import { Box, Flex, HStack, VStack, Text } from "@chakra-ui/react";
 import { ReactNode } from "react";
 import { defineMessages, useIntl } from "react-intl";
 
@@ -19,6 +19,7 @@ export function BridgeAssetsFormShell({
   bridgeProviderInput,
   destinationNetworkInput,
   targetAddressInput,
+  topLevelErrorMessage,
 }: {
   status?: "LOADING";
   fromAccountInput: ReactNode;
@@ -26,6 +27,7 @@ export function BridgeAssetsFormShell({
   bridgeProviderInput: ReactNode;
   destinationNetworkInput: ReactNode;
   targetAddressInput: ReactNode;
+  topLevelErrorMessage?: string;
 }) {
   const { formatMessage } = useIntl();
   return (
@@ -88,6 +90,28 @@ export function BridgeAssetsFormShell({
           </VStack>
         </VStack>
       </VStack>
+      {topLevelErrorMessage && (
+        <Box
+          bg="#FFE5DD"
+          _dark={{
+            bg: "#453328",
+          }}
+          textAlign="center"
+          py={3}
+          px={4}
+          mt={4}
+        >
+          <Text
+            color={COLORS.RED}
+            _dark={{
+              color: COLORS.DARK_MODE.RED,
+            }}
+          >
+            {topLevelErrorMessage}
+          </Text>
+        </Box>
+      )}
+
       <HStack mt={8} justifyContent="flex-end">
         <PillButton type="submit" isDisabled={status === "LOADING"}>
           {formatMessage(messages.bridgeAssetSubmit)}

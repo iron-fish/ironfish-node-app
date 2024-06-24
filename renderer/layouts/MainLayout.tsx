@@ -17,7 +17,6 @@ import { BackButton } from "@/components/BackButton/BackButton";
 import { StatusIndicator } from "@/components/StatusIndicator/StatusIndicator";
 import { TestnetBanner } from "@/components/TestnetBanner/TestnetBanner";
 import { useFeatureFlags } from "@/providers/FeatureFlagsProvider";
-import { trpcReact } from "@/providers/TRPCProvider";
 import { ChakraLink } from "@/ui/ChakraLink/ChakraLink";
 import { COLORS } from "@/ui/colors";
 import { AddressBook } from "@/ui/SVGs/AddressBook";
@@ -112,7 +111,6 @@ function ResponsiveLogo() {
 function Sidebar() {
   const router = useRouter();
   const { formatMessage } = useIntl();
-  const { data } = trpcReact.getNetworkInfo.useQuery();
 
   const { flags } = useFeatureFlags();
 
@@ -128,10 +126,7 @@ function Sidebar() {
       <VStack alignItems="flex-start" flexGrow={1}>
         {LINKS.map(({ label, href, icon, id }) => {
           // The bridge tab is only visible if the flag is enabled and we're not on mainnet
-          if (
-            id === "bridge" &&
-            (!flags.chainportBridge.enabled || data?.networkId !== 0)
-          ) {
+          if (id === "bridge" && !flags.chainportBridge.enabled) {
             return null;
           }
 

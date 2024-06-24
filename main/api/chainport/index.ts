@@ -17,13 +17,10 @@ import {
   assertMetadataApiResponse,
   assertTokensApiResponse,
 } from "../../../shared/chainport";
+import { logger } from "../ironfish/logger";
 import { t } from "../trpc";
 
 export const chainportRouter = t.router({
-  getChainportEndpoints: t.procedure.query(async () => {
-    const endpoints = await getChainportEndpoints();
-    return endpoints;
-  }),
   getChainportTokens: t.procedure.query(async () => {
     const { tokensEndpoint, metadataEndpoint } = await getChainportEndpoints();
 
@@ -32,6 +29,7 @@ export const chainportRouter = t.router({
         axios.get(tokensEndpoint),
         axios.get(metadataEndpoint),
       ]);
+
       const tokensData = assertTokensApiResponse(tokensResponse.data);
       const chainportMeta = assertMetadataApiResponse(metadataResponse.data);
 
@@ -86,7 +84,10 @@ export const chainportRouter = t.router({
         chainportNetworksMap,
       };
     } catch (err) {
-      console.error("Failed to fetch chainport data", err);
+      logger.error(`Failed to fetch Chainport tokens data.
+
+${err}
+`);
       throw err;
     }
   }),
@@ -108,11 +109,28 @@ export const chainportRouter = t.router({
         endpoints.baseUrl
       }/ironfish/metadata?raw_amount=${amount.toString()}&asset_id=${assetId}&target_network_id=${selectedNetwork}&target_web3_address=${to}`;
 
-      const response: {
-        data: ChainportBridgeTransaction;
-      } = await axios.get(url);
+      const response = await fetch(url);
+      const data:
+        | ChainportBridgeTransaction
+        | {
+            error: {
+              code: string;
+              description: string;
+            };
+          } = await response.json();
 
-      return response.data;
+      if ("error" in data) {
+        throw new Error(data.error.description);
+      }
+
+      if (!response.ok) {
+        logger.error(`Failed to fetch chainport bridge transaction details.
+
+${data}`);
+        throw new Error("A network error occured, please try again");
+      }
+
+      return data;
     }),
   getChainportBridgeTransactionEstimatedFees: t.procedure
     .input(buildTransactionRequestParamsInputs)
