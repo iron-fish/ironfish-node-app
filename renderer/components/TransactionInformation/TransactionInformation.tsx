@@ -141,7 +141,8 @@ export function TransactionInformation({ transaction, ...rest }: Props) {
           <GridItem key={i} display="flex" alignItems="stretch">
             <ShadowCard
               contentContainerProps={{
-                p: 8,
+                px: 5,
+                py: 6,
                 display: "flex",
                 alignItems: "center",
               }}
@@ -160,7 +161,7 @@ export function TransactionInformation({ transaction, ...rest }: Props) {
                   </Text>
                   <Box fontSize="md">{render(transaction)}</Box>
                 </VStack>
-                {icon}
+                <Box w="32px">{icon}</Box>
               </HStack>
             </ShadowCard>
           </GridItem>
