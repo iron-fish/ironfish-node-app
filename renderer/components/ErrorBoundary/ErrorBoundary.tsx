@@ -58,7 +58,9 @@ const messages = defineMessages({
 });
 
 type Props = {
-  fallback?: ReactNode;
+  fallback?:
+    | ReactNode
+    | ((args: { error: Error; clearError: () => void }) => ReactNode);
   children: ReactNode;
 };
 
@@ -80,15 +82,23 @@ export class ErrorBoundary extends Component<Props, State> {
     log.error(error, info.componentStack);
   }
 
+  clearError = () => {
+    this.setState({ error: null });
+  };
+
   render() {
     const { children, fallback } = this.props;
     const { error } = this.state;
 
-    if (error !== null) {
-      return fallback ?? <DefaultFallback error={error} />;
+    if (error === null) return children;
+
+    if (fallback) {
+      return typeof fallback === "function"
+        ? fallback({ error, clearError: this.clearError })
+        : fallback;
     }
 
-    return children;
+    return <DefaultFallback error={error} />;
   }
 }
 
