@@ -24,16 +24,16 @@ export function getChecksumAddress(address: string): Address {
 
   // Create checksum address per EIP-55
   /** @see: https://eips.ethereum.org/EIPS/eip-55 */
-  for (let i = 0; i < address.length; i++) {
+  for (let i = 0; i < addressHex.length; i++) {
     if (parseInt(hash[i], 16) >= 8) {
-      checksumAddress += address[i].toUpperCase();
+      checksumAddress += addressHex[i].toUpperCase();
     } else {
-      checksumAddress += address[i];
+      checksumAddress += addressHex[i];
     }
   }
 
   // If the address contains uppercase characters, the checksum address should be equal to the address
-  if (/[A-F]/.test(withPrefix) && checksumAddress !== address) {
+  if (/[A-F]/.test(withPrefix) && checksumAddress !== withPrefix) {
     throw new Error("The address provided does not have a valid checksum");
   }
 

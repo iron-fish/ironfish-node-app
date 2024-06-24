@@ -18,7 +18,7 @@ import { TRPCRouterOutputs, trpcReact } from "@/providers/TRPCProvider";
 import { COLORS } from "@/ui/colors";
 import { Select } from "@/ui/Forms/Select/Select";
 import { TextInput } from "@/ui/Forms/TextInput/TextInput";
-import { isAddress } from "@/utils/ethereumAddressUtils";
+import { getChecksumAddress, isAddress } from "@/utils/ethereumAddressUtils";
 
 import { BridgeAssetsFormShell } from "./BridgeAssetsFormShell";
 import { BridgeAssetsFormData, bridgeAssetsSchema } from "./bridgeAssetsSchema";
@@ -224,7 +224,7 @@ function BridgeAssetsFormContent({
             fromAccount: data.fromAccount,
             assetId: data.assetId,
             destinationNetwork: data.destinationNetwork,
-            targetAddress: data.targetAddress,
+            targetAddress: getChecksumAddress(data.targetAddress),
           });
         })}
       >
