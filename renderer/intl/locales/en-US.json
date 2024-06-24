@@ -60,6 +60,9 @@
   "3/a0Ho": {
     "message": "We're not able to download release notes right now."
   },
+  "3KdqXd": {
+    "message": "Destination Txn Hash"
+  },
   "3OLlCN": {
     "message": "From/To"
   },
@@ -406,6 +409,9 @@
   "QXxopU": {
     "message": "Mnemonic phrase copied to clipboard!"
   },
+  "QgKpaU": {
+    "message": "Bridge sent"
+  },
   "QlsDcr": {
     "message": "Action"
   },
@@ -466,11 +472,17 @@
   "TzwzhT": {
     "message": "You can remove and reimport your accounts whenever you like, provided that you possess the account keys. It is highly recommended to maintain a backup of your account keys in a secure location."
   },
+  "U78NhE": {
+    "message": "Complete"
+  },
   "ULXFfP": {
     "message": "Receive"
   },
   "UTOugV": {
     "message": "Your Assets"
+  },
+  "Uh1bJh": {
+    "message": "Bridge Information"
   },
   "Uvwn4S": {
     "message": "Something went wrong while rendering this component. Please try again. If the issue persists, report the issue on <link>Discord</link>."
@@ -577,6 +589,9 @@
   "dTSUUK": {
     "message": "If you remove this account without exporting it first, YOU WILL LOSE ACCESS TO IT."
   },
+  "e6HIlS": {
+    "message": "Destination Address"
+  },
   "e6Ph5+": {
     "message": "Address"
   },
@@ -585,6 +600,9 @@
   },
   "eVlu1R": {
     "message": "Select language"
+  },
+  "eaEGGc": {
+    "message": "Preparing target txn"
   },
   "ecJcrS": {
     "message": "Syncing blocks"
@@ -601,6 +619,9 @@
   "fKN5VY": {
     "message": "Create Contact"
   },
+  "fYjxPn": {
+    "message": "Submitted target txn"
+  },
   "flxGnZ": {
     "message": "Telemetry enabled"
   },
@@ -615,6 +636,9 @@
   },
   "gjBiyj": {
     "message": "Loading..."
+  },
+  "gu1qWm": {
+    "message": "Bridge received"
   },
   "gu9i+5": {
     "message": "Version {currentVersion}"
@@ -739,6 +763,9 @@
   "rGIQdX": {
     "message": "Back to Account Overview"
   },
+  "raexxM": {
+    "message": "Submitted"
+  },
   "rbrahO": {
     "message": "Close"
   },
@@ -762,6 +789,9 @@
   },
   "tf1lIh": {
     "message": "Free"
+  },
+  "tjHKMS": {
+    "message": "Sender Address"
   },
   "tzMNF3": {
     "message": "Status"

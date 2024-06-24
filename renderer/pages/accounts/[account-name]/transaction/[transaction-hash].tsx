@@ -2,11 +2,14 @@ import { Box, HStack, Heading, Skeleton } from "@chakra-ui/react";
 import { useRouter } from "next/router";
 import { defineMessages, useIntl } from "react-intl";
 
+import { BridgeTransactionInformation } from "@/components/BridgeTransactionInformation/BridgeTransactionInformation";
+import { BridgeTransactionProgressIndicator } from "@/components/BridgeTransactionProgressIndicator/BridgeTransactionProgressIndicator";
 import { CopyAddress } from "@/components/CopyAddress/CopyAddress";
 import { NotesList } from "@/components/NotesList/NotesList";
 import { TransactionInformation } from "@/components/TransactionInformation/TransactionInformation";
 import MainLayout from "@/layouts/MainLayout";
 import { trpcReact } from "@/providers/TRPCProvider";
+import { isChainportTx } from "@/utils/chainport/isChainportTx";
 import { asQueryString } from "@/utils/parseRouteQuery";
 
 const messages = defineMessages({
@@ -40,6 +43,9 @@ function SingleTransactionContent({
     accountName,
     transactionHash,
   });
+
+  const isChainportTransaction =
+    !!transactionData && isChainportTx(transactionData);
 
   if (!accountData) {
     return null;
@@ -99,10 +105,22 @@ function SingleTransactionContent({
           transform="translateY(0.4em)"
         />
       </HStack>
+      {isChainportTransaction &&
+        transactionData.transaction.type === "send" && (
+          <BridgeTransactionProgressIndicator
+            transaction={transactionData.transaction}
+          />
+        )}
       <TransactionInformation
         transaction={transactionData.transaction}
         mb={16}
       />
+      {isChainportTransaction && (
+        <BridgeTransactionInformation
+          transaction={transactionData.transaction}
+          mb={16}
+        />
+      )}
       <NotesList
         heading={formatMessage(messages.transactionNotes)}
         notes={showSelfSendNotes ? regularNotes : transactionData.notes}
