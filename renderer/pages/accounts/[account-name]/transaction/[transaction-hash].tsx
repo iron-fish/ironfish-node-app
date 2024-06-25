@@ -4,7 +4,7 @@ import { defineMessages, useIntl } from "react-intl";
 
 import { BridgeTransactionInformation } from "@/components/BridgeTransactionInformation/BridgeTransactionInformation";
 import { BridgeTransactionProgressIndicator } from "@/components/BridgeTransactionProgressIndicator/BridgeTransactionProgressIndicator";
-import { CopyAddress } from "@/components/CopyAddress/CopyAddress";
+import { CopyToClipboard } from "@/components/CopyToClipboard/CopyToClipboard";
 import { NotesList } from "@/components/NotesList/NotesList";
 import { TransactionInformation } from "@/components/TransactionInformation/TransactionInformation";
 import MainLayout from "@/layouts/MainLayout";
@@ -61,8 +61,8 @@ function SingleTransactionContent({
       >
         <HStack mb={8} gap={4}>
           <Heading>{accountName}</Heading>
-          <CopyAddress
-            address={accountData.address}
+          <CopyToClipboard
+            text={accountData.address}
             transform="translateY(0.4em)"
           />
         </HStack>
@@ -100,8 +100,8 @@ function SingleTransactionContent({
     >
       <HStack mb={8} gap={4}>
         <Heading>{accountName}</Heading>
-        <CopyAddress
-          address={accountData.address}
+        <CopyToClipboard
+          text={accountData.address}
           transform="translateY(0.4em)"
         />
       </HStack>

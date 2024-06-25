@@ -18,6 +18,9 @@ export const messages = defineMessages({
   memo: {
     defaultMessage: "Memo",
   },
+  transactionHash: {
+    defaultMessage: "Hash",
+  },
   sent: {
     defaultMessage: "Sent",
   },
@@ -49,13 +52,17 @@ export const messages = defineMessages({
   },
 });
 
-export function useHeadingsText() {
+export function useHeadingsText(asTransaction: boolean = false) {
   const { formatMessage } = useIntl();
-  return [
+  const headings = [
     formatMessage(messages.action),
     formatMessage(messages.amount),
     formatMessage(messages.fromTo),
     formatMessage(messages.date),
     formatMessage(messages.memo),
   ];
+  if (asTransaction) {
+    headings.push(formatMessage(messages.transactionHash));
+  }
+  return headings;
 }

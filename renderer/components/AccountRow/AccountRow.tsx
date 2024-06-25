@@ -22,7 +22,7 @@ import { LogoSm } from "@/ui/SVGs/LogoSm";
 import { formatOre } from "@/utils/ironUtils";
 
 import { AccountSyncingProgress } from "../AccountSyncingProgress/AccountSyncingProgress";
-import { CopyAddress } from "../CopyAddress/CopyAddress";
+import { CopyToClipboard } from "../CopyToClipboard/CopyToClipboard";
 import { LedgerChip } from "../LedgerChip/LedgerChip";
 import { ViewOnlyChip } from "../ViewOnlyChip/ViewOnlyChip";
 
@@ -112,7 +112,7 @@ export function AccountRow({
               <Heading as="span" fontWeight="regular" fontSize="2xl">
                 {formatOre(balance)} $IRON
               </Heading>
-              <CopyAddress address={address} />
+              <CopyToClipboard text={address} />
             </VStack>
 
             <VStack
@@ -125,8 +125,8 @@ export function AccountRow({
                   !isAccountSendEligible
                     ? formatMessage(messages.viewOnlySendDisabled)
                     : !isSynced.synced
-                    ? formatMessage(messages.syncingSendDisabled)
-                    : null
+                      ? formatMessage(messages.syncingSendDisabled)
+                      : null
                 }
                 placement="top"
               >

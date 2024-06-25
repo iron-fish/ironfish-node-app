@@ -9,7 +9,7 @@ import { PillButton } from "@/ui/PillButton/PillButton";
 import { ShadowCard } from "@/ui/ShadowCard/ShadowCard";
 import { ArrowSend } from "@/ui/SVGs/ArrowSend";
 
-import { CopyAddress } from "../CopyAddress/CopyAddress";
+import { CopyToClipboard } from "../CopyToClipboard/CopyToClipboard";
 import { FishIcon } from "../FishIcon/FishIcon";
 
 const messages = defineMessages({
@@ -78,7 +78,7 @@ export function ContactRow({ name, address, order }: Props) {
             <Text as="span">{name}</Text>
           </GridItem>
           <GridItem display="flex">
-            <CopyAddress address={address} color="inherit" />
+            <CopyToClipboard text={address} color="inherit" />
           </GridItem>
           <GridItem display="flex" alignItems="center" mr={4}>
             <PillButton

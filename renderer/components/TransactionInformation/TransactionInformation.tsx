@@ -4,8 +4,8 @@ import {
   Grid,
   GridItem,
   Heading,
-  Text,
   HStack,
+  Text,
   VStack,
 } from "@chakra-ui/react";
 import { upperFirst } from "lodash-es";
@@ -24,7 +24,7 @@ import { ShadowCard } from "@/ui/ShadowCard/ShadowCard";
 import { formatDate } from "@/utils/formatDate";
 import { formatOre } from "@/utils/ironUtils";
 
-import { CopyAddress } from "../CopyAddress/CopyAddress";
+import { CopyToClipboard } from "../CopyToClipboard/CopyToClipboard";
 
 type Transaction = TRPCRouterOutputs["getTransaction"]["transaction"];
 
@@ -69,11 +69,12 @@ function TransactionHashBody({ transaction }: { transaction: Transaction }) {
 
   return (
     <VStack alignItems="flex-start">
-      <CopyAddress
+      <CopyToClipboard
         fontSize="md"
         color={COLORS.BLACK}
         _dark={{ color: COLORS.WHITE }}
-        address={transaction.hash}
+        text={transaction.hash}
+        messageType="hashCopied"
         parts={2}
       />
       {data && (

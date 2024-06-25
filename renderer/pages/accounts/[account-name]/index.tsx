@@ -1,14 +1,14 @@
 import {
   Box,
-  Heading,
-  Tabs,
-  TabList,
-  Tab,
-  TabPanels,
-  TabPanel,
   HStack,
-  VStack,
+  Heading,
   Spinner,
+  Tab,
+  TabList,
+  TabPanel,
+  TabPanels,
+  Tabs,
+  VStack,
 } from "@chakra-ui/react";
 import { useRouter } from "next/router";
 import { ReactNode, useMemo } from "react";
@@ -18,7 +18,7 @@ import { AccountAssets } from "@/components/AccountAssets/AccountAssets";
 import { AccountKeyExport } from "@/components/AccountKeyExport/AccountKeyExport";
 import { AccountMnemonicView } from "@/components/AccountMnemonicView/AccountMnenomicView";
 import { AccountSettings } from "@/components/AccountSettings/AccountSettings";
-import { CopyAddress } from "@/components/CopyAddress/CopyAddress";
+import { CopyToClipboard } from "@/components/CopyToClipboard/CopyToClipboard";
 import { LedgerChip } from "@/components/LedgerChip/LedgerChip";
 import { NotesList } from "@/components/NotesList/NotesList";
 import { ViewOnlyChip } from "@/components/ViewOnlyChip/ViewOnlyChip";
@@ -130,12 +130,12 @@ function AccountOverviewContent({ accountName }: { accountName: string }) {
             <Heading fontSize="28px">{accountData.name}</Heading>
             {headingChip}
           </HStack>
-          <CopyAddress
-            address={accountData.address}
+          <CopyToClipboard
+            text={accountData.address}
             truncate={false}
             transform="translateY(0.4em)"
           />
-        </VStack>
+        </VStack >
         <Tabs isLazy defaultIndex={initialTabIndex}>
           <TabList mb={8}>
             <Tab>{formatMessage(messages.accountOverview)}</Tab>
@@ -186,8 +186,8 @@ function AccountOverviewContent({ accountName }: { accountName: string }) {
             </TabPanel>
           </TabPanels>
         </Tabs>
-      </Box>
-    </MainLayout>
+      </Box >
+    </MainLayout >
   );
 }
 
