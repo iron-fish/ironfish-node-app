@@ -38,6 +38,9 @@ const messages = defineMessages({
   viewInBlockExplorer: {
     defaultMessage: "View in Block Explorer",
   },
+  sourceNetwork: {
+    defaultMessage: "Source Network",
+  },
 });
 
 type Props = BoxProps & {
@@ -47,6 +50,10 @@ type Props = BoxProps & {
   networkIcon?: string;
   targetTxHash?: string;
   blockExplorerUrl?: string;
+  sourceNetwork?: {
+    name: string;
+    icon: string;
+  };
 };
 
 export function BridgeTransactionInformationShell({
@@ -56,6 +63,7 @@ export function BridgeTransactionInformationShell({
   networkIcon,
   targetTxHash,
   blockExplorerUrl,
+  sourceNetwork,
   ...rest
 }: Props) {
   const { formatMessage } = useIntl();
@@ -137,62 +145,98 @@ export function BridgeTransactionInformationShell({
           </ShadowCard>
         </GridItem>
 
-        <GridItem display={isSend ? "flex" : "none"} alignItems="stretch">
-          <ShadowCard
-            contentContainerProps={{
-              px: 5,
-              py: 6,
-              display: "flex",
-              alignItems: "center",
-            }}
-            w="100%"
-          >
-            <HStack justifyContent="space-between" w="100%">
-              <VStack alignItems="flex-start">
-                <Text
-                  color={COLORS.GRAY_MEDIUM}
-                  fontSize="md"
-                  _dark={{
-                    color: COLORS.DARK_MODE.GRAY_LIGHT,
-                  }}
-                >
-                  {formatMessage(messages.destinationTxnHash)}
-                </Text>
-                <Box fontSize="md">
-                  <VStack alignItems="flex-start">
-                    {targetTxHash ? (
-                      <CopyAddress
-                        fontSize="md"
-                        color={COLORS.BLACK}
-                        _dark={{ color: COLORS.WHITE }}
-                        address={targetTxHash}
-                        parts={2}
-                      />
-                    ) : (
-                      <Text>—</Text>
-                    )}
-                    {blockExplorerUrl && (
-                      <Box
-                        as="a"
-                        target="_blank"
-                        display="inline"
-                        href={blockExplorerUrl}
-                        _hover={{ textDecor: "underline" }}
-                      >
-                        <Text fontSize="xs" lineHeight="160%">
-                          {formatMessage(messages.viewInBlockExplorer)}
-                        </Text>
-                      </Box>
-                    )}
-                  </VStack>
-                </Box>
-              </VStack>
-              {networkIcon && (
-                <Image width="48px" height="48px" src={networkIcon} alt="" />
-              )}
-            </HStack>
-          </ShadowCard>
-        </GridItem>
+        {isSend && (
+          <GridItem display="flex" alignItems="stretch">
+            <ShadowCard
+              contentContainerProps={{
+                px: 5,
+                py: 6,
+                display: "flex",
+                alignItems: "center",
+              }}
+              w="100%"
+            >
+              <HStack justifyContent="space-between" w="100%">
+                <VStack alignItems="flex-start">
+                  <Text
+                    color={COLORS.GRAY_MEDIUM}
+                    fontSize="md"
+                    _dark={{
+                      color: COLORS.DARK_MODE.GRAY_LIGHT,
+                    }}
+                  >
+                    {formatMessage(messages.destinationTxnHash)}
+                  </Text>
+                  <Box fontSize="md">
+                    <VStack alignItems="flex-start">
+                      {targetTxHash ? (
+                        <CopyAddress
+                          fontSize="md"
+                          color={COLORS.BLACK}
+                          _dark={{ color: COLORS.WHITE }}
+                          address={targetTxHash}
+                          parts={2}
+                        />
+                      ) : (
+                        <Text>—</Text>
+                      )}
+                      {blockExplorerUrl && (
+                        <Box
+                          as="a"
+                          target="_blank"
+                          display="inline"
+                          href={blockExplorerUrl}
+                          _hover={{ textDecor: "underline" }}
+                        >
+                          <Text fontSize="xs" lineHeight="160%">
+                            {formatMessage(messages.viewInBlockExplorer)}
+                          </Text>
+                        </Box>
+                      )}
+                    </VStack>
+                  </Box>
+                </VStack>
+                {networkIcon && (
+                  <Image width="48px" height="48px" src={networkIcon} alt="" />
+                )}
+              </HStack>
+            </ShadowCard>
+          </GridItem>
+        )}
+        {!isSend && sourceNetwork && (
+          <GridItem display="flex" alignItems="stretch">
+            <ShadowCard
+              contentContainerProps={{
+                px: 5,
+                py: 6,
+                display: "flex",
+                alignItems: "center",
+              }}
+              w="100%"
+            >
+              <HStack justifyContent="space-between" w="100%">
+                <VStack alignItems="flex-start">
+                  <Text
+                    color={COLORS.GRAY_MEDIUM}
+                    fontSize="md"
+                    _dark={{
+                      color: COLORS.DARK_MODE.GRAY_LIGHT,
+                    }}
+                  >
+                    {formatMessage(messages.sourceNetwork)}
+                  </Text>
+                  <Box fontSize="md">{sourceNetwork?.name}</Box>
+                </VStack>
+                <Image
+                  width="48px"
+                  height="48px"
+                  src={sourceNetwork?.icon}
+                  alt=""
+                />
+              </HStack>
+            </ShadowCard>
+          </GridItem>
+        )}
       </Grid>
     </Box>
   );

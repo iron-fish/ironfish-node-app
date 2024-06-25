@@ -74,6 +74,17 @@ export function BridgeTransactionInformation({ transaction, ...rest }: Props) {
 
   const status = useChainportTransactionStatus(transaction);
 
+  const sourceNetwork = useMemo(() => {
+    const result = chainportMeta?.cp_network_ids[baseNetworkId ?? ""];
+
+    if (!result) return;
+
+    return {
+      name: result.label,
+      icon: result.network_icon,
+    };
+  }, [baseNetworkId, chainportMeta?.cp_network_ids]);
+
   if (isChainportStatusLoading) {
     return (
       <BridgeTransactionInformationShell
@@ -87,12 +98,13 @@ export function BridgeTransactionInformation({ transaction, ...rest }: Props) {
 
   return (
     <BridgeTransactionInformationShell
-      status={formatMessage(getMessageForStatus(status))}
+      status={formatMessage(getMessageForStatus(isSend ? status : "complete"))}
       type={transaction.type}
       address={bridgeNoteMemo?.[1] ?? ""}
       networkIcon={targetNetwork?.network_icon ?? ""}
       targetTxHash={destinationTxHashContent?.txHash}
       blockExplorerUrl={destinationTxHashContent?.href}
+      sourceNetwork={sourceNetwork}
       {...rest}
     />
   );
