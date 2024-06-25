@@ -22,7 +22,7 @@ import { LogoSm } from "@/ui/SVGs/LogoSm";
 import { formatOre } from "@/utils/ironUtils";
 
 import { AccountSyncingProgress } from "../AccountSyncingProgress/AccountSyncingProgress";
-import { CopyAddress } from "../CopyAddress/CopyAddress";
+import { CopyToClipboard } from "../CopyToClipboard/CopyToClipboard";
 import { ViewOnlyChip } from "../ViewOnlyChip/ViewOnlyChip";
 
 const messages = defineMessages({
@@ -106,7 +106,7 @@ export function AccountRow({
               <Heading as="span" fontWeight="regular" fontSize="2xl">
                 {formatOre(balance)} $IRON
               </Heading>
-              <CopyAddress address={address} />
+              <CopyToClipboard text={address} />
             </VStack>
 
             <VStack
