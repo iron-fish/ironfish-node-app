@@ -54,11 +54,12 @@ export function useChainportTransactionStatus(
 
     if (Object.entries(data).length === 0) return "iron_fish_submitted";
 
-    if (data.base_tx_status === 1) return "bridge_pending";
-
-    if (data.target_tx_status === null) return "bridge_submitted";
+    if (data.base_tx_status === 1 && data.target_tx_status === null)
+      return "bridge_pending";
 
     if (data.target_tx_status === 1) return "complete";
+
+    if (data.target_tx_hash) return "bridge_submitted";
 
     return "iron_fish_submitted";
   }, [data, isLoading, error]);
