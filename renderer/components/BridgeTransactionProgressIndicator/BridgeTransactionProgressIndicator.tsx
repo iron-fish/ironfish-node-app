@@ -1,26 +1,14 @@
 import { Box, Flex, HStack, Text, useColorMode } from "@chakra-ui/react";
 import { useMemo } from "react";
 import { IoMdCheckmark } from "react-icons/io";
-import { defineMessages, useIntl } from "react-intl";
+import { useIntl } from "react-intl";
 
 import { TRPCRouterOutputs } from "@/providers/TRPCProvider";
 import { COLORS } from "@/ui/colors";
-import { useChainportTransactionStatus } from "@/utils/chainport/useChainportTransactionStatus";
-
-const messages = defineMessages({
-  submitted: {
-    defaultMessage: "Submitted",
-  },
-  bridgePending: {
-    defaultMessage: "Preparing target txn",
-  },
-  bridgeSubmitted: {
-    defaultMessage: "Submitted target txn",
-  },
-  complete: {
-    defaultMessage: "Complete",
-  },
-});
+import {
+  getMessageForStatus,
+  useChainportTransactionStatus,
+} from "@/utils/chainport/useChainportTransactionStatus";
 
 const STEPS = [
   "iron_fish_submitted",
@@ -64,22 +52,22 @@ export function BridgeTransactionProgressIndicator({ transaction }: Props) {
         <Step
           status={currentStepIndex >= 0 ? "complete" : "pending"}
           align="left"
-          label={formatMessage(messages.submitted)}
+          label={formatMessage(getMessageForStatus("iron_fish_submitted"))}
         />
         <Step
           status={currentStepIndex >= 1 ? "complete" : "pending"}
           align="center"
-          label={formatMessage(messages.bridgePending)}
+          label={formatMessage(getMessageForStatus("bridge_pending"))}
         />
         <Step
           status={currentStepIndex >= 2 ? "complete" : "pending"}
           align="center"
-          label={formatMessage(messages.bridgeSubmitted)}
+          label={formatMessage(getMessageForStatus("bridge_submitted"))}
         />
         <Step
           status={currentStepIndex >= 3 ? "complete" : "pending"}
           align="right"
-          label={formatMessage(messages.complete)}
+          label={formatMessage(getMessageForStatus("complete"))}
         />
         <Box
           position="absolute"

@@ -1,8 +1,13 @@
 import { BoxProps, Skeleton } from "@chakra-ui/react";
 import { useMemo } from "react";
+import { useIntl } from "react-intl";
 
 import { trpcReact, TRPCRouterOutputs } from "@/providers/TRPCProvider";
 import { IRONFISH_NETWORK_ID } from "@/utils/chainport/constants";
+import {
+  getMessageForStatus,
+  useChainportTransactionStatus,
+} from "@/utils/chainport/useChainportTransactionStatus";
 
 import { BridgeTransactionInformationShell } from "./BridgeTransactionInformationShell";
 
@@ -13,6 +18,7 @@ type Props = BoxProps & {
 };
 
 export function BridgeTransactionInformation({ transaction, ...rest }: Props) {
+  const { formatMessage } = useIntl();
   const isSend = transaction.type === "send";
 
   const encodedBridgeNoteMemo = useMemo(() => {
@@ -66,6 +72,8 @@ export function BridgeTransactionInformation({ transaction, ...rest }: Props) {
     };
   }, [chainportMeta, chainportStatus]);
 
+  const status = useChainportTransactionStatus(transaction);
+
   if (isChainportStatusLoading) {
     return (
       <BridgeTransactionInformationShell
@@ -79,7 +87,7 @@ export function BridgeTransactionInformation({ transaction, ...rest }: Props) {
 
   return (
     <BridgeTransactionInformationShell
-      status={chainportStatus?.target_tx_status === 1 ? "Success" : "Pending"}
+      status={formatMessage(getMessageForStatus(status))}
       type={transaction.type}
       address={bridgeNoteMemo?.[1] ?? ""}
       networkIcon={targetNetwork?.network_icon ?? ""}

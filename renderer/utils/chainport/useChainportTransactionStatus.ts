@@ -1,4 +1,5 @@
 import { useMemo } from "react";
+import { defineMessages } from "react-intl";
 
 import { trpcReact, TRPCRouterOutputs } from "@/providers/TRPCProvider";
 
@@ -11,6 +12,31 @@ type ChainportTransactionStatus =
   | "bridge_submitted"
   | "complete"
   | "failed";
+
+const chainportStatusMessages = defineMessages({
+  loading: {
+    defaultMessage: "Loading",
+  },
+  iron_fish_submitted: {
+    defaultMessage: "Submitted",
+  },
+  bridge_pending: {
+    defaultMessage: "Preparing target txn",
+  },
+  bridge_submitted: {
+    defaultMessage: "Submitted target txn",
+  },
+  complete: {
+    defaultMessage: "Complete",
+  },
+  failed: {
+    defaultMessage: "Failed",
+  },
+});
+
+export function getMessageForStatus(status: ChainportTransactionStatus) {
+  return chainportStatusMessages[status];
+}
 
 export function useChainportTransactionStatus(
   transaction: TRPCRouterOutputs["getTransaction"]["transaction"],
