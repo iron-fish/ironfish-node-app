@@ -22,7 +22,7 @@
   },
   "license": "MPL-2.0",
   "dependencies": {
-    "@ironfish/sdk": "2.2.0",
+    "@ironfish/sdk": "2.4.0",
     "electron-serve": "^1.1.0",
     "keccak": "^3.0.4"
   },

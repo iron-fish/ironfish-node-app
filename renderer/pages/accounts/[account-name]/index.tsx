@@ -114,7 +114,7 @@ function AccountOverviewContent({ accountName }: { accountName: string }) {
     >
       <Box>
         <VStack mb={6} gap={0} alignItems="flex-start">
-          <Heading>{accountData.name}</Heading>
+          <Heading fontSize="28px">{accountData.name}</Heading>
           {accountData.status.viewOnly && (
             <Box transform="translateY(0.25em)">
               <ViewOnlyChip />

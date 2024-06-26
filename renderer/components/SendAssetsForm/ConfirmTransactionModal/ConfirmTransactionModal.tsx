@@ -14,13 +14,14 @@ import { useRouter } from "next/router";
 import { useCallback } from "react";
 import { defineMessages, useIntl } from "react-intl";
 
+import { AssetOptionType } from "@/components/AssetAmountInput/utils";
 import { trpcReact } from "@/providers/TRPCProvider";
 import { COLORS } from "@/ui/colors";
 import { PillButton } from "@/ui/PillButton/PillButton";
 import { CurrencyUtils } from "@/utils/currency";
 import { formatOre } from "@/utils/ironUtils";
 
-import { TransactionData, AssetOptionType } from "../transactionSchema";
+import { TransactionData } from "../transactionSchema";
 
 const messages = defineMessages({
   confirmTransactionDetails: {

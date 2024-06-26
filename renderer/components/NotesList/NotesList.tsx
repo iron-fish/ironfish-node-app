@@ -5,6 +5,7 @@ import { Virtuoso } from "react-virtuoso";
 import { NoteHeadings } from "@/components/NoteRow/NoteHeadings";
 import { NoteRow } from "@/components/NoteRow/NoteRow";
 import { useScrollElementContext } from "@/layouts/MainLayout";
+import { isChainportNote } from "@/utils/chainport/isChainportTx";
 
 import { TransactionNote } from "../../../shared/types";
 import { EmptyStateMessage } from "../EmptyStateMessage/EmptyStateMessage";
@@ -94,6 +95,7 @@ export function NotesList({
                 status={note.status}
                 memo={note.memo}
                 asTransaction={asTransactions}
+                isBridge={asTransactions && isChainportNote(note)}
               />
             );
           }}
