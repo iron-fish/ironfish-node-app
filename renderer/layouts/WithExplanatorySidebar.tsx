@@ -48,7 +48,13 @@ export function WithExplanatorySidebar({
 
 function DescriptionText({ children }: { children: ReactNode }) {
   return (
-    <Text fontSize="sm" maxW="340px" mb={4} color={COLORS.GRAY_MEDIUM}>
+    <Text
+      fontSize="sm"
+      maxW="340px"
+      mb={4}
+      color={COLORS.GRAY_MEDIUM}
+      _dark={{ color: COLORS.DARK_MODE.GRAY_LIGHT }}
+    >
       {children}
     </Text>
   );

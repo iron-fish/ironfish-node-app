@@ -54,8 +54,14 @@
   "2qzbcD": {
     "message": "Min Peers"
   },
+  "3+EYHL": {
+    "message": "Target Network"
+  },
   "3/a0Ho": {
     "message": "We're not able to download release notes right now."
+  },
+  "3KdqXd": {
+    "message": "Destination Txn Hash"
   },
   "3OLlCN": {
     "message": "From/To"
@@ -74,6 +80,9 @@
   },
   "47FYwb": {
     "message": "Cancel"
+  },
+  "4V/PNA": {
+    "message": "Confirm & Bridge"
   },
   "4l6vz1": {
     "message": "Copy"
@@ -125,6 +134,9 @@
   },
   "6q3tCn": {
     "message": "Connecting"
+  },
+  "7/GPHF": {
+    "message": "Iron Fish transaction fee"
   },
   "711SFa": {
     "message": "The Iron Fish Node App supports {networkCount} networks."
@@ -189,6 +201,9 @@
   "BxM6mJ": {
     "message": "Lowest to highest balance"
   },
+  "C2CIgC": {
+    "message": "Sending"
+  },
   "C43FrR": {
     "message": "Amount:"
   },
@@ -200,6 +215,9 @@
   },
   "D5NqQO": {
     "message": "Memo"
+  },
+  "DOMotB": {
+    "message": "Target Address"
   },
   "Dh1MGS": {
     "message": "Account Syncing"
@@ -280,6 +298,9 @@
     "description": "Change as in the money that is returned to the sender after a transaction",
     "message": "Change"
   },
+  "KJMlfb": {
+    "message": "Destination network"
+  },
   "KN7zKn": {
     "message": "Error"
   },
@@ -289,11 +310,17 @@
   "Kkv03/": {
     "message": "Transaction Details"
   },
+  "Km+rD9": {
+    "message": "{balance} {asset} available"
+  },
   "L4MaM3": {
     "message": "Cores"
   },
   "LP4H/8": {
     "message": "Scanning blocks: {sequence} / {totalSequence}"
+  },
+  "LPYoBI": {
+    "message": "Bridge fee"
   },
   "LPlno7": {
     "message": "Multiple recipients"
@@ -304,6 +331,9 @@
   "Ld49Lh": {
     "message": "What would you like to name this account? This name is only visible to you."
   },
+  "M+isB1": {
+    "message": "Bridge Provider"
+  },
   "MDZ4hi": {
     "message": "Already have an account? Enter your recovery credentials and continue using your account as expected."
   },
@@ -312,6 +342,12 @@
   },
   "MFXvHT": {
     "message": "Your balance may not be fully updated during this syncing process."
+  },
+  "MZCNjq": {
+    "message": "Bridge"
+  },
+  "Muzvyz": {
+    "message": "Confirm Bridge Transaction"
   },
   "N0KGQj": {
     "message": "Block Graffiti"
@@ -333,6 +369,9 @@
   },
   "O+Q7TL": {
     "message": "Submitted Sequence"
+  },
+  "OEEl0G": {
+    "message": "Receiving"
   },
   "OfA95/": {
     "message": "Selected file: {fileName}"
@@ -369,6 +408,9 @@
   },
   "QXxopU": {
     "message": "Mnemonic phrase copied to clipboard!"
+  },
+  "QgKpaU": {
+    "message": "Bridge sent"
   },
   "QlsDcr": {
     "message": "Action"
@@ -430,17 +472,29 @@
   "TzwzhT": {
     "message": "You can remove and reimport your accounts whenever you like, provided that you possess the account keys. It is highly recommended to maintain a backup of your account keys in a secure location."
   },
+  "U78NhE": {
+    "message": "Complete"
+  },
   "ULXFfP": {
     "message": "Receive"
   },
   "UTOugV": {
     "message": "Your Assets"
   },
+  "Uh1bJh": {
+    "message": "Bridge Information"
+  },
+  "Uvwn4S": {
+    "message": "Something went wrong while rendering this component. Please try again. If the issue persists, report the issue on <link>Discord</link>."
+  },
   "Uziuar": {
     "message": "Change Network"
   },
   "VBDJ/l": {
     "message": "Your balance might not be accurate while you're syncing"
+  },
+  "VVlAZ6": {
+    "message": "From Account"
   },
   "VqP8r/": {
     "message": "Memo:"
@@ -453,6 +507,9 @@
   },
   "WNgCs+": {
     "message": "Back to Address Book"
+  },
+  "WSW+95": {
+    "message": "About Bridging"
   },
   "WWEwrn": {
     "message": "Node Settings"
@@ -505,6 +562,9 @@
   "bFQd/U": {
     "message": "With contact names being associated with public addresses, you have the freedom to customize how you identify your contacts without affecting their underlying address."
   },
+  "bGuGjq": {
+    "message": "Bridge Asset"
+  },
   "bW7B87": {
     "message": "New"
   },
@@ -520,11 +580,17 @@
   "c/KktL": {
     "message": "Resources"
   },
+  "cwqQqt": {
+    "message": "The fee for transacting on the destination chain"
+  },
   "dM+p3/": {
     "message": "From"
   },
   "dTSUUK": {
     "message": "If you remove this account without exporting it first, YOU WILL LOSE ACCESS TO IT."
+  },
+  "e6HIlS": {
+    "message": "Destination Address"
   },
   "e6Ph5+": {
     "message": "Address"
@@ -534,6 +600,9 @@
   },
   "eVlu1R": {
     "message": "Select language"
+  },
+  "eaEGGc": {
+    "message": "Preparing target txn"
   },
   "ecJcrS": {
     "message": "Syncing blocks"
@@ -550,17 +619,26 @@
   "fKN5VY": {
     "message": "Create Contact"
   },
+  "fYjxPn": {
+    "message": "Submitted target txn"
+  },
   "flxGnZ": {
     "message": "Telemetry enabled"
   },
   "g/oZa8": {
     "message": "Waiting for peers to sync from"
   },
+  "gC6/qK": {
+    "message": "Source Network"
+  },
   "gcuDcH": {
     "message": "Sent"
   },
   "gjBiyj": {
     "message": "Loading..."
+  },
+  "gu1qWm": {
+    "message": "Bridge received"
   },
   "gu9i+5": {
     "message": "Version {currentVersion}"
@@ -579,6 +657,9 @@
   },
   "hR0flV": {
     "message": "All your transactions, whether in $IRON or other custom assets, will be displayed in this section. To start a transaction, simply click on the 'Send' or 'Receive' tabs."
+  },
+  "iFsDVR": {
+    "message": "Loading"
   },
   "iWiHY7": {
     "message": "The blockchain is syncing. Your balance may be inaccurate and sending transactions will be disabled until the sync is complete."
@@ -610,6 +691,9 @@
   "kTt/ND": {
     "message": "Russian"
   },
+  "krty63": {
+    "message": "Need help?"
+  },
   "lhnRYP": {
     "message": "Choose the network"
   },
@@ -625,6 +709,9 @@
   "mzRLqs": {
     "message": "Download in progress..."
   },
+  "niH3/k": {
+    "message": "The bridge provider's fee"
+  },
   "nkeKcx": {
     "message": "Head Hash"
   },
@@ -639,6 +726,9 @@
   },
   "omnNfq": {
     "message": "About Fees"
+  },
+  "ox304v": {
+    "message": "An error occurred"
   },
   "p8bsw4": {
     "message": "Transaction Error"
@@ -676,6 +766,9 @@
   "rGIQdX": {
     "message": "Back to Account Overview"
   },
+  "raexxM": {
+    "message": "Submitted"
+  },
   "rbrahO": {
     "message": "Close"
   },
@@ -684,6 +777,9 @@
   },
   "rqrhXg": {
     "message": "Confirm Your Recovery Phrase"
+  },
+  "s3kz6s": {
+    "message": "A network error occured, please try again"
   },
   "tOdNiY": {
     "message": "Dark"
@@ -697,6 +793,9 @@
   "tf1lIh": {
     "message": "Free"
   },
+  "tjHKMS": {
+    "message": "Sender Address"
+  },
   "tzMNF3": {
     "message": "Status"
   },
@@ -706,11 +805,20 @@
   "uT4OlP": {
     "message": "Fee"
   },
+  "uuDgUP": {
+    "message": "An error occured"
+  },
+  "vEiG+a": {
+    "message": "Gas fee"
+  },
   "vNT9Ip": {
     "message": "Mnemonic Phrase"
   },
   "vV69eP": {
     "message": "Downloading a snapshot is the fastest way to sync with the network."
+  },
+  "vXCeIi": {
+    "message": "Failed"
   },
   "vaP4MI": {
     "message": "It currently holds:"
@@ -735,6 +843,9 @@
   },
   "xmcVZ0": {
     "message": "Search"
+  },
+  "xwWibX": {
+    "message": "Bridging enables seamless transfers of assets across any EVM network. Simply choose your account, a bridge provider, select the asset and its amount, pick the destination network, and provide the destination address to execute your transfer."
   },
   "y1Z3or": {
     "message": "Language"
