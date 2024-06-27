@@ -5,25 +5,17 @@ import {
   Heading,
   Menu,
   MenuButton,
-  MenuItem,
-  MenuList,
   Text,
   VStack,
-  useDisclosure,
 } from "@chakra-ui/react";
 import { BsThreeDots } from "react-icons/bs";
 import { defineMessages, useIntl } from "react-intl";
 
 import { AddAccountDropdown } from "@/components/AddAccountDropdown/AddAccountDropdown";
-import { CreateAccountModal } from "@/components/CreateAccountModal/CreateAccountModal";
-import { ImportAccountModal } from "@/components/ImportAccountModal/ImportAccountModal";
 import { UserAccountsList } from "@/components/UserAccountsList/UserAccountsList";
 import MainLayout from "@/layouts/MainLayout";
 import { trpcReact } from "@/providers/TRPCProvider";
 import { COLORS } from "@/ui/colors";
-import { PillButton } from "@/ui/PillButton/PillButton";
-import { CreateAccount } from "@/ui/SVGs/CreateAccount";
-import { ImportAccount } from "@/ui/SVGs/ImportAccount";
 import { formatOre } from "@/utils/ironUtils";
 
 const messages = defineMessages({
@@ -33,32 +25,12 @@ const messages = defineMessages({
   switchNetworks: {
     defaultMessage: "Switch networks",
   },
-  createAccount: {
-    defaultMessage: "Create",
-  },
-  importAccount: {
-    defaultMessage: "Import",
-  },
   totalAccountsBalance: {
     defaultMessage: "Total accounts balance",
   },
 });
 
 function CreateImportActions() {
-  const {
-    isOpen: isCreateOpen,
-    onOpen: onCreateOpen,
-    onClose: onCreateClose,
-  } = useDisclosure();
-
-  const {
-    isOpen: isImportOpen,
-    onOpen: onImportOpen,
-    onClose: onImportClose,
-  } = useDisclosure();
-
-  const { formatMessage } = useIntl();
-
   return (
     <>
       <HStack
@@ -68,14 +40,6 @@ function CreateImportActions() {
         }}
         gap={4}
       >
-        <PillButton size="sm" variant="inverted" onClick={onCreateOpen}>
-          <CreateAccount />
-          {formatMessage(messages.createAccount)}
-        </PillButton>
-        <PillButton size="sm" variant="inverted" onClick={onImportOpen}>
-          <ImportAccount />
-          {formatMessage(messages.importAccount)}
-        </PillButton>
         <AddAccountDropdown />
       </HStack>
 
@@ -101,19 +65,8 @@ function CreateImportActions() {
               <BsThreeDots size="1.3em" />
             </Flex>
           </MenuButton>
-          <MenuList>
-            <MenuItem onClick={onCreateOpen}>
-              {formatMessage(messages.createAccount)}
-            </MenuItem>
-            <MenuItem onClick={onImportOpen}>
-              {formatMessage(messages.importAccount)}
-            </MenuItem>
-          </MenuList>
         </Menu>
       </Box>
-
-      <CreateAccountModal isOpen={isCreateOpen} onClose={onCreateClose} />
-      <ImportAccountModal isOpen={isImportOpen} onClose={onImportClose} />
     </>
   );
 }

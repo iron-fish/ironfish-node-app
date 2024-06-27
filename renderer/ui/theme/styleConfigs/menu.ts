@@ -1,5 +1,5 @@
 import { menuAnatomy } from "@chakra-ui/anatomy";
-import { createMultiStyleConfigHelpers, defineStyle } from "@chakra-ui/react";
+import { createMultiStyleConfigHelpers } from "@chakra-ui/react";
 
 import { COLORS } from "@/ui/colors";
 
@@ -7,19 +7,10 @@ const { definePartsStyle, defineMultiStyleConfig } =
   createMultiStyleConfigHelpers(menuAnatomy.keys);
 
 const baseStyle = definePartsStyle({
-  // button: {
-  //   fontWeight: "medium",
-  //   bg: "teal.500",
-  //   color: "gray.200",
-  //   _hover: {
-  //     bg: "teal.600",
-  //     color: "white",
-  //   },
-  // },
   list: {
-    py: 4,
+    py: 2,
     borderRadius: 4,
-    border: "1px solid",
+    borderWidth: "1px 2px 2px 1px",
     bg: COLORS.WHITE,
 
     _dark: {
@@ -27,34 +18,18 @@ const baseStyle = definePartsStyle({
       borderColor: COLORS.DARK_MODE.GRAY_MEDIUM,
     },
   },
-  // item: {
-  //   color: "gray.200",
-  //   _hover: {
-  //     bg: "teal.600",
-  //   },
-  //   _focus: {
-  //     bg: "teal.600",
-  //   },
-  // },
-  // groupTitle: {
-  //   textTransform: "uppercase",
-  //   color: "white",
-  //   textAlign: "center",
-  //   letterSpacing: "wider",
-  //   opacity: "0.7",
-  // },
-  // command: {
-  //   opacity: "0.8",
-  //   fontFamily: "mono",
-  //   fontSize: "sm",
-  //   letterSpacing: "tighter",
-  //   pl: "4",
-  // },
-  // divider: {
-  //   my: "4",
-  //   borderColor: "white",
-  //   borderBottom: "2px dotted",
-  // },
+  item: {
+    bg: "transparent",
+    py: 2,
+
+    _hover: {
+      bg: COLORS.GRAY_LIGHT,
+
+      _dark: {
+        bg: COLORS.DARK_MODE.GRAY_DARK,
+      },
+    },
+  },
 });
 
 export const menuTheme = defineMultiStyleConfig({ baseStyle });

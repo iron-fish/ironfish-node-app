@@ -171,9 +171,6 @@
   "9WhwsR": {
     "message": "This name is how we will refer to your account internally. It is not visible to anyone else."
   },
-  "9XUYQt": {
-    "message": "Import"
-  },
   "9j3hXO": {
     "message": "To"
   },
@@ -472,9 +469,6 @@
   "TzwzhT": {
     "message": "You can remove and reimport your accounts whenever you like, provided that you possess the account keys. It is highly recommended to maintain a backup of your account keys in a secure location."
   },
-  "U78NhE": {
-    "message": "Complete"
-  },
   "ULXFfP": {
     "message": "Receive"
   },
@@ -498,9 +492,6 @@
   },
   "VqP8r/": {
     "message": "Memo:"
-  },
-  "VzzYJk": {
-    "message": "Create"
   },
   "WKCp0D": {
     "message": "Asset"
@@ -601,9 +592,6 @@
   "eVlu1R": {
     "message": "Select language"
   },
-  "eaEGGc": {
-    "message": "Preparing target txn"
-  },
   "ecJcrS": {
     "message": "Syncing blocks"
   },
@@ -618,9 +606,6 @@
   },
   "fKN5VY": {
     "message": "Create Contact"
-  },
-  "fYjxPn": {
-    "message": "Submitted target txn"
   },
   "flxGnZ": {
     "message": "Telemetry enabled"
@@ -657,9 +642,6 @@
   },
   "hR0flV": {
     "message": "All your transactions, whether in $IRON or other custom assets, will be displayed in this section. To start a transaction, simply click on the 'Send' or 'Receive' tabs."
-  },
-  "iFsDVR": {
-    "message": "Loading"
   },
   "iWiHY7": {
     "message": "The blockchain is syncing. Your balance may be inaccurate and sending transactions will be disabled until the sync is complete."
@@ -766,9 +748,6 @@
   "rGIQdX": {
     "message": "Back to Account Overview"
   },
-  "raexxM": {
-    "message": "Submitted"
-  },
   "rbrahO": {
     "message": "Close"
   },
@@ -816,9 +795,6 @@
   },
   "vV69eP": {
     "message": "Downloading a snapshot is the fastest way to sync with the network."
-  },
-  "vXCeIi": {
-    "message": "Failed"
   },
   "vaP4MI": {
     "message": "It currently holds:"

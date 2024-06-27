@@ -1,4 +1,5 @@
 import { Box, BoxProps } from "@chakra-ui/react";
+import { forwardRef } from "react";
 
 import { COLORS } from "../colors";
 
@@ -87,33 +88,39 @@ const SIZE_PROPS = {
   },
 };
 
-export function PillButton({
-  variant = "primary",
-  children,
-  isDisabled,
-  type = "button",
-  size = "md",
-  ...props
-}: Props) {
-  return (
-    <Box
-      as="button"
-      py="6px"
-      borderRadius="full"
-      border="1px solid transparent"
-      display="flex"
-      justifyContent="center"
-      alignItems="center"
-      gap={2}
-      disabled={isDisabled}
-      type={type}
-      cursor="pointer"
-      {...VARIANT_PROPS[variant].light}
-      _dark={VARIANT_PROPS[variant].dark}
-      {...SIZE_PROPS[size]}
-      {...props}
-    >
-      {children}
-    </Box>
-  );
-}
+export const PillButton = forwardRef<HTMLButtonElement, Props>(
+  function PillButton(
+    {
+      variant = "primary",
+      children,
+      isDisabled,
+      type = "button",
+      size = "md",
+      ...props
+    },
+    ref,
+  ) {
+    return (
+      <Box
+        as="button"
+        py="6px"
+        borderRadius="full"
+        border="1px solid transparent"
+        display="flex"
+        justifyContent="center"
+        alignItems="center"
+        gap={2}
+        disabled={isDisabled}
+        type={type}
+        cursor="pointer"
+        ref={ref}
+        {...VARIANT_PROPS[variant].light}
+        _dark={VARIANT_PROPS[variant].dark}
+        {...SIZE_PROPS[size]}
+        {...props}
+      >
+        {children}
+      </Box>
+    );
+  },
+);
