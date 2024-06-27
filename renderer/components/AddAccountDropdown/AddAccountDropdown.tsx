@@ -8,6 +8,7 @@ import {
   Text,
 } from "@chakra-ui/react";
 import Image from "next/image";
+import { defineMessages, useIntl } from "react-intl";
 
 import { ConnectLedgerModal } from "@/components/ConnectLedgerModal/ConnectLedgerModal";
 import { CreateAccountModal } from "@/components/CreateAccountModal/CreateAccountModal";
@@ -19,8 +20,24 @@ import createIcon from "./icons/create.svg";
 import importIcon from "./icons/import.svg";
 import ledgerIcon from "./icons/ledger.svg";
 
+const messages = defineMessages({
+  addAccount: {
+    defaultMessage: "Add Account",
+  },
+  createNewAccount: {
+    defaultMessage: "Create new account",
+  },
+  importAccount: {
+    defaultMessage: "Import account",
+  },
+  connectLedger: {
+    defaultMessage: "Connect Ledger",
+  },
+});
+
 export function AddAccountDropdown() {
   const { flags } = useFeatureFlags();
+  const { formatMessage } = useIntl();
 
   const {
     isOpen: isCreateOpen,
@@ -44,26 +61,30 @@ export function AddAccountDropdown() {
     <>
       <Menu>
         <MenuButton as={PillButton} size="sm" variant="inverted">
-          Add Account
+          {formatMessage(messages.addAccount)}
         </MenuButton>
         <MenuList>
           <MenuItem onClick={onCreateOpen}>
             <HStack gap={3}>
               <Image src={createIcon} alt="" />
-              <Text fontSize="md">Create new account</Text>
+              <Text fontSize="md">
+                {formatMessage(messages.createNewAccount)}
+              </Text>
             </HStack>
           </MenuItem>
           <MenuItem onClick={onImportOpen}>
             <HStack gap={3}>
               <Image src={importIcon} alt="" />
-              <Text fontSize="md">Import account</Text>
+              <Text fontSize="md">{formatMessage(messages.importAccount)}</Text>
             </HStack>
           </MenuItem>
           {flags.ledgerSupport.enabled && (
             <MenuItem onClick={onLedgerOpen}>
               <HStack gap={3}>
                 <Image src={ledgerIcon} alt="" />
-                <Text fontSize="md">Connect Ledger</Text>
+                <Text fontSize="md">
+                  {formatMessage(messages.connectLedger)}
+                </Text>
               </HStack>
             </MenuItem>
           )}
