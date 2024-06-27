@@ -6,6 +6,7 @@ import {
   MenuItem,
   HStack,
   Text,
+  Box,
 } from "@chakra-ui/react";
 import Image from "next/image";
 import { defineMessages, useIntl } from "react-intl";
@@ -15,6 +16,7 @@ import { CreateAccountModal } from "@/components/CreateAccountModal/CreateAccoun
 import { ImportAccountModal } from "@/components/ImportAccountModal/ImportAccountModal";
 import { useFeatureFlags } from "@/providers/FeatureFlagsProvider";
 import { PillButton } from "@/ui/PillButton/PillButton";
+import { CreateAccount } from "@/ui/SVGs/CreateAccount";
 
 import createIcon from "./icons/create.svg";
 import importIcon from "./icons/import.svg";
@@ -61,7 +63,10 @@ export function AddAccountDropdown() {
     <>
       <Menu>
         <MenuButton as={PillButton} size="sm" variant="inverted">
-          {formatMessage(messages.addAccount)}
+          <HStack gap={2}>
+            <CreateAccount />
+            <Box>{formatMessage(messages.addAccount)}</Box>
+          </HStack>
         </MenuButton>
         <MenuList>
           <MenuItem onClick={onCreateOpen}>
