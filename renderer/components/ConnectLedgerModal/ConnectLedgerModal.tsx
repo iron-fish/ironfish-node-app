@@ -13,6 +13,7 @@ import {
 import Image from "next/image";
 import { useIntl, defineMessages } from "react-intl";
 
+import { trpcReact } from "@/providers/TRPCProvider";
 import { COLORS } from "@/ui/colors";
 import { PillButton } from "@/ui/PillButton/PillButton";
 
@@ -47,6 +48,12 @@ export function ConnectLedgerModal({
   onClose: () => void;
 }) {
   const { formatMessage } = useIntl();
+
+  const { data, error } = trpcReact.connectLedger.useQuery();
+  console.log({
+    data,
+    error,
+  });
 
   return (
     <Modal isOpen={isOpen} onClose={onClose}>
