@@ -28,6 +28,7 @@ import {
   normalizeAmountInputChange,
   useAccountAssets,
 } from "../AssetAmountInput/utils";
+import { NoSpendingAccountsMessage } from "../EmptyStateMessage/shared/NoSpendingAccountsMessage";
 import {
   AccountSyncingMessage,
   ChainSyncingMessage,
@@ -423,6 +424,10 @@ export function SendAssetsForm() {
 
   if (!filteredAccounts) {
     return null;
+  }
+
+  if (filteredAccounts.length === 0) {
+    return <NoSpendingAccountsMessage />;
   }
 
   return (
