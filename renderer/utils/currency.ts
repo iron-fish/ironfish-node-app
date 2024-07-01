@@ -163,3 +163,25 @@ export class CurrencyUtils {
     };
   }
 }
+
+/**
+ * Formats a given amount in minor units into a currency string with the specified number of decimals.
+ *
+ * @param minorAmount - The amount in minor units to be formatted. Can be a bigint, number, or string.
+ * @param decimals - The number of decimal places to include in the formatted currency string.
+ * @returns The formatted currency string.
+ */
+export function formatCurrency(
+  minorAmount: bigint | number | string,
+  decimals: number,
+): string {
+  const asBigInt = BigInt(minorAmount);
+  const major = asBigInt / BigInt(10 ** decimals);
+
+  const remainder = asBigInt % BigInt(10 ** decimals);
+  return (
+    major.toString() +
+    "." +
+    remainder.toString().padStart(decimals, "0").replace(/0+$/, "")
+  );
+}
