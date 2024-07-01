@@ -30,17 +30,6 @@ export const chainportRouter = t.router({
         axios.get(metadataEndpoint),
       ]);
 
-      console.log(
-        JSON.stringify(
-          {
-            tokensResponse: tokensResponse.data,
-            metadataResponse: metadataResponse.data,
-          },
-          null,
-          2,
-        ),
-      );
-
       const tokensData = assertTokensApiResponse(tokensResponse.data);
       const chainportMeta = assertMetadataApiResponse(metadataResponse.data);
 

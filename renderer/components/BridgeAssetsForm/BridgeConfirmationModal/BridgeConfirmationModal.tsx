@@ -119,8 +119,6 @@ export function BridgeConfirmationModal({
     },
   );
 
-  console.log({ txDetails });
-
   useEffect(() => {
     if (isTransactionDetailError) {
       onClose();
@@ -164,17 +162,15 @@ export function BridgeConfirmationModal({
       BigInt(txDetails.bridge_output.amount) -
       BigInt(txDetails.bridge_fee.source_token_fee_amount ?? 0);
 
-    const convertedAmount = CurrencyUtils.render(
+    const convertedAmount = formatCurrency(
       bridgeAmount,
-      selectedAsset.asset.id,
-      { decimals: chainportToken.decimals },
+      chainportToken.decimals,
     );
 
     return convertedAmount + " " + chainportToken.symbol;
   }, [
     isTransactionDetailsLoading,
     txDetails,
-    selectedAsset.asset.id,
     chainportToken.decimals,
     chainportToken.symbol,
   ]);
