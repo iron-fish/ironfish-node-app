@@ -1,22 +1,22 @@
 import {
   Box,
-  Heading,
-  Tabs,
-  TabList,
-  Tab,
-  TabPanels,
-  TabPanel,
-  HStack,
   Flex,
-  Text,
+  Heading,
+  HStack,
   Skeleton,
+  Tab,
+  TabList,
+  TabPanel,
+  TabPanels,
+  Tabs,
+  Text,
   VStack,
 } from "@chakra-ui/react";
 import Image from "next/image";
 import { useRouter } from "next/router";
 import { defineMessages, useIntl } from "react-intl";
 
-import { CopyAddress } from "@/components/CopyAddress/CopyAddress";
+import { CopyToClipboard } from "@/components/CopyToClipboard/CopyToClipboard";
 import { EditContactForm } from "@/components/EditContactForm/EditContactForm";
 import { FishIcon } from "@/components/FishIcon/FishIcon";
 import { NotesList } from "@/components/NotesList/NotesList";
@@ -92,7 +92,7 @@ function SingleContactContent({ address }: { address: string }) {
             {formatMessage(messages.send)}
           </PillButton>
         </HStack>
-        <CopyAddress address={contactData.address} truncate={false} />
+        <CopyToClipboard text={contactData.address} truncate={false} />
         <Tabs isLazy>
           <TabList mb={8}>
             <Tab>{formatMessage(messages.transactions)}</Tab>

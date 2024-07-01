@@ -11,18 +11,26 @@ const messages = defineMessages({
   addressCopied: {
     defaultMessage: "Address copied to clipboard",
   },
+  hashCopied: {
+    defaultMessage: "Hash copied to clipboard",
+  },
+  default: {
+    defaultMessage: "Copied to clipboard",
+  },
 });
 
 type Props = TextProps & {
-  address: string;
+  text: string;
   parts?: 2 | 3;
   truncate?: boolean;
+  messageType?: keyof typeof messages;
 };
 
-export function CopyAddress({
-  address,
+export function CopyToClipboard({
+  text,
   parts = 3,
   truncate = true,
+  messageType = "addressCopied",
   ...rest
 }: Props) {
   const [_, copyToClipboard] = useCopyToClipboard();
@@ -34,9 +42,9 @@ export function CopyAddress({
       as="button"
       onClick={(e) => {
         e.preventDefault();
-        copyToClipboard(address);
+        copyToClipboard(text);
         toast({
-          message: formatMessage(messages.addressCopied),
+          message: formatMessage(messages[messageType]),
         });
       }}
       color={COLORS.GRAY_MEDIUM}
@@ -48,7 +56,7 @@ export function CopyAddress({
       }}
       {...rest}
     >
-      {truncate ? truncateString(address, parts) : address}
+      {truncate ? truncateString(text, parts) : text}
       <CopyIcon
         color={COLORS.GRAY_MEDIUM}
         _dark={{ color: COLORS.DARK_MODE.GRAY_LIGHT }}

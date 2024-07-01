@@ -7,7 +7,7 @@ type Props = {
 };
 
 export function NoteHeadings({ asTransactions }: Props) {
-  const headingsText = useHeadingsText();
+  const headingsText = useHeadingsText(asTransactions);
 
   return (
     <Grid
@@ -16,8 +16,10 @@ export function NoteHeadings({ asTransactions }: Props) {
         lg: "grid",
       }}
       templateColumns={{
-        base: `repeat(5, 1fr)`,
-        lg: `repeat(5, 1fr) ${asTransactions ? CARET_WIDTH : ""}`,
+        base: `repeat(${asTransactions ? "6" : "5"}, 1fr)`,
+        lg: `repeat(${asTransactions ? "6" : "5"}, 1fr) ${
+          asTransactions ? CARET_WIDTH : ""
+        }`,
       }}
       opacity="0.8"
       mb={4}
