@@ -30,6 +30,9 @@
   "0rIM5R": {
     "message": "Remove Account"
   },
+  "1q+kPa": {
+    "message": "Import account"
+  },
   "21ueTy": {
     "message": "Public Address"
   },
@@ -171,9 +174,6 @@
   "9WhwsR": {
     "message": "This name is how we will refer to your account internally. It is not visible to anyone else."
   },
-  "9XUYQt": {
-    "message": "Import"
-  },
   "9j3hXO": {
     "message": "To"
   },
@@ -228,6 +228,9 @@
   "DnuK8f": {
     "message": "Turn this on if you want to specify a custom name for this account. Otherwise, the account name will be inferred from your exported account data."
   },
+  "F3l7xL": {
+    "message": "Add Account"
+  },
   "FM2S9I": {
     "message": "Set up your node"
   },
@@ -269,6 +272,9 @@
   },
   "I3JhPS": {
     "message": "Network"
+  },
+  "IphkOr": {
+    "message": "Open the Iron Fish app"
   },
   "Iso3pe": {
     "message": "Testnet"
@@ -357,6 +363,9 @@
   },
   "N0bVvU": {
     "message": "Error copied to clipboard"
+  },
+  "NRzTJh": {
+    "message": "Connect Ledger"
   },
   "NTPwsP": {
     "message": "Feature flags allow you to enable or disable experimental features. These features are not fully tested and may not work as expected."
@@ -499,11 +508,11 @@
   "VqP8r/": {
     "message": "Memo:"
   },
-  "VzzYJk": {
-    "message": "Create"
-  },
   "WKCp0D": {
     "message": "Asset"
+  },
+  "WLecCb": {
+    "message": "Connect your Ledger"
   },
   "WNgCs+": {
     "message": "Back to Address Book"
@@ -576,6 +585,9 @@
   },
   "bqjW+S": {
     "message": "Troubleshooting Steps"
+  },
+  "bu6hO1": {
+    "message": "Unlock your Ledger"
   },
   "c/KktL": {
     "message": "Resources"
@@ -736,6 +748,9 @@
   "pbdvze": {
     "message": "Please enter your mnemonic phrase. If you've copied the full phrase to your clipboard, you can paste it in any input and it will automatically be split into the correct number of words."
   },
+  "phTfBA": {
+    "message": "Create new account"
+  },
   "pqKz+h": {
     "message": "Slow"
   },
@@ -822,6 +837,9 @@
   },
   "wsALI4": {
     "message": "Enter Encoded Key"
+  },
+  "xOBoiD": {
+    "message": "Plug your ledger device directly into your computer"
   },
   "xP64Lw": {
     "message": "Address Book"

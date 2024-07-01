@@ -3,6 +3,7 @@ import { StyleFunctionProps, mode } from "@chakra-ui/theme-tools";
 
 import { breakpoints, createBreakpointArray } from "./breakpoints";
 import { inputTheme } from "./styleConfigs/input";
+import { menuTheme } from "./styleConfigs/menu";
 import { modalTheme } from "./styleConfigs/modal";
 import { switchTheme } from "./styleConfigs/switch";
 import { tabsTheme } from "./styleConfigs/tabs";
@@ -63,6 +64,7 @@ const theme = extendTheme({
       },
     },
     Switch: switchTheme,
+    Menu: menuTheme,
   },
   semanticTokens: {
     colors: {
