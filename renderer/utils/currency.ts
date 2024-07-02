@@ -105,8 +105,10 @@ export class CurrencyUtils {
       )}`;
     }
 
-    const major = asBigInt / BigInt(10 ** decimals);
-    const remainder = asBigInt % BigInt(10 ** decimals);
+    const decimalsBigInt = BigInt(10) ** BigInt(decimals);
+
+    const major = asBigInt / decimalsBigInt;
+    const remainder = asBigInt % decimalsBigInt;
     const remainderString = remainder
       .toString()
       .padStart(decimals, "0")
