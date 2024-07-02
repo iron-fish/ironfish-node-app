@@ -62,34 +62,6 @@ export class CurrencyUtils {
   }
 
   /**
-   * Renders a value in a minor denomination as the major denomination:
-   * - $IRON is always going to have 8 decimal places.
-   * - If a custom asset, and `decimals` is provided, it will give the value
-   * followed by a digit for each decimal place
-   * - If a custom asset, and `decimals` is not provided, it will assume the
-   * value is already in minor denomination with no decimal places
-   *
-   * Examples:
-   * 100000000 = 1 $IRON
-   * A custom asset with 2 decimal places: 100 = 1
-   * A custom asset with no decimal places: 1 = 1
-   */
-  static minorToMajor(
-    amount: bigint,
-    assetId?: string,
-    verifiedAssetMetadata?: {
-      decimals?: number;
-    },
-  ): { value: bigint; decimals: number } {
-    const { decimals } = this.assetMetadataWithDefaults(
-      assetId,
-      verifiedAssetMetadata,
-    );
-
-    return DecimalUtils.normalize({ value: amount, decimals: -decimals });
-  }
-
-  /**
    * Renders values for human-readable purposes:
    * - Renders $IRON in the major denomination, with 8 decimal places
    * - If a custom asset, and `decimals` is provided, it will render the custom
@@ -104,12 +76,44 @@ export class CurrencyUtils {
       decimals?: number;
     },
   ): string {
-    const { value: majorValue, decimals: majorDecimals } = this.minorToMajor(
-      BigInt(amount),
+    const { decimals } = this.assetMetadataWithDefaults(
       assetId,
       verifiedAssetMetadata,
     );
-    return DecimalUtils.render(majorValue, majorDecimals);
+
+    return this.formatCurrency(amount, decimals);
+  }
+
+  /**
+   * Formats a value in the minor denomination as a human-readable currency value with the
+   * specified number of decimal places.
+   *
+   * Min precision is the minimum number of decimal places to include.
+   */
+  static formatCurrency(
+    value: bigint | number | string,
+    decimals: number,
+    minPrecision: number = 0,
+  ): string {
+    const asBigInt = BigInt(value);
+
+    if (asBigInt < 0) {
+      return `-${this.formatCurrency(
+        asBigInt * BigInt(-1),
+        decimals,
+        minPrecision,
+      )}`;
+    }
+
+    const major = asBigInt / BigInt(10 ** decimals);
+    const remainder = asBigInt % BigInt(10 ** decimals);
+    const remainderString = remainder
+      .toString()
+      .padStart(decimals, "0")
+      .replace(/0+$/, "")
+      .padEnd(minPrecision, "0");
+
+    return remainderString ? `${major}.${remainderString}` : major.toString();
   }
 
   static shortSymbol(
@@ -162,40 +166,4 @@ export class CurrencyUtils {
       symbol,
     };
   }
-
-  static formatCurrency(
-    minorAmount: bigint | number | string,
-    decimals: number,
-  ): string {
-    return DecimalUtils.render(BigInt(minorAmount), -decimals);
-  }
-
-  static formatIron(minorAmount: bigint | number | string): string {
-    return DecimalUtils.render(BigInt(minorAmount), -IRON_DECIMAL_PLACES);
-  }
-}
-
-export function formatCurrency(
-  minorAmount: bigint | number | string,
-  decimals: number,
-  minPrecision: number = 0,
-): string {
-  const asBigInt = BigInt(minorAmount);
-  const major = asBigInt / BigInt(10 ** decimals);
-  const remainder = asBigInt % BigInt(10 ** decimals);
-  const remainderString = remainder.toString().padStart(decimals, "0");
-
-  return (
-    major.toString() +
-    "." +
-    remainderString
-      .toString()
-      .padStart(decimals, "0")
-      .replace(/0+$/, "")
-      .padEnd(minPrecision, "0")
-  );
-}
-
-export function formatIron(amount: bigint | number | string) {
-  return formatCurrency(amount, IRON_DECIMAL_PLACES);
 }

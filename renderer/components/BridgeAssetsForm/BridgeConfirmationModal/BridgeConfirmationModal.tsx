@@ -17,7 +17,7 @@ import { defineMessages, useIntl } from "react-intl";
 
 import { trpcReact, TRPCRouterOutputs } from "@/providers/TRPCProvider";
 import { PillButton } from "@/ui/PillButton/PillButton";
-import { CurrencyUtils, formatCurrency } from "@/utils/currency";
+import { CurrencyUtils } from "@/utils/currency";
 import { formatOre } from "@/utils/ironUtils";
 
 import { StepIdle } from "./StepIdle";
@@ -162,7 +162,7 @@ export function BridgeConfirmationModal({
       BigInt(txDetails.bridge_output.amount) -
       BigInt(txDetails.bridge_fee.source_token_fee_amount ?? 0);
 
-    const convertedAmount = formatCurrency(
+    const convertedAmount = CurrencyUtils.formatCurrency(
       bridgeAmount,
       chainportToken.decimals,
     );
@@ -174,10 +174,6 @@ export function BridgeConfirmationModal({
     chainportToken.decimals,
     chainportToken.symbol,
   ]);
-
-  window.formatCurrency = formatCurrency;
-  window.CurrencyUtils = CurrencyUtils;
-  console.log(txDetails);
 
   const chainportGasFee = useMemo(() => {
     if (isTransactionDetailsLoading || !txDetails) {
@@ -193,7 +189,10 @@ export function BridgeConfirmationModal({
     }
 
     if (txDetails.bridge_fee.is_portx_fee_payment) {
-      const fee = formatCurrency(txDetails.bridge_fee.portx_fee_amount, 18);
+      const fee = CurrencyUtils.formatCurrency(
+        txDetails.bridge_fee.portx_fee_amount,
+        18,
+      );
       return `${fee} PORTX`;
     }
 
