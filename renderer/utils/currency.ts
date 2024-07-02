@@ -147,7 +147,6 @@ export class CurrencyUtils {
   } {
     let decimals: number;
     let symbol: string;
-
     // If an asset ID was provided, check if it is the native asset. Otherwise,
     // we can only assume that the amount is in the native asset
     const isNativeAsset = !assetId || isNativeIdentifier(assetId);
