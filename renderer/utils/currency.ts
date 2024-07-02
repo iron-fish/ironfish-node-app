@@ -109,7 +109,6 @@ export class CurrencyUtils {
       assetId,
       verifiedAssetMetadata,
     );
-
     return DecimalUtils.render(majorValue, majorDecimals);
   }
 
@@ -144,6 +143,7 @@ export class CurrencyUtils {
   } {
     let decimals: number;
     let symbol: string;
+
     // If an asset ID was provided, check if it is the native asset. Otherwise,
     // we can only assume that the amount is in the native asset
     const isNativeAsset = !assetId || isNativeIdentifier(assetId);
@@ -162,26 +162,40 @@ export class CurrencyUtils {
       symbol,
     };
   }
+
+  static formatCurrency(
+    minorAmount: bigint | number | string,
+    decimals: number,
+  ): string {
+    return DecimalUtils.render(BigInt(minorAmount), -decimals);
+  }
+
+  static formatIron(minorAmount: bigint | number | string): string {
+    return DecimalUtils.render(BigInt(minorAmount), -IRON_DECIMAL_PLACES);
+  }
 }
 
-/**
- * Formats a given amount in minor units into a currency string with the specified number of decimals.
- *
- * @param minorAmount - The amount in minor units to be formatted. Can be a bigint, number, or string.
- * @param decimals - The number of decimal places to include in the formatted currency string.
- * @returns The formatted currency string.
- */
 export function formatCurrency(
   minorAmount: bigint | number | string,
   decimals: number,
+  minPrecision: number = 0,
 ): string {
   const asBigInt = BigInt(minorAmount);
   const major = asBigInt / BigInt(10 ** decimals);
-
   const remainder = asBigInt % BigInt(10 ** decimals);
+  const remainderString = remainder.toString().padStart(decimals, "0");
+
   return (
     major.toString() +
     "." +
-    remainder.toString().padStart(decimals, "0").replace(/0+$/, "")
+    remainderString
+      .toString()
+      .padStart(decimals, "0")
+      .replace(/0+$/, "")
+      .padEnd(minPrecision, "0")
   );
+}
+
+export function formatIron(amount: bigint | number | string) {
+  return formatCurrency(amount, IRON_DECIMAL_PLACES);
 }

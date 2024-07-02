@@ -175,6 +175,10 @@ export function BridgeConfirmationModal({
     chainportToken.symbol,
   ]);
 
+  window.formatCurrency = formatCurrency;
+  window.CurrencyUtils = CurrencyUtils;
+  console.log(txDetails);
+
   const chainportGasFee = useMemo(() => {
     if (isTransactionDetailsLoading || !txDetails) {
       return <Skeleton>123 FOO</Skeleton>;
