@@ -186,6 +186,9 @@
   "AFZGS9": {
     "message": "The Iron Fish Node App supports {languageCount} languages. If your preferred language isn't listed, please reach out and let us know!"
   },
+  "APTRzH": {
+    "message": "You don't have any accounts that can send transactions. You must create a new account or import an account with send permissions before you can send assets."
+  },
   "AetNAD": {
     "message": "Browse"
   },
@@ -684,6 +687,9 @@
   },
   "kF9XUo": {
     "message": "Timestamp"
+  },
+  "kJB38m": {
+    "message": "No accounts with send permissions"
   },
   "kNJdlj": {
     "message": "Restart App"

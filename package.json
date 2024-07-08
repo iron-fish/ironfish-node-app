@@ -2,7 +2,7 @@
   "private": true,
   "name": "ironfish-node-app",
   "description": "Iron Fish Node App",
-  "version": "3.0.6",
+  "version": "3.0.7",
   "author": "IF Labs <engineering@iflabs.network> (https://iflabs.network)",
   "main": "app/background.js",
   "scripts": {
@@ -24,7 +24,8 @@
   "dependencies": {
     "@ironfish/sdk": "2.4.0",
     "electron-serve": "^1.1.0",
-    "keccak": "^3.0.4"
+    "keccak": "^3.0.4",
+    "@ledgerhq/hw-transport-node-hid": "^6.29.0"
   },
   "devDependencies": {
     "@chakra-ui/icons": "^2.1.1",
@@ -37,7 +38,6 @@
     "@ethersproject/bignumber": "^5.7.0",
     "@formatjs/cli": "^6.2.4",
     "@hookform/resolvers": "^3.3.2",
-    "@ledgerhq/hw-transport-node-hid": "^6.29.0",
     "@radix-ui/react-select": "^2.0.0",
     "@tanstack/react-query": "^4.35.7",
     "@trpc/client": "^10.38.5",

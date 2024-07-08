@@ -7,6 +7,7 @@ import { defineMessages, useIntl } from "react-intl";
 import * as z from "zod";
 
 import { AccountAddressDisplay } from "@/components/AccountAddressDisplay/AccountAddressDisplay";
+import { NoAccountsMessage } from "@/components/EmptyStateMessage/shared/NoAccountsMessage";
 import octopus from "@/images/octopus.svg";
 import MainLayout from "@/layouts/MainLayout";
 import { WithExplanatorySidebar } from "@/layouts/WithExplanatorySidebar";
@@ -54,6 +55,10 @@ export function ReceiveAccountsContent({
       (option) => option.label === router.query.account,
     );
 
+    if (accountOptions.length === 0) {
+      return null;
+    }
+
     return queryMatch ? queryMatch.value : accountOptions?.[0].value;
   }, [accountOptions, router.query.account]);
 
@@ -64,7 +69,7 @@ export function ReceiveAccountsContent({
   } = useForm<z.infer<typeof dataSchema>>({
     resolver: zodResolver(dataSchema),
     defaultValues: {
-      account: defaultAccount,
+      account: defaultAccount || "",
     },
   });
 
@@ -81,16 +86,20 @@ export function ReceiveAccountsContent({
         description={formatMessage(messages.transactionDetailsText)}
         imgSrc={octopus}
       >
-        <VStack alignItems="stretch" gap={4}>
-          <Select
-            {...register("account")}
-            value={addressValue}
-            label={formatMessage(messages.fromLabel)}
-            options={accountOptions}
-            error={errors.account?.message}
-          />
-          <AccountAddressDisplay address={addressValue} />
-        </VStack>
+        {defaultAccount === null ? (
+          <NoAccountsMessage />
+        ) : (
+          <VStack alignItems="stretch" gap={4}>
+            <Select
+              {...register("account")}
+              value={addressValue}
+              label={formatMessage(messages.fromLabel)}
+              options={accountOptions}
+              error={errors.account?.message}
+            />
+            <AccountAddressDisplay address={addressValue} />
+          </VStack>
+        )}
       </WithExplanatorySidebar>
     </MainLayout>
   );

@@ -4,52 +4,6 @@
 
 export class DecimalUtils {
   /**
-   * Render `value * 10 ^ decimals` as a string. `minPrecision` tells how \
-   * many decimal places to pad the string with. \
-   * e.g. 1 * 10 ^ 0 => '1' \
-   *      1 * 10 ^ 0 with 2 min precision => '1.00' \
-   */
-  static render(
-    value: bigint | number,
-    decimals: number,
-    minPrecision: number = 0,
-  ): string {
-    const normalized = this.normalize({ value: BigInt(value), decimals });
-    value = normalized.value;
-    decimals = normalized.decimals;
-
-    if (value < 0) {
-      return `-${this.render(value * -1n, decimals, minPrecision)}`;
-    }
-
-    if (decimals < 0) {
-      let decimalPos = value.toString().length;
-      let stringValue = value.toString();
-      for (let i = 0; i < -decimals; i++) {
-        if (decimalPos === 0) {
-          stringValue = `0${stringValue}`;
-        } else {
-          decimalPos--;
-        }
-      }
-
-      if (decimalPos === 0) {
-        return `0.${stringValue.padEnd(minPrecision, "0")}`;
-      }
-
-      return `${stringValue.slice(0, decimalPos)}.${stringValue
-        .slice(decimalPos)
-        .padEnd(minPrecision, "0")}`;
-    }
-
-    const wholeString = (value * 10n ** BigInt(decimals)).toString();
-    const decimalString =
-      minPrecision > 0 ? `.${"".padEnd(minPrecision, "0")}` : "";
-
-    return `${wholeString}${decimalString}`;
-  }
-
-  /**
    * Decode a string into a bigint and the number of decimal places \
    * e.g. '1' => { value: 1n, decimals: 0 } \
    *      '1.01' => { value: 101n, decimals: -2 } \

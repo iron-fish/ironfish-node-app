@@ -28,6 +28,7 @@ import {
   normalizeAmountInputChange,
   useAccountAssets,
 } from "../AssetAmountInput/utils";
+import { NoSpendingAccountsMessage } from "../EmptyStateMessage/shared/NoSpendingAccountsMessage";
 
 const messages = defineMessages({
   fromLabel: {
@@ -396,6 +397,10 @@ export function BridgeAssetsForm() {
         targetAddressInput={<Skeleton height={71} w="100%" />}
       />
     );
+  }
+
+  if (filteredAccounts.length === 0) {
+    return <NoSpendingAccountsMessage />;
   }
 
   if (isTokensError) {
