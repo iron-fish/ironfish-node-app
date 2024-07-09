@@ -162,6 +162,7 @@ export function StepIdle({
             display="flex"
             alignItems="center"
             justifyContent="center"
+            mx={8}
           >
             <Flex
               bg="#F3DEF5"
