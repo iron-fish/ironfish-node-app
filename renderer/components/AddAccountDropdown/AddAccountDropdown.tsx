@@ -95,9 +95,9 @@ export function AddAccountDropdown() {
           )}
         </MenuList>
       </Menu>
-      <CreateAccountModal isOpen={isCreateOpen} onClose={onCreateClose} />
-      <ImportAccountModal isOpen={isImportOpen} onClose={onImportClose} />
-      <ConnectLedgerModal isOpen={isLedgerOpen} onClose={onLedgerClose} />
+      {isCreateOpen && <CreateAccountModal isOpen onClose={onCreateClose} />}
+      {isImportOpen && <ImportAccountModal isOpen onClose={onImportClose} />}
+      {isLedgerOpen && <ConnectLedgerModal isOpen onClose={onLedgerClose} />}
     </>
   );
 }

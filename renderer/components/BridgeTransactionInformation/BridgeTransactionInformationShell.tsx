@@ -68,6 +68,7 @@ export function BridgeTransactionInformationShell({
 }: Props) {
   const { formatMessage } = useIntl();
   const isSend = type === "send";
+
   return (
     <Box {...rest}>
       <Heading as="h3" fontSize="2xl" mb={8}>

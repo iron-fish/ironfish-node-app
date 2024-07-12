@@ -49,10 +49,36 @@ export function ConnectLedgerModal({
 }) {
   const { formatMessage } = useIntl();
 
-  const { data, error } = trpcReact.connectLedger.useQuery();
+  const { data: isLedgerConnected, error: isLedgerConnectedError } =
+    trpcReact.isLedgerConnected.useQuery(undefined, {
+      refetchInterval: (isConnected) => {
+        return isConnected ? false : 3000;
+      },
+    });
+
+  const { data: isLedgerUnlocked, error: isLedgerUnlockedError } =
+    trpcReact.isLedgerUnlocked.useQuery(undefined, {
+      enabled: isLedgerConnected,
+      refetchInterval: (isUnlocked) => {
+        return isUnlocked ? false : 3000;
+      },
+    });
+
+  const { data: isAppOpen, error: isAppOpenError } =
+    trpcReact.isIronfishAppOpen.useQuery(undefined, {
+      enabled: isLedgerUnlocked,
+      refetchInterval: (isOpen) => {
+        return isOpen ? false : 3000;
+      },
+    });
+
   console.log({
-    data,
-    error,
+    isLedgerConnected,
+    isLedgerConnectedError,
+    isLedgerUnlocked,
+    isLedgerUnlockedError,
+    isAppOpen,
+    isAppOpenError,
   });
 
   return (
@@ -63,12 +89,21 @@ export function ConnectLedgerModal({
           <Heading mb={4}>{formatMessage(messages.connectLedger)}</Heading>
           <Image src={connectImage} alt="" />
           <VStack alignItems="stretch" gap={2} mt={6}>
-            <ListItem number="1" content={formatMessage(messages.plugDevice)} />
+            <ListItem
+              number="1"
+              content={formatMessage(messages.plugDevice)}
+              complete={!!isLedgerConnected}
+            />
             <ListItem
               number="2"
               content={formatMessage(messages.unlockLedger)}
+              complete={!!isLedgerUnlocked}
             />
-            <ListItem number="3" content={formatMessage(messages.openApp)} />
+            <ListItem
+              number="3"
+              content={formatMessage(messages.openApp)}
+              complete={!!isAppOpen}
+            />
           </VStack>
         </ModalBody>
 
@@ -85,7 +120,15 @@ export function ConnectLedgerModal({
   );
 }
 
-function ListItem({ number, content }: { number: string; content: string }) {
+function ListItem({
+  number,
+  content,
+  complete,
+}: {
+  number: string;
+  content: string;
+  complete: boolean;
+}) {
   return (
     <HStack>
       <Flex
@@ -93,10 +136,14 @@ function ListItem({ number, content }: { number: string; content: string }) {
         justifyContent="center"
         boxSize="32px"
         border="1px solid"
-        borderColor={COLORS.GRAY_MEDIUM}
+        bg={complete ? COLORS.BLACK : COLORS.WHITE}
+        borderColor={complete ? COLORS.BLACK : COLORS.GRAY_MEDIUM}
+        color={complete ? COLORS.WHITE : COLORS.BLACK}
         borderRadius="full"
         _dark={{
-          borderColor: COLORS.DARK_MODE.GRAY_MEDIUM,
+          bg: complete ? COLORS.WHITE : COLORS.DARK_MODE.GRAY_MEDIUM,
+          borderColor: complete ? COLORS.WHITE : COLORS.DARK_MODE.GRAY_MEDIUM,
+          color: complete ? COLORS.DARK_MODE.GRAY_MEDIUM : COLORS.WHITE,
         }}
       >
         {number}

@@ -77,12 +77,14 @@ function BridgeAssetsFormContent({
   }, [accountsData]);
 
   const defaultFromAccount = accountOptions[0]?.value;
-  const defaultAssetId = accountsData[0]?.balances.iron.asset.id;
+  const defaultAssetId =
+    accountsData[0]?.balances.iron.asset.id ||
+    Object.values(chainportTokensMap)[0]?.ironfishId;
   const defaultDestinationNetwork =
     chainportTokensMap[defaultAssetId]?.targetNetworks[0].value.toString();
 
   if (!defaultDestinationNetwork) {
-    throw new Error("No default destination network found");
+    console.error("No default destination network found.");
   }
 
   const {
@@ -144,7 +146,7 @@ function BridgeAssetsFormContent({
         const isBridgableForNetwork = chainportTokensMap[
           item.asset.id
         ]?.targetNetworks.some(
-          (network) => network.chainId === currentNetwork.chainId,
+          (network) => network.chainId === currentNetwork?.chainId,
         );
         return {
           ...item,
@@ -171,7 +173,7 @@ function BridgeAssetsFormContent({
   const availableNetworks = chainportTokensMap[assetIdValue]?.targetNetworks;
 
   if (!availableNetworks) {
-    throw new Error("No available networks found");
+    console.error("No available networks found");
   }
 
   const selectedAsset = assetOptionsMap.get(assetIdValue);
@@ -335,11 +337,11 @@ function BridgeAssetsFormContent({
               {...register("destinationNetwork")}
               value={destinationNetworkValue}
               label={formatMessage(messages.destinationNetwork)}
-              options={availableNetworks}
+              options={availableNetworks ?? []}
               renderChildren={(children) => (
                 <HStack>
                   <ChakraImage
-                    src={currentNetwork.networkIcon}
+                    src={currentNetwork?.networkIcon}
                     boxSize="24px"
                   />
                   {children}

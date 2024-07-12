@@ -67,7 +67,9 @@ export function BridgeTransactionInformation({ transaction, ...rest }: Props) {
         ?.explorer_url;
 
     return {
-      href: baseUrl + "tx/" + chainportStatus.target_tx_hash,
+      href: baseUrl
+        ? baseUrl + "tx/" + chainportStatus.target_tx_hash
+        : undefined,
       txHash: chainportStatus.target_tx_hash,
     };
   }, [chainportMeta, chainportStatus]);
