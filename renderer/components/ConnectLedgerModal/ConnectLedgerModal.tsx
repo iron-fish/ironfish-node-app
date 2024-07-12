@@ -49,36 +49,30 @@ export function ConnectLedgerModal({
 }) {
   const { formatMessage } = useIntl();
 
-  const { data: isLedgerConnected, error: isLedgerConnectedError } =
-    trpcReact.isLedgerConnected.useQuery(undefined, {
+  const { data: isLedgerConnected } = trpcReact.isLedgerConnected.useQuery(
+    undefined,
+    {
       refetchInterval: (isConnected) => {
         return isConnected ? false : 3000;
       },
-    });
+    },
+  );
 
-  const { data: isLedgerUnlocked, error: isLedgerUnlockedError } =
-    trpcReact.isLedgerUnlocked.useQuery(undefined, {
+  const { data: isLedgerUnlocked } = trpcReact.isLedgerUnlocked.useQuery(
+    undefined,
+    {
       enabled: isLedgerConnected,
       refetchInterval: (isUnlocked) => {
         return isUnlocked ? false : 3000;
       },
-    });
+    },
+  );
 
-  const { data: isAppOpen, error: isAppOpenError } =
-    trpcReact.isIronfishAppOpen.useQuery(undefined, {
-      enabled: isLedgerUnlocked,
-      refetchInterval: (isOpen) => {
-        return isOpen ? false : 3000;
-      },
-    });
-
-  console.log({
-    isLedgerConnected,
-    isLedgerConnectedError,
-    isLedgerUnlocked,
-    isLedgerUnlockedError,
-    isAppOpen,
-    isAppOpenError,
+  const { data: isAppOpen } = trpcReact.isIronfishAppOpen.useQuery(undefined, {
+    enabled: isLedgerUnlocked,
+    refetchInterval: (isOpen) => {
+      return isOpen ? false : 3000;
+    },
   });
 
   return (
