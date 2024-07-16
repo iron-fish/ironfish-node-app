@@ -11,6 +11,8 @@ import {
   Text,
 } from "@chakra-ui/react";
 import Image from "next/image";
+import { useState } from "react";
+import { IoMdCheckmark } from "react-icons/io";
 import { useIntl, defineMessages } from "react-intl";
 
 import { trpcReact } from "@/providers/TRPCProvider";
@@ -20,7 +22,7 @@ import { PillButton } from "@/ui/PillButton/PillButton";
 import connectImage from "./assets/connect.svg";
 
 const messages = defineMessages({
-  connectLedger: {
+  headingConnectLedger: {
     defaultMessage: "Connect your Ledger",
   },
   plugDevice: {
@@ -32,6 +34,9 @@ const messages = defineMessages({
   openApp: {
     defaultMessage: "Open the Iron Fish app",
   },
+  connectAccount: {
+    defaultMessage: "Connect account",
+  },
   cancel: {
     defaultMessage: "Cancel",
   },
@@ -39,6 +44,14 @@ const messages = defineMessages({
     defaultMessage: "Continue",
   },
 });
+
+type LedgerStatus = {
+  isLedgerConnected: boolean;
+  isLedgerUnlocked: boolean;
+  isIronfishAppOpen: boolean;
+};
+
+const STEPS = ["CONNECT_LEDGER", "CONNECT_ACCOUNT"] as const;
 
 export function ConnectLedgerModal({
   isOpen,
@@ -48,30 +61,24 @@ export function ConnectLedgerModal({
   onClose: () => void;
 }) {
   const { formatMessage } = useIntl();
+  const [
+    { isLedgerConnected, isLedgerUnlocked, isIronfishAppOpen },
+    setLedgerStatus,
+  ] = useState<LedgerStatus>(() => ({
+    isLedgerConnected: false,
+    isLedgerUnlocked: false,
+    isIronfishAppOpen: false,
+  }));
+  const [_statusError, setStatusError] = useState("");
+  const [step, setStep] = useState<(typeof STEPS)[number]>(STEPS[0]);
 
-  const { data: isLedgerConnected } = trpcReact.isLedgerConnected.useQuery(
-    undefined,
-    {
-      refetchInterval: (isConnected) => {
-        return isConnected ? false : 3000;
-      },
+  trpcReact.ledgerStatus.useSubscription(undefined, {
+    onData: (data) => {
+      setLedgerStatus(data);
     },
-  );
-
-  const { data: isLedgerUnlocked } = trpcReact.isLedgerUnlocked.useQuery(
-    undefined,
-    {
-      enabled: isLedgerConnected,
-      refetchInterval: (isUnlocked) => {
-        return isUnlocked ? false : 3000;
-      },
-    },
-  );
-
-  const { data: isAppOpen } = trpcReact.isIronfishAppOpen.useQuery(undefined, {
-    enabled: isLedgerUnlocked,
-    refetchInterval: (isOpen) => {
-      return isOpen ? false : 3000;
+    onError: (err) => {
+      console.log(err);
+      setStatusError(err.message);
     },
   });
 
@@ -80,32 +87,54 @@ export function ConnectLedgerModal({
       <ModalOverlay />
       <ModalContent maxW="100%" width="600px">
         <ModalBody px={16} pt={16}>
-          <Heading mb={4}>{formatMessage(messages.connectLedger)}</Heading>
-          <Image src={connectImage} alt="" />
-          <VStack alignItems="stretch" gap={2} mt={6}>
-            <ListItem
-              number="1"
-              content={formatMessage(messages.plugDevice)}
-              complete={!!isLedgerConnected}
-            />
-            <ListItem
-              number="2"
-              content={formatMessage(messages.unlockLedger)}
-              complete={!!isLedgerUnlocked}
-            />
-            <ListItem
-              number="3"
-              content={formatMessage(messages.openApp)}
-              complete={!!isAppOpen}
-            />
-          </VStack>
+          {step === "CONNECT_LEDGER" && (
+            <>
+              <Heading mb={4}>
+                {formatMessage(messages.headingConnectLedger)}
+              </Heading>
+              <Image src={connectImage} alt="" />
+              <VStack alignItems="stretch" gap={2} mt={6}>
+                <ListItem
+                  number="1"
+                  content={formatMessage(messages.plugDevice)}
+                  isNextStep={!isLedgerConnected}
+                  isComplete={isLedgerConnected}
+                />
+                <ListItem
+                  number="2"
+                  content={formatMessage(messages.unlockLedger)}
+                  isNextStep={isLedgerConnected && !isLedgerUnlocked}
+                  isComplete={isLedgerUnlocked}
+                />
+                <ListItem
+                  number="3"
+                  content={formatMessage(messages.openApp)}
+                  isNextStep={
+                    isLedgerConnected && isLedgerUnlocked && !isIronfishAppOpen
+                  }
+                  isComplete={isIronfishAppOpen}
+                />
+              </VStack>
+            </>
+          )}
+          {step === "CONNECT_ACCOUNT" && (
+            <Heading mb={4}>{formatMessage(messages.connectAccount)}</Heading>
+          )}
         </ModalBody>
 
         <ModalFooter display="flex" gap={2} px={16} py={8}>
           <PillButton size="sm" onClick={onClose} variant="inverted" border={0}>
             {formatMessage(messages.cancel)}
           </PillButton>
-          <PillButton size="sm" isDisabled onClick={() => {}}>
+          <PillButton
+            size="sm"
+            isDisabled={
+              !isLedgerConnected || !isLedgerUnlocked || !isIronfishAppOpen
+            }
+            onClick={() => {
+              setStep(STEPS.indexOf(step) + 1 < STEPS.length ? STEPS[1] : step);
+            }}
+          >
             {formatMessage(messages.continue)}
           </PillButton>
         </ModalFooter>
@@ -117,11 +146,13 @@ export function ConnectLedgerModal({
 function ListItem({
   number,
   content,
-  complete,
+  isNextStep,
+  isComplete,
 }: {
   number: string;
   content: string;
-  complete: boolean;
+  isNextStep: boolean;
+  isComplete: boolean;
 }) {
   return (
     <HStack>
@@ -130,17 +161,30 @@ function ListItem({
         justifyContent="center"
         boxSize="32px"
         border="1px solid"
-        bg={complete ? COLORS.BLACK : COLORS.WHITE}
-        borderColor={complete ? COLORS.BLACK : COLORS.GRAY_MEDIUM}
-        color={complete ? COLORS.WHITE : COLORS.BLACK}
+        // bg={isNextStep ? COLORS.BLACK : COLORS.WHITE}
+        bg={
+          (isNextStep && COLORS.BLACK) ||
+          (isComplete && COLORS.GREEN_LIGHT) ||
+          COLORS.WHITE
+        }
+        borderColor={
+          (isNextStep && COLORS.BLACK) ||
+          (isComplete && COLORS.GREEN_LIGHT) ||
+          COLORS.GRAY_MEDIUM
+        }
+        color={
+          (isNextStep && COLORS.WHITE) ||
+          (isComplete && COLORS.GREEN_DARK) ||
+          COLORS.BLACK
+        }
         borderRadius="full"
         _dark={{
-          bg: complete ? COLORS.WHITE : COLORS.DARK_MODE.GRAY_MEDIUM,
-          borderColor: complete ? COLORS.WHITE : COLORS.DARK_MODE.GRAY_MEDIUM,
-          color: complete ? COLORS.DARK_MODE.GRAY_MEDIUM : COLORS.WHITE,
+          bg: isNextStep ? COLORS.WHITE : COLORS.DARK_MODE.GRAY_MEDIUM,
+          borderColor: isNextStep ? COLORS.WHITE : COLORS.DARK_MODE.GRAY_MEDIUM,
+          color: isNextStep ? COLORS.DARK_MODE.GRAY_MEDIUM : COLORS.WHITE,
         }}
       >
-        {number}
+        {isComplete ? <IoMdCheckmark /> : number}
       </Flex>
       <Text textAlign="center" fontSize="md">
         {content}

@@ -1,20 +1,35 @@
+import { randomUUID } from "crypto";
+
 import { TransportError } from "@ledgerhq/errors";
 import TransportNodeHid from "@ledgerhq/hw-transport-node-hid";
-import IronfishApp, { IronfishKeys } from "@zondax/ledger-ironfish";
+import IronfishApp from "@zondax/ledger-ironfish";
 
 import { logger } from "../../ironfish/logger";
 
 export const DERIVATION_PATH = "m/44'/1338'/0";
+const IRONFISH_APP_NAME = "Ironfish";
 const OPEN_TIMEOUT = 3000;
 const LISTEN_TIMEOUT = 3000;
+const POLL_INTERVAL = 1000;
 
 const ERROR_TYPES = [
   "UNKNOWN_ERROR",
   "LEDGER_NOT_FOUND",
+  "LEDGER_LOCKED",
   "IRONFISH_NOT_OPEN",
   "CANNOT_OPEN_DEVICE",
   "OPERATION_ERROR",
 ];
+
+type Transport = Awaited<ReturnType<typeof TransportNodeHid.create>>;
+
+const delay = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms));
+
+export type ConnectionStatus = {
+  isLedgerConnected: boolean;
+  isLedgerUnlocked: boolean;
+  isIronfishAppOpen: boolean;
+};
 
 type ManagerResponse<T> = Promise<
   | {
@@ -32,29 +47,32 @@ type ManagerResponse<T> = Promise<
     }
 >;
 
-type Transport = Awaited<ReturnType<typeof TransportNodeHid.create>>;
-
 class LedgerManager {
   transport: Transport | null = null;
-  DERIVATION_PATH = DERIVATION_PATH;
 
-  private getTransport = async (): ManagerResponse<Transport> => {
+  subscribers: Map<string, (status: ConnectionStatus) => void> = new Map();
+  connectionStatus: ConnectionStatus = {
+    isLedgerConnected: false,
+    isLedgerUnlocked: false,
+    isIronfishAppOpen: false,
+  };
+
+  private connect = async (): ManagerResponse<Transport> => {
     let error: unknown;
 
     try {
-      const transport =
+      this.transport =
         this.transport ||
         (await TransportNodeHid.create(OPEN_TIMEOUT, LISTEN_TIMEOUT));
 
-      this.transport = transport;
-
       return {
         status: "SUCCESS",
-        data: transport,
+        data: this.transport,
         error: null,
       };
     } catch (err) {
       error = err;
+      logger.debug("Disconnecting ledger");
       await this.disconnect();
     }
 
@@ -94,36 +112,47 @@ class LedgerManager {
     };
   };
 
-  private getIronfishApp = async (): ManagerResponse<IronfishApp> => {
-    const transportResponse = await this.getTransport();
+  private getIronfishApp = async (
+    transport: Transport,
+  ): ManagerResponse<IronfishApp> => {
+    const app = new IronfishApp(transport);
+    let appInfo: Awaited<ReturnType<IronfishApp["appInfo"]>> | null = null;
+    let retries = 3;
 
-    if (transportResponse.status === "ERROR") {
-      return transportResponse;
+    while (retries > 0 && appInfo?.appName !== IRONFISH_APP_NAME) {
+      try {
+        appInfo = await app.appInfo();
+
+        if (appInfo.appName !== IRONFISH_APP_NAME) {
+          throw new Error(`Invalid app name: ${appInfo.appName}`);
+        }
+      } catch (err) {
+        retries -= 1;
+      }
     }
 
-    const transport = transportResponse.data;
-
-    let app: IronfishApp | undefined;
-
-    try {
-      app = new IronfishApp(transport);
-    } catch (err) {
-      const message = err instanceof Error ? err.message : "Unknown error";
-      logger.error(`IRONFISH_NOT_OPEN: ${message}`);
+    if (app && appInfo?.appName === IRONFISH_APP_NAME) {
       return {
-        status: "ERROR",
-        data: null,
-        error: {
-          type: "IRONFISH_NOT_OPEN",
-          message,
-        },
+        status: "SUCCESS",
+        data: app,
+        error: null,
       };
     }
 
+    await this.disconnect();
+
     return {
-      status: "SUCCESS",
-      data: app,
-      error: null,
+      status: "ERROR",
+      data: null,
+      error: {
+        type:
+          appInfo?.returnCode === 0x5515
+            ? "LEDGER_LOCKED"
+            : "IRONFISH_NOT_OPEN",
+        message: `Failed to open Ironfish app. Latest app name: ${
+          appInfo?.appName || "Unknown"
+        }`,
+      },
     };
   };
 
@@ -131,8 +160,8 @@ class LedgerManager {
     try {
       if (this.transport) {
         await this.transport.close();
-        this.transport = null;
       }
+      this.transport = null;
     } catch (err) {
       logger.error(
         err instanceof Error
@@ -144,83 +173,58 @@ class LedgerManager {
     return true;
   };
 
-  private doOperation = async <T>(
-    operation: (app: IronfishApp) => T,
-  ): ManagerResponse<Awaited<T>> => {
-    const ironfishAppResult = await this.getIronfishApp();
-
-    if (ironfishAppResult.status === "ERROR") {
-      return ironfishAppResult;
-    }
-
-    let result: Awaited<T> | undefined;
+  private pollForStatus = async () => {
+    let isLedgerConnected = false;
+    let isLedgerUnlocked = false;
+    let isIronfishAppOpen = false;
 
     try {
-      result = await operation(ironfishAppResult.data);
-    } catch (err) {
-      const message = err instanceof Error ? err.message : "Unknown error";
-      logger.error(`OPERATION_ERROR: ${message}`);
-      return {
-        status: "ERROR",
-        data: null,
-        error: {
-          type: "OPERATION_ERROR",
-          message,
-        },
-      };
-    }
+      const connectResponse = await this.connect();
 
-    return {
-      status: "SUCCESS",
-      data: result,
-      error: null,
-    };
-  };
-
-  isLedgerConnected = async () => {
-    const { status } = await this.doOperation(() => true);
-    return status === "SUCCESS";
-  };
-
-  isLedgerUnlocked = async () => {
-    const { status, data: isUnlocked } = await this.doOperation(async (app) => {
-      const appInfo = await app.appInfo();
-      return appInfo.returnCode !== 0x5515;
-    });
-
-    return status === "SUCCESS" && isUnlocked === true;
-  };
-
-  isIronfishAppOpen = async () => {
-    const { status, data: isOpen } = await this.doOperation(async (app) => {
-      const appInfo = await app.appInfo();
-      return appInfo.appName === "Ironfish";
-    });
-
-    return status === "SUCCESS" && isOpen === true;
-  };
-
-  getPublicAddress = async () => {
-    const result = await this.doOperation(async (app) => {
-      const response = await app.retrieveKeys(
-        DERIVATION_PATH,
-        IronfishKeys.PublicAddress,
-        false,
-      );
-
-      const publicAddress =
-        "publicAddress" in response ? response.publicAddress : null;
-
-      if (!publicAddress) {
-        logger.debug(`Failed to retrieve public address`);
-        logger.debug(response.returnCode.toString());
-        throw new Error(response.errorMessage);
+      if (connectResponse.status !== "SUCCESS") {
+        throw new Error(connectResponse.error.message);
       }
 
-      return publicAddress.toString("hex");
-    });
+      const transport = connectResponse.data;
+      const ironfishAppReponse = await this.getIronfishApp(transport);
 
-    return result;
+      isLedgerConnected = true;
+      isLedgerUnlocked = ironfishAppReponse.error?.type !== "LEDGER_LOCKED";
+      isIronfishAppOpen = ironfishAppReponse.status === "SUCCESS";
+    } catch (err) {
+      this.disconnect();
+    } finally {
+      await delay(POLL_INTERVAL);
+
+      if (this.subscribers.size > 0) {
+        const result = {
+          isLedgerConnected,
+          isLedgerUnlocked,
+          isIronfishAppOpen,
+        };
+        for (const subscriber of this.subscribers.values()) {
+          subscriber(result);
+        }
+
+        this.pollForStatus();
+      }
+    }
+  };
+
+  subscribe = (cb: (status: ConnectionStatus) => void) => {
+    const id = randomUUID();
+    this.subscribers.set(id, cb);
+
+    // Start polling if this is the first subscriber
+    if (this.subscribers.size === 1) {
+      this.pollForStatus();
+    }
+
+    return id;
+  };
+
+  unsubscribe = (id: string) => {
+    this.subscribers.delete(id);
   };
 }
 
