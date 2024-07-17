@@ -161,7 +161,6 @@ function ListItem({
         justifyContent="center"
         boxSize="32px"
         border="1px solid"
-        // bg={isNextStep ? COLORS.BLACK : COLORS.WHITE}
         bg={
           (isNextStep && COLORS.BLACK) ||
           (isComplete && COLORS.GREEN_LIGHT) ||
