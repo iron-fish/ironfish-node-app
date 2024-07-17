@@ -18,7 +18,6 @@ const ERROR_TYPES = [
   "LEDGER_LOCKED",
   "IRONFISH_NOT_OPEN",
   "CANNOT_OPEN_DEVICE",
-  "OPERATION_ERROR",
 ];
 
 type Transport = Awaited<ReturnType<typeof TransportNodeHid.create>>;

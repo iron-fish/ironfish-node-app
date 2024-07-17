@@ -15,8 +15,4 @@ export const ledgerRouter = t.router({
       };
     });
   }),
-  // getLedgerPublicAddress: t.procedure.query(async () => {
-  //   const address = await ledgerManager.getPublicAddress();
-  //   return address;
-  // }),
 });
