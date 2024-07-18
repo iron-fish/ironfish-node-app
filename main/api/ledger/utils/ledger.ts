@@ -132,8 +132,14 @@ class LedgerManager {
         appInfo = await app.appInfo();
 
         if (appInfo.appName !== IRONFISH_APP_NAME) {
-          console.log("Unable to open Ironfish app");
-          console.log(appInfo);
+          logger.debug(
+            `Unable to open Ironfish app. App info:\n\n${JSON.stringify(
+              appInfo,
+              null,
+              2,
+            )}\n`,
+          );
+
           throw new Error(`Invalid app name: ${appInfo.appName}`);
         }
       } catch (err) {
