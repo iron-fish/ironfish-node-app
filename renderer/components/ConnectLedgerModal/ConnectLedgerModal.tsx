@@ -81,7 +81,6 @@ export function ConnectLedgerModal({
       setLedgerStatus(data);
     },
     onError: (err) => {
-      console.log(err);
       setStatusError(err.message);
     },
   });
