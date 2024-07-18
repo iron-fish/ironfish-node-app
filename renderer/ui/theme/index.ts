@@ -2,6 +2,7 @@ import { defineStyleConfig, extendTheme } from "@chakra-ui/react";
 import { StyleFunctionProps, mode } from "@chakra-ui/theme-tools";
 
 import { breakpoints, createBreakpointArray } from "./breakpoints";
+import { checkboxTheme } from "./styleConfigs/checkbox";
 import { inputTheme } from "./styleConfigs/input";
 import { menuTheme } from "./styleConfigs/menu";
 import { modalTheme } from "./styleConfigs/modal";
@@ -65,6 +66,7 @@ const theme = extendTheme({
     },
     Switch: switchTheme,
     Menu: menuTheme,
+    Checkbox: checkboxTheme,
   },
   semanticTokens: {
     colors: {

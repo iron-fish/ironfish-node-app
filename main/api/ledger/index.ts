@@ -15,4 +15,7 @@ export const ledgerRouter = t.router({
       };
     });
   }),
+  // getAccount: t.procedure.query(async () => {
+  //   // return ledgerManager.getAccount();
+  // }),
 });

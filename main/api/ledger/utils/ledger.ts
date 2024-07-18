@@ -2,7 +2,10 @@ import { randomUUID } from "crypto";
 
 import { TransportError } from "@ledgerhq/errors";
 import TransportNodeHid from "@ledgerhq/hw-transport-node-hid";
-import IronfishApp from "@zondax/ledger-ironfish";
+import IronfishApp, {
+  IronfishKeys,
+  ResponseAddress,
+} from "@zondax/ledger-ironfish";
 
 import { logger } from "../../ironfish/logger";
 
@@ -28,6 +31,8 @@ export type ConnectionStatus = {
   isLedgerConnected: boolean;
   isLedgerUnlocked: boolean;
   isIronfishAppOpen: boolean;
+  publicAddress: string;
+  deviceName: string;
 };
 
 type ManagerResponse<T> = Promise<
@@ -46,15 +51,19 @@ type ManagerResponse<T> = Promise<
     }
 >;
 
+const EMPTY_CONNECTION_STATUS: ConnectionStatus = {
+  isLedgerConnected: false,
+  isLedgerUnlocked: false,
+  isIronfishAppOpen: false,
+  publicAddress: "",
+  deviceName: "",
+};
+
 class LedgerManager {
   transport: Transport | null = null;
 
   subscribers: Map<string, (status: ConnectionStatus) => void> = new Map();
-  connectionStatus: ConnectionStatus = {
-    isLedgerConnected: false,
-    isLedgerUnlocked: false,
-    isIronfishAppOpen: false,
-  };
+  connectionStatus: ConnectionStatus = { ...EMPTY_CONNECTION_STATUS };
 
   private connect = async (): ManagerResponse<Transport> => {
     let error: unknown;
@@ -82,7 +91,7 @@ class LedgerManager {
         TransportNodeHid.ErrorMessage_NoDeviceFound,
       ].includes(error.id)
     ) {
-      logger.error(`LEDGER_NOT_FOUND: ${error.message}`);
+      logger.debug(`LEDGER_NOT_FOUND: ${error.message}`);
 
       return {
         status: "ERROR",
@@ -123,6 +132,8 @@ class LedgerManager {
         appInfo = await app.appInfo();
 
         if (appInfo.appName !== IRONFISH_APP_NAME) {
+          console.log("Unable to open Ironfish app");
+          console.log(appInfo);
           throw new Error(`Invalid app name: ${appInfo.appName}`);
         }
       } catch (err) {
@@ -173,9 +184,7 @@ class LedgerManager {
   };
 
   private pollForStatus = async () => {
-    let isLedgerConnected = false;
-    let isLedgerUnlocked = false;
-    let isIronfishAppOpen = false;
+    const returnStatus = { ...EMPTY_CONNECTION_STATUS };
 
     try {
       const connectResponse = await this.connect();
@@ -187,22 +196,31 @@ class LedgerManager {
       const transport = connectResponse.data;
       const ironfishAppReponse = await this.getIronfishApp(transport);
 
-      isLedgerConnected = true;
-      isLedgerUnlocked = ironfishAppReponse.error?.type !== "LEDGER_LOCKED";
-      isIronfishAppOpen = ironfishAppReponse.status === "SUCCESS";
+      returnStatus.isLedgerConnected = true;
+      returnStatus.isLedgerUnlocked =
+        ironfishAppReponse.error?.type !== "LEDGER_LOCKED";
+      returnStatus.isIronfishAppOpen = ironfishAppReponse.status === "SUCCESS";
+      returnStatus.deviceName = transport.deviceModel?.productName ?? "";
+
+      if (ironfishAppReponse.status === "SUCCESS") {
+        const keyResponse: ResponseAddress =
+          await ironfishAppReponse.data.retrieveKeys(
+            DERIVATION_PATH,
+            IronfishKeys.PublicAddress,
+            false,
+          );
+        returnStatus.publicAddress = keyResponse.publicAddress
+          ? keyResponse.publicAddress.toString("hex")
+          : "";
+      }
     } catch (err) {
       this.disconnect();
     } finally {
       await delay(POLL_INTERVAL);
 
       if (this.subscribers.size > 0) {
-        const result = {
-          isLedgerConnected,
-          isLedgerUnlocked,
-          isIronfishAppOpen,
-        };
         for (const subscriber of this.subscribers.values()) {
-          subscriber(result);
+          subscriber(returnStatus);
         }
 
         this.pollForStatus();
