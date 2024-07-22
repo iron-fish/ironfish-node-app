@@ -22,7 +22,7 @@ const messages = defineMessages({
   },
   description: {
     defaultMessage:
-      "One last step! Confirm the account you&amp;d like to connect to the Node App.",
+      "One last step! Confirm the account you'd like to connect to the Node App.",
   },
 });
 

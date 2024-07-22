@@ -46,7 +46,7 @@ type LedgerStatus = {
   deviceName: string;
 };
 
-const STEPS = ["CONNECT_LEDGER", "ADD_ACCOUNT"] as const;
+const STEPS = ["CONNECT_LEDGER", "SELECT_ACCOUNT", "CONFIRM"] as const;
 
 export function ConnectLedgerModal({
   isOpen,
@@ -85,6 +85,13 @@ export function ConnectLedgerModal({
     },
   });
 
+  const {
+    isLoading: isImporting,
+    error: importError,
+    isSuccess: isImportSuccess,
+    mutate: importLedgerAccount,
+  } = trpcReact.importLedgerAccount.useMutation();
+
   useEffect(() => {
     if (
       step !== "CONNECT_LEDGER" &&
@@ -93,6 +100,12 @@ export function ConnectLedgerModal({
       setStep("CONNECT_LEDGER");
     }
   }, [step, isLedgerConnected, isLedgerUnlocked, isIronfishAppOpen]);
+
+  useEffect(() => {
+    if (isImportSuccess) {
+      onClose();
+    }
+  }, [isImportSuccess, onClose]);
 
   return (
     <Modal isOpen={isOpen} onClose={onClose}>
@@ -106,13 +119,26 @@ export function ConnectLedgerModal({
               isIronfishAppOpen={isIronfishAppOpen}
             />
           )}
-          {step === "ADD_ACCOUNT" && (
+          {step === "SELECT_ACCOUNT" && (
             <StepAddAccount
               publicAddress={publicAddress}
               deviceName={deviceName}
               isConfirmed={isConfirmed}
               onConfirmChange={setIsConfirmed}
             />
+          )}
+          {step === "CONFIRM" && (
+            <div>
+              <h2>
+                Confirm this action on your device. This is a placeholder while
+                this step is designed.
+              </h2>
+              {importError?.message && (
+                <p>
+                  <strong>Error:</strong> {importError.message}
+                </p>
+              )}
+            </div>
           )}
         </ModalBody>
 
@@ -126,10 +152,19 @@ export function ConnectLedgerModal({
               !isLedgerConnected ||
               !isLedgerUnlocked ||
               !isIronfishAppOpen ||
-              (step === "ADD_ACCOUNT" && !isConfirmed)
+              (step === "SELECT_ACCOUNT" && !isConfirmed) ||
+              isImporting
             }
             onClick={() => {
-              setStep(STEPS.indexOf(step) + 1 < STEPS.length ? STEPS[1] : step);
+              if (step === "CONNECT_LEDGER") {
+                setStep("SELECT_ACCOUNT");
+                return;
+              }
+
+              if (step === "SELECT_ACCOUNT") {
+                importLedgerAccount();
+                setStep("CONFIRM");
+              }
             }}
           >
             {formatMessage(messages.continue)}

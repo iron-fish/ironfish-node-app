@@ -27,6 +27,9 @@
   "/zn2B0": {
     "message": "View only accounts cannot initiate transactions"
   },
+  "0FN3ev": {
+    "message": "One last step! Confirm the account you'd like to connect to the Node App."
+  },
   "0rIM5R": {
     "message": "Remove Account"
   },
@@ -582,9 +585,6 @@
   },
   "bcOwoF": {
     "message": "Choose your language"
-  },
-  "bm/yCY": {
-    "message": "One last step! Confirm the account you&amp;d like to connect to the Node App."
   },
   "bqjW+S": {
     "message": "Troubleshooting Steps"
