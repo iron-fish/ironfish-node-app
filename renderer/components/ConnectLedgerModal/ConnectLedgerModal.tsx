@@ -4,22 +4,18 @@ import {
   ModalContent,
   ModalFooter,
   ModalBody,
-  Heading,
-  HStack,
-  Flex,
-  VStack,
-  Text,
 } from "@chakra-ui/react";
-import Image from "next/image";
+import { useEffect, useState } from "react";
 import { useIntl, defineMessages } from "react-intl";
 
-import { COLORS } from "@/ui/colors";
+import { trpcReact } from "@/providers/TRPCProvider";
 import { PillButton } from "@/ui/PillButton/PillButton";
 
-import connectImage from "./assets/connect.svg";
+import { StepAddAccount } from "./Steps/StepAddAccount";
+import { StepConnect } from "./Steps/StepConnect";
 
 const messages = defineMessages({
-  connectLedger: {
+  headingConnectLedger: {
     defaultMessage: "Connect your Ledger",
   },
   plugDevice: {
@@ -31,6 +27,9 @@ const messages = defineMessages({
   openApp: {
     defaultMessage: "Open the Iron Fish app",
   },
+  connectAccount: {
+    defaultMessage: "Connect account",
+  },
   cancel: {
     defaultMessage: "Cancel",
   },
@@ -38,6 +37,16 @@ const messages = defineMessages({
     defaultMessage: "Continue",
   },
 });
+
+type LedgerStatus = {
+  isLedgerConnected: boolean;
+  isLedgerUnlocked: boolean;
+  isIronfishAppOpen: boolean;
+  publicAddress: string;
+  deviceName: string;
+};
+
+const STEPS = ["CONNECT_LEDGER", "ADD_ACCOUNT"] as const;
 
 export function ConnectLedgerModal({
   isOpen,
@@ -47,56 +56,86 @@ export function ConnectLedgerModal({
   onClose: () => void;
 }) {
   const { formatMessage } = useIntl();
+  const [
+    {
+      isLedgerConnected,
+      isLedgerUnlocked,
+      isIronfishAppOpen,
+      publicAddress,
+      deviceName,
+    },
+    setLedgerStatus,
+  ] = useState<LedgerStatus>(() => ({
+    isLedgerConnected: false,
+    isLedgerUnlocked: false,
+    isIronfishAppOpen: false,
+    publicAddress: "",
+    deviceName: "",
+  }));
+  const [_statusError, setStatusError] = useState("");
+  const [step, setStep] = useState<(typeof STEPS)[number]>(STEPS[0]);
+  const [isConfirmed, setIsConfirmed] = useState(false);
+
+  trpcReact.ledgerStatus.useSubscription(undefined, {
+    onData: (data) => {
+      setLedgerStatus(data);
+    },
+    onError: (err) => {
+      setStatusError(err.message);
+    },
+  });
+
+  useEffect(() => {
+    if (
+      step !== "CONNECT_LEDGER" &&
+      (!isLedgerConnected || !isLedgerUnlocked || !isIronfishAppOpen)
+    ) {
+      setStep("CONNECT_LEDGER");
+    }
+  }, [step, isLedgerConnected, isLedgerUnlocked, isIronfishAppOpen]);
 
   return (
     <Modal isOpen={isOpen} onClose={onClose}>
       <ModalOverlay />
       <ModalContent maxW="100%" width="600px">
         <ModalBody px={16} pt={16}>
-          <Heading mb={4}>{formatMessage(messages.connectLedger)}</Heading>
-          <Image src={connectImage} alt="" />
-          <VStack alignItems="stretch" gap={2} mt={6}>
-            <ListItem number="1" content={formatMessage(messages.plugDevice)} />
-            <ListItem
-              number="2"
-              content={formatMessage(messages.unlockLedger)}
+          {step === "CONNECT_LEDGER" && (
+            <StepConnect
+              isLedgerConnected={isLedgerConnected}
+              isLedgerUnlocked={isLedgerUnlocked}
+              isIronfishAppOpen={isIronfishAppOpen}
             />
-            <ListItem number="3" content={formatMessage(messages.openApp)} />
-          </VStack>
+          )}
+          {step === "ADD_ACCOUNT" && (
+            <StepAddAccount
+              publicAddress={publicAddress}
+              deviceName={deviceName}
+              isConfirmed={isConfirmed}
+              onConfirmChange={setIsConfirmed}
+            />
+          )}
         </ModalBody>
 
         <ModalFooter display="flex" gap={2} px={16} py={8}>
           <PillButton size="sm" onClick={onClose} variant="inverted" border={0}>
             {formatMessage(messages.cancel)}
           </PillButton>
-          <PillButton size="sm" isDisabled onClick={() => {}}>
+          <PillButton
+            size="sm"
+            isDisabled={
+              !isLedgerConnected ||
+              !isLedgerUnlocked ||
+              !isIronfishAppOpen ||
+              (step === "ADD_ACCOUNT" && !isConfirmed)
+            }
+            onClick={() => {
+              setStep(STEPS.indexOf(step) + 1 < STEPS.length ? STEPS[1] : step);
+            }}
+          >
             {formatMessage(messages.continue)}
           </PillButton>
         </ModalFooter>
       </ModalContent>
     </Modal>
-  );
-}
-
-function ListItem({ number, content }: { number: string; content: string }) {
-  return (
-    <HStack>
-      <Flex
-        alignItems="center"
-        justifyContent="center"
-        boxSize="32px"
-        border="1px solid"
-        borderColor={COLORS.GRAY_MEDIUM}
-        borderRadius="full"
-        _dark={{
-          borderColor: COLORS.DARK_MODE.GRAY_MEDIUM,
-        }}
-      >
-        {number}
-      </Flex>
-      <Text textAlign="center" fontSize="md">
-        {content}
-      </Text>
-    </HStack>
   );
 }

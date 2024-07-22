@@ -3,6 +3,7 @@ import { chainportRouter } from "./chainport";
 import { contactsRouter } from "./contacts";
 import { intlRouter } from "./intl";
 import { ironfishRouter } from "./ironfish";
+import { ledgerRouter } from "./ledger";
 import { snapshotRouter } from "./snapshot";
 import { transactionRouter } from "./transactions";
 import { t } from "./trpc";
@@ -21,6 +22,7 @@ export const router = t.mergeRouters(
   updateRouter,
   intlRouter,
   chainportRouter,
+  ledgerRouter,
 );
 
 export type AppRouter = typeof router;
