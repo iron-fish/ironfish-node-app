@@ -1,10 +1,6 @@
 import { randomUUID } from "crypto";
 
-import {
-  AccountFormat,
-  // AccountImport,
-  encodeAccountImport,
-} from "@ironfish/sdk";
+import { AccountFormat, encodeAccountImport } from "@ironfish/sdk";
 import { TransportError } from "@ledgerhq/errors";
 import TransportNodeHid from "@ledgerhq/hw-transport-node-hid";
 import IronfishApp, {
@@ -329,8 +325,6 @@ class LedgerManager {
           spendingKey: null,
           createdAt: null,
         };
-
-        console.log({ accountImport });
 
         const encoded = encodeAccountImport(
           accountImport,
