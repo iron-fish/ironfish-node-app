@@ -88,9 +88,12 @@ export function ConnectLedgerModal({
   const {
     isLoading: isImporting,
     error: importError,
-    isSuccess: isImportSuccess,
     mutate: importLedgerAccount,
-  } = trpcReact.importLedgerAccount.useMutation();
+  } = trpcReact.importLedgerAccount.useMutation({
+    onSuccess: () => {
+      onClose();
+    },
+  });
 
   useEffect(() => {
     if (
@@ -100,12 +103,6 @@ export function ConnectLedgerModal({
       setStep("CONNECT_LEDGER");
     }
   }, [step, isLedgerConnected, isLedgerUnlocked, isIronfishAppOpen]);
-
-  useEffect(() => {
-    if (isImportSuccess) {
-      onClose();
-    }
-  }, [isImportSuccess, onClose]);
 
   return (
     <Modal isOpen={isOpen} onClose={onClose}>

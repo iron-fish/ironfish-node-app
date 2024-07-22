@@ -229,13 +229,12 @@ class LedgerManager {
       } catch (err) {
         this.disconnect();
       } finally {
-        await delay(POLL_INTERVAL);
-
         if (this.subscribers.size > 0) {
           for (const subscriber of this.subscribers.values()) {
             subscriber(returnStatus);
           }
 
+          await delay(POLL_INTERVAL);
           this.pollForStatus();
         }
       }
@@ -331,7 +330,7 @@ class LedgerManager {
           AccountFormat.Base64Json,
         );
 
-        handleImportAccount({
+        await handleImportAccount({
           name: "ledger",
           account: encoded,
         });

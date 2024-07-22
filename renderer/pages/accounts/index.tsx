@@ -30,47 +30,6 @@ const messages = defineMessages({
   },
 });
 
-function CreateImportActions() {
-  return (
-    <>
-      <HStack
-        display={{
-          base: "none",
-          md: "flex",
-        }}
-        gap={4}
-      >
-        <AddAccountDropdown />
-      </HStack>
-
-      <Box
-        display={{
-          base: "flex",
-          md: "none",
-        }}
-      >
-        <Menu>
-          <MenuButton
-            aria-label="Add or import account menu"
-            as={Flex}
-            h="48px"
-            w="48px"
-            borderRadius="full"
-            border="1px solid"
-            borderColor="currentColor"
-            alignItems="center"
-            textAlign="center"
-          >
-            <Flex as="span" justifyContent="center">
-              <BsThreeDots size="1.3em" />
-            </Flex>
-          </MenuButton>
-        </Menu>
-      </Box>
-    </>
-  );
-}
-
 export default function Accounts() {
   const { data } = trpcReact.getAccounts.useQuery();
 
@@ -103,7 +62,40 @@ export default function Accounts() {
             </Text>
           </Box>
         </VStack>
-        <CreateImportActions />
+        <HStack
+          display={{
+            base: "none",
+            md: "flex",
+          }}
+          gap={4}
+        >
+          <AddAccountDropdown />
+        </HStack>
+
+        <Box
+          display={{
+            base: "flex",
+            md: "none",
+          }}
+        >
+          <Menu>
+            <MenuButton
+              aria-label="Add or import account menu"
+              as={Flex}
+              h="48px"
+              w="48px"
+              borderRadius="full"
+              border="1px solid"
+              borderColor="currentColor"
+              alignItems="center"
+              textAlign="center"
+            >
+              <Flex as="span" justifyContent="center">
+                <BsThreeDots size="1.3em" />
+              </Flex>
+            </MenuButton>
+          </Menu>
+        </Box>
       </HStack>
 
       <UserAccountsList />
