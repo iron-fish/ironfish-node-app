@@ -15,4 +15,8 @@ export const ledgerRouter = t.router({
       };
     });
   }),
+  importLedgerAccount: t.procedure.mutation(async () => {
+    const result = await ledgerManager.importAccount();
+    return result;
+  }),
 });

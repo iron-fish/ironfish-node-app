@@ -1,12 +1,17 @@
 import { randomUUID } from "crypto";
 
+import { AccountFormat, encodeAccountImport } from "@ironfish/sdk";
 import { TransportError } from "@ledgerhq/errors";
 import TransportNodeHid from "@ledgerhq/hw-transport-node-hid";
 import IronfishApp, {
   IronfishKeys,
   ResponseAddress,
+  ResponseViewKey,
+  ResponseProofGenKey,
 } from "@zondax/ledger-ironfish";
 
+import { PromiseQueue } from "../../../utils/promiseQueue";
+import { handleImportAccount } from "../../accounts/handleImportAccount";
 import { logger } from "../../ironfish/logger";
 
 export const DERIVATION_PATH = "m/44'/1338'/0";
@@ -61,9 +66,9 @@ const EMPTY_CONNECTION_STATUS: ConnectionStatus = {
 
 class LedgerManager {
   transport: Transport | null = null;
-
   subscribers: Map<string, (status: ConnectionStatus) => void> = new Map();
   connectionStatus: ConnectionStatus = { ...EMPTY_CONNECTION_STATUS };
+  taskQueue = new PromiseQueue();
 
   private connect = async (): ManagerResponse<Transport> => {
     let error: unknown;
@@ -189,49 +194,51 @@ class LedgerManager {
     return true;
   };
 
-  private pollForStatus = async () => {
-    const returnStatus = { ...EMPTY_CONNECTION_STATUS };
+  private pollForStatus = () => {
+    this.taskQueue.enqueue(async () => {
+      const returnStatus = { ...EMPTY_CONNECTION_STATUS };
 
-    try {
-      const connectResponse = await this.connect();
+      try {
+        const connectResponse = await this.connect();
 
-      if (connectResponse.status !== "SUCCESS") {
-        throw new Error(connectResponse.error.message);
-      }
-
-      const transport = connectResponse.data;
-      const ironfishAppReponse = await this.getIronfishApp(transport);
-
-      returnStatus.isLedgerConnected = true;
-      returnStatus.isLedgerUnlocked =
-        ironfishAppReponse.error?.type !== "LEDGER_LOCKED";
-      returnStatus.isIronfishAppOpen = ironfishAppReponse.status === "SUCCESS";
-      returnStatus.deviceName = transport.deviceModel?.productName ?? "";
-
-      if (ironfishAppReponse.status === "SUCCESS") {
-        const keyResponse: ResponseAddress =
-          await ironfishAppReponse.data.retrieveKeys(
-            DERIVATION_PATH,
-            IronfishKeys.PublicAddress,
-            false,
-          );
-        returnStatus.publicAddress = keyResponse.publicAddress
-          ? keyResponse.publicAddress.toString("hex")
-          : "";
-      }
-    } catch (err) {
-      this.disconnect();
-    } finally {
-      await delay(POLL_INTERVAL);
-
-      if (this.subscribers.size > 0) {
-        for (const subscriber of this.subscribers.values()) {
-          subscriber(returnStatus);
+        if (connectResponse.status !== "SUCCESS") {
+          throw new Error(connectResponse.error.message);
         }
 
-        this.pollForStatus();
+        const transport = connectResponse.data;
+        const ironfishAppReponse = await this.getIronfishApp(transport);
+
+        returnStatus.isLedgerConnected = true;
+        returnStatus.isLedgerUnlocked =
+          ironfishAppReponse.error?.type !== "LEDGER_LOCKED";
+        returnStatus.isIronfishAppOpen =
+          ironfishAppReponse.status === "SUCCESS";
+        returnStatus.deviceName = transport.deviceModel?.productName ?? "";
+
+        if (ironfishAppReponse.status === "SUCCESS") {
+          const keyResponse: ResponseAddress =
+            await ironfishAppReponse.data.retrieveKeys(
+              DERIVATION_PATH,
+              IronfishKeys.PublicAddress,
+              false,
+            );
+          returnStatus.publicAddress = keyResponse.publicAddress
+            ? keyResponse.publicAddress.toString("hex")
+            : "";
+        }
+      } catch (err) {
+        this.disconnect();
+      } finally {
+        if (this.subscribers.size > 0) {
+          for (const subscriber of this.subscribers.values()) {
+            subscriber(returnStatus);
+          }
+
+          await delay(POLL_INTERVAL);
+          this.pollForStatus();
+        }
       }
-    }
+    });
   };
 
   subscribe = (cb: (status: ConnectionStatus) => void) => {
@@ -248,6 +255,97 @@ class LedgerManager {
 
   unsubscribe = (id: string) => {
     this.subscribers.delete(id);
+  };
+
+  importAccount = async () => {
+    const returnValue = await this.taskQueue.enqueue(async () => {
+      try {
+        const connectResponse = await this.connect();
+
+        if (connectResponse.status !== "SUCCESS") {
+          throw new Error(connectResponse.error.message);
+        }
+
+        const transport = connectResponse.data;
+        const ironfishAppReponse = await this.getIronfishApp(transport);
+
+        if (ironfishAppReponse.status !== "SUCCESS") {
+          throw new Error(ironfishAppReponse.error.message);
+        }
+
+        const publicAddressResponse: ResponseAddress =
+          await ironfishAppReponse.data.retrieveKeys(
+            DERIVATION_PATH,
+            IronfishKeys.PublicAddress,
+            false,
+          );
+
+        if (!publicAddressResponse.publicAddress) {
+          throw new Error("No public address returned");
+        }
+
+        const viewKeyResponse: ResponseViewKey =
+          await ironfishAppReponse.data.retrieveKeys(
+            DERIVATION_PATH,
+            IronfishKeys.ViewKey,
+            true,
+          );
+
+        if (
+          !viewKeyResponse.viewKey ||
+          !viewKeyResponse.ovk ||
+          !viewKeyResponse.ivk
+        ) {
+          logger.debug(`No view key returned`);
+          logger.debug(viewKeyResponse.returnCode.toString());
+          throw new Error(viewKeyResponse.errorMessage);
+        }
+
+        const responsePGK: ResponseProofGenKey =
+          await ironfishAppReponse.data.retrieveKeys(
+            DERIVATION_PATH,
+            IronfishKeys.ProofGenerationKey,
+            false,
+          );
+
+        if (!responsePGK.ak || !responsePGK.nsk) {
+          logger.debug(`No proof authorizing key returned`);
+          throw new Error(responsePGK.errorMessage);
+        }
+
+        const accountImport = {
+          version: 4, // ACCOUNT_SCHEMA_VERSION as of 2024-05
+          name: "ledger",
+          viewKey: viewKeyResponse.viewKey.toString("hex"),
+          incomingViewKey: viewKeyResponse.ivk.toString("hex"),
+          outgoingViewKey: viewKeyResponse.ovk.toString("hex"),
+          publicAddress: publicAddressResponse.publicAddress.toString("hex"),
+          proofAuthorizingKey: responsePGK.nsk.toString("hex"),
+          spendingKey: null,
+          createdAt: null,
+        };
+
+        const encoded = encodeAccountImport(
+          accountImport,
+          AccountFormat.Base64Json,
+        );
+
+        await handleImportAccount({
+          name: "ledger",
+          account: encoded,
+        });
+
+        return accountImport;
+      } catch (err) {
+        const message =
+          err instanceof Error ? err.message : "Failed to import account";
+        logger.error(message);
+        await this.disconnect();
+        throw new Error(message);
+      }
+    });
+
+    return returnValue;
   };
 }
 
