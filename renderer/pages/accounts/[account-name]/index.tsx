@@ -1,14 +1,14 @@
 import {
   Box,
-  Heading,
-  Tabs,
-  TabList,
-  Tab,
-  TabPanels,
-  TabPanel,
   HStack,
-  VStack,
+  Heading,
   Spinner,
+  Tab,
+  TabList,
+  TabPanel,
+  TabPanels,
+  Tabs,
+  VStack,
 } from "@chakra-ui/react";
 import { useRouter } from "next/router";
 import { useMemo } from "react";
@@ -18,7 +18,7 @@ import { AccountAssets } from "@/components/AccountAssets/AccountAssets";
 import { AccountKeyExport } from "@/components/AccountKeyExport/AccountKeyExport";
 import { AccountMnemonicView } from "@/components/AccountMnemonicView/AccountMnenomicView";
 import { AccountSettings } from "@/components/AccountSettings/AccountSettings";
-import { CopyAddress } from "@/components/CopyAddress/CopyAddress";
+import { CopyToClipboard } from "@/components/CopyToClipboard/CopyToClipboard";
 import { NotesList } from "@/components/NotesList/NotesList";
 import { ViewOnlyChip } from "@/components/ViewOnlyChip/ViewOnlyChip";
 import keysGhost from "@/images/keys-ghost.svg";
@@ -120,8 +120,8 @@ function AccountOverviewContent({ accountName }: { accountName: string }) {
               <ViewOnlyChip />
             </Box>
           )}
-          <CopyAddress
-            address={accountData.address}
+          <CopyToClipboard
+            text={accountData.address}
             truncate={false}
             transform="translateY(0.4em)"
           />

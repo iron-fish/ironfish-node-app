@@ -4,10 +4,10 @@ import {
   Grid,
   GridItem,
   Heading,
-  Text,
   HStack,
-  VStack,
   Image,
+  Text,
+  VStack,
 } from "@chakra-ui/react";
 import NextImage from "next/image";
 import { ReactNode } from "react";
@@ -17,7 +17,7 @@ import chainportIcon from "@/images/chainport/chainport-icon-lg.png";
 import { COLORS } from "@/ui/colors";
 import { ShadowCard } from "@/ui/ShadowCard/ShadowCard";
 
-import { CopyAddress } from "../CopyAddress/CopyAddress";
+import { CopyToClipboard } from "../CopyToClipboard/CopyToClipboard";
 
 const messages = defineMessages({
   heading: {
@@ -171,11 +171,12 @@ export function BridgeTransactionInformationShell({
                   <Box fontSize="md">
                     <VStack alignItems="flex-start">
                       {targetTxHash ? (
-                        <CopyAddress
+                        <CopyToClipboard
                           fontSize="md"
                           color={COLORS.BLACK}
                           _dark={{ color: COLORS.WHITE }}
-                          address={targetTxHash}
+                          text={targetTxHash}
+                          messageType="hashCopied"
                           parts={2}
                         />
                       ) : (

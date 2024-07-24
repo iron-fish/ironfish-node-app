@@ -1,5 +1,5 @@
 import { ChevronRightIcon } from "@chakra-ui/icons";
-import { Box, HStack, Text, Flex } from "@chakra-ui/react";
+import { Box, Flex, HStack, Text } from "@chakra-ui/react";
 import type {
   RpcAsset,
   TransactionStatus,
@@ -20,8 +20,8 @@ import { ExpiredIcon } from "./icons/ExpiredIcon";
 import { PendingIcon } from "./icons/PendingIcon";
 import { ReceivedIcon } from "./icons/ReceivedIcon";
 import { SentIcon } from "./icons/SentIcon";
-import { messages, CARET_WIDTH, useHeadingsText } from "./shared";
-import { CopyAddress } from "../CopyAddress/CopyAddress";
+import { CARET_WIDTH, messages, useHeadingsText } from "./shared";
+import { CopyToClipboard } from "../CopyToClipboard/CopyToClipboard";
 
 function getNoteStatusDisplay(
   type: TransactionType,
@@ -89,10 +89,10 @@ function NoteTo({
   }
 
   return (
-    <CopyAddress
+    <CopyToClipboard
       color={COLORS.BLACK}
       _dark={{ color: COLORS.WHITE }}
-      address={type === "send" ? to : from}
+      text={type === "send" ? to : from}
     />
   );
 }
@@ -139,7 +139,7 @@ export function NoteRow({
     from === to && type !== "miner",
     isBridge,
   );
-  const headings = useHeadingsText();
+  const headings = useHeadingsText(asTransaction);
 
   const cellContent = useMemo(() => {
     let key = 0;
@@ -151,7 +151,7 @@ export function NoteRow({
     );
     const symbol = CurrencyUtils.shortSymbol(assetId, asset);
 
-    return [
+    const row = [
       <HStack gap={4} key={key++}>
         {statusDisplay.icon}
         <Text as="span">{formatMessage(statusDisplay.message)}</Text>
@@ -173,6 +173,21 @@ export function NoteRow({
           : memo}
       </Text>,
     ];
+
+    if (asTransaction) {
+      row.push(
+        <Text as="span" key={key++}>
+          <CopyToClipboard
+            messageType="hashCopied"
+            color={COLORS.BLACK}
+            _dark={{ color: COLORS.WHITE }}
+            text={transactionHash}
+          />
+        </Text>,
+      );
+    }
+
+    return row;
   }, [
     asset,
     assetId,
@@ -186,6 +201,8 @@ export function NoteRow({
     to,
     type,
     value,
+    asTransaction,
+    transactionHash,
   ]);
 
   return (
