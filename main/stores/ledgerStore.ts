@@ -24,7 +24,13 @@ class LedgerStore {
       "ledgerAccountsMapping",
       {},
     );
-    ledgerAccountsMapping[publicKey] = isLedgerAccount;
+
+    if (isLedgerAccount) {
+      ledgerAccountsMapping[publicKey] = true;
+    } else {
+      delete ledgerAccountsMapping[publicKey];
+    }
+
     this.store.set("ledgerAccountsMapping", ledgerAccountsMapping);
   };
 
