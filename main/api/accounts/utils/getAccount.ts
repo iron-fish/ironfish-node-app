@@ -1,4 +1,5 @@
 import { formatBalances } from "./formatBalances";
+import { ledgerStore } from "../../../stores/ledgerStore";
 import { manager } from "../../manager";
 
 export async function getAccount(account: string) {
@@ -28,10 +29,15 @@ export async function getAccount(account: string) {
     account,
   });
 
+  const isLedger = await ledgerStore.getIsLedgerAccount(
+    publicAddressResponse.content.publicKey,
+  );
+
   return {
     name: account,
     address: publicAddressResponse.content.publicKey,
     balances: formatBalances(balances),
     status: status.content.account,
+    isLedger,
   };
 }

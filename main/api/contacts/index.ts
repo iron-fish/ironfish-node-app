@@ -1,11 +1,11 @@
 import { z } from "zod";
 
-import { contactsStoreUtil } from "./utils/contactsStoreUtil";
+import { contactsStore } from "../../stores/contactsStore";
 import { t } from "../trpc";
 
 export const contactsRouter = t.router({
   getContacts: t.procedure.query(async () => {
-    return contactsStoreUtil.getContacts();
+    return contactsStore.getContacts();
   }),
   getContactByAddress: t.procedure
     .input(
@@ -14,7 +14,7 @@ export const contactsRouter = t.router({
       }),
     )
     .query(async (opts) => {
-      return contactsStoreUtil.getContactByAddress(opts.input.address);
+      return contactsStore.getContactByAddress(opts.input.address);
     }),
   addContact: t.procedure
     .input(
@@ -24,7 +24,7 @@ export const contactsRouter = t.router({
       }),
     )
     .mutation(async (opts) => {
-      return contactsStoreUtil.addContact(opts.input);
+      return contactsStore.addContact(opts.input);
     }),
   editContact: t.procedure
     .input(
@@ -35,7 +35,7 @@ export const contactsRouter = t.router({
       }),
     )
     .mutation(async (opts) => {
-      return contactsStoreUtil.editContact(opts.input);
+      return contactsStore.editContact(opts.input);
     }),
   deleteContact: t.procedure
     .input(
@@ -44,6 +44,6 @@ export const contactsRouter = t.router({
       }),
     )
     .mutation(async (opts) => {
-      return contactsStoreUtil.deleteContact(opts.input.id);
+      return contactsStore.deleteContact(opts.input.id);
     }),
 });

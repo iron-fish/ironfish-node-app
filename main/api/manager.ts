@@ -1,7 +1,7 @@
 import { RpcClient } from "@ironfish/sdk";
 
 import { Ironfish } from "./ironfish/Ironfish";
-import { getUserSettings } from "./user-settings/userSettings";
+import { userSettingsStore } from "../stores/userSettingsStore";
 
 export type InitialState =
   | "onboarding"
@@ -14,8 +14,8 @@ export class Manager {
   async getIronfish(): Promise<Ironfish> {
     if (this._ironfish) return this._ironfish;
 
-    const userSettings = await getUserSettings();
-    const networkId = userSettings.get("networkId");
+    const networkId = await userSettingsStore.getSetting("networkId");
+
     this._ironfish = new Ironfish({
       networkId,
     });

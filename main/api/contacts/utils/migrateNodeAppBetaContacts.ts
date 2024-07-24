@@ -4,7 +4,7 @@ import path from "path";
 
 import NeDBStorage from "nedb";
 
-import { contactsStoreUtil } from "./contactsStoreUtil";
+import { contactsStore } from "../../../stores/contactsStore";
 
 type BetaContact = {
   name: string;
@@ -57,8 +57,8 @@ function deleteNodeAppBetaContacts(): void {
 
 export async function migrateNodeAppBetaContacts() {
   const betaContacts = await getNodeAppBetaContacts();
-  contactsStoreUtil.batchAddNodeAppBetaContacts(betaContacts);
+  contactsStore.batchAddNodeAppBetaContacts(betaContacts);
   deleteNodeAppBetaContacts();
 
-  return contactsStoreUtil.getContacts();
+  return contactsStore.getContacts();
 }

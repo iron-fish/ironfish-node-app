@@ -10,6 +10,7 @@ import IronfishApp, {
   ResponseProofGenKey,
 } from "@zondax/ledger-ironfish";
 
+import { ledgerStore } from "../../../stores/ledgerStore";
 import { PromiseQueue } from "../../../utils/promiseQueue";
 import { handleImportAccount } from "../../accounts/handleImportAccount";
 import { logger } from "../../ironfish/logger";
@@ -313,13 +314,18 @@ class LedgerManager {
           throw new Error(responsePGK.errorMessage);
         }
 
+        const accountName = transport.deviceModel?.productName ?? "Ledger";
+
+        const publicAddress =
+          publicAddressResponse.publicAddress.toString("hex");
+
         const accountImport = {
           version: 4, // ACCOUNT_SCHEMA_VERSION as of 2024-05
-          name: "ledger",
+          name: accountName,
           viewKey: viewKeyResponse.viewKey.toString("hex"),
           incomingViewKey: viewKeyResponse.ivk.toString("hex"),
           outgoingViewKey: viewKeyResponse.ovk.toString("hex"),
-          publicAddress: publicAddressResponse.publicAddress.toString("hex"),
+          publicAddress,
           proofAuthorizingKey: responsePGK.nsk.toString("hex"),
           spendingKey: null,
           createdAt: null,
@@ -331,9 +337,10 @@ class LedgerManager {
         );
 
         await handleImportAccount({
-          name: "ledger",
+          name: accountName,
           account: encoded,
         });
+        await ledgerStore.setIsLedgerAccount(publicAddress, true);
 
         return accountImport;
       } catch (err) {

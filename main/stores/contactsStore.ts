@@ -32,7 +32,7 @@ const schema: Schema<{
   },
 };
 
-class ContactsUtil {
+class ContactsStore {
   store = new Store({ schema, name: "contacts" });
   contactsByAddress: Map<string, Contact> = new Map();
 
@@ -144,4 +144,4 @@ class ContactsUtil {
   }
 }
 
-export const contactsStoreUtil = new ContactsUtil();
+export const contactsStore = new ContactsStore();
