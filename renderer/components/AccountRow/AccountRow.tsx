@@ -23,6 +23,7 @@ import { formatOre } from "@/utils/ironUtils";
 
 import { AccountSyncingProgress } from "../AccountSyncingProgress/AccountSyncingProgress";
 import { CopyAddress } from "../CopyAddress/CopyAddress";
+import { LedgerChip } from "../LedgerChip/LedgerChip";
 import { ViewOnlyChip } from "../ViewOnlyChip/ViewOnlyChip";
 
 const messages = defineMessages({
@@ -47,6 +48,7 @@ type AccountRowProps = {
   balance: string;
   address: string;
   viewOnly: boolean;
+  isLedger: boolean;
 };
 
 export function AccountRow({
@@ -55,6 +57,7 @@ export function AccountRow({
   balance,
   address,
   viewOnly,
+  isLedger,
 }: AccountRowProps) {
   const router = useRouter();
   const { formatMessage } = useIntl();
@@ -99,9 +102,10 @@ export function AccountRow({
               justifyContent="center"
               flexGrow={1}
             >
-              <HStack>
+              <HStack gap={3}>
                 <Text as="h3">{name}</Text>
-                {viewOnly && <ViewOnlyChip />}
+                {isLedger && <LedgerChip />}
+                {!isLedger && viewOnly && <ViewOnlyChip />}
               </HStack>
               <Heading as="span" fontWeight="regular" fontSize="2xl">
                 {formatOre(balance)} $IRON

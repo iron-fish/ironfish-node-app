@@ -1,5 +1,6 @@
 import * as z from "zod";
 
+import { ledgerStore } from "../../stores/ledgerStore";
 import { manager } from "../manager";
 
 export const handleDeleteAccountInputs = z.object({
@@ -16,6 +17,8 @@ export async function handleDeleteAccount({
     account,
     confirm: true,
   });
+
+  await ledgerStore.setIsLedgerAccount(account, false);
 
   return deleteResponse.content;
 }

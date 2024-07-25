@@ -17,8 +17,8 @@ import { v4 as uuid } from "uuid";
 
 import { logger } from "./logger";
 import packageJson from "../../../package.json";
+import { userSettingsStore } from "../../stores/userSettingsStore";
 import { SnapshotManager } from "../snapshot/snapshotManager";
-import { getUserSettings } from "../user-settings/userSettings";
 import { SplitPromise, splitPromise } from "../utils";
 
 export class Ironfish {
@@ -185,8 +185,7 @@ export class Ironfish {
 
     this._networkId = networkId;
 
-    const settingsStore = await getUserSettings();
-    settingsStore.set({
+    await userSettingsStore.setSettings({
       networkId,
     });
 

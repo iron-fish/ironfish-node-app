@@ -11,7 +11,7 @@ import {
   Spinner,
 } from "@chakra-ui/react";
 import { useRouter } from "next/router";
-import { useMemo } from "react";
+import { ReactNode, useMemo } from "react";
 import { defineMessages, useIntl } from "react-intl";
 
 import { AccountAssets } from "@/components/AccountAssets/AccountAssets";
@@ -19,6 +19,7 @@ import { AccountKeyExport } from "@/components/AccountKeyExport/AccountKeyExport
 import { AccountMnemonicView } from "@/components/AccountMnemonicView/AccountMnenomicView";
 import { AccountSettings } from "@/components/AccountSettings/AccountSettings";
 import { CopyAddress } from "@/components/CopyAddress/CopyAddress";
+import { LedgerChip } from "@/components/LedgerChip/LedgerChip";
 import { NotesList } from "@/components/NotesList/NotesList";
 import { ViewOnlyChip } from "@/components/ViewOnlyChip/ViewOnlyChip";
 import keysGhost from "@/images/keys-ghost.svg";
@@ -100,6 +101,17 @@ function AccountOverviewContent({ accountName }: { accountName: string }) {
     return transactionsData?.pages.flatMap((page) => page.transactions) ?? [];
   }, [transactionsData?.pages]);
 
+  const headingChip = useMemo(() => {
+    let chip: ReactNode = null;
+    if (accountData?.isLedger) {
+      chip = <LedgerChip />;
+    } else if (accountData?.status.viewOnly) {
+      chip = <ViewOnlyChip />;
+    }
+
+    return chip;
+  }, [accountData?.isLedger, accountData?.status.viewOnly]);
+
   if (!accountData) {
     // @todo: Error handling
     return null;
@@ -114,12 +126,10 @@ function AccountOverviewContent({ accountName }: { accountName: string }) {
     >
       <Box>
         <VStack mb={6} gap={0} alignItems="flex-start">
-          <Heading fontSize="28px">{accountData.name}</Heading>
-          {accountData.status.viewOnly && (
-            <Box transform="translateY(0.25em)">
-              <ViewOnlyChip />
-            </Box>
-          )}
+          <HStack alignItems="center" gap={3}>
+            <Heading fontSize="28px">{accountData.name}</Heading>
+            {headingChip}
+          </HStack>
           <CopyAddress
             address={accountData.address}
             truncate={false}

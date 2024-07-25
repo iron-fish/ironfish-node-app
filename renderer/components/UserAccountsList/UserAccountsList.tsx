@@ -143,6 +143,7 @@ export function UserAccountsList() {
               balance={account.balances.iron.confirmed}
               address={account.address}
               viewOnly={account.status.viewOnly}
+              isLedger={account.isLedger}
             />
           );
         })}

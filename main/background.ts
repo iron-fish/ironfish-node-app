@@ -13,8 +13,8 @@ import { createIPCHandler } from "electron-trpc/main";
 import { router } from "./api";
 import { migrateNodeAppBetaContacts } from "./api/contacts/utils/migrateNodeAppBetaContacts";
 import { manager } from "./api/manager";
-import { getUserSettings } from "./api/user-settings/userSettings";
 import { mainWindow } from "./main-window";
+import { userSettingsStore } from "./stores/userSettingsStore";
 import { updater } from "./updater";
 
 const isProd: boolean = process.env.NODE_ENV === "production";
@@ -49,8 +49,8 @@ async function createWindow(handler: ReturnType<typeof createIPCHandler>) {
 }
 
 async function setNativeThemeSource() {
-  const userSettings = await getUserSettings();
-  nativeTheme.themeSource = userSettings.get("theme");
+  const theme = await userSettingsStore.getSetting("theme");
+  nativeTheme.themeSource = theme;
 }
 
 async function createThemeChangeHandler() {
