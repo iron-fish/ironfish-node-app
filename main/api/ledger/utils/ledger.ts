@@ -5,6 +5,7 @@ import {
   CurrencyUtils,
   AccountFormat,
   encodeAccountImport,
+  RawTransactionSerde,
 } from "@ironfish/sdk";
 import { TransportError } from "@ledgerhq/errors";
 import TransportNodeHid from "@ledgerhq/hw-transport-node-hid";
@@ -376,6 +377,9 @@ class LedgerManager {
         const ironfish = await manager.getIronfish();
         const rpcClient = await ironfish.rpcClient();
 
+        const nodeStatus = await rpcClient.node.getStatus();
+        const headSequence = nodeStatus.content.blockchain.head.sequence;
+
         const params: CreateTransactionRequest = {
           account: fromAccount,
           outputs: [
@@ -388,13 +392,22 @@ class LedgerManager {
           ],
           fee: CurrencyUtils.encode(BigInt(fee)),
           feeRate: null,
-          expiration: undefined,
+          // @todo: Figure out what this number should be
+          expiration: headSequence + 1000,
           confirmations: undefined,
         };
 
         const createResponse = await rpcClient.wallet.createTransaction(params);
+        const bytes = Buffer.from(createResponse.content.transaction, "hex");
+        const rawTx = RawTransactionSerde.deserialize(bytes);
+        const serializedRawTx = RawTransactionSerde.serialize(rawTx);
+        const builtTransactionResponse =
+          await rpcClient.wallet.buildTransaction({
+            rawTransaction: serializedRawTx.toString("hex"),
+            account: fromAccount,
+          });
         const unsignedTransactionBuffer = Buffer.from(
-          createResponse.content.transaction,
+          builtTransactionResponse.content.unsignedTransaction,
           "hex",
         );
 
@@ -427,7 +440,7 @@ class LedgerManager {
         }
 
         const splitSignParams = {
-          unsignedTransaction: createResponse.content.transaction,
+          unsignedTransaction: unsignedTransactionBuffer,
           signature: signResponse.signature.toString("hex"),
         };
 

@@ -124,129 +124,101 @@ export function ConfirmTransactionModal({
     <Modal isOpen={isOpen} onClose={handleClose}>
       <ModalOverlay />
       <ModalContent maxW="100%" width="600px">
-        <ModalBody px={16} pt={16}>
-          {isIdle && (
-            <ReviewTransaction
-              transactionData={transactionData}
-              selectedAccount={selectedAccount}
-              selectedAsset={selectedAsset}
-              isLoading={isLoading}
-              onClose={handleClose}
-              onSubmit={handleSubmit}
-            />
-          )}
-          {isLoading && (
-            <>
-              <Heading fontSize="2xl" mb={8}>
-                {formatMessage(messages.submittingTransaction)}
-              </Heading>
-              <Box py={8}>
-                <Progress size="sm" isIndeterminate />
-              </Box>
-            </>
-          )}
-          {isSuccess && (
-            <>
-              <Heading fontSize="2xl" mb={8}>
-                {formatMessage(messages.transactionSubmitted)}
-              </Heading>
-              <Text fontSize="md">
-                {formatMessage(messages.transactionSubmittedText)}
-              </Text>
-            </>
-          )}
-          {isError && (
-            <>
-              <Heading fontSize="2xl" mb={8}>
-                {formatMessage(messages.transactionError)}
-              </Heading>
-              <Text fontSize="md">
-                {formatMessage(messages.transactionErrorText)}
-              </Text>
+        {isIdle && (
+          <ReviewTransaction
+            transactionData={transactionData}
+            selectedAccount={selectedAccount}
+            selectedAsset={selectedAsset}
+            isLoading={isLoading}
+            onClose={handleClose}
+            onSubmit={handleSubmit}
+          />
+        )}
+        {isLoading && (
+          <ModalBody px={16} pt={16}>
+            <Heading fontSize="2xl" mb={8}>
+              {formatMessage(messages.submittingTransaction)}
+            </Heading>
+            <Box py={8}>
+              <Progress size="sm" isIndeterminate />
+            </Box>
+          </ModalBody>
+        )}
+        {isSuccess && (
+          <ModalBody px={16} pt={16}>
+            <Heading fontSize="2xl" mb={8}>
+              {formatMessage(messages.transactionSubmitted)}
+            </Heading>
+            <Text fontSize="md">
+              {formatMessage(messages.transactionSubmittedText)}
+            </Text>
+          </ModalBody>
+        )}
+        {isError && (
+          <ModalBody px={16} pt={16}>
+            <Heading fontSize="2xl" mb={8}>
+              {formatMessage(messages.transactionError)}
+            </Heading>
+            <Text fontSize="md">
+              {formatMessage(messages.transactionErrorText)}
+            </Text>
 
-              <Heading fontSize="lg" mt={8} mb={2}>
-                {formatMessage(messages.error)}
-              </Heading>
-              <code>{error.message}</code>
-            </>
-          )}
-        </ModalBody>
+            <Heading fontSize="lg" mt={8} mb={2}>
+              {formatMessage(messages.error)}
+            </Heading>
+            <code>{error.message}</code>
+          </ModalBody>
+        )}
 
-        <ModalFooter display="flex" gap={2} px={16} py={8}>
-          {(isIdle || isLoading) && (
-            <>
-              <PillButton
-                size="sm"
-                isDisabled={isLoading}
-                onClick={handleClose}
-                variant="inverted"
-                border={0}
-              >
-                {formatMessage(messages.cancelTransaction)}
-              </PillButton>
-              <PillButton
-                size="sm"
-                isDisabled={isLoading}
-                onClick={handleSubmit}
-              >
-                {formatMessage(messages.confirmAndSend)}
-              </PillButton>
-            </>
-          )}
-          {isSuccess && (
-            <>
-              <PillButton
-                size="sm"
-                onClick={() => {
-                  const account = transactionData?.fromAccount;
-                  if (!account) {
-                    handleClose();
-                    return;
-                  }
-                  router.push(`/accounts/${account}`);
-                }}
-              >
-                {formatMessage(messages.viewAccountActivity)}
-              </PillButton>
-              <PillButton
-                size="sm"
-                onClick={() => {
-                  const account = transactionData?.fromAccount;
-                  const transactionHash = sentTransactionData?.hash;
-                  if (!account || !transactionHash) {
-                    handleClose();
-                    return;
-                  }
-                  router.push(
-                    `/accounts/${account}/transaction/${transactionHash}`,
-                  );
-                }}
-              >
-                {formatMessage(messages.viewTransaction)}
-              </PillButton>
-            </>
-          )}
-          {isError && (
-            <>
-              <PillButton
-                size="sm"
-                isDisabled={isLoading}
-                onClick={handleClose}
-                variant="inverted"
-                border={0}
-              >
-                {formatMessage(messages.cancel)}
-              </PillButton>
-              <PillButton
-                size="sm"
-                isDisabled={isLoading}
-                onClick={handleSubmit}
-              >
-                {formatMessage(messages.tryAgain)}
-              </PillButton>
-            </>
-          )}
-        </ModalFooter>
+        {isSuccess && (
+          <ModalFooter display="flex" gap={2} px={16} py={8}>
+            <PillButton
+              size="sm"
+              onClick={() => {
+                const account = transactionData?.fromAccount;
+                if (!account) {
+                  handleClose();
+                  return;
+                }
+                router.push(`/accounts/${account}`);
+              }}
+            >
+              {formatMessage(messages.viewAccountActivity)}
+            </PillButton>
+            <PillButton
+              size="sm"
+              onClick={() => {
+                const account = transactionData?.fromAccount;
+                const transactionHash = sentTransactionData?.hash;
+                if (!account || !transactionHash) {
+                  handleClose();
+                  return;
+                }
+                router.push(
+                  `/accounts/${account}/transaction/${transactionHash}`,
+                );
+              }}
+            >
+              {formatMessage(messages.viewTransaction)}
+            </PillButton>
+          </ModalFooter>
+        )}
+        {isError && (
+          <ModalFooter display="flex" gap={2} px={16} py={8}>
+            <PillButton
+              size="sm"
+              isDisabled={isLoading}
+              onClick={handleClose}
+              variant="inverted"
+              border={0}
+            >
+              {formatMessage(messages.cancel)}
+            </PillButton>
+            <PillButton size="sm" isDisabled={isLoading} onClick={handleSubmit}>
+              {formatMessage(messages.tryAgain)}
+            </PillButton>
+          </ModalFooter>
+        )}
       </ModalContent>
     </Modal>
   );

@@ -236,8 +236,6 @@ export function SendAssetsFormContent({
     }));
   }, [contactsData]);
 
-  console.log({ fromAccountValue, selectedAccount });
-
   return (
     <>
       {syncingMessage}
