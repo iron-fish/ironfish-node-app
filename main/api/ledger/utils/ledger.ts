@@ -1,6 +1,11 @@
 import { randomUUID } from "crypto";
 
-import { AccountFormat, encodeAccountImport } from "@ironfish/sdk";
+import {
+  CreateTransactionRequest,
+  CurrencyUtils,
+  AccountFormat,
+  encodeAccountImport,
+} from "@ironfish/sdk";
 import { TransportError } from "@ledgerhq/errors";
 import TransportNodeHid from "@ledgerhq/hw-transport-node-hid";
 import IronfishApp, {
@@ -9,11 +14,14 @@ import IronfishApp, {
   ResponseViewKey,
   ResponseProofGenKey,
 } from "@zondax/ledger-ironfish";
+import { z } from "zod";
 
 import { ledgerStore } from "../../../stores/ledgerStore";
 import { PromiseQueue } from "../../../utils/promiseQueue";
 import { handleImportAccount } from "../../accounts/handleImportAccount";
 import { logger } from "../../ironfish/logger";
+import { manager } from "../../manager";
+import { handleSendTransactionInput } from "../../transactions/handleSendTransaction";
 
 export const DERIVATION_PATH = "m/44'/1338'/0";
 const IRONFISH_APP_NAME = "Ironfish";
@@ -343,6 +351,88 @@ class LedgerManager {
         await ledgerStore.setIsLedgerAccount(publicAddress, true);
 
         return accountImport;
+      } catch (err) {
+        const message =
+          err instanceof Error ? err.message : "Failed to import account";
+        logger.error(message);
+        await this.disconnect();
+        throw new Error(message);
+      }
+    });
+
+    return returnValue;
+  };
+
+  submitTransaction = async ({
+    fromAccount,
+    toAccount,
+    assetId,
+    amount,
+    fee,
+    memo,
+  }: z.infer<typeof handleSendTransactionInput>) => {
+    const returnValue = await this.taskQueue.enqueue(async () => {
+      try {
+        const ironfish = await manager.getIronfish();
+        const rpcClient = await ironfish.rpcClient();
+
+        const params: CreateTransactionRequest = {
+          account: fromAccount,
+          outputs: [
+            {
+              publicAddress: toAccount,
+              amount: CurrencyUtils.encode(BigInt(amount)),
+              memo: memo ?? "",
+              assetId: assetId,
+            },
+          ],
+          fee: CurrencyUtils.encode(BigInt(fee)),
+          feeRate: null,
+          expiration: undefined,
+          confirmations: undefined,
+        };
+
+        const createResponse = await rpcClient.wallet.createTransaction(params);
+        const unsignedTransactionBuffer = Buffer.from(
+          createResponse.content.transaction,
+          "hex",
+        );
+
+        if (unsignedTransactionBuffer.length > 16 * 1024) {
+          throw new Error(
+            "Transaction size is too large, must be less than 16kb.",
+          );
+        }
+
+        const connectResponse = await this.connect();
+
+        if (connectResponse.status !== "SUCCESS") {
+          throw new Error(connectResponse.error.message);
+        }
+
+        const transport = connectResponse.data;
+        const ironfishAppReponse = await this.getIronfishApp(transport);
+
+        if (ironfishAppReponse.status !== "SUCCESS") {
+          throw new Error(ironfishAppReponse.error.message);
+        }
+
+        const signResponse = await ironfishAppReponse.data.sign(
+          DERIVATION_PATH,
+          unsignedTransactionBuffer,
+        );
+
+        if (!signResponse.signature) {
+          throw new Error(signResponse.errorMessage || "No signature returned");
+        }
+
+        const splitSignParams = {
+          unsignedTransaction: createResponse.content.transaction,
+          signature: signResponse.signature.toString("hex"),
+        };
+
+        // @todo: Sign and submit the transaction once addSignature is available from the RPC client
+        return splitSignParams;
       } catch (err) {
         const message =
           err instanceof Error ? err.message : "Failed to import account";

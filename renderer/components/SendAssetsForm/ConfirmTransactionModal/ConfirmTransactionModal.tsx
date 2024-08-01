@@ -6,7 +6,6 @@ import {
   ModalBody,
   Heading,
   Text,
-  VStack,
   Box,
   Progress,
 } from "@chakra-ui/react";
@@ -15,12 +14,10 @@ import { useCallback } from "react";
 import { defineMessages, useIntl } from "react-intl";
 
 import { AssetOptionType } from "@/components/AssetAmountInput/utils";
-import { trpcReact } from "@/providers/TRPCProvider";
-import { COLORS } from "@/ui/colors";
+import { trpcReact, TRPCRouterOutputs } from "@/providers/TRPCProvider";
 import { PillButton } from "@/ui/PillButton/PillButton";
-import { CurrencyUtils } from "@/utils/currency";
-import { formatOre } from "@/utils/ironUtils";
 
+import { ReviewTransaction } from "../ReviewTransaction/ReviewTransaction";
 import { TransactionData } from "../transactionSchema";
 
 const messages = defineMessages({
@@ -88,6 +85,7 @@ const messages = defineMessages({
 type Props = {
   isOpen: boolean;
   transactionData: TransactionData;
+  selectedAccount: TRPCRouterOutputs["getAccounts"][number];
   selectedAsset?: AssetOptionType;
   onCancel: () => void;
 };
@@ -95,6 +93,7 @@ type Props = {
 export function ConfirmTransactionModal({
   isOpen,
   transactionData,
+  selectedAccount,
   selectedAsset,
   onCancel,
 }: Props) {
@@ -108,6 +107,7 @@ export function ConfirmTransactionModal({
     reset,
     error,
   } = trpcReact.sendTransaction.useMutation();
+
   const router = useRouter();
   const { formatMessage } = useIntl();
 
@@ -126,58 +126,14 @@ export function ConfirmTransactionModal({
       <ModalContent maxW="100%" width="600px">
         <ModalBody px={16} pt={16}>
           {isIdle && (
-            <>
-              <Heading fontSize="2xl" mb={8}>
-                {formatMessage(messages.confirmTransactionDetails)}
-              </Heading>
-
-              <VStack alignItems="stretch">
-                <Box py={4} borderBottom="1.5px dashed #DEDFE2">
-                  <Text color={COLORS.GRAY_MEDIUM}>
-                    {formatMessage(messages.from)}
-                  </Text>
-                  <Text fontSize="md">{transactionData?.fromAccount}</Text>
-                </Box>
-
-                <Box py={4} borderBottom="1.5px dashed #DEDFE2">
-                  <Text color={COLORS.GRAY_MEDIUM}>
-                    {formatMessage(messages.to)}
-                  </Text>
-                  <Text fontSize="md">{transactionData?.toAccount ?? ""}</Text>
-                </Box>
-
-                <Box py={4} borderBottom="1.5px dashed #DEDFE2">
-                  <Text color={COLORS.GRAY_MEDIUM}>
-                    {formatMessage(messages.amount)}
-                  </Text>
-                  <Text fontSize="md">
-                    {CurrencyUtils.render(
-                      transactionData.amount.toString(),
-                      transactionData.assetId,
-                      selectedAsset?.asset.verification,
-                    )}{" "}
-                    {selectedAsset?.assetName ??
-                      formatMessage(messages.unknownAsset)}
-                  </Text>
-                </Box>
-
-                <Box py={4} borderBottom="1.5px dashed #DEDFE2">
-                  <Text color={COLORS.GRAY_MEDIUM}>
-                    {formatMessage(messages.fee)}
-                  </Text>
-                  <Text fontSize="md">
-                    {formatOre(transactionData?.fee ?? 0)} $IRON
-                  </Text>
-                </Box>
-
-                <Box py={4} borderBottom="1.5px dashed #DEDFE2">
-                  <Text color={COLORS.GRAY_MEDIUM}>
-                    {formatMessage(messages.memo)}
-                  </Text>
-                  <Text fontSize="md">{transactionData?.memo}</Text>
-                </Box>
-              </VStack>
-            </>
+            <ReviewTransaction
+              transactionData={transactionData}
+              selectedAccount={selectedAccount}
+              selectedAsset={selectedAsset}
+              isLoading={isLoading}
+              onClose={handleClose}
+              onSubmit={handleSubmit}
+            />
           )}
           {isLoading && (
             <>
