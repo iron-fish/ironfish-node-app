@@ -1,8 +1,8 @@
 import { RawTransactionSerde } from "@ironfish/sdk";
 import { z } from "zod";
 
-import { createRawTransaction } from "../../utils/transactions";
 import { manager } from "../manager";
+import { createRawTransaction } from "../utils/transactions";
 
 export const handleSendTransactionInput = z.object({
   fromAccount: z.string(),

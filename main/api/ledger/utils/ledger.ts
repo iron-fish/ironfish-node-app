@@ -12,11 +12,11 @@ import IronfishApp, {
 import { z } from "zod";
 
 import { ledgerStore } from "../../../stores/ledgerStore";
-import { PromiseQueue } from "../../../utils/promiseQueue";
-import { createUnsignedTransaction } from "../../../utils/transactions";
 import { handleImportAccount } from "../../accounts/handleImportAccount";
 import { logger } from "../../ironfish/logger";
 import { handleSendTransactionInput } from "../../transactions/handleSendTransaction";
+import { PromiseQueue } from "../../utils/promiseQueue";
+import { createUnsignedTransaction } from "../../utils/transactions";
 
 export const DERIVATION_PATH = "m/44'/1338'/0";
 const IRONFISH_APP_NAME = "Ironfish";

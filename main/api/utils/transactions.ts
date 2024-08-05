@@ -5,7 +5,7 @@ import {
 } from "@ironfish/sdk";
 import { z } from "zod";
 
-import { manager } from "../api/manager";
+import { manager } from "../manager";
 
 export const createTransactionInput = z.object({
   fromAccount: z.string(),
