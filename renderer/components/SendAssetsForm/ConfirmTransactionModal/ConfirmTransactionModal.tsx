@@ -2,83 +2,25 @@ import {
   Modal,
   ModalOverlay,
   ModalContent,
-  ModalFooter,
   ModalBody,
   Heading,
-  Text,
   Box,
   Progress,
 } from "@chakra-ui/react";
-import { useRouter } from "next/router";
 import { useCallback } from "react";
 import { defineMessages, useIntl } from "react-intl";
 
 import { AssetOptionType } from "@/components/AssetAmountInput/utils";
 import { trpcReact, TRPCRouterOutputs } from "@/providers/TRPCProvider";
-import { PillButton } from "@/ui/PillButton/PillButton";
 
-import { ReviewTransaction } from "../ReviewTransaction/ReviewTransaction";
+import { ReviewTransaction } from "../SharedConfirmSteps/ReviewTransaction";
+import { SubmissionError } from "../SharedConfirmSteps/SubmissionError";
+import { TransactionSubmitted } from "../SharedConfirmSteps/TransactionSubmitted";
 import { TransactionData } from "../transactionSchema";
 
 const messages = defineMessages({
-  confirmTransactionDetails: {
-    defaultMessage: "Confirm Transaction Details",
-  },
-  from: {
-    defaultMessage: "From:",
-  },
-  to: {
-    defaultMessage: "To:",
-  },
-  amount: {
-    defaultMessage: "Amount:",
-  },
-  fee: {
-    defaultMessage: "Fee:",
-  },
-  memo: {
-    defaultMessage: "Memo:",
-  },
   submittingTransaction: {
     defaultMessage: "Submitting Transaction",
-  },
-  transactionSubmitted: {
-    defaultMessage: "Transaction Submitted",
-  },
-  transactionSubmittedText: {
-    defaultMessage:
-      "Your transaction has been submitted. It may take a few minutes until it is confirmed. This transaction will appear in your activity as pending until it is confirmed.",
-  },
-  transactionError: {
-    defaultMessage: "Transaction Error",
-  },
-  transactionErrorText: {
-    defaultMessage:
-      "Something went wrong. Please review your transaction and try again.",
-  },
-  error: {
-    defaultMessage: "Error",
-  },
-  cancelTransaction: {
-    defaultMessage: "Cancel Transaction",
-  },
-  confirmAndSend: {
-    defaultMessage: "Confirm & Send",
-  },
-  viewAccountActivity: {
-    defaultMessage: "View Account Activity",
-  },
-  viewTransaction: {
-    defaultMessage: "View Transaction",
-  },
-  tryAgain: {
-    defaultMessage: "Try Again",
-  },
-  cancel: {
-    defaultMessage: "Cancel",
-  },
-  unknownAsset: {
-    defaultMessage: "unknown asset",
   },
 });
 
@@ -108,7 +50,6 @@ export function ConfirmTransactionModal({
     error,
   } = trpcReact.sendTransaction.useMutation();
 
-  const router = useRouter();
   const { formatMessage } = useIntl();
 
   const handleClose = useCallback(() => {
@@ -145,79 +86,19 @@ export function ConfirmTransactionModal({
           </ModalBody>
         )}
         {isSuccess && (
-          <ModalBody px={16} pt={16}>
-            <Heading fontSize="2xl" mb={8}>
-              {formatMessage(messages.transactionSubmitted)}
-            </Heading>
-            <Text fontSize="md">
-              {formatMessage(messages.transactionSubmittedText)}
-            </Text>
-          </ModalBody>
+          <TransactionSubmitted
+            fromAccount={selectedAccount.name}
+            transactionHash={sentTransactionData?.hash ?? ""}
+            handleClose={handleClose}
+          />
         )}
         {isError && (
-          <ModalBody px={16} pt={16}>
-            <Heading fontSize="2xl" mb={8}>
-              {formatMessage(messages.transactionError)}
-            </Heading>
-            <Text fontSize="md">
-              {formatMessage(messages.transactionErrorText)}
-            </Text>
-
-            <Heading fontSize="lg" mt={8} mb={2}>
-              {formatMessage(messages.error)}
-            </Heading>
-            <code>{error.message}</code>
-          </ModalBody>
-        )}
-
-        {isSuccess && (
-          <ModalFooter display="flex" gap={2} px={16} py={8}>
-            <PillButton
-              size="sm"
-              onClick={() => {
-                const account = transactionData?.fromAccount;
-                if (!account) {
-                  handleClose();
-                  return;
-                }
-                router.push(`/accounts/${account}`);
-              }}
-            >
-              {formatMessage(messages.viewAccountActivity)}
-            </PillButton>
-            <PillButton
-              size="sm"
-              onClick={() => {
-                const account = transactionData?.fromAccount;
-                const transactionHash = sentTransactionData?.hash;
-                if (!account || !transactionHash) {
-                  handleClose();
-                  return;
-                }
-                router.push(
-                  `/accounts/${account}/transaction/${transactionHash}`,
-                );
-              }}
-            >
-              {formatMessage(messages.viewTransaction)}
-            </PillButton>
-          </ModalFooter>
-        )}
-        {isError && (
-          <ModalFooter display="flex" gap={2} px={16} py={8}>
-            <PillButton
-              size="sm"
-              isDisabled={isLoading}
-              onClick={handleClose}
-              variant="inverted"
-              border={0}
-            >
-              {formatMessage(messages.cancel)}
-            </PillButton>
-            <PillButton size="sm" isDisabled={isLoading} onClick={handleSubmit}>
-              {formatMessage(messages.tryAgain)}
-            </PillButton>
-          </ModalFooter>
+          <SubmissionError
+            errorMessage={error?.message ?? "Unknown error"}
+            isLoading={isLoading}
+            handleClose={handleClose}
+            handleSubmit={handleSubmit}
+          />
         )}
       </ModalContent>
     </Modal>

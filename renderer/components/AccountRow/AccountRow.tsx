@@ -70,6 +70,8 @@ export function AccountRow({
         refetchInterval: 5000,
       },
     );
+
+  const isAccountSendEligible = !viewOnly || isLedger;
   return (
     <ChakraLink href={`/accounts/${name}`} w="100%">
       <ShadowCard hoverable>
@@ -105,7 +107,7 @@ export function AccountRow({
               <HStack gap={3}>
                 <Text as="h3">{name}</Text>
                 {isLedger && <LedgerChip />}
-                {!isLedger && viewOnly && <ViewOnlyChip />}
+                {!isAccountSendEligible && <ViewOnlyChip />}
               </HStack>
               <Heading as="span" fontWeight="regular" fontSize="2xl">
                 {formatOre(balance)} $IRON
@@ -120,7 +122,7 @@ export function AccountRow({
             >
               <Tooltip
                 label={
-                  viewOnly
+                  !isAccountSendEligible
                     ? formatMessage(messages.viewOnlySendDisabled)
                     : !isSynced.synced
                     ? formatMessage(messages.syncingSendDisabled)
@@ -131,11 +133,11 @@ export function AccountRow({
                 <VStack w="100%" alignItems="stretch">
                   <PillButton
                     size="sm"
-                    isDisabled={viewOnly || !isSynced.synced}
+                    isDisabled={!isAccountSendEligible || !isSynced.synced}
                     onClick={(e) => {
                       e.preventDefault();
                       e.stopPropagation();
-                      if (viewOnly || !isSynced.synced) return;
+                      if (!isAccountSendEligible || !isSynced.synced) return;
                       router.push(`/send?account=${name}`);
                     }}
                   >

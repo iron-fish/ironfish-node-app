@@ -105,14 +105,16 @@ export function ReviewTransaction({
             </Text>
           </Box>
 
-          <Box py={4} borderBottom="1.5px dashed #DEDFE2">
-            <Text color={COLORS.GRAY_MEDIUM}>
-              {formatMessage(messages.fee)}
-            </Text>
-            <Text fontSize="md">
-              {formatOre(transactionData?.fee ?? 0)} $IRON
-            </Text>
-          </Box>
+          {transactionData?.fee && (
+            <Box py={4} borderBottom="1.5px dashed #DEDFE2">
+              <Text color={COLORS.GRAY_MEDIUM}>
+                {formatMessage(messages.fee)}
+              </Text>
+              <Text fontSize="md">
+                {formatOre(transactionData?.fee ?? 0)} $IRON
+              </Text>
+            </Box>
+          )}
 
           <Box py={4} borderBottom="1.5px dashed #DEDFE2">
             <Text color={COLORS.GRAY_MEDIUM}>

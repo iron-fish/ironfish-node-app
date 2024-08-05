@@ -40,5 +40,5 @@ export const transactionSchema = z.object({
 export type TransactionFormData = z.infer<typeof transactionSchema>;
 
 export type TransactionData = Omit<TransactionFormData, "fee"> & {
-  fee: number;
+  fee: number | null;
 };

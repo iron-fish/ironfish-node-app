@@ -14,6 +14,7 @@ import { z } from "zod";
 import { ledgerStore } from "../../../stores/ledgerStore";
 import { handleImportAccount } from "../../accounts/handleImportAccount";
 import { logger } from "../../ironfish/logger";
+import { manager } from "../../manager";
 import { handleSendTransactionInput } from "../../transactions/handleSendTransaction";
 import { PromiseQueue } from "../../utils/promiseQueue";
 import { createUnsignedTransaction } from "../../utils/transactions";
@@ -409,13 +410,20 @@ class LedgerManager {
           throw new Error(signResponse.errorMessage || "No signature returned");
         }
 
-        const splitSignParams = {
-          unsignedTransaction: unsignedTransactionBuffer,
-          signature: signResponse.signature.toString("hex"),
-        };
+        const ironfish = await manager.getIronfish();
+        const rpcClient = await ironfish.rpcClient();
 
-        // @todo: Sign and submit the transaction once addSignature is available from the RPC client
-        return splitSignParams;
+        const addSignatureResponse = await rpcClient.wallet.addSignature({
+          unsignedTransaction,
+          signature: signResponse.signature.toString("hex"),
+        });
+
+        const addTransactionResponse = await rpcClient.wallet.addTransaction({
+          transaction: addSignatureResponse.content.transaction,
+          broadcast: true,
+        });
+
+        return addTransactionResponse.content;
       } catch (err) {
         const message =
           err instanceof Error ? err.message : "Failed to import account";
