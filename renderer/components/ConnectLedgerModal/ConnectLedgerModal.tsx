@@ -12,7 +12,9 @@ import { trpcReact } from "@/providers/TRPCProvider";
 import { PillButton } from "@/ui/PillButton/PillButton";
 
 import { StepAddAccount } from "./Steps/StepAddAccount";
+import { StepApprove } from "./Steps/StepApprove";
 import { StepConnect } from "./Steps/StepConnect";
+import { StepError } from "./Steps/StepError";
 
 const messages = defineMessages({
   headingConnectLedger: {
@@ -36,6 +38,9 @@ const messages = defineMessages({
   continue: {
     defaultMessage: "Continue",
   },
+  tryAgain: {
+    defaultMessage: "Try again",
+  },
 });
 
 type LedgerStatus = {
@@ -46,7 +51,7 @@ type LedgerStatus = {
   deviceName: string;
 };
 
-const STEPS = ["CONNECT_LEDGER", "SELECT_ACCOUNT", "CONFIRM"] as const;
+const STEPS = ["CONNECT_LEDGER", "SELECT_ACCOUNT", "APPROVE", "ERROR"] as const;
 
 export function ConnectLedgerModal({
   isOpen,
@@ -93,11 +98,14 @@ export function ConnectLedgerModal({
     onSuccess: () => {
       onClose();
     },
+    onError: () => {
+      setStep("ERROR");
+    },
   });
 
   useEffect(() => {
     if (
-      step !== "CONNECT_LEDGER" &&
+      !["CONNECT_LEDGER", "ERROR"].includes(step) &&
       (!isLedgerConnected || !isLedgerUnlocked || !isIronfishAppOpen)
     ) {
       setStep("CONNECT_LEDGER");
@@ -124,18 +132,14 @@ export function ConnectLedgerModal({
               onConfirmChange={setIsConfirmed}
             />
           )}
-          {step === "CONFIRM" && (
-            <div>
-              <h2>
-                Confirm this action on your device. This is a placeholder while
-                this step is designed.
-              </h2>
-              {importError?.message && (
-                <p>
-                  <strong>Error:</strong> {importError.message}
-                </p>
-              )}
-            </div>
+          {step === "APPROVE" && <StepApprove />}
+          {step === "ERROR" && (
+            <StepError
+              errorMessage={
+                importError?.message ??
+                "An unknown error occured. Please try again."
+              }
+            />
           )}
         </ModalBody>
 
@@ -153,6 +157,11 @@ export function ConnectLedgerModal({
               isImporting
             }
             onClick={() => {
+              if (step === "ERROR") {
+                setStep("CONNECT_LEDGER");
+                return;
+              }
+
               if (step === "CONNECT_LEDGER") {
                 setStep("SELECT_ACCOUNT");
                 return;
@@ -160,11 +169,13 @@ export function ConnectLedgerModal({
 
               if (step === "SELECT_ACCOUNT") {
                 importLedgerAccount();
-                setStep("CONFIRM");
+                setStep("APPROVE");
               }
             }}
           >
-            {formatMessage(messages.continue)}
+            {formatMessage(
+              step === "ERROR" ? messages.tryAgain : messages.continue,
+            )}
           </PillButton>
         </ModalFooter>
       </ModalContent>
