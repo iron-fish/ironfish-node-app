@@ -9,7 +9,7 @@ import {
   getDefaultManifestUrl,
 } from "./utils";
 import { SnapshotUpdate } from "../../../shared/types";
-import { SplitPromise, splitPromise } from "../utils";
+import { SplitPromise, splitPromise } from "../utils/splitPromise";
 
 export class SnapshotManager {
   onProgress: Event<[SnapshotUpdate]> = new Event();

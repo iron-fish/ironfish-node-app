@@ -1,11 +1,8 @@
-import {
-  CreateTransactionRequest,
-  CurrencyUtils,
-  RawTransactionSerde,
-} from "@ironfish/sdk";
+import { RawTransactionSerde } from "@ironfish/sdk";
 import { z } from "zod";
 
 import { manager } from "../manager";
+import { createRawTransaction } from "../utils/transactions";
 
 export const handleSendTransactionInput = z.object({
   fromAccount: z.string(),
@@ -27,25 +24,14 @@ export async function handleSendTransaction({
   const ironfish = await manager.getIronfish();
   const rpcClient = await ironfish.rpcClient();
 
-  const params: CreateTransactionRequest = {
-    account: fromAccount,
-    outputs: [
-      {
-        publicAddress: toAccount,
-        amount: CurrencyUtils.encode(BigInt(amount)),
-        memo: memo ?? "",
-        assetId: assetId,
-      },
-    ],
-    fee: CurrencyUtils.encode(BigInt(fee)),
-    feeRate: null,
-    expiration: undefined,
-    confirmations: undefined,
-  };
-
-  const createResponse = await rpcClient.wallet.createTransaction(params);
-  const bytes = Buffer.from(createResponse.content.transaction, "hex");
-  const rawTx = RawTransactionSerde.deserialize(bytes);
+  const rawTx = await createRawTransaction({
+    fromAccount,
+    toAccount,
+    assetId,
+    amount,
+    fee,
+    memo,
+  });
 
   const postResponse = await rpcClient.wallet.postTransaction({
     transaction: RawTransactionSerde.serialize(rawTx).toString("hex"),

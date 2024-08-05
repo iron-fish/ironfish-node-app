@@ -17,6 +17,7 @@ import { asQueryString } from "@/utils/parseRouteQuery";
 import { sliceToUtf8Bytes } from "@/utils/sliceToUtf8Bytes";
 import { truncateString } from "@/utils/truncateString";
 
+import { ConfirmLedgerModal } from "./ConfirmLedgerModal/ConfirmLedgerModal";
 import { ConfirmTransactionModal } from "./ConfirmTransactionModal/ConfirmTransactionModal";
 import {
   MAX_MEMO_SIZE,
@@ -29,6 +30,7 @@ import {
   useAccountAssets,
 } from "../AssetAmountInput/utils";
 import { NoSpendingAccountsMessage } from "../EmptyStateMessage/shared/NoSpendingAccountsMessage";
+import { LedgerChip } from "../LedgerChip/LedgerChip";
 import {
   AccountSyncingMessage,
   ChainSyncingMessage,
@@ -92,6 +94,7 @@ export function SendAssetsFormContent({
       return {
         label: account.name,
         value: account.name,
+        icon: account.isLedger ? <LedgerChip /> : null,
       };
     });
   }, [accountsData]);
@@ -278,6 +281,7 @@ export function SendAssetsFormContent({
             label={formatMessage(messages.fromLabel)}
             options={accountOptions}
             error={errors.fromAccount?.message}
+            icon={selectedAccount.isLedger ? <LedgerChip /> : null}
           />
 
           <Combobox
@@ -402,16 +406,31 @@ export function SendAssetsFormContent({
           </PillButton>
         </HStack>
       </chakra.form>
-      {pendingTransaction && (
-        <ConfirmTransactionModal
-          isOpen
-          transactionData={pendingTransaction}
-          selectedAsset={assetOptionsMap.get(assetIdValue)}
-          onCancel={() => {
-            setPendingTransaction(null);
-          }}
-        />
-      )}
+      {(() => {
+        if (!pendingTransaction) return null;
+
+        return selectedAccount.isLedger ? (
+          <ConfirmLedgerModal
+            isOpen
+            transactionData={pendingTransaction}
+            selectedAsset={assetOptionsMap.get(assetIdValue)}
+            selectedAccount={selectedAccount}
+            onCancel={() => {
+              setPendingTransaction(null);
+            }}
+          />
+        ) : (
+          <ConfirmTransactionModal
+            isOpen
+            transactionData={pendingTransaction}
+            selectedAsset={assetOptionsMap.get(assetIdValue)}
+            selectedAccount={selectedAccount}
+            onCancel={() => {
+              setPendingTransaction(null);
+            }}
+          />
+        );
+      })()}
     </>
   );
 }
@@ -419,7 +438,9 @@ export function SendAssetsFormContent({
 export function SendAssetsForm() {
   const router = useRouter();
   const { data: accountsData } = trpcReact.getAccounts.useQuery();
-  const filteredAccounts = accountsData?.filter((a) => !a.status.viewOnly);
+  const filteredAccounts = accountsData?.filter((a) => {
+    return !a.status.viewOnly || a.isLedger;
+  });
   const defaultToAddress = asQueryString(router.query.to);
 
   if (!filteredAccounts) {

@@ -19,7 +19,7 @@ import { logger } from "./logger";
 import packageJson from "../../../package.json";
 import { userSettingsStore } from "../../stores/userSettingsStore";
 import { SnapshotManager } from "../snapshot/snapshotManager";
-import { SplitPromise, splitPromise } from "../utils";
+import { SplitPromise, splitPromise } from "../utils/splitPromise";
 
 export class Ironfish {
   public snapshotManager: SnapshotManager = new SnapshotManager();

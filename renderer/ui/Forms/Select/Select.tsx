@@ -1,5 +1,5 @@
 import { ChevronDownIcon } from "@chakra-ui/icons";
-import { Box } from "@chakra-ui/react";
+import { Box, HStack } from "@chakra-ui/react";
 import * as RadixSelect from "@radix-ui/react-select";
 import React, { ComponentProps, ReactNode, forwardRef, useState } from "react";
 import { UseFormRegisterReturn } from "react-hook-form";
@@ -10,7 +10,12 @@ import { COLORS } from "@/ui/colors";
 import styles from "./select.module.css";
 import { FormField, FormFieldProps } from "../FormField/FormField";
 
-type SelectOption = { label: ReactNode; value: string; disabled?: boolean };
+type SelectOption = {
+  label: ReactNode;
+  value: string;
+  disabled?: boolean;
+  icon?: ReactNode;
+};
 
 type SelectRootProps = Simplify<ComponentProps<typeof RadixSelect.Root>>;
 
@@ -20,6 +25,7 @@ type Props = FormFieldProps &
     options: Array<SelectOption>;
     onChange: UseFormRegisterReturn["onChange"];
     triggerProps?: FormFieldProps["triggerProps"];
+    icon?: ReactNode;
   };
 
 export const Select = forwardRef<typeof RadixSelect.Trigger, Props>(
@@ -32,6 +38,7 @@ export const Select = forwardRef<typeof RadixSelect.Trigger, Props>(
       name,
       triggerProps,
       renderChildren,
+      icon,
       ...rest
     },
     ref,
@@ -51,12 +58,15 @@ export const Select = forwardRef<typeof RadixSelect.Trigger, Props>(
           label={label}
           error={error}
           icon={
-            <ChevronDownIcon
-              transform={`rotate(${isOpen ? "180" : "0"}deg)`}
-              boxSize={4}
-              mr={2}
-              color={COLORS.GRAY_MEDIUM}
-            />
+            <HStack gap={3}>
+              {icon}
+              <ChevronDownIcon
+                transform={`rotate(${isOpen ? "180" : "0"}deg)`}
+                boxSize={4}
+                mr={2}
+                color={COLORS.GRAY_MEDIUM}
+              />
+            </HStack>
           }
           triggerProps={{
             as: RadixSelect.Trigger,
@@ -67,10 +77,12 @@ export const Select = forwardRef<typeof RadixSelect.Trigger, Props>(
           }}
           renderChildren={renderChildren}
         >
-          <RadixSelect.Value
-            placeholder="Select..."
-            className={styles.SelectValue}
-          />
+          <HStack justifyContent="space-between">
+            <RadixSelect.Value
+              placeholder="Select..."
+              className={styles.SelectValue}
+            />
+          </HStack>
         </FormField>
         <RadixSelect.Portal>
           <RadixSelect.Content
@@ -93,7 +105,7 @@ export const Select = forwardRef<typeof RadixSelect.Trigger, Props>(
                   borderColor: COLORS.WHITE,
                 }}
               >
-                {options.map(({ label, value, disabled }, i) => (
+                {options.map(({ label, value, icon, disabled }, i) => (
                   <Box
                     key={i}
                     cursor={disabled ? "default" : "pointer"}
@@ -122,13 +134,14 @@ export const Select = forwardRef<typeof RadixSelect.Trigger, Props>(
                     }}
                   >
                     <RadixSelect.Item value={value} disabled={disabled}>
-                      <Box px={4} py={3}>
+                      <HStack px={4} py={3} justifyContent="space-between">
                         {typeof label === "string" ? (
                           <RadixSelect.ItemText>{label}</RadixSelect.ItemText>
                         ) : (
                           label
                         )}
-                      </Box>
+                        {icon}
+                      </HStack>
                     </RadixSelect.Item>
                   </Box>
                 ))}
