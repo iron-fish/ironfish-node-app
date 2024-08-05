@@ -5,6 +5,7 @@ export type SplitPromise<T> = {
   resolve: PromiseResolve<T>;
   reject: PromiseReject;
 };
+
 export function splitPromise<T>(): SplitPromise<T> {
   const [promise, resolve, reject] = PromiseUtils.split<T>();
   return { promise, resolve, reject };

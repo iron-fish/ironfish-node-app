@@ -1,6 +1,6 @@
 import { formatTransactionsToNotes } from "./utils/formatTransactionsToNotes";
+import { resolveContentStream } from "../../utils/resolveContentStream";
 import { manager } from "../manager";
-import { resolveContentStream } from "../utils/resolveContentStream";
 
 type Params = {
   accountName: string;

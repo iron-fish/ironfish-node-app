@@ -1,12 +1,6 @@
 import { randomUUID } from "crypto";
 
-import {
-  CreateTransactionRequest,
-  CurrencyUtils,
-  AccountFormat,
-  encodeAccountImport,
-  RawTransactionSerde,
-} from "@ironfish/sdk";
+import { AccountFormat, encodeAccountImport } from "@ironfish/sdk";
 import { TransportError } from "@ledgerhq/errors";
 import TransportNodeHid from "@ledgerhq/hw-transport-node-hid";
 import IronfishApp, {
@@ -19,9 +13,9 @@ import { z } from "zod";
 
 import { ledgerStore } from "../../../stores/ledgerStore";
 import { PromiseQueue } from "../../../utils/promiseQueue";
+import { createUnsignedTransaction } from "../../../utils/transactions";
 import { handleImportAccount } from "../../accounts/handleImportAccount";
 import { logger } from "../../ironfish/logger";
-import { manager } from "../../manager";
 import { handleSendTransactionInput } from "../../transactions/handleSendTransaction";
 
 export const DERIVATION_PATH = "m/44'/1338'/0";
@@ -374,40 +368,16 @@ class LedgerManager {
   }: z.infer<typeof handleSendTransactionInput>) => {
     const returnValue = await this.taskQueue.enqueue(async () => {
       try {
-        const ironfish = await manager.getIronfish();
-        const rpcClient = await ironfish.rpcClient();
-
-        const nodeStatus = await rpcClient.node.getStatus();
-        const headSequence = nodeStatus.content.blockchain.head.sequence;
-
-        const params: CreateTransactionRequest = {
-          account: fromAccount,
-          outputs: [
-            {
-              publicAddress: toAccount,
-              amount: CurrencyUtils.encode(BigInt(amount)),
-              memo: memo ?? "",
-              assetId: assetId,
-            },
-          ],
-          fee: CurrencyUtils.encode(BigInt(fee)),
-          feeRate: null,
-          // @todo: Figure out what this number should be
-          expiration: headSequence + 1000,
-          confirmations: undefined,
-        };
-
-        const createResponse = await rpcClient.wallet.createTransaction(params);
-        const bytes = Buffer.from(createResponse.content.transaction, "hex");
-        const rawTx = RawTransactionSerde.deserialize(bytes);
-        const serializedRawTx = RawTransactionSerde.serialize(rawTx);
-        const builtTransactionResponse =
-          await rpcClient.wallet.buildTransaction({
-            rawTransaction: serializedRawTx.toString("hex"),
-            account: fromAccount,
-          });
+        const unsignedTransaction = await createUnsignedTransaction({
+          fromAccount,
+          toAccount,
+          assetId,
+          amount,
+          fee,
+          memo,
+        });
         const unsignedTransactionBuffer = Buffer.from(
-          builtTransactionResponse.content.unsignedTransaction,
+          unsignedTransaction,
           "hex",
         );
 

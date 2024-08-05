@@ -18,8 +18,8 @@ import { v4 as uuid } from "uuid";
 import { logger } from "./logger";
 import packageJson from "../../../package.json";
 import { userSettingsStore } from "../../stores/userSettingsStore";
+import { SplitPromise, splitPromise } from "../../utils/splitPromise";
 import { SnapshotManager } from "../snapshot/snapshotManager";
-import { SplitPromise, splitPromise } from "../utils";
 
 export class Ironfish {
   public snapshotManager: SnapshotManager = new SnapshotManager();
