@@ -2,6 +2,7 @@ import {
   CreateTransactionRequest,
   CurrencyUtils,
   RawTransactionSerde,
+  RpcClient,
 } from "@ironfish/sdk";
 import { z } from "zod";
 
@@ -29,20 +30,23 @@ export async function createUnsignedTransaction({
   const ironfish = await manager.getIronfish();
   const rpcClient = await ironfish.rpcClient();
 
-  const rawTx = await createRawTransaction({
-    fromAccount,
-    toAccount,
-    assetId,
-    amount,
-    fee,
-    memo,
-  });
+  const baseTx = await createTransaction(
+    {
+      fromAccount,
+      toAccount,
+      assetId,
+      amount,
+      fee,
+      memo,
+    },
+    rpcClient,
+  );
 
-  const serializedRawTx = RawTransactionSerde.serialize(rawTx);
   const builtTransactionResponse = await rpcClient.wallet.buildTransaction({
-    rawTransaction: serializedRawTx.toString("hex"),
+    rawTransaction: baseTx.content.transaction,
     account: fromAccount,
   });
+
   return builtTransactionResponse.content.unsignedTransaction;
 }
 
@@ -57,6 +61,32 @@ export async function createRawTransaction({
   const ironfish = await manager.getIronfish();
   const rpcClient = await ironfish.rpcClient();
 
+  const createResponse = await createTransaction(
+    {
+      fromAccount,
+      toAccount,
+      assetId,
+      amount,
+      fee,
+      memo,
+    },
+    rpcClient,
+  );
+  const bytes = Buffer.from(createResponse.content.transaction, "hex");
+  return RawTransactionSerde.deserialize(bytes);
+}
+
+function createTransaction(
+  {
+    fromAccount,
+    toAccount,
+    assetId,
+    amount,
+    fee,
+    memo,
+  }: CreateTransactionInput,
+  rpcClient: RpcClient,
+) {
   const params: CreateTransactionRequest = {
     account: fromAccount,
     outputs: [
@@ -73,7 +103,5 @@ export async function createRawTransaction({
     confirmations: undefined,
   };
 
-  const createResponse = await rpcClient.wallet.createTransaction(params);
-  const bytes = Buffer.from(createResponse.content.transaction, "hex");
-  return RawTransactionSerde.deserialize(bytes);
+  return rpcClient.wallet.createTransaction(params);
 }

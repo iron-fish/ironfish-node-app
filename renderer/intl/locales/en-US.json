@@ -237,6 +237,9 @@
   "FM2S9I": {
     "message": "Set up your node"
   },
+  "FazwRl": {
+    "message": "Try again"
+  },
   "Fn/FTS": {
     "message": "An error occurred while loading your transactions. If this happens several times, please let us know on Discord."
   },
@@ -305,6 +308,9 @@
   },
   "K3r6DQ": {
     "message": "Delete"
+  },
+  "KBiJ4L": {
+    "message": "To proceed with connecting your account to the Iron Fish Node app, please approve the request on your Ledger device."
   },
   "KGELcL": {
     "description": "Change as in the money that is returned to the sender after a transaction",
@@ -867,6 +873,9 @@
   },
   "y3LzSM": {
     "message": "Max Peers"
+  },
+  "y6sD8c": {
+    "message": "Approve on your Ledger"
   },
   "yLnnBl": {
     "message": "Transaction Submitted"

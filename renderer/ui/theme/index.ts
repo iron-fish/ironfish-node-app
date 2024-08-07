@@ -19,11 +19,9 @@ const theme = extendTheme({
     useSystemColorMode: true,
   },
   colors: {
-    muted: {
-      500: "black",
-      _dark: {
-        500: "white",
-      },
+    muted: COLORS.GRAY_MEDIUM,
+    _dark: {
+      muted: COLORS.DARK_MODE.GRAY_LIGHT,
     },
   },
   styles: {

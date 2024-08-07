@@ -1,11 +1,15 @@
 import { Heading, HStack, Flex, VStack, Text } from "@chakra-ui/react";
 import Image from "next/image";
+import { useMemo } from "react";
 import { IoMdCheckmark } from "react-icons/io";
 import { useIntl, defineMessages } from "react-intl";
 
 import { COLORS } from "@/ui/colors";
 
 import connectImage from "./assets/connect.svg";
+import connectedImage from "./assets/connected.svg";
+import openIronFishImage from "./assets/openIronFish.svg";
+import unlockImage from "./assets/unlock.svg";
 
 const messages = defineMessages({
   headingConnectLedger: {
@@ -43,10 +47,24 @@ export function StepConnect({
   isIronfishAppOpen,
 }: Props) {
   const { formatMessage } = useIntl();
+
+  const imageSrc = useMemo(() => {
+    if (!isLedgerConnected) {
+      return connectImage;
+    }
+    if (!isLedgerUnlocked) {
+      return unlockImage;
+    }
+    if (!isIronfishAppOpen) {
+      return openIronFishImage;
+    }
+    return connectedImage;
+  }, [isLedgerConnected, isLedgerUnlocked, isIronfishAppOpen]);
+
   return (
     <>
       <Heading mb={4}>{formatMessage(messages.headingConnectLedger)}</Heading>
-      <Image src={connectImage} alt="" />
+      <Image src={imageSrc} alt="" />
       <VStack alignItems="stretch" gap={2} mt={6}>
         <ListItem
           number="1"
