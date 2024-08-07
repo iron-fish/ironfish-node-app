@@ -49,7 +49,7 @@ const messages = defineMessages({
 
 export function AccountAssets({ accountName }: { accountName: string }) {
   const { formatMessage } = useIntl();
-  const { data } = trpcReact.getAccount.useQuery({
+  const { data: accountData } = trpcReact.getAccount.useQuery({
     name: accountName,
   });
 
@@ -63,10 +63,13 @@ export function AccountAssets({ accountName }: { accountName: string }) {
       },
     );
 
-  if (!data) {
+  if (!accountData) {
     // @todo: Error handling
     return null;
   }
+
+  const isAccountSendEligible =
+    !accountData.status.viewOnly || accountData.isLedger;
 
   return (
     <Box>
@@ -98,19 +101,19 @@ export function AccountAssets({ accountName }: { accountName: string }) {
                   $IRON
                 </Text>
                 <Heading as="span" color="black" mb={5}>
-                  {formatOre(data.balances.iron.confirmed)}
+                  {formatOre(accountData.balances.iron.confirmed)}
                 </Heading>
                 <HStack alignItems="stretch" justifyContent="center">
                   <ChakraLink
                     href={
-                      data.status.viewOnly
+                      !isAccountSendEligible
                         ? "#"
                         : `/send?account=${accountName}`
                     }
                   >
                     <Tooltip
                       label={
-                        data.status.viewOnly
+                        !isAccountSendEligible
                           ? formatMessage(messages.viewOnlySendDisabled)
                           : !isSynced.synced
                           ? formatMessage(messages.syncingSendDisabled)
@@ -122,7 +125,9 @@ export function AccountAssets({ accountName }: { accountName: string }) {
                         <PillButton
                           size="sm"
                           as="div"
-                          isDisabled={data.status.viewOnly || !isSynced.synced}
+                          isDisabled={
+                            !isAccountSendEligible || !isSynced.synced
+                          }
                         >
                           <ArrowSend transform="scale(0.8)" />
                           {formatMessage(messages.sendButton)}
@@ -141,7 +146,7 @@ export function AccountAssets({ accountName }: { accountName: string }) {
               <Image alt="" src={treasureChest} />
             </HStack>
 
-            {data.balances.custom.length > 0 && (
+            {accountData.balances.custom.length > 0 && (
               <Box
                 bg="rgba(255, 255, 255, 0.15)"
                 p={8}
@@ -155,10 +160,12 @@ export function AccountAssets({ accountName }: { accountName: string }) {
                 <Grid
                   gap={4}
                   templateColumns={
-                    data.balances.custom.length > 1 ? "repeat(2, 1fr)" : "1fr"
+                    accountData.balances.custom.length > 1
+                      ? "repeat(2, 1fr)"
+                      : "1fr"
                   }
                 >
-                  {data.balances.custom.map((balance) => {
+                  {accountData.balances.custom.map((balance) => {
                     const { confirmed, assetId, asset } = balance;
                     const majorString = CurrencyUtils.render(
                       confirmed,

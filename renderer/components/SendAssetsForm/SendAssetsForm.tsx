@@ -193,7 +193,8 @@ export function SendAssetsFormContent({
           !errors.memo &&
           !errors.amount &&
           !errors.toAccount &&
-          !errors.assetId,
+          !errors.assetId &&
+          !selectedAccount.isLedger,
       },
     );
 
@@ -253,7 +254,7 @@ export function SendAssetsFormContent({
             return;
           }
 
-          if (!estimatedFeesData) {
+          if (!estimatedFeesData && !selectedAccount.isLedger) {
             setError("root.serverError", {
               message:
                 estimatedFeesError?.message ??
@@ -262,7 +263,7 @@ export function SendAssetsFormContent({
             return;
           }
 
-          const fee = estimatedFeesData[data.fee];
+          const fee = estimatedFeesData?.[data.fee] || null;
 
           setPendingTransaction({
             fromAccount: data.fromAccount,
@@ -335,38 +336,40 @@ export function SendAssetsFormContent({
             )}
           />
 
-          <Select
-            {...register("fee")}
-            value={feeValue}
-            label={formatMessage(messages.feeLabel)}
-            options={[
-              {
-                label:
-                  formatMessage(messages.slowFeeLabel) +
-                  (estimatedFeesData
-                    ? ` (${formatOre(estimatedFeesData.slow)} $IRON)`
-                    : ""),
-                value: "slow",
-              },
-              {
-                label:
-                  formatMessage(messages.averageFeeLabel) +
-                  (estimatedFeesData
-                    ? ` (${formatOre(estimatedFeesData.average)} $IRON)`
-                    : ""),
-                value: "average",
-              },
-              {
-                label:
-                  formatMessage(messages.fastFeeLabel) +
-                  (estimatedFeesData
-                    ? ` (${formatOre(estimatedFeesData.fast)} $IRON)`
-                    : ""),
-                value: "fast",
-              },
-            ]}
-            error={errors.fee?.message}
-          />
+          {!selectedAccount.isLedger && (
+            <Select
+              {...register("fee")}
+              value={feeValue}
+              label={formatMessage(messages.feeLabel)}
+              options={[
+                {
+                  label:
+                    formatMessage(messages.slowFeeLabel) +
+                    (estimatedFeesData
+                      ? ` (${formatOre(estimatedFeesData.slow)} $IRON)`
+                      : ""),
+                  value: "slow",
+                },
+                {
+                  label:
+                    formatMessage(messages.averageFeeLabel) +
+                    (estimatedFeesData
+                      ? ` (${formatOre(estimatedFeesData.average)} $IRON)`
+                      : ""),
+                  value: "average",
+                },
+                {
+                  label:
+                    formatMessage(messages.fastFeeLabel) +
+                    (estimatedFeesData
+                      ? ` (${formatOre(estimatedFeesData.fast)} $IRON)`
+                      : ""),
+                  value: "fast",
+                },
+              ]}
+              error={errors.fee?.message}
+            />
+          )}
 
           <Controller
             name="memo"

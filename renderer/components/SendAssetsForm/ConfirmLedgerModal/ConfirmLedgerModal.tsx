@@ -14,7 +14,9 @@ import { PillButton } from "@/ui/PillButton/PillButton";
 
 import { StepConfirm } from "./Steps/StepConfirm";
 import { StepConnect } from "./Steps/StepConnect";
-import { ReviewTransaction } from "../ReviewTransaction/ReviewTransaction";
+import { ReviewTransaction } from "../SharedConfirmSteps/ReviewTransaction";
+import { SubmissionError } from "../SharedConfirmSteps/SubmissionError";
+import { TransactionSubmitted } from "../SharedConfirmSteps/TransactionSubmitted";
 import { TransactionData } from "../transactionSchema";
 
 const messages = defineMessages({
@@ -65,7 +67,11 @@ export function ConfirmLedgerModal({
   const [_statusError, setStatusError] = useState("");
 
   const [step, setStep] = useState<
-    "IDLE" | "CONNECT_LEDGER" | "CONFIRM_TRANSACTION" | "TRANSACTION_SUBMITTED"
+    | "IDLE"
+    | "CONNECT_LEDGER"
+    | "CONFIRM_TRANSACTION"
+    | "TRANSACTION_SUBMITTED"
+    | "SUBMISSION_ERROR"
   >("IDLE");
 
   trpcReact.ledgerStatus.useSubscription(undefined, {
@@ -80,15 +86,15 @@ export function ConfirmLedgerModal({
   const {
     mutate: submitTransaction,
     data: submittedTransactionData,
-    isIdle,
     isLoading,
-    isError: _isError,
-    isSuccess: _isSuccess,
     reset,
-    error: error,
+    error,
   } = trpcReact.submitLedgerTransaction.useMutation({
     onSuccess: () => {
       setStep("TRANSACTION_SUBMITTED");
+    },
+    onError: () => {
+      setStep("SUBMISSION_ERROR");
     },
   });
 
@@ -105,11 +111,6 @@ export function ConfirmLedgerModal({
     reset();
     onCancel();
   }, [onCancel, reset]);
-
-  // @todo: Remove this once the backend is submitting the signed transaction to the network
-  if (!isIdle) {
-    console.log({ submittedTransactionData, error });
-  }
 
   return (
     <Modal isOpen={isOpen} onClose={handleClose}>
@@ -178,6 +179,24 @@ export function ConfirmLedgerModal({
               </PillButton>
             </ModalFooter>
           </>
+        )}
+        {step === "TRANSACTION_SUBMITTED" && (
+          <TransactionSubmitted
+            fromAccount={selectedAccount.name}
+            transactionHash={submittedTransactionData?.hash ?? ""}
+            handleClose={handleClose}
+          />
+        )}
+        {step === "SUBMISSION_ERROR" && (
+          <SubmissionError
+            errorMessage={error?.message ?? ""}
+            isLoading={isLoading}
+            handleClose={handleClose}
+            handleSubmit={() => {
+              submitTransaction(transactionData);
+              setStep("CONFIRM_TRANSACTION");
+            }}
+          />
         )}
       </ModalContent>
     </Modal>

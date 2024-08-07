@@ -12,7 +12,7 @@ export const createTransactionInput = z.object({
   toAccount: z.string(),
   assetId: z.string(),
   amount: z.string(),
-  fee: z.number(),
+  fee: z.number().nullable(),
   memo: z.string().optional(),
 });
 
@@ -67,7 +67,7 @@ export async function createRawTransaction({
         assetId: assetId,
       },
     ],
-    fee: CurrencyUtils.encode(BigInt(fee)),
+    fee: fee ? CurrencyUtils.encode(BigInt(fee)) : null,
     feeRate: null,
     expiration: undefined,
     confirmations: undefined,

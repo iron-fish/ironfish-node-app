@@ -9,7 +9,7 @@ export const handleSendTransactionInput = z.object({
   toAccount: z.string(),
   assetId: z.string(),
   amount: z.string(),
-  fee: z.number(),
+  fee: z.number().nullable(),
   memo: z.string().optional(),
 });
 
