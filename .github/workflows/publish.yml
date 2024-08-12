@@ -153,7 +153,7 @@ jobs:
             ' dist/latest-mac.yml
 
       - name: Upload latest-mac-arm64.yml
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: latest-mac-arm64.yml
           path: dist/latest-mac.yml
@@ -234,7 +234,7 @@ jobs:
             ' dist/latest-mac.yml
 
       - name: Upload latest-mac-x64.yml
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: latest-mac-x64.yml
           path: dist/latest-mac.yml
@@ -259,13 +259,13 @@ jobs:
           echo current-version=$CURRENTVERSION >> "$GITHUB_OUTPUT"
 
       - name: Download latest-mac-arm64.yml
-        uses: actions/download-artifact@v3
+        uses: actions/download-artifact@v4
         with:
           name: latest-mac-arm64.yml
           path: latest-mac-arm64
 
       - name: Download latest-mac-x64.yml
-        uses: actions/download-artifact@v3
+        uses: actions/download-artifact@v4
         with:
           name: latest-mac-x64.yml
           path: latest-mac-x64
