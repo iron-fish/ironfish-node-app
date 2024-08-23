@@ -34,6 +34,11 @@ export const checkboxTheme = defineMultiStyleConfig({
           },
         },
 
+        _disabled: {
+          borderColor: COLORS.GRAY_MEDIUM,
+          bg: COLORS.GRAY_LIGHT,
+        },
+
         _dark: {
           borderColor: COLORS.WHITE,
           bg: COLORS.DARK_MODE.GRAY_MEDIUM,

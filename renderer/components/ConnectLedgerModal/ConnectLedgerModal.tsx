@@ -5,7 +5,7 @@ import {
   ModalFooter,
   ModalBody,
 } from "@chakra-ui/react";
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { useIntl, defineMessages } from "react-intl";
 
 import { trpcReact } from "@/providers/TRPCProvider";
@@ -17,21 +17,6 @@ import { StepConnect } from "./Steps/StepConnect";
 import { StepError } from "./Steps/StepError";
 
 const messages = defineMessages({
-  headingConnectLedger: {
-    defaultMessage: "Connect your Ledger",
-  },
-  plugDevice: {
-    defaultMessage: "Plug your ledger device directly into your computer",
-  },
-  unlockLedger: {
-    defaultMessage: "Unlock your Ledger",
-  },
-  openApp: {
-    defaultMessage: "Open the Iron Fish app",
-  },
-  connectAccount: {
-    defaultMessage: "Connect account",
-  },
   cancel: {
     defaultMessage: "Cancel",
   },
@@ -102,6 +87,24 @@ export function ConnectLedgerModal({
       setStep("ERROR");
     },
   });
+  const {
+    isLoading: isMarkingAsLedger,
+    error: markAsLedgerError,
+    mutate: markAccountAsLedger,
+  } = trpcReact.markAccountAsLedger.useMutation({
+    onSuccess: () => {
+      onClose();
+    },
+    onError: () => {
+      setStep("ERROR");
+    },
+  });
+
+  const { data: userAccounts } = trpcReact.getAccounts.useQuery();
+  const existingLedgerAccount = useMemo(() => {
+    return userAccounts?.find((account) => account.address === publicAddress);
+  }, [publicAddress, userAccounts]);
+  const isLedgerAccountImportedAndFlagged = !!existingLedgerAccount?.isLedger;
 
   useEffect(() => {
     if (
@@ -130,13 +133,15 @@ export function ConnectLedgerModal({
               deviceName={deviceName}
               isConfirmed={isConfirmed}
               onConfirmChange={setIsConfirmed}
+              isImported={isLedgerAccountImportedAndFlagged}
             />
           )}
           {step === "APPROVE" && <StepApprove />}
           {step === "ERROR" && (
             <StepError
               errorMessage={
-                importError?.message ??
+                importError?.message ||
+                markAsLedgerError?.message ||
                 "An unknown error occured. Please try again."
               }
             />
@@ -154,7 +159,8 @@ export function ConnectLedgerModal({
               !isLedgerUnlocked ||
               !isIronfishAppOpen ||
               (step === "SELECT_ACCOUNT" && !isConfirmed) ||
-              isImporting
+              isImporting ||
+              isMarkingAsLedger
             }
             onClick={() => {
               if (step === "ERROR") {
@@ -168,8 +174,12 @@ export function ConnectLedgerModal({
               }
 
               if (step === "SELECT_ACCOUNT") {
-                importLedgerAccount();
-                setStep("APPROVE");
+                if (existingLedgerAccount) {
+                  markAccountAsLedger({ publicAddress });
+                } else {
+                  importLedgerAccount();
+                  setStep("APPROVE");
+                }
               }
             }}
           >

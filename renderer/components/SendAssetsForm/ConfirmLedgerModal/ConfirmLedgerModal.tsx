@@ -83,6 +83,15 @@ export function ConfirmLedgerModal({
     },
   });
 
+  useEffect(() => {
+    if (
+      !["CONNECT_LEDGER", "ERROR"].includes(step) &&
+      (!isLedgerConnected || !isLedgerUnlocked || !isIronfishAppOpen)
+    ) {
+      setStep("CONNECT_LEDGER");
+    }
+  }, [step, isLedgerConnected, isLedgerUnlocked, isIronfishAppOpen]);
+
   const {
     mutate: submitTransaction,
     data: submittedTransactionData,
@@ -98,6 +107,9 @@ export function ConfirmLedgerModal({
     },
   });
 
+  const { mutate: cancelTransaction } =
+    trpcReact.cancelSubmitLedgerTransaction.useMutation();
+
   useEffect(() => {
     if (
       step === "CONFIRM_TRANSACTION" &&
@@ -108,9 +120,12 @@ export function ConfirmLedgerModal({
   }, [isLedgerConnected, isLedgerUnlocked, isIronfishAppOpen, step]);
 
   const handleClose = useCallback(() => {
+    if (step === "CONFIRM_TRANSACTION") {
+      cancelTransaction();
+    }
     reset();
     onCancel();
-  }, [onCancel, reset]);
+  }, [onCancel, reset, step, cancelTransaction]);
 
   return (
     <Modal isOpen={isOpen} onClose={handleClose}>

@@ -24,15 +24,6 @@ const messages = defineMessages({
   openApp: {
     defaultMessage: "Open the Iron Fish app",
   },
-  connectAccount: {
-    defaultMessage: "Connect account",
-  },
-  cancel: {
-    defaultMessage: "Cancel",
-  },
-  continue: {
-    defaultMessage: "Continue",
-  },
 });
 
 type Props = {
