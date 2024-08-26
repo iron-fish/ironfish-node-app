@@ -8,6 +8,7 @@ import IronfishApp, {
   ResponseAddress,
   ResponseViewKey,
   ResponseProofGenKey,
+  ResponseSign,
 } from "@zondax/ledger-ironfish";
 import { z } from "zod";
 
@@ -73,6 +74,7 @@ class LedgerManager {
   transport: Transport | null = null;
   subscribers: Map<string, (status: ConnectionStatus) => void> = new Map();
   connectionStatus: ConnectionStatus = { ...EMPTY_CONNECTION_STATUS };
+  signTransactionPromise: Promise<ResponseSign> | null = null;
   taskQueue = new PromiseQueue();
 
   private connect = async (): ManagerResponse<Transport> => {
@@ -344,7 +346,7 @@ class LedgerManager {
           name: accountName,
           account: encoded,
         });
-        await ledgerStore.setIsLedgerAccount(publicAddress, true);
+        await this.markAccountAsLedger(publicAddress);
 
         return accountImport;
       } catch (err) {
@@ -357,6 +359,10 @@ class LedgerManager {
     });
 
     return returnValue;
+  };
+
+  markAccountAsLedger = async (publicAddress: string) => {
+    await ledgerStore.setIsLedgerAccount(publicAddress, true);
   };
 
   submitTransaction = async ({
@@ -401,10 +407,17 @@ class LedgerManager {
           throw new Error(ironfishAppReponse.error.message);
         }
 
-        const signResponse = await ironfishAppReponse.data.sign(
+        this.signTransactionPromise = ironfishAppReponse.data.sign(
           DERIVATION_PATH,
           unsignedTransactionBuffer,
         );
+
+        const signResponse = await this.signTransactionPromise;
+
+        if (!this.signTransactionPromise) {
+          logger.info("Transaction was cancelled by the client");
+          return null;
+        }
 
         if (!signResponse.signature) {
           throw new Error(signResponse.errorMessage || "No signature returned");
@@ -435,6 +448,10 @@ class LedgerManager {
 
     return returnValue;
   };
+
+  cancelTransaction() {
+    this.signTransactionPromise = null;
+  }
 }
 
 export const ledgerManager = new LedgerManager();

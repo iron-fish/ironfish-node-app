@@ -193,8 +193,7 @@ export function SendAssetsFormContent({
           !errors.memo &&
           !errors.amount &&
           !errors.toAccount &&
-          !errors.assetId &&
-          !selectedAccount.isLedger,
+          !errors.assetId,
       },
     );
 
@@ -336,40 +335,38 @@ export function SendAssetsFormContent({
             )}
           />
 
-          {!selectedAccount.isLedger && (
-            <Select
-              {...register("fee")}
-              value={feeValue}
-              label={formatMessage(messages.feeLabel)}
-              options={[
-                {
-                  label:
-                    formatMessage(messages.slowFeeLabel) +
-                    (estimatedFeesData
-                      ? ` (${formatOre(estimatedFeesData.slow)} $IRON)`
-                      : ""),
-                  value: "slow",
-                },
-                {
-                  label:
-                    formatMessage(messages.averageFeeLabel) +
-                    (estimatedFeesData
-                      ? ` (${formatOre(estimatedFeesData.average)} $IRON)`
-                      : ""),
-                  value: "average",
-                },
-                {
-                  label:
-                    formatMessage(messages.fastFeeLabel) +
-                    (estimatedFeesData
-                      ? ` (${formatOre(estimatedFeesData.fast)} $IRON)`
-                      : ""),
-                  value: "fast",
-                },
-              ]}
-              error={errors.fee?.message}
-            />
-          )}
+          <Select
+            {...register("fee")}
+            value={feeValue}
+            label={formatMessage(messages.feeLabel)}
+            options={[
+              {
+                label:
+                  formatMessage(messages.slowFeeLabel) +
+                  (estimatedFeesData
+                    ? ` (${formatOre(estimatedFeesData.slow)} $IRON)`
+                    : ""),
+                value: "slow",
+              },
+              {
+                label:
+                  formatMessage(messages.averageFeeLabel) +
+                  (estimatedFeesData
+                    ? ` (${formatOre(estimatedFeesData.average)} $IRON)`
+                    : ""),
+                value: "average",
+              },
+              {
+                label:
+                  formatMessage(messages.fastFeeLabel) +
+                  (estimatedFeesData
+                    ? ` (${formatOre(estimatedFeesData.fast)} $IRON)`
+                    : ""),
+                value: "fast",
+              },
+            ]}
+            error={errors.fee?.message}
+          />
 
           <Controller
             name="memo"

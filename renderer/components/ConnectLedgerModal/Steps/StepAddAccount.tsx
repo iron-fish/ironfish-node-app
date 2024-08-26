@@ -7,6 +7,7 @@ import {
   Heading,
   HStack,
   Text,
+  Tooltip,
 } from "@chakra-ui/react";
 import Image from "next/image";
 import { defineMessages, useIntl } from "react-intl";
@@ -24,6 +25,9 @@ const messages = defineMessages({
     defaultMessage:
       "One last step! Confirm the account you'd like to connect to the Node App.",
   },
+  alreadyImported: {
+    defaultMessage: "This Ledger account has already been imported",
+  },
 });
 
 type Props = {
@@ -31,6 +35,7 @@ type Props = {
   publicAddress: string;
   isConfirmed: boolean;
   onConfirmChange: (value: boolean) => void;
+  isImported: boolean;
 };
 
 export function StepAddAccount({
@@ -38,6 +43,7 @@ export function StepAddAccount({
   publicAddress,
   isConfirmed,
   onConfirmChange,
+  isImported,
 }: Props) {
   const { formatMessage } = useIntl();
 
@@ -49,7 +55,7 @@ export function StepAddAccount({
         fontSize="medium"
         color={COLORS.GRAY_MEDIUM}
         _dark={{
-          color: COLORS.DARK_MODE.GRAY_MEDIUM,
+          color: COLORS.DARK_MODE.GRAY_LIGHT,
         }}
       >
         {formatMessage(messages.description)}
@@ -61,10 +67,18 @@ export function StepAddAccount({
       >
         <HStack py={5} px={4} justifyContent="space-between">
           <Text fontSize="medium">{deviceName}</Text>
-          <Checkbox
-            isChecked={isConfirmed}
-            onChange={(e) => onConfirmChange(e.target.checked)}
-          />
+          <Tooltip
+            label={isImported ? formatMessage(messages.alreadyImported) : null}
+            placement="top"
+          >
+            <Box>
+              <Checkbox
+                isChecked={isConfirmed}
+                onChange={(e) => onConfirmChange(e.target.checked)}
+                disabled={isImported}
+              />
+            </Box>
+          </Tooltip>
         </HStack>
 
         <Box borderBottom="1px solid black" />
@@ -95,7 +109,7 @@ export function StepAddAccount({
                 wordBreak="break-all"
                 color={COLORS.GRAY_MEDIUM}
                 _dark={{
-                  color: COLORS.DARK_MODE.GRAY_MEDIUM,
+                  color: COLORS.DARK_MODE.GRAY_LIGHT,
                 }}
               >
                 {publicAddress}
