@@ -62,7 +62,9 @@ function SingleContactContent({ address }: { address: string }) {
     address: address,
   });
 
-  if (!transactionsData || !contactData) {
+  const { data: networkInfo } = trpcReact.getNetworkInfo.useQuery();
+
+  if (!transactionsData || !contactData || !networkInfo) {
     // @todo: Error handling
     return <SingleContactLoader />;
   }
@@ -102,6 +104,7 @@ function SingleContactContent({ address }: { address: string }) {
           <TabPanels>
             <TabPanel p={0}>
               <NotesList
+                networkId={networkInfo.networkId}
                 asTransactions
                 notes={transactionsData}
                 heading={formatMessage(messages.transactions)}

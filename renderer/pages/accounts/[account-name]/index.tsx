@@ -79,6 +79,8 @@ function AccountOverviewContent({ accountName }: { accountName: string }) {
     name: accountName,
   });
 
+  const { data: networkInfo } = trpcReact.getNetworkInfo.useQuery();
+
   const {
     data: transactionsData,
     isLoading,
@@ -112,7 +114,7 @@ function AccountOverviewContent({ accountName }: { accountName: string }) {
     return chip;
   }, [accountData?.isLedger, accountData?.status.viewOnly]);
 
-  if (!accountData) {
+  if (!accountData || !networkInfo) {
     // @todo: Error handling
     return null;
   }
@@ -147,6 +149,7 @@ function AccountOverviewContent({ accountName }: { accountName: string }) {
             <TabPanel p={0}>
               <AccountAssets accountName={accountName} />
               <NotesList
+                networkId={networkInfo.networkId}
                 asTransactions
                 isLoading={isLoading}
                 isError={isError}
