@@ -96,11 +96,11 @@ export function UserAccountsList() {
   const [sortOption, setSortOption] = useState<SortOption>(sortOptions[2]);
 
   return (
-    <VStack>
+    <VStack gap={4}>
       {nodeStatusData?.blockchain.synced === false ? (
         <ChainSyncingMessage mb={4} />
       ) : null}
-      <Grid w="100%" templateColumns="3fr 1fr" gap={4} mb={4}>
+      <Grid w="100%" templateColumns="3fr 1fr" gap={4}>
         <GridItem>
           <SearchInput onChange={(e) => setSearchInput(e.target.value)} />
         </GridItem>
