@@ -10,6 +10,7 @@ import { PillButton } from "@/ui/PillButton/PillButton";
 import { LogoLg } from "@/ui/SVGs/LogoLg";
 import { NodeAppLogo } from "@/ui/SVGs/NodeAppLogo";
 
+import styles from "./snapshot-download-prompt.module.css";
 import { SnapshotUpdate } from "../../../../shared/types";
 
 type ProgressSteps = "prompt" | "download" | "complete";
@@ -147,8 +148,11 @@ function DownloadProgress({ onSuccess }: { onSuccess: () => void }) {
       {snapshotState?.step === "download" && (
         <Box>
           <Heading mb={8}>{formatMessage(messages.downloadInProgress)}</Heading>
-          <Text mb={8}>{formatMessage(messages.downloadDescription)}</Text>
+          <Text color="muted" mb={4}>
+            {formatMessage(messages.downloadDescription)}
+          </Text>
           <Progress
+            className={styles.SnapshotDownloadProgress}
             value={percent(snapshotState.currBytes, snapshotState.totalBytes)}
           />
           <HStack mt={4}>
@@ -164,8 +168,11 @@ function DownloadProgress({ onSuccess }: { onSuccess: () => void }) {
       {snapshotState?.step === "unzip" && (
         <Box>
           <Heading mb={8}>{formatMessage(messages.unzipping)}</Heading>
-          <Text mb={8}>{formatMessage(messages.redirectDescription)}</Text>
+          <Text color="muted" mb={4}>
+            {formatMessage(messages.redirectDescription)}
+          </Text>
           <Progress
+            className={styles.SnapshotDownloadProgress}
             value={percent(
               snapshotState.currEntries,
               snapshotState.totalEntries,
