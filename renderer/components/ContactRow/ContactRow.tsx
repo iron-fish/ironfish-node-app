@@ -29,8 +29,8 @@ export function ContactHeadings() {
   return (
     <Grid
       templateColumns={{
-        base: `1fr 3fr auto`,
-        md: `1fr 3fr auto 55px`,
+        base: `3fr 3fr 1fr`,
+        md: `3fr 3fr 1fr 55px`,
       }}
       opacity="0.8"
       mb={4}
@@ -38,7 +38,7 @@ export function ContactHeadings() {
       <GridItem pl={8}>
         <Text as="span">{formatMessage(messages.contact)}</Text>
       </GridItem>
-      <GridItem>
+      <GridItem pl={{ base: 0, lg: 8 }}>
         <Text as="span">{formatMessage(messages.address)}</Text>
       </GridItem>
     </Grid>
@@ -67,8 +67,8 @@ export function ContactRow({ name, address, order }: Props) {
       >
         <Grid
           templateColumns={{
-            base: `1fr 3fr auto`,
-            md: `1fr 3fr auto 55px`,
+            base: `3fr 3fr 1fr`,
+            md: `3fr 3fr 1fr 55px`,
           }}
           w="100%"
           gap={4}
