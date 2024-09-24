@@ -39,15 +39,19 @@ function SingleTransactionContent({
     name: accountName,
   });
 
+  const { data: networkInfo } = trpcReact.getNetworkInfo.useQuery();
+
   const { data: transactionData } = trpcReact.getTransaction.useQuery({
     accountName,
     transactionHash,
   });
 
   const isChainportTransaction =
-    !!transactionData && isChainportTx(transactionData);
+    !!transactionData &&
+    !!networkInfo &&
+    isChainportTx(networkInfo.networkId, transactionData);
 
-  if (!accountData) {
+  if (!accountData || !networkInfo) {
     return null;
   }
 
@@ -122,12 +126,14 @@ function SingleTransactionContent({
         />
       )}
       <NotesList
+        networkId={networkInfo.networkId}
         heading={formatMessage(messages.transactionNotes)}
         notes={showSelfSendNotes ? regularNotes : transactionData.notes}
       />
       {showSelfSendNotes && (
         <Box mt={10}>
           <NotesList
+            networkId={networkInfo.networkId}
             heading={formatMessage(messages.change)}
             notes={selfSendNotes}
           />
