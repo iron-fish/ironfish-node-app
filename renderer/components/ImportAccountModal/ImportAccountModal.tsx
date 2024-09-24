@@ -6,6 +6,7 @@ import {
   TabPanel,
   Box,
   Modal,
+  ModalCloseButton,
   ModalOverlay,
   ModalContent,
   ModalBody,
@@ -96,6 +97,7 @@ export function ImportAccountModal({ isOpen, onClose }: Props) {
     <Modal isOpen={isOpen} onClose={handleClose}>
       <ModalOverlay />
       <ModalContent maxW="100%" width="700px">
+        <ModalCloseButton />
         <ModalBody px={16} pt={16} pb={8}>
           <Heading fontSize="2xl" mb={4}>
             {formatMessage(messages.importAccount)}
