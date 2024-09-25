@@ -391,6 +391,9 @@
   "O+Q7TL": {
     "message": "Submitted Sequence"
   },
+  "OC6jXV": {
+    "message": "Transaction Expiration Delta"
+  },
   "OEEl0G": {
     "message": "Receiving"
   },
@@ -610,6 +613,9 @@
   "dJMieh": {
     "message": "Connect account"
   },
+  "dJcfo0": {
+    "message": "Blocks Per Message"
+  },
   "dM+p3/": {
     "message": "From"
   },
@@ -819,9 +825,6 @@
   },
   "tzMNF3": {
     "message": "Status"
-  },
-  "uCgp+K": {
-    "message": "Blocks Per message"
   },
   "uH8ffi": {
     "message": "Please approve the transaction on your device."

@@ -35,6 +35,7 @@ const settingsSchema = z.object({
   nodeWorkers: z.number(),
   blocksPerMessage: z.number(),
   enableTelemetry: z.boolean(),
+  transactionExpirationDelta: z.number(),
 });
 
 const messages = defineMessages({
@@ -60,7 +61,10 @@ const messages = defineMessages({
     defaultMessage: "Node Workers",
   },
   blocksPerMessageLabel: {
-    defaultMessage: "Blocks Per message",
+    defaultMessage: "Blocks Per Message",
+  },
+  transactionExpirationDeltaLabel: {
+    defaultMessage: "Transaction Expiration Delta",
   },
   enableTelemetryLabel: {
     defaultMessage: "Telemetry enabled",
@@ -85,6 +89,7 @@ function NodeSettingsContent({
   initialNodeWorkers,
   initialBlocksPerMessage,
   initialEnableTelemetry,
+  initialTransactionExpirationDelta,
 }: {
   initialNodeName?: string;
   initialBlockGraffiti?: string;
@@ -93,6 +98,7 @@ function NodeSettingsContent({
   initialNodeWorkers?: number;
   initialBlocksPerMessage?: number;
   initialEnableTelemetry?: boolean;
+  initialTransactionExpirationDelta?: number;
 }) {
   const { formatMessage } = useIntl();
   const router = useRouter();
@@ -121,6 +127,7 @@ function NodeSettingsContent({
       nodeWorkers: initialNodeWorkers,
       blocksPerMessage: initialBlocksPerMessage,
       enableTelemetry: initialEnableTelemetry,
+      transactionExpirationDelta: initialTransactionExpirationDelta,
     },
   });
 
@@ -179,6 +186,16 @@ function NodeSettingsContent({
               valueAsNumber: true,
             })}
             error={errors.blocksPerMessage?.message}
+          />
+        </GridItem>
+        <GridItem>
+          <TextInput
+            label={formatMessage(messages.transactionExpirationDeltaLabel)}
+            type="number"
+            {...register("transactionExpirationDelta", {
+              valueAsNumber: true,
+            })}
+            error={errors.transactionExpirationDelta?.message}
           />
         </GridItem>
       </Grid>
@@ -319,6 +336,7 @@ export function NodeSettings() {
       initialNodeWorkers={data?.nodeWorkers}
       initialBlocksPerMessage={data?.blocksPerMessage}
       initialEnableTelemetry={data?.enableTelemetry}
+      initialTransactionExpirationDelta={data?.transactionExpirationDelta}
     />
   );
 }
