@@ -173,11 +173,18 @@ export function NodeOverview() {
         <Heading as="h2" fontSize="2xl" mb={8}>
           {formatMessage(messages.connectedPeers)}
         </Heading>
-        <Grid templateColumns="repeat(4, 1fr)" opacity="0.8" mb={4}>
-          <GridItem pl={8}>
+        <Grid
+          mb={4}
+          mr={1}
+          px={8}
+          templateColumns="repeat(4, 1fr)"
+          gap={4}
+          opacity="0.8"
+        >
+          <GridItem>
             <Text as="span">{formatMessage(messages.peerId)}</Text>
           </GridItem>
-          <GridItem pl={8}>
+          <GridItem>
             <Text as="span">{formatMessage(messages.name)}</Text>
           </GridItem>
           <GridItem>
