@@ -34,7 +34,6 @@ export function AccountSettings({ accountName }: Props) {
   const { formatMessage } = useIntl();
 
   const [newName, setNewName] = useState(accountName);
-  const [hasChangedName, setHasChangedName] = useState(false);
 
   const { data: isSyncedData } = trpcReact.isAccountSynced.useQuery(
     {
@@ -65,7 +64,6 @@ export function AccountSettings({ accountName }: Props) {
           message: `Renamed account ${accountName} to ${newName}`,
           duration: 5000,
         });
-        setHasChangedName(false);
       },
     });
 
@@ -84,16 +82,13 @@ export function AccountSettings({ accountName }: Props) {
           value={newName}
           onChange={(e) => {
             setNewName(e.target.value);
-            if (!hasChangedName) {
-              setHasChangedName(true);
-            }
           }}
           label={formatMessage(messages.accountName)}
           error={hasValidName ? undefined : formatMessage(messages.enterName)}
         />
         <HStack>
           <PillButton
-            isDisabled={!hasValidName || !hasChangedName}
+            isDisabled={!hasValidName || newName === accountName}
             height="60px"
             px={8}
             onClick={() =>
