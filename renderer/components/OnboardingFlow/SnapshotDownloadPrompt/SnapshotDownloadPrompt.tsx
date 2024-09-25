@@ -175,14 +175,16 @@ function DownloadProgress({ onSuccess }: { onSuccess: () => void }) {
               snapshotState.totalEntries,
             )}
           />
-          <Text textAlign="right">
-            {formatMessage(messages.unzipProgress, {
-              progress: percent(
-                snapshotState.currEntries,
-                snapshotState.totalEntries,
-              ),
-            })}
-          </Text>
+          <HStack mt={4}>
+            <Text fontFamily={"monospace"} fontSize={"small"}>
+              {formatMessage(messages.unzipProgress, {
+                progress: percent(
+                  snapshotState.currEntries,
+                  snapshotState.totalEntries,
+                ),
+              })}
+            </Text>
+          </HStack>
         </Box>
       )}
       {error && (
