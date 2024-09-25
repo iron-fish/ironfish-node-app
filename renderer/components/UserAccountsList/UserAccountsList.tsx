@@ -11,7 +11,7 @@ import { useState } from "react";
 import { defineMessages, useIntl } from "react-intl";
 
 import { TRPCRouterOutputs, trpcReact } from "@/providers/TRPCProvider";
-import { gradientOptions } from "@/ui/ShadowCard/ShadowCard";
+import { getAddressGradientColor } from "@/utils/gradientUtils";
 import { parseOre } from "@/utils/ironUtils";
 
 import { AccountRow } from "../AccountRow/AccountRow";
@@ -80,12 +80,6 @@ const sortOptions: Array<SortOption> = [
   },
 ];
 
-function getGradientColor(address: string) {
-  const bigAddress = BigInt(`0x${address}`);
-  const bigLength = BigInt(gradientOptions.length);
-  return gradientOptions[Number(bigAddress % bigLength)];
-}
-
 export function UserAccountsList() {
   const { formatMessage } = useIntl();
   const [searchInput, setSearchInput] = useState("");
@@ -138,7 +132,7 @@ export function UserAccountsList() {
           return (
             <AccountRow
               key={account.name}
-              color={getGradientColor(account.address)}
+              color={getAddressGradientColor(account.address)}
               name={account.name}
               balance={account.balances.iron.confirmed}
               address={account.address}

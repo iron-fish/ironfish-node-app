@@ -21,6 +21,10 @@ import { ShadowCard } from "@/ui/ShadowCard/ShadowCard";
 import { ArrowReceive } from "@/ui/SVGs/ArrowReceive";
 import { ArrowSend } from "@/ui/SVGs/ArrowSend";
 import { CurrencyUtils } from "@/utils/currency";
+import {
+  getAddressGradientColor,
+  getGradientObject,
+} from "@/utils/gradientUtils";
 import { formatOre } from "@/utils/ironUtils";
 
 import { AccountSyncingProgress } from "../AccountSyncingProgress/AccountSyncingProgress";
@@ -71,13 +75,17 @@ export function AccountAssets({ accountName }: { accountName: string }) {
   const isAccountSendEligible =
     !accountData.status.viewOnly || accountData.isLedger;
 
+  const cardBg = getGradientObject(
+    getAddressGradientColor(accountData.address),
+  ).to;
+
   return (
     <Box>
       <LightMode>
         <ShadowCard
           contentContainerProps={{
             p: 0,
-            bg: COLORS.VIOLET,
+            bg: cardBg,
           }}
           mb={10}
         >

@@ -15,10 +15,11 @@ import { trpcReact } from "@/providers/TRPCProvider";
 import { ChakraLink } from "@/ui/ChakraLink/ChakraLink";
 import { COLORS } from "@/ui/colors";
 import { PillButton } from "@/ui/PillButton/PillButton";
-import { ShadowCard, type GradientOptions } from "@/ui/ShadowCard/ShadowCard";
+import { ShadowCard } from "@/ui/ShadowCard/ShadowCard";
 import { ArrowReceive } from "@/ui/SVGs/ArrowReceive";
 import { ArrowSend } from "@/ui/SVGs/ArrowSend";
 import { LogoSm } from "@/ui/SVGs/LogoSm";
+import type { GradientColors } from "@/utils/gradientUtils";
 import { formatOre } from "@/utils/ironUtils";
 
 import { AccountSyncingProgress } from "../AccountSyncingProgress/AccountSyncingProgress";
@@ -43,7 +44,7 @@ const messages = defineMessages({
 });
 
 type AccountRowProps = {
-  color: GradientOptions;
+  color: GradientColors;
   name: string;
   balance: string;
   address: string;
