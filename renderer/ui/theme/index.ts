@@ -6,6 +6,7 @@ import { checkboxTheme } from "./styleConfigs/checkbox";
 import { inputTheme } from "./styleConfigs/input";
 import { menuTheme } from "./styleConfigs/menu";
 import { modalTheme } from "./styleConfigs/modal";
+import { progressTheme } from "./styleConfigs/progress";
 import { switchTheme } from "./styleConfigs/switch";
 import { tabsTheme } from "./styleConfigs/tabs";
 import { COLORS } from "../colors";
@@ -55,16 +56,7 @@ const theme = extendTheme({
       },
     }),
     Tabs: tabsTheme,
-    Progress: {
-      baseStyle: {
-        track: {
-          borderRadius: "full",
-        },
-        filledTrack: {
-          bg: "#2C72FF",
-        },
-      },
-    },
+    Progress: progressTheme,
     Switch: switchTheme,
     Menu: menuTheme,
     Checkbox: checkboxTheme,
