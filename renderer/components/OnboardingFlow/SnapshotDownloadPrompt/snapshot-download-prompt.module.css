@@ -1,4 +1,0 @@
-/* Needed to access child (ProgressFill) of Chakra Progress component */
-.SnapshotDownloadProgress > :first-child {
-    background-color: #2C72FF;
-}

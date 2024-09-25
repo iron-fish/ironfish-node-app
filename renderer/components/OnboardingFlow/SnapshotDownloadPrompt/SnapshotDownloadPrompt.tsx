@@ -10,7 +10,6 @@ import { PillButton } from "@/ui/PillButton/PillButton";
 import { LogoLg } from "@/ui/SVGs/LogoLg";
 import { NodeAppLogo } from "@/ui/SVGs/NodeAppLogo";
 
-import styles from "./snapshot-download-prompt.module.css";
 import { SnapshotUpdate } from "../../../../shared/types";
 
 type ProgressSteps = "prompt" | "download" | "complete";
@@ -152,7 +151,6 @@ function DownloadProgress({ onSuccess }: { onSuccess: () => void }) {
             {formatMessage(messages.downloadDescription)}
           </Text>
           <Progress
-            className={styles.SnapshotDownloadProgress}
             value={percent(snapshotState.currBytes, snapshotState.totalBytes)}
           />
           <HStack mt={4}>
@@ -172,7 +170,6 @@ function DownloadProgress({ onSuccess }: { onSuccess: () => void }) {
             {formatMessage(messages.redirectDescription)}
           </Text>
           <Progress
-            className={styles.SnapshotDownloadProgress}
             value={percent(
               snapshotState.currEntries,
               snapshotState.totalEntries,

@@ -60,6 +60,9 @@ const theme = extendTheme({
         track: {
           borderRadius: "full",
         },
+        filledTrack: {
+          bg: "#2C72FF",
+        },
       },
     },
     Switch: switchTheme,
