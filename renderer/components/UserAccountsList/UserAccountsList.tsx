@@ -144,6 +144,7 @@ export function UserAccountsList() {
               address={account.address}
               viewOnly={account.status.viewOnly}
               isLedger={account.isLedger}
+              otherAssets={account.balances.custom.map((asset) => asset.asset)}
             />
           );
         })}

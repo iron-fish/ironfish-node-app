@@ -8,12 +8,14 @@ import {
   Tooltip,
   VStack,
 } from "@chakra-ui/react";
+import type { RpcAsset } from "@ironfish/sdk";
 import { useRouter } from "next/router";
 import { defineMessages, useIntl } from "react-intl";
 
 import { trpcReact } from "@/providers/TRPCProvider";
 import { ChakraLink } from "@/ui/ChakraLink/ChakraLink";
 import { COLORS } from "@/ui/colors";
+import { InfoChip } from "@/ui/InfoChip/InfoChip";
 import { PillButton } from "@/ui/PillButton/PillButton";
 import { ShadowCard, type GradientOptions } from "@/ui/ShadowCard/ShadowCard";
 import { ArrowReceive } from "@/ui/SVGs/ArrowReceive";
@@ -49,6 +51,7 @@ type AccountRowProps = {
   address: string;
   viewOnly: boolean;
   isLedger: boolean;
+  otherAssets: RpcAsset[];
 };
 
 export function AccountRow({
@@ -58,6 +61,7 @@ export function AccountRow({
   address,
   viewOnly,
   isLedger,
+  otherAssets,
 }: AccountRowProps) {
   const router = useRouter();
   const { formatMessage } = useIntl();
@@ -112,7 +116,16 @@ export function AccountRow({
               <Heading as="span" fontWeight="regular" fontSize="2xl">
                 {formatOre(balance)} $IRON
               </Heading>
-              <CopyAddress address={address} />
+              <HStack>
+                {otherAssets.length > 0 && (
+                  <InfoChip
+                    label={`+${otherAssets.length} ${
+                      otherAssets.length === 1 ? "asset" : "assets"
+                    }`}
+                  />
+                )}
+                <CopyAddress address={address} />
+              </HStack>
             </VStack>
 
             <VStack
