@@ -6,6 +6,7 @@ import { SendAssetsForm } from "@/components/SendAssetsForm/SendAssetsForm";
 import treasureChest from "@/images/treasure-chest.svg";
 import MainLayout from "@/layouts/MainLayout";
 import { COLORS } from "@/ui/colors";
+import InfoDrawer from "@/ui/InfoDrawer/InfoDrawer";
 
 const messages = defineMessages({
   heading: {
@@ -33,19 +34,21 @@ export default function Send() {
           <SendAssetsForm />
         </Box>
         <Box>
-          <Heading fontSize="2xl" mb={4}>
-            {formatMessage(messages.aboutFees)}
-          </Heading>
-          <Text
-            fontSize="sm"
-            maxW="340px"
-            mb={8}
-            color={COLORS.GRAY_MEDIUM}
-            _dark={{ color: COLORS.DARK_MODE.GRAY_LIGHT }}
-          >
-            {formatMessage(messages.feeAmount)}
-          </Text>
-          <Image src={treasureChest} alt="" />
+          <InfoDrawer>
+            <Heading fontSize="2xl" mb={4}>
+              {formatMessage(messages.aboutFees)}
+            </Heading>
+            <Text
+              fontSize="sm"
+              maxW="340px"
+              mb={8}
+              color={COLORS.GRAY_MEDIUM}
+              _dark={{ color: COLORS.DARK_MODE.GRAY_LIGHT }}
+            >
+              {formatMessage(messages.feeAmount)}
+            </Text>
+            <Image src={treasureChest} alt="" />
+          </InfoDrawer>
         </Box>
       </Flex>
     </MainLayout>
