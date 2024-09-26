@@ -16,7 +16,7 @@ export async function getChainportEndpoints() {
   }
 
   const baseUrl = `https://${prefix}api.chainport.io`;
-  const tokensEndpoint = `${baseUrl}/token/list?network_name=IRONFISH`;
+  const tokensEndpoint = `${baseUrl}/token_list?network_name=IRONFISH`;
   const metadataEndpoint = `${baseUrl}/meta`;
 
   return { baseUrl, tokensEndpoint, metadataEndpoint };
