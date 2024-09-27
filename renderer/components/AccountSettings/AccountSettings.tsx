@@ -88,7 +88,7 @@ export function AccountSettings({ accountName }: Props) {
         />
         <HStack>
           <PillButton
-            isDisabled={!hasValidName}
+            isDisabled={!hasValidName || newName === accountName}
             height="60px"
             px={8}
             onClick={() =>
