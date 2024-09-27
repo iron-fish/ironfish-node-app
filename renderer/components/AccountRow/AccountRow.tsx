@@ -122,7 +122,7 @@ export function AccountRow({
                 {numOfCustomAssets > 0 && (
                   <InfoChip
                     textProps={{ color: "muted" }}
-                    label={`+${numOfCustomAssets} ${formatMessage(
+                    label={`${numOfCustomAssets} ${formatMessage(
                       messages.customAssets,
                       { count: numOfCustomAssets },
                     )}`}
