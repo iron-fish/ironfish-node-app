@@ -1,4 +1,3 @@
-import { InfoOutlineIcon } from "@chakra-ui/icons";
 import {
   Drawer,
   DrawerBody,
@@ -11,6 +10,7 @@ import {
   IconButton,
 } from "@chakra-ui/react";
 import React from "react";
+import { MdInfo } from "react-icons/md";
 import { defineMessages, useIntl } from "react-intl";
 
 import { PillButton } from "@/ui/PillButton/PillButton";
@@ -42,29 +42,38 @@ const InfoButton: React.FC<InfoButtonProps> = ({ children }) => {
     <>
       {displayMode === "mobile" ? (
         <IconButton
-          icon={<InfoOutlineIcon />}
+          icon={<MdInfo />}
           aria-label={formatMessage(messages.details)}
           onClick={onOpen}
           rounded="full"
           variant="outline"
+          borderColor="black"
           _hover={{
             bg: "rgba(0, 0, 0, 0.05)",
           }}
-          // position="fixed"
-          // right={4}
-          // top={4}
-          // zIndex="overlay"
         />
       ) : (
-        <PillButton variant="inverted" borderWidth={1} gap={2} onClick={onOpen}>
-          <InfoOutlineIcon />
+        <PillButton
+          size="sm"
+          height="fit-content"
+          variant="inverted"
+          borderWidth={1}
+          gap={2}
+          onClick={onOpen}
+        >
+          <MdInfo />
           {formatMessage(messages.details)}
         </PillButton>
       )}
       <Drawer isOpen={isOpen} placement="right" onClose={onClose}>
         <DrawerOverlay />
         <DrawerContent px={4} pt={16}>
-          <DrawerCloseButton />
+          <DrawerCloseButton
+            mt={1}
+            borderRadius="full"
+            borderWidth={1}
+            borderColor="black"
+          />
           <DrawerBody>{children}</DrawerBody>
         </DrawerContent>
       </Drawer>
