@@ -1,26 +1,17 @@
 import { Box, BoxProps } from "@chakra-ui/react";
 
-import { COLORS, GRADIENTS } from "../colors";
+import { makeGradient, type GradientColors } from "@/utils/gradientUtils";
+
+import { COLORS } from "../colors";
 
 const SHARED_PROPS = {
   border: "1px solid black",
   borderRadius: "4px",
 };
 
-export type GradientOptions = keyof typeof GRADIENTS;
-
-export const gradientOptions = Object.keys(GRADIENTS) as Array<GradientOptions>;
-
-function makeGradient(gradient: GradientOptions, isShadow?: boolean) {
-  const { from, to } = GRADIENTS[gradient];
-  return `linear-gradient(to right, ${
-    isShadow ? "white" : from
-  } 0%, ${to} 100%)`;
-}
-
 type Props = BoxProps & {
   contentContainerProps?: BoxProps;
-  gradient?: GradientOptions;
+  gradient?: GradientColors;
   hoverable?: boolean;
   cardOffset?: string;
 };
