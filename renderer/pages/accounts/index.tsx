@@ -1,14 +1,4 @@
-import {
-  Box,
-  Flex,
-  HStack,
-  Heading,
-  Menu,
-  MenuButton,
-  Text,
-  VStack,
-} from "@chakra-ui/react";
-import { BsThreeDots } from "react-icons/bs";
+import { Box, HStack, Heading, Text, VStack } from "@chakra-ui/react";
 import { defineMessages, useIntl } from "react-intl";
 
 import { AddAccountDropdown } from "@/components/AddAccountDropdown/AddAccountDropdown";
@@ -62,40 +52,7 @@ export default function Accounts() {
             </Text>
           </Box>
         </VStack>
-        <HStack
-          display={{
-            base: "none",
-            md: "flex",
-          }}
-          gap={4}
-        >
-          <AddAccountDropdown />
-        </HStack>
-
-        <Box
-          display={{
-            base: "flex",
-            md: "none",
-          }}
-        >
-          <Menu>
-            <MenuButton
-              aria-label="Add or import account menu"
-              as={Flex}
-              h="48px"
-              w="48px"
-              borderRadius="full"
-              border="1px solid"
-              borderColor="currentColor"
-              alignItems="center"
-              textAlign="center"
-            >
-              <Flex as="span" justifyContent="center">
-                <BsThreeDots size="1.3em" />
-              </Flex>
-            </MenuButton>
-          </Menu>
-        </Box>
+        <AddAccountDropdown />
       </HStack>
 
       <UserAccountsList />
