@@ -162,6 +162,9 @@
   "8WtyrD": {
     "message": "Spanish"
   },
+  "8ZKRcK": {
+    "message": "{count, plural, =1 {asset} other {assets}}"
+  },
   "9+Ddtu": {
     "message": "Next"
   },

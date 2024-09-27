@@ -8,7 +8,6 @@ import {
   Tooltip,
   VStack,
 } from "@chakra-ui/react";
-import type { RpcAsset } from "@ironfish/sdk";
 import { useRouter } from "next/router";
 import { defineMessages, useIntl } from "react-intl";
 
@@ -42,6 +41,9 @@ const messages = defineMessages({
   receiveButton: {
     defaultMessage: "Receive",
   },
+  customAssets: {
+    defaultMessage: "{count, plural, =1 {asset} other {assets}}",
+  },
 });
 
 type AccountRowProps = {
@@ -51,7 +53,7 @@ type AccountRowProps = {
   address: string;
   viewOnly: boolean;
   isLedger: boolean;
-  otherAssets: RpcAsset[];
+  numOfCustomAssets: number;
 };
 
 export function AccountRow({
@@ -61,7 +63,7 @@ export function AccountRow({
   address,
   viewOnly,
   isLedger,
-  otherAssets,
+  numOfCustomAssets,
 }: AccountRowProps) {
   const router = useRouter();
   const { formatMessage } = useIntl();
@@ -117,11 +119,13 @@ export function AccountRow({
                 {formatOre(balance)} $IRON
               </Heading>
               <HStack>
-                {otherAssets.length > 0 && (
+                {numOfCustomAssets > 0 && (
                   <InfoChip
-                    label={`+${otherAssets.length} ${
-                      otherAssets.length === 1 ? "asset" : "assets"
-                    }`}
+                    textProps={{ color: "muted" }}
+                    label={`+${numOfCustomAssets} ${formatMessage(
+                      messages.customAssets,
+                      { count: numOfCustomAssets },
+                    )}`}
                   />
                 )}
                 <CopyAddress address={address} />
