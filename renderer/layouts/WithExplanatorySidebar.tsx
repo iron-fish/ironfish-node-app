@@ -19,7 +19,7 @@ export function WithExplanatorySidebar({
   children,
 }: Props) {
   return (
-    <Flex gap={{ base: 8, lg: 16 }}>
+    <Flex gap={{ base: 4, lg: 16 }}>
       <Box
         maxW={{
           base: "100%",
@@ -27,7 +27,7 @@ export function WithExplanatorySidebar({
         }}
         w="100%"
       >
-        <>{children}</>
+        {children}
       </Box>
       <InfoDrawer>
         <Box>

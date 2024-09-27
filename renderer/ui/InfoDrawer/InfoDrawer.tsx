@@ -45,15 +45,18 @@ const InfoButton: React.FC<InfoButtonProps> = ({ children }) => {
           icon={<InfoOutlineIcon />}
           aria-label={formatMessage(messages.details)}
           onClick={onOpen}
+          rounded="full"
+          variant="outline"
+          _hover={{
+            bg: "rgba(0, 0, 0, 0.05)",
+          }}
           // position="fixed"
           // right={4}
-          rounded="full"
           // top={4}
-          variant="outline"
           // zIndex="overlay"
         />
       ) : (
-        <PillButton variant="inverted" gap={2} onClick={onOpen}>
+        <PillButton variant="inverted" borderWidth={1} gap={2} onClick={onOpen}>
           <InfoOutlineIcon />
           {formatMessage(messages.details)}
         </PillButton>
