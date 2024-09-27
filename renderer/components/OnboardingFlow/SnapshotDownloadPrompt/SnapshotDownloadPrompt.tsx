@@ -147,7 +147,9 @@ function DownloadProgress({ onSuccess }: { onSuccess: () => void }) {
       {snapshotState?.step === "download" && (
         <Box>
           <Heading mb={8}>{formatMessage(messages.downloadInProgress)}</Heading>
-          <Text mb={8}>{formatMessage(messages.downloadDescription)}</Text>
+          <Text color="muted" mb={4}>
+            {formatMessage(messages.downloadDescription)}
+          </Text>
           <Progress
             value={percent(snapshotState.currBytes, snapshotState.totalBytes)}
           />
@@ -164,21 +166,25 @@ function DownloadProgress({ onSuccess }: { onSuccess: () => void }) {
       {snapshotState?.step === "unzip" && (
         <Box>
           <Heading mb={8}>{formatMessage(messages.unzipping)}</Heading>
-          <Text mb={8}>{formatMessage(messages.redirectDescription)}</Text>
+          <Text color="muted" mb={4}>
+            {formatMessage(messages.redirectDescription)}
+          </Text>
           <Progress
             value={percent(
               snapshotState.currEntries,
               snapshotState.totalEntries,
             )}
           />
-          <Text textAlign="right">
-            {formatMessage(messages.unzipProgress, {
-              progress: percent(
-                snapshotState.currEntries,
-                snapshotState.totalEntries,
-              ),
-            })}
-          </Text>
+          <HStack mt={4}>
+            <Text fontFamily={"monospace"} fontSize={"small"}>
+              {formatMessage(messages.unzipProgress, {
+                progress: percent(
+                  snapshotState.currEntries,
+                  snapshotState.totalEntries,
+                ),
+              })}
+            </Text>
+          </HStack>
         </Box>
       )}
       {error && (
