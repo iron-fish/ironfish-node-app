@@ -29,18 +29,19 @@ const InfoButton: React.FC<InfoButtonProps> = ({ children }) => {
   const { formatMessage } = useIntl();
   const { isOpen, onOpen, onClose } = useDisclosure();
   const displayMode = useBreakpointValue({
-    base: "mobile",
-    md: "tablet",
-    lg: "desktop",
+    base: "sm",
+    md: "md",
+    lg: "lg",
   });
 
-  if (displayMode === "desktop") {
+  // Large display mode shows no drawer
+  if (displayMode === "lg") {
     return <Box>{children}</Box>;
   }
 
   return (
     <>
-      {displayMode === "mobile" ? (
+      {displayMode === "sm" ? (
         <IconButton
           icon={<MdInfo />}
           aria-label={formatMessage(messages.details)}
