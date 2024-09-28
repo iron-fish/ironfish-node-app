@@ -21,6 +21,8 @@ export async function getChainportEndpoints() {
   }
 
   const baseUrl = `https://${prefix}api.chainport.io`;
+
+  // TODO: Remove this once the Mainnet API is updated
   const tokensEndpoint =
     networkId === MAINNET.id.toString()
       ? `${baseUrl}/token/list?network_name=IRONFISH`
