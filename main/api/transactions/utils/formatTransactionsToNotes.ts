@@ -1,8 +1,9 @@
 import { RpcAsset, RpcClient, RpcWalletTransaction } from "@ironfish/sdk";
 import log from "electron-log";
 
-import { IRON_ID } from "../../../../shared/constants";
-import { TransactionNote } from "../../../../shared/types";
+import { IRON_ID } from "@shared/constants";
+import { hasChainportOutgoingAddress } from "@shared/isChainportTx";
+import { TransactionNote } from "@shared/types";
 
 export async function createAssetLookup(
   client: RpcClient,
@@ -59,6 +60,7 @@ export async function formatTransactionsToNotes(
   client: RpcClient,
   transactions: RpcWalletTransaction[],
   accountName: string,
+  networkId: number,
 ): Promise<TransactionNote[]> {
   const transactionAssetIds = transactions.flatMap((tx) => {
     return tx.notes?.map((note) => note.assetId) ?? [];
@@ -77,6 +79,7 @@ export async function formatTransactionsToNotes(
       log.warn(`Unexpected transaction with 0 or undefined notes: ${tx.hash}`);
       continue;
     }
+
     const firstNote = tx.notes[0];
 
     // True if any asset balance is non-zero, ignoring the transaction fee (if current account is sender)
@@ -88,6 +91,12 @@ export async function formatTransactionsToNotes(
 
       return deltaWithoutFee !== "0";
     });
+
+    const isChainportSend =
+      tx.type === "send" &&
+      tx.notes?.some((note) => {
+        return hasChainportOutgoingAddress(networkId, note.owner);
+      });
 
     // Make a TransactionNote for each asset balance delta
     for (const abd of tx.assetBalanceDeltas) {
@@ -103,6 +112,14 @@ export async function formatTransactionsToNotes(
       // all deltas will be 0, so we'll show 0-value deltas. But in cases where we have at least one non-zero
       // delta, we can hide the 0-value deltas (notably this happens for $IRON fees on custom asset transactions)
       if (anyNonZero && absoluteDeltaWithoutFee === "0") {
+        continue;
+      }
+
+      // In order to make sure that we only show one row for Chainport bridge transactions, we have to
+      // massage the data for bridge transactions that bridge out a custom asset.
+      // That is because the Chainport fee_payment is paid in $IRON, so the transaction will have two
+      // asset balance deltas (one for the custom asset being sent, and one for the $IRON fee payment).
+      if (isChainportSend && abd.assetId === IRON_ID) {
         continue;
       }
 
