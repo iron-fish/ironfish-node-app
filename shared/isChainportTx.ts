@@ -1,4 +1,4 @@
-import { TRPCRouterOutputs } from "@/providers/TRPCProvider";
+import { TransactionType } from "@ironfish/sdk";
 
 const chainportConfig = {
   0: {
@@ -30,10 +30,17 @@ const chainportConfig = {
   },
 };
 
-type TransactionData = TRPCRouterOutputs["getTransaction"];
-type TransactionNote = TransactionData["notes"][number];
+type PartialTransactionWithNotes = {
+  notes: Array<PartialNote>;
+};
 
-export function isChainportNote(networkId: number, note: TransactionNote) {
+type PartialNote = {
+  type: TransactionType;
+  to: string | string[];
+  from: string;
+};
+
+export function isChainportNote(networkId: number, note: PartialNote) {
   if (networkId !== 1 && networkId !== 0) {
     throw new Error(`Unknown network id: ${networkId}`);
   }
@@ -53,11 +60,23 @@ export function isChainportNote(networkId: number, note: TransactionNote) {
 
 export function isChainportTx(
   networkId: number,
-  transactionData: TransactionData,
+  transactionData: PartialTransactionWithNotes,
 ) {
   return transactionData.notes.some((note) => {
     return isChainportNote(networkId, note);
   });
+}
+
+export function hasChainportOutgoingAddress(
+  networkId: number,
+  address: string,
+) {
+  if (networkId !== 1 && networkId !== 0) {
+    throw new Error(`Unknown network id: ${networkId}`);
+  }
+
+  const config = chainportConfig[networkId];
+  return hasAddress(config.outgoingAddresses, toLower(address));
 }
 
 function toLower(content: string | string[]) {

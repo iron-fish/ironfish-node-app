@@ -9,8 +9,8 @@ import { NotesList } from "@/components/NotesList/NotesList";
 import { TransactionInformation } from "@/components/TransactionInformation/TransactionInformation";
 import MainLayout from "@/layouts/MainLayout";
 import { trpcReact } from "@/providers/TRPCProvider";
-import { isChainportTx } from "@/utils/chainport/isChainportTx";
 import { asQueryString } from "@/utils/parseRouteQuery";
+import { isChainportTx } from "@shared/isChainportTx";
 
 const messages = defineMessages({
   backToAccountOverview: {
