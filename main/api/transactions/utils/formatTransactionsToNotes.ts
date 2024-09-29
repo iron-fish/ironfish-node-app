@@ -92,8 +92,13 @@ export async function formatTransactionsToNotes(
       return deltaWithoutFee !== "0";
     });
 
-    const isChainportSend =
+    // In order to make sure that we only show one row for Chainport bridge transactions, we have to
+    // filter out the fee payment for any bridge transaction with more than one asset balance delta.
+    // This is because the fee payment is paid in $IRON, so the transaction will have two deltas,
+    // one for the custom asset being bridged, and one for the $IRON fee payment.
+    const shouldSkipChainportFeeNote =
       tx.type === "send" &&
+      tx.assetBalanceDeltas.length > 1 &&
       tx.notes?.some((note) => {
         return hasChainportOutgoingAddress(networkId, note.owner);
       });
@@ -115,11 +120,7 @@ export async function formatTransactionsToNotes(
         continue;
       }
 
-      // In order to make sure that we only show one row for Chainport bridge transactions, we have to
-      // massage the data for bridge transactions that bridge out a custom asset.
-      // That is because the Chainport fee_payment is paid in $IRON, so the transaction will have two
-      // asset balance deltas (one for the custom asset being sent, and one for the $IRON fee payment).
-      if (isChainportSend && abd.assetId === IRON_ID) {
+      if (shouldSkipChainportFeeNote && abd.assetId === IRON_ID) {
         continue;
       }
 
