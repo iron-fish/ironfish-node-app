@@ -36,7 +36,7 @@ async function createWindow(handler: ReturnType<typeof createIPCHandler>) {
   handler.attachWindow(window);
 
   window.once("ready-to-show", () => {
-    window.maximize();
+    window.show();
   });
 
   if (isProd) {
