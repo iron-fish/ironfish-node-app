@@ -131,12 +131,6 @@ function BridgeAssetsFormContent({
     balanceInLabel: false,
   });
 
-  const bridgeableAssetIdSet = useMemo(() => {
-    return new Set(
-      Object.values(chainportTokensMap).map((token) => token.web3_address),
-    );
-  }, [chainportTokensMap]);
-
   const bridgeableAssets = useMemo(() => {
     const withAdditionalFields = assetOptions
       .map((item) => {
@@ -150,7 +144,7 @@ function BridgeAssetsFormContent({
               )}
             </HStack>
           ),
-          disabled: !bridgeableAssetIdSet.has(item.asset.id),
+          disabled: !chainportTokensMap[item.asset.id],
         };
       })
       .toSorted((a, b) => {
@@ -160,7 +154,7 @@ function BridgeAssetsFormContent({
       });
 
     return withAdditionalFields;
-  }, [assetOptions, bridgeableAssetIdSet]);
+  }, [assetOptions, chainportTokensMap]);
 
   const selectedAsset = assetOptionsMap.get(assetIdValue);
   const selectedNetwork = availableNetworks?.find(
