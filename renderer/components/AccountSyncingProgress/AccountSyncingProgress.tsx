@@ -34,12 +34,17 @@ export function AccountSyncingProgress({
       fontSize="sm"
       textAlign="center"
       p={1}
-    >{`${
-      progress === null
-        ? formatMessage(messages.syncingNoProgressMessage)
-        : formatMessage(messages.syncingProgressMessage, {
-            progress: parseFloat((progress * 100).toFixed(2)),
-          })
-    } | ${formatMessage(messages.syncingBalanceMessage)}`}</Box>
+    >
+      {`${
+        progress === null
+          ? formatMessage(messages.syncingNoProgressMessage)
+          : formatMessage(messages.syncingProgressMessage, {
+              progress: Math.min(
+                parseFloat((progress * 100).toFixed(2)),
+                99.99,
+              ),
+            })
+      } | ${formatMessage(messages.syncingBalanceMessage)}`}
+    </Box>
   );
 }
