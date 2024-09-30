@@ -138,6 +138,7 @@ export function UserAccountsList() {
               address={account.address}
               viewOnly={account.status.viewOnly}
               isLedger={account.isLedger}
+              numOfCustomAssets={account.balances.custom.length}
             />
           );
         })}

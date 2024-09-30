@@ -27,6 +27,12 @@ const FLAGS_DEFINITION = [
       "Turning this flag on will enable importing Ledger accounts and signing transactions with your Ledger device.",
     key: "ledgerSupport",
   },
+  {
+    name: "Global Theme Toggle",
+    description:
+      "Turning this flag on will allow double clicking the logo to change the theme",
+    key: "themeToggle",
+  },
 ] as const;
 
 type FlagsDefinition = Writable<(typeof FLAGS_DEFINITION)[number]>;

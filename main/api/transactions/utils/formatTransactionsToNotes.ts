@@ -1,8 +1,9 @@
 import { RpcAsset, RpcClient, RpcWalletTransaction } from "@ironfish/sdk";
 import log from "electron-log";
 
-import { IRON_ID } from "../../../../shared/constants";
-import { TransactionNote } from "../../../../shared/types";
+import { IRON_ID } from "@shared/constants";
+import { TransactionNote } from "@shared/types";
+
 import { extractChainportDataFromTransaction } from "../../chainport/vendor/utils";
 
 export async function createAssetLookup(
@@ -61,6 +62,7 @@ export async function formatTransactionsToNotes(
   client: RpcClient,
   transactions: RpcWalletTransaction[],
   accountName: string,
+  networkId: number,
 ): Promise<TransactionNote[]> {
   const transactionAssetIds = transactions.flatMap((tx) => {
     return tx.notes?.map((note) => note.assetId) ?? [];
@@ -71,8 +73,6 @@ export async function formatTransactionsToNotes(
     accountName,
   );
 
-  const network = (await client.chain.getNetworkInfo()).content.networkId;
-
   const transactionNotes: Array<TransactionNote> = [];
 
   for (const tx of transactions) {
@@ -82,7 +82,7 @@ export async function formatTransactionsToNotes(
       continue;
     }
 
-    const chainportData = extractChainportDataFromTransaction(network, tx);
+    const chainportData = extractChainportDataFromTransaction(networkId, tx);
 
     const firstNote = tx.notes[0];
 
@@ -95,6 +95,13 @@ export async function formatTransactionsToNotes(
 
       return deltaWithoutFee !== "0";
     });
+
+    // In order to make sure that we only show one row for Chainport bridge transactions, we have to
+    // filter out the fee payment for any bridge transaction with more than one asset balance delta.
+    // This is because the fee payment is paid in $IRON, so the transaction will have two deltas,
+    // one for the custom asset being bridged, and one for the $IRON fee payment.
+    const shouldSkipChainportFeeNote =
+      tx.type === "send" && tx.assetBalanceDeltas.length > 1 && !!chainportData;
 
     // Make a TransactionNote for each asset balance delta
     for (const abd of tx.assetBalanceDeltas) {
@@ -110,6 +117,10 @@ export async function formatTransactionsToNotes(
       // all deltas will be 0, so we'll show 0-value deltas. But in cases where we have at least one non-zero
       // delta, we can hide the 0-value deltas (notably this happens for $IRON fees on custom asset transactions)
       if (anyNonZero && absoluteDeltaWithoutFee === "0") {
+        continue;
+      }
+
+      if (shouldSkipChainportFeeNote && abd.assetId === IRON_ID) {
         continue;
       }
 

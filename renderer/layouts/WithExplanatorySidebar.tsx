@@ -3,6 +3,7 @@ import Image from "next/image";
 import { ReactNode } from "react";
 
 import { COLORS } from "@/ui/colors";
+import InfoDrawer from "@/ui/InfoDrawer/InfoDrawer";
 
 type Props = {
   heading: ReactNode;
@@ -18,7 +19,7 @@ export function WithExplanatorySidebar({
   children,
 }: Props) {
   return (
-    <Flex gap={16}>
+    <Flex gap={{ base: 4, lg: 16 }}>
       <Box
         maxW={{
           base: "100%",
@@ -28,20 +29,17 @@ export function WithExplanatorySidebar({
       >
         {children}
       </Box>
-      <Box
-        display={{
-          base: "none",
-          lg: "block",
-        }}
-      >
-        <Heading fontSize="2xl" mb={4}>
-          {heading}
-        </Heading>
-        <Description>{description}</Description>
-        <Box mt={8}>
-          <Image src={imgSrc} alt="" />
+      <InfoDrawer>
+        <Box>
+          <Heading fontSize="2xl" mb={4}>
+            {heading}
+          </Heading>
+          <Description>{description}</Description>
+          <Box mt={8}>
+            <Image src={imgSrc} alt="" />
+          </Box>
         </Box>
-      </Box>
+      </InfoDrawer>
     </Flex>
   );
 }

@@ -1,4 +1,4 @@
-import { Tooltip, Text, HStack } from "@chakra-ui/react";
+import { Tooltip, Text, type TextProps, HStack } from "@chakra-ui/react";
 import { ReactNode } from "react";
 
 import { COLORS } from "@/ui/colors";
@@ -32,9 +32,11 @@ function MaybeTooltip({
 
 export function InfoChip({
   label,
+  textProps,
   tooltipMessage,
 }: {
   label: string;
+  textProps?: TextProps;
   tooltipMessage?: string;
 }) {
   return (
@@ -62,7 +64,9 @@ export function InfoChip({
         }}
       >
         {tooltipMessage && <Icon />}
-        <Text fontSize="12px">{label}</Text>
+        <Text fontSize="12px" {...textProps}>
+          {label}
+        </Text>
       </HStack>
     </MaybeTooltip>
   );
