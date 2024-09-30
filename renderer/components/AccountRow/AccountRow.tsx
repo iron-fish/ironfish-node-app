@@ -14,6 +14,7 @@ import { defineMessages, useIntl } from "react-intl";
 import { trpcReact } from "@/providers/TRPCProvider";
 import { ChakraLink } from "@/ui/ChakraLink/ChakraLink";
 import { COLORS } from "@/ui/colors";
+import { InfoChip } from "@/ui/InfoChip/InfoChip";
 import { PillButton } from "@/ui/PillButton/PillButton";
 import { ShadowCard } from "@/ui/ShadowCard/ShadowCard";
 import { ArrowReceive } from "@/ui/SVGs/ArrowReceive";
@@ -41,6 +42,9 @@ const messages = defineMessages({
   receiveButton: {
     defaultMessage: "Receive",
   },
+  customAssets: {
+    defaultMessage: "{count, plural, =1 {asset} other {assets}}",
+  },
 });
 
 type AccountRowProps = {
@@ -50,6 +54,7 @@ type AccountRowProps = {
   address: string;
   viewOnly: boolean;
   isLedger: boolean;
+  numOfCustomAssets: number;
 };
 
 export function AccountRow({
@@ -59,6 +64,7 @@ export function AccountRow({
   address,
   viewOnly,
   isLedger,
+  numOfCustomAssets,
 }: AccountRowProps) {
   const router = useRouter();
   const { formatMessage } = useIntl();
@@ -113,7 +119,18 @@ export function AccountRow({
               <Heading as="span" fontWeight="regular" fontSize="2xl">
                 {formatOre(balance)} $IRON
               </Heading>
-              <CopyAddress address={address} />
+              <HStack>
+                {numOfCustomAssets > 0 && (
+                  <InfoChip
+                    textProps={{ color: "muted" }}
+                    label={`${numOfCustomAssets} ${formatMessage(
+                      messages.customAssets,
+                      { count: numOfCustomAssets },
+                    )}`}
+                  />
+                )}
+                <CopyAddress address={address} />
+              </HStack>
             </VStack>
 
             <VStack
