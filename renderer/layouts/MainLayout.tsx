@@ -5,6 +5,7 @@ import {
   GridItem,
   Heading,
   HStack,
+  useColorMode,
   VStack,
 } from "@chakra-ui/react";
 import { useRouter } from "next/router";
@@ -17,6 +18,7 @@ import { BackButton } from "@/components/BackButton/BackButton";
 import { StatusIndicator } from "@/components/StatusIndicator/StatusIndicator";
 import { TestnetBanner } from "@/components/TestnetBanner/TestnetBanner";
 import { useFeatureFlags } from "@/providers/FeatureFlagsProvider";
+import { trpcReact } from "@/providers/TRPCProvider";
 import { ChakraLink } from "@/ui/ChakraLink/ChakraLink";
 import { COLORS } from "@/ui/colors";
 import { AddressBook } from "@/ui/SVGs/AddressBook";
@@ -111,12 +113,19 @@ function ResponsiveLogo() {
 function Sidebar() {
   const router = useRouter();
   const { formatMessage } = useIntl();
-
+  const { colorMode } = useColorMode();
   const { flags } = useFeatureFlags();
-
+  const { mutate: setUserSettings } = trpcReact.setUserSettings.useMutation();
   return (
     <Flex flexDirection="column" alignItems="stretch" w="100%">
       <Box
+        onDoubleClick={() => {
+          if (flags.themeToggle.enabled) {
+            colorMode === "dark"
+              ? setUserSettings({ theme: "light" })
+              : setUserSettings({ theme: "dark" });
+          }
+        }}
         pl={4}
         mb={10}
         color={flags.demoFlag.enabled ? "#2C72FF" : undefined}
