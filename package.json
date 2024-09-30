@@ -25,7 +25,9 @@
     "@ironfish/sdk": "2.5.0",
     "@ledgerhq/hw-transport-node-hid": "^6.29.1",
     "electron-serve": "^1.1.0",
-    "keccak": "^3.0.4"
+    "keccak": "^3.0.4",
+    "@zondax/ledger-ironfish-dkg": "npm:@zondax/ledger-ironfish@0.4.0",
+    "@zondax/ledger-js": "^1.0.1"
   },
   "devDependencies": {
     "@chakra-ui/icons": "^2.1.1",
