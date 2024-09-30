@@ -46,7 +46,7 @@ const messages = defineMessages({
 type Props = BoxProps & {
   status: ReactNode;
   type: ReactNode;
-  address: ReactNode;
+  address: string;
   networkIcon?: string;
   targetTxHash?: string;
   blockExplorerUrl?: string;
@@ -134,9 +134,15 @@ export function BridgeTransactionInformationShell({
                   )}
                 </Text>
                 <Box fontSize="md">
-                  {typeof address === "string"
-                    ? `${address.slice(0, 6)}...${address.toString().slice(-4)}`
-                    : address}
+                  <CopyAddress
+                    fontSize="md"
+                    color={COLORS.BLACK}
+                    _dark={{ color: COLORS.WHITE }}
+                    addressLabel={`${address.slice(0, 6)}...${address
+                      .toString()
+                      .slice(-4)}`}
+                    address={address}
+                  />
                 </Box>
               </VStack>
               {networkIcon && (

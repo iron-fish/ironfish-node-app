@@ -21,7 +21,11 @@ import { TextInput } from "@/ui/Forms/TextInput/TextInput";
 import { getChecksumAddress, isAddress } from "@/utils/ethereumAddressUtils";
 
 import { BridgeAssetsFormShell } from "./BridgeAssetsFormShell";
-import { BridgeAssetsFormData, bridgeAssetsSchema } from "./bridgeAssetsSchema";
+import {
+  BridgeAssetsConfirmationData,
+  BridgeAssetsFormData,
+  bridgeAssetsFormSchema,
+} from "./bridgeAssetsSchema";
 import { BridgeConfirmationModal } from "./BridgeConfirmationModal/BridgeConfirmationModal";
 import { AssetAmountInput } from "../AssetAmountInput/AssetAmountInput";
 import {
@@ -49,22 +53,19 @@ const messages = defineMessages({
 });
 
 type ChainportToken =
-  TRPCRouterOutputs["getChainportTokens"]["chainportTokens"][number];
-type ChainportTargetNetwork = ChainportToken["targetNetworks"][number];
+  TRPCRouterOutputs["getChainportTokens"]["chainportTokensMap"][string];
 
 function BridgeAssetsFormContent({
   accountsData,
   chainportTokensMap,
-  chainportTargetNetworksMap,
 }: {
   accountsData: TRPCRouterOutputs["getAccounts"];
   chainportTokensMap: Record<string, ChainportToken>;
-  chainportTargetNetworksMap: Record<string, ChainportTargetNetwork>;
 }) {
   const { formatMessage } = useIntl();
 
   const [confirmationData, setConfirmationData] =
-    useState<BridgeAssetsFormData | null>(null);
+    useState<BridgeAssetsConfirmationData | null>(null);
   const [transactionDetailsError, setTransactionDetailsError] = useState("");
 
   const accountOptions = useMemo(() => {
@@ -79,13 +80,7 @@ function BridgeAssetsFormContent({
   const defaultFromAccount = accountOptions[0]?.value;
   const defaultAssetId =
     accountsData[0]?.balances.iron.asset.id ||
-    Object.values(chainportTokensMap)[0]?.ironfishId;
-  const defaultDestinationNetwork =
-    chainportTokensMap[defaultAssetId]?.targetNetworks[0].value.toString();
-
-  if (!defaultDestinationNetwork) {
-    console.error("No default destination network found.");
-  }
+    Object.values(chainportTokensMap)[0]?.web3_address;
 
   const {
     register,
@@ -96,14 +91,14 @@ function BridgeAssetsFormContent({
     clearErrors,
     control,
     formState: { errors: formErrors },
-  } = useForm({
-    resolver: zodResolver(bridgeAssetsSchema),
+  } = useForm<BridgeAssetsFormData>({
+    resolver: zodResolver(bridgeAssetsFormSchema),
     mode: "onBlur",
     defaultValues: {
       amount: "0",
       fromAccount: defaultFromAccount,
       assetId: defaultAssetId,
-      destinationNetwork: defaultDestinationNetwork,
+      destinationNetworkId: null,
       targetAddress: "",
     },
   });
@@ -111,21 +106,19 @@ function BridgeAssetsFormContent({
   const amountValue = watch("amount");
   const fromAccountValue = watch("fromAccount");
   const assetIdValue = watch("assetId");
-  const destinationNetworkValue = watch("destinationNetwork");
+  const destinationNetworkId = watch("destinationNetworkId");
   const targetAddress = watch("targetAddress");
 
-  // If the user selects a different asset, and that asset does not support the selected network,
-  // then we automatically switch to the first available network for that asset.
-  useEffect(() => {
-    const availableNetworks = chainportTokensMap[assetIdValue]?.targetNetworks;
-    const selectedNetwork = availableNetworks?.find(
-      (network) => network.chainId?.toString() === destinationNetworkValue,
+  const { data: tokenPathsResponse } =
+    trpcReact.getChainportTokenPaths.useQuery(
+      {
+        tokenId: chainportTokensMap[assetIdValue]?.id,
+      },
+      {
+        enabled: !!chainportTokensMap[assetIdValue],
+      },
     );
-
-    if (availableNetworks && !selectedNetwork) {
-      setValue("destinationNetwork", availableNetworks[0].value.toString());
-    }
-  }, [assetIdValue, chainportTokensMap, destinationNetworkValue, setValue]);
+  const availableNetworks = tokenPathsResponse?.chainportTokenPaths;
 
   const selectedAccount = useMemo(() => {
     return (
@@ -138,16 +131,15 @@ function BridgeAssetsFormContent({
     balanceInLabel: false,
   });
 
-  const currentNetwork = chainportTargetNetworksMap[destinationNetworkValue];
+  const bridgeableAssetIdSet = useMemo(() => {
+    return new Set(
+      Object.values(chainportTokensMap).map((token) => token.web3_address),
+    );
+  }, [chainportTokensMap]);
 
   const bridgeableAssets = useMemo(() => {
     const withAdditionalFields = assetOptions
       .map((item) => {
-        const isBridgableForNetwork = chainportTokensMap[
-          item.asset.id
-        ]?.targetNetworks.some(
-          (network) => network.chainId === currentNetwork?.chainId,
-        );
         return {
           ...item,
           label: (
@@ -158,7 +150,7 @@ function BridgeAssetsFormContent({
               )}
             </HStack>
           ),
-          disabled: !isBridgableForNetwork,
+          disabled: !bridgeableAssetIdSet.has(item.asset.id),
         };
       })
       .toSorted((a, b) => {
@@ -168,15 +160,12 @@ function BridgeAssetsFormContent({
       });
 
     return withAdditionalFields;
-  }, [chainportTokensMap, assetOptions, currentNetwork]);
-
-  const availableNetworks = chainportTokensMap[assetIdValue]?.targetNetworks;
-
-  if (!availableNetworks) {
-    console.error("No available networks found");
-  }
+  }, [assetOptions, bridgeableAssetIdSet]);
 
   const selectedAsset = assetOptionsMap.get(assetIdValue);
+  const selectedNetwork = availableNetworks?.find(
+    (n) => destinationNetworkId === n.chainport_network_id.toString(),
+  );
 
   const handleIfAmountExceedsBalance = useCallback(
     (amount: string) => {
@@ -212,11 +201,58 @@ function BridgeAssetsFormContent({
     ) : null;
   }, [targetAddress]);
 
+  // Try to reset selected asset to a valid one if the current one is disabled
+  useEffect(() => {
+    const selectedAsset = bridgeableAssets.find(
+      (asset) => asset.value === assetIdValue,
+    );
+    if (!selectedAsset || selectedAsset.disabled) {
+      const bridgeableAsset =
+        bridgeableAssets.find((asset) => !asset.disabled) ??
+        bridgeableAssets[0];
+      setValue("assetId", bridgeableAsset?.value ?? defaultAssetId);
+    }
+  }, [
+    assetIdValue,
+    setValue,
+    bridgeableAssets,
+    chainportTokensMap,
+    defaultAssetId,
+  ]);
+
+  // Clear destination network if the selected asset changes
+  // Might be better to wait and retain the network if it exists in the new set of token paths
+  useEffect(() => {
+    setValue("destinationNetworkId", null);
+  }, [assetIdValue, setValue]);
+
+  // Switch to the first available network for the selected asset
+  useEffect(() => {
+    if (
+      availableNetworks &&
+      availableNetworks.length > 0 &&
+      destinationNetworkId === null
+    ) {
+      setValue(
+        "destinationNetworkId",
+        availableNetworks[0].chainport_network_id.toString(),
+      );
+    }
+  }, [availableNetworks, destinationNetworkId, setValue]);
+
   return (
     <>
       <chakra.form
         onSubmit={handleSubmit((data) => {
           setTransactionDetailsError("");
+
+          const destinationNetwork = availableNetworks?.find(
+            (n) =>
+              data.destinationNetworkId === n.chainport_network_id.toString(),
+          );
+          if (!destinationNetwork) {
+            return;
+          }
 
           if (handleIfAmountExceedsBalance(data.amount)) {
             return;
@@ -226,7 +262,7 @@ function BridgeAssetsFormContent({
             amount: data.amount,
             fromAccount: data.fromAccount,
             assetId: data.assetId,
-            destinationNetwork: data.destinationNetwork,
+            destinationNetwork: destinationNetwork,
             targetAddress: getChecksumAddress(data.targetAddress),
           });
         })}
@@ -334,16 +370,22 @@ function BridgeAssetsFormContent({
           }
           destinationNetworkInput={
             <Select
-              {...register("destinationNetwork")}
-              value={destinationNetworkValue}
+              {...register("destinationNetworkId")}
+              disabled={!availableNetworks}
+              value={destinationNetworkId ?? undefined}
               label={formatMessage(messages.destinationNetwork)}
-              options={availableNetworks ?? []}
+              options={(availableNetworks ?? []).map((n) => ({
+                label: n.label,
+                value: n.chainport_network_id.toString(),
+              }))}
               renderChildren={(children) => (
                 <HStack>
-                  <ChakraImage
-                    src={currentNetwork?.networkIcon}
-                    boxSize="24px"
-                  />
+                  {selectedNetwork && (
+                    <ChakraImage
+                      src={selectedNetwork.network_icon}
+                      boxSize="24px"
+                    />
+                  )}
                   {children}
                 </HStack>
               )}
@@ -364,9 +406,7 @@ function BridgeAssetsFormContent({
         <BridgeConfirmationModal
           onClose={() => setConfirmationData(null)}
           formData={confirmationData}
-          targetNetwork={
-            chainportTargetNetworksMap[confirmationData.destinationNetwork]!
-          }
+          targetNetwork={confirmationData.destinationNetwork}
           selectedAsset={assetOptionsMap.get(confirmationData.assetId)!}
           chainportToken={chainportTokensMap[confirmationData.assetId]!}
           handleTransactionDetailsError={(errorMessage) =>
@@ -413,7 +453,6 @@ export function BridgeAssetsForm() {
     <BridgeAssetsFormContent
       accountsData={filteredAccounts}
       chainportTokensMap={tokensData.chainportTokensMap}
-      chainportTargetNetworksMap={tokensData.chainportNetworksMap}
     />
   );
 }

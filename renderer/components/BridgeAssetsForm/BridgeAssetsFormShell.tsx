@@ -21,7 +21,7 @@ export function BridgeAssetsFormShell({
   targetAddressInput,
   topLevelErrorMessage,
 }: {
-  status?: "LOADING";
+  status?: "LOADING" | "PATHS_LOADING";
   fromAccountInput: ReactNode;
   assetAmountInput: ReactNode;
   bridgeProviderInput: ReactNode;

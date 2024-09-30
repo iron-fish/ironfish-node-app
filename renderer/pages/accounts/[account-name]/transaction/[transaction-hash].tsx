@@ -9,7 +9,6 @@ import { NotesList } from "@/components/NotesList/NotesList";
 import { TransactionInformation } from "@/components/TransactionInformation/TransactionInformation";
 import MainLayout from "@/layouts/MainLayout";
 import { trpcReact } from "@/providers/TRPCProvider";
-import { isChainportTx } from "@/utils/chainport/isChainportTx";
 import { asQueryString } from "@/utils/parseRouteQuery";
 
 const messages = defineMessages({
@@ -39,19 +38,12 @@ function SingleTransactionContent({
     name: accountName,
   });
 
-  const { data: networkInfo } = trpcReact.getNetworkInfo.useQuery();
-
   const { data: transactionData } = trpcReact.getTransaction.useQuery({
     accountName,
     transactionHash,
   });
 
-  const isChainportTransaction =
-    !!transactionData &&
-    !!networkInfo &&
-    isChainportTx(networkInfo.networkId, transactionData);
-
-  if (!accountData || !networkInfo) {
+  if (!accountData) {
     return null;
   }
 
@@ -109,7 +101,7 @@ function SingleTransactionContent({
           transform="translateY(0.4em)"
         />
       </HStack>
-      {isChainportTransaction &&
+      {transactionData.chainportData &&
         transactionData.transaction.type === "send" && (
           <BridgeTransactionProgressIndicator
             transaction={transactionData.transaction}
@@ -119,21 +111,20 @@ function SingleTransactionContent({
         transaction={transactionData.transaction}
         mb={16}
       />
-      {isChainportTransaction && (
+      {transactionData.chainportData && (
         <BridgeTransactionInformation
           transaction={transactionData.transaction}
+          chainportData={transactionData.chainportData}
           mb={16}
         />
       )}
       <NotesList
-        networkId={networkInfo.networkId}
         heading={formatMessage(messages.transactionNotes)}
         notes={showSelfSendNotes ? regularNotes : transactionData.notes}
       />
       {showSelfSendNotes && (
         <Box mt={10}>
           <NotesList
-            networkId={networkInfo.networkId}
             heading={formatMessage(messages.change)}
             notes={selfSendNotes}
           />

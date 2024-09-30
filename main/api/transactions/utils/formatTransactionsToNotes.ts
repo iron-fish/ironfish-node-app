@@ -3,6 +3,7 @@ import log from "electron-log";
 
 import { IRON_ID } from "../../../../shared/constants";
 import { TransactionNote } from "../../../../shared/types";
+import { extractChainportDataFromTransaction } from "../../chainport/vendor/utils";
 
 export async function createAssetLookup(
   client: RpcClient,
@@ -49,6 +50,7 @@ export async function getTransactionNotes(
           memo: note.memo,
           noteHash: note.noteHash,
           accountName,
+          chainportData: undefined,
         };
       }) ?? [];
 
@@ -69,6 +71,8 @@ export async function formatTransactionsToNotes(
     accountName,
   );
 
+  const network = (await client.chain.getNetworkInfo()).content.networkId;
+
   const transactionNotes: Array<TransactionNote> = [];
 
   for (const tx of transactions) {
@@ -77,6 +81,9 @@ export async function formatTransactionsToNotes(
       log.warn(`Unexpected transaction with 0 or undefined notes: ${tx.hash}`);
       continue;
     }
+
+    const chainportData = extractChainportDataFromTransaction(network, tx);
+
     const firstNote = tx.notes[0];
 
     // True if any asset balance is non-zero, ignoring the transaction fee (if current account is sender)
@@ -155,6 +162,7 @@ export async function formatTransactionsToNotes(
         value: absoluteDeltaWithoutFee,
         noteHash: "",
         memo: memo,
+        chainportData,
       });
     }
   }

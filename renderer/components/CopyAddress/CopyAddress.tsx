@@ -15,12 +15,17 @@ const messages = defineMessages({
 
 type Props = TextProps & {
   address: string;
+  /**
+   * Override 'truncate' and 'parts' to display a custom label
+   */
+  addressLabel?: string;
   parts?: 2 | 3;
   truncate?: boolean;
 };
 
 export function CopyAddress({
   address,
+  addressLabel,
   parts = 3,
   truncate = true,
   ...rest
@@ -48,7 +53,11 @@ export function CopyAddress({
       }}
       {...rest}
     >
-      {truncate ? truncateString(address, parts) : address}
+      {addressLabel
+        ? addressLabel
+        : truncate
+        ? truncateString(address, parts)
+        : address}
       <CopyIcon
         color={COLORS.GRAY_MEDIUM}
         _dark={{ color: COLORS.DARK_MODE.GRAY_LIGHT }}

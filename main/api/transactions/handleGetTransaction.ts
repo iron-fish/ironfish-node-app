@@ -1,4 +1,5 @@
 import { getTransactionNotes } from "./utils/formatTransactionsToNotes";
+import { extractChainportDataFromTransaction } from "../chainport/vendor/utils";
 import { manager } from "../manager";
 
 export async function handleGetTransaction({
@@ -23,6 +24,12 @@ export async function handleGetTransaction({
     );
   }
 
+  const network = (await rpcClient.chain.getNetworkInfo()).content.networkId;
+  const chainportData = extractChainportDataFromTransaction(
+    network,
+    content.transaction,
+  );
+
   const notes = await getTransactionNotes(
     rpcClient,
     content.transaction,
@@ -32,5 +39,6 @@ export async function handleGetTransaction({
   return {
     transaction: content.transaction,
     notes,
+    chainportData,
   };
 }
