@@ -4,7 +4,7 @@ import type {
   TransactionType,
 } from "@ironfish/sdk";
 
-import { ChainportTransactionData } from "../main/api/chainport/vendor/utils";
+import type { ChainportTransactionData } from "../main/api/chainport/vendor/utils";
 
 export type TransactionNote = {
   asset?: RpcAsset;
