@@ -3,8 +3,6 @@ import { defineMessages } from "react-intl";
 
 import { trpcReact, TRPCRouterOutputs } from "@/providers/TRPCProvider";
 
-import { IRONFISH_NETWORK_ID } from "./constants";
-
 type ChainportTransactionStatus =
   | "loading"
   | "iron_fish_submitted"
@@ -44,7 +42,6 @@ export function useChainportTransactionStatus(
   const { data, error, isLoading } =
     trpcReact.getChainportTransactionStatus.useQuery({
       transactionHash: transaction.hash,
-      baseNetworkId: IRONFISH_NETWORK_ID,
     });
 
   return useMemo(() => {
@@ -52,7 +49,8 @@ export function useChainportTransactionStatus(
 
     if (error) return "failed";
 
-    if (Object.entries(data).length === 0) return "iron_fish_submitted";
+    if (!("base_tx_status" in data) || Object.keys(data).length === 0)
+      return "iron_fish_submitted";
 
     if (data.base_tx_status === 1 && data.target_tx_status === null)
       return "bridge_pending";

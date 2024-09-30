@@ -3,7 +3,6 @@ import { useMemo } from "react";
 import { useIntl } from "react-intl";
 
 import { trpcReact, TRPCRouterOutputs } from "@/providers/TRPCProvider";
-import { IRONFISH_NETWORK_ID } from "@/utils/chainport/constants";
 import {
   getMessageForStatus,
   useChainportTransactionStatus,
@@ -12,87 +11,78 @@ import {
 import { BridgeTransactionInformationShell } from "./BridgeTransactionInformationShell";
 
 type Transaction = TRPCRouterOutputs["getTransaction"]["transaction"];
+type ChainportData = NonNullable<
+  TRPCRouterOutputs["getTransaction"]["chainportData"]
+>;
 
 type Props = BoxProps & {
   transaction: Transaction;
+  chainportData: ChainportData;
 };
 
-export function BridgeTransactionInformation({ transaction, ...rest }: Props) {
+export function BridgeTransactionInformation({
+  transaction,
+  chainportData,
+  ...rest
+}: Props) {
   const { formatMessage } = useIntl();
   const isSend = transaction.type === "send";
 
-  const encodedBridgeNoteMemo = useMemo(() => {
-    const match = transaction.notes?.find((note) => {
-      return note.memo && !note.memo.includes("fee_payment");
-    });
-    return match || null;
-  }, [transaction.notes]);
-
-  const { data: chainportMeta } = trpcReact.getChainportMeta.useQuery();
-  const { data: bridgeNoteMemo } = trpcReact.decodeMemo.useQuery(
-    {
-      memo: encodedBridgeNoteMemo?.memoHex ?? "",
-    },
-    {
-      enabled: !!encodedBridgeNoteMemo,
-    },
-  );
-
-  const baseNetworkId = isSend ? IRONFISH_NETWORK_ID : bridgeNoteMemo?.[0];
+  const { data: chainportNetworks } = trpcReact.getChainportNetworks.useQuery();
 
   const { data: chainportStatus, isLoading: isChainportStatusLoading } =
     trpcReact.getChainportTransactionStatus.useQuery(
       {
         transactionHash: transaction.hash,
-        baseNetworkId: baseNetworkId ?? 0,
       },
       {
-        enabled: !!baseNetworkId,
+        enabled: isSend,
       },
     );
 
-  const targetNetwork = useMemo(() => {
-    if (!chainportStatus || !chainportMeta) return null;
+  const otherNetwork = useMemo(() => {
+    if (!chainportNetworks) return null;
 
-    return chainportMeta.cp_network_ids[
-      chainportStatus.target_network_id ?? ""
-    ];
-  }, [chainportMeta, chainportStatus]);
+    return chainportNetworks.find(
+      (network) =>
+        network.chainport_network_id === chainportData.chainportNetworkId,
+    );
+  }, [chainportNetworks, chainportData.chainportNetworkId]);
 
   const destinationTxHashContent = useMemo(() => {
-    if (!chainportStatus || !chainportMeta) return null;
-
-    const baseUrl =
-      chainportMeta.cp_network_ids[chainportStatus.target_network_id ?? ""]
-        ?.explorer_url;
+    if (
+      !chainportStatus ||
+      !("target_tx_hash" in chainportStatus) ||
+      !otherNetwork ||
+      !isSend
+    )
+      return null;
 
     return {
-      href: baseUrl
-        ? baseUrl + "tx/" + chainportStatus.target_tx_hash
+      href: otherNetwork.explorer_url
+        ? otherNetwork.explorer_url + "tx/" + chainportStatus.target_tx_hash
         : undefined,
       txHash: chainportStatus.target_tx_hash,
     };
-  }, [chainportMeta, chainportStatus]);
+  }, [otherNetwork, chainportStatus, isSend]);
 
   const status = useChainportTransactionStatus(transaction);
 
   const sourceNetwork = useMemo(() => {
-    const result = chainportMeta?.cp_network_ids[baseNetworkId ?? ""];
-
-    if (!result) return;
+    if (!otherNetwork || isSend) return;
 
     return {
-      name: result.label,
-      icon: result.network_icon,
+      name: otherNetwork.label,
+      icon: otherNetwork.network_icon,
     };
-  }, [baseNetworkId, chainportMeta?.cp_network_ids]);
+  }, [otherNetwork, isSend]);
 
   if (isChainportStatusLoading) {
     return (
       <BridgeTransactionInformationShell
         status={<Skeleton>placeholder</Skeleton>}
         type={<Skeleton>pending</Skeleton>}
-        address={<Skeleton>0x12345678</Skeleton>}
+        address={chainportData.address}
         {...rest}
       />
     );
@@ -102,9 +92,9 @@ export function BridgeTransactionInformation({ transaction, ...rest }: Props) {
     <BridgeTransactionInformationShell
       status={formatMessage(getMessageForStatus(isSend ? status : "complete"))}
       type={transaction.type}
-      address={bridgeNoteMemo?.[1] ?? ""}
-      networkIcon={targetNetwork?.network_icon ?? ""}
-      targetTxHash={destinationTxHashContent?.txHash}
+      address={chainportData.address}
+      networkIcon={otherNetwork?.network_icon ?? ""}
+      targetTxHash={destinationTxHashContent?.txHash ?? undefined}
       blockExplorerUrl={destinationTxHashContent?.href}
       sourceNetwork={sourceNetwork}
       {...rest}

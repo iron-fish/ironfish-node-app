@@ -5,7 +5,6 @@ import { Virtuoso } from "react-virtuoso";
 import { NoteHeadings } from "@/components/NoteRow/NoteHeadings";
 import { NoteRow } from "@/components/NoteRow/NoteRow";
 import { useScrollElementContext } from "@/layouts/MainLayout";
-import { isChainportNote } from "@shared/isChainportTx";
 
 import { TransactionNote } from "../../../shared/types";
 import { EmptyStateMessage } from "../EmptyStateMessage/EmptyStateMessage";
@@ -28,7 +27,6 @@ const messages = defineMessages({
 });
 
 type Props = {
-  networkId: number;
   notes: TransactionNote[];
   heading: string;
   asTransactions?: boolean;
@@ -39,7 +37,6 @@ type Props = {
 };
 
 export function NotesList({
-  networkId,
   notes,
   heading,
   asTransactions = false,
@@ -97,7 +94,7 @@ export function NotesList({
                 status={note.status}
                 memo={note.memo}
                 asTransaction={asTransactions}
-                isBridge={asTransactions && isChainportNote(networkId, note)}
+                isBridge={asTransactions && !!note.chainportData}
               />
             );
           }}

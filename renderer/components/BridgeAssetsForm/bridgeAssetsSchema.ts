@@ -1,8 +1,9 @@
 import { z } from "zod";
 
+import { TRPCRouterOutputs } from "@/providers/TRPCProvider";
 import { getChecksumAddress } from "@/utils/ethereumAddressUtils";
 
-export const bridgeAssetsSchema = z.object({
+export const bridgeAssetsFormSchema = z.object({
   fromAccount: z.string().min(1),
   amount: z
     .string()
@@ -14,7 +15,7 @@ export const bridgeAssetsSchema = z.object({
       return Number(value) > 0;
     }, "Amount must be greater than 0"),
   assetId: z.string().min(1),
-  destinationNetwork: z.string().min(1),
+  destinationNetworkId: z.string().min(1).nullable(),
   targetAddress: z.string().superRefine((value, ctx) => {
     try {
       getChecksumAddress(value);
@@ -30,4 +31,12 @@ export const bridgeAssetsSchema = z.object({
   }),
 });
 
-export type BridgeAssetsFormData = z.infer<typeof bridgeAssetsSchema>;
+type ChainportNetwork =
+  TRPCRouterOutputs["getChainportTokenPaths"]["chainportTokenPaths"][number];
+
+export type BridgeAssetsConfirmationData = Omit<
+  BridgeAssetsFormData,
+  "destinationNetworkId"
+> & { destinationNetwork: ChainportNetwork };
+
+export type BridgeAssetsFormData = z.infer<typeof bridgeAssetsFormSchema>;

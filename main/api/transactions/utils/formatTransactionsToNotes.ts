@@ -2,8 +2,9 @@ import { RpcAsset, RpcClient, RpcWalletTransaction } from "@ironfish/sdk";
 import log from "electron-log";
 
 import { IRON_ID } from "@shared/constants";
-import { hasChainportOutgoingAddress } from "@shared/isChainportTx";
 import { TransactionNote } from "@shared/types";
+
+import { extractChainportDataFromTransaction } from "../../chainport/vendor/utils";
 
 export async function createAssetLookup(
   client: RpcClient,
@@ -50,6 +51,7 @@ export async function getTransactionNotes(
           memo: note.memo,
           noteHash: note.noteHash,
           accountName,
+          chainportData: undefined,
         };
       }) ?? [];
 
@@ -80,6 +82,8 @@ export async function formatTransactionsToNotes(
       continue;
     }
 
+    const chainportData = extractChainportDataFromTransaction(networkId, tx);
+
     const firstNote = tx.notes[0];
 
     // True if any asset balance is non-zero, ignoring the transaction fee (if current account is sender)
@@ -97,11 +101,7 @@ export async function formatTransactionsToNotes(
     // This is because the fee payment is paid in $IRON, so the transaction will have two deltas,
     // one for the custom asset being bridged, and one for the $IRON fee payment.
     const shouldSkipChainportFeeNote =
-      tx.type === "send" &&
-      tx.assetBalanceDeltas.length > 1 &&
-      tx.notes?.some((note) => {
-        return hasChainportOutgoingAddress(networkId, note.owner);
-      });
+      tx.type === "send" && tx.assetBalanceDeltas.length > 1 && !!chainportData;
 
     // Make a TransactionNote for each asset balance delta
     for (const abd of tx.assetBalanceDeltas) {
@@ -173,6 +173,7 @@ export async function formatTransactionsToNotes(
         value: absoluteDeltaWithoutFee,
         noteHash: "",
         memo: memo,
+        chainportData,
       });
     }
   }

@@ -22,7 +22,7 @@ import { formatOre } from "@/utils/ironUtils";
 
 import { StepIdle } from "./StepIdle";
 import { AssetOptionType } from "../../AssetAmountInput/utils";
-import { BridgeAssetsFormData } from "../bridgeAssetsSchema";
+import { BridgeAssetsConfirmationData } from "../bridgeAssetsSchema";
 
 const messages = defineMessages({
   submittingTransaction: {
@@ -62,14 +62,16 @@ const messages = defineMessages({
   },
 });
 
-type ChainportToken =
-  TRPCRouterOutputs["getChainportTokens"]["chainportTokens"][number];
-type ChainportTargetNetwork = ChainportToken["targetNetworks"][number];
+type ChainportToken = NonNullable<
+  TRPCRouterOutputs["getChainportTokens"]["chainportTokensMap"][number]
+>;
+type ChainportNetwork =
+  TRPCRouterOutputs["getChainportTokenPaths"]["chainportTokenPaths"][number];
 
 type Props = {
   onClose: () => void;
-  formData: BridgeAssetsFormData;
-  targetNetwork: ChainportTargetNetwork;
+  formData: BridgeAssetsConfirmationData;
+  targetNetwork: ChainportNetwork;
   selectedAsset: AssetOptionType;
   chainportToken: ChainportToken;
   handleTransactionDetailsError: (error: string) => void;
@@ -108,9 +110,9 @@ export function BridgeConfirmationModal({
   } = trpcReact.getChainportBridgeTransactionDetails.useQuery(
     {
       amount: convertedAmount.toString(),
-      assetId: chainportToken.ironfishId,
+      assetId: chainportToken.web3_address,
       to: formData.targetAddress,
-      selectedNetwork: targetNetwork.chainportNetworkId.toString(),
+      selectedNetwork: targetNetwork.chainport_network_id,
     },
     {
       retry: false,
@@ -246,7 +248,7 @@ export function BridgeConfirmationModal({
             <StepIdle
               fromAccount={formData.fromAccount}
               targetNetwork={targetNetwork.label}
-              targetNetworkIcon={targetNetwork.networkIcon}
+              targetNetworkIcon={targetNetwork.network_icon}
               amount={formData.amount}
               assetName={selectedAsset.assetName}
               amountReceiving={amountToReceive}

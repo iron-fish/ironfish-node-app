@@ -4,6 +4,8 @@ import type {
   TransactionType,
 } from "@ironfish/sdk";
 
+import type { ChainportTransactionData } from "../main/api/chainport/vendor/utils";
+
 export type TransactionNote = {
   asset?: RpcAsset;
   assetId: string;
@@ -17,6 +19,7 @@ export type TransactionNote = {
   memo: string | string[];
   noteHash: string;
   accountName: string;
+  chainportData?: ChainportTransactionData;
 };
 
 export type SnapshotUpdate =
