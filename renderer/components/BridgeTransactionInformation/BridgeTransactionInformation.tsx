@@ -49,9 +49,6 @@ export function BridgeTransactionInformation({
     );
   }, [chainportNetworks, chainportData.chainportNetworkId]);
 
-  console.log(chainportData);
-  console.log(otherNetwork);
-
   const destinationTxHashContent = useMemo(() => {
     if (
       !chainportStatus ||
