@@ -103,7 +103,7 @@ ${err}
           to,
         );
       } catch (err) {
-        logger.error(`Failed to fetch Chainport token paths data.
+        logger.error(`Failed to fetch Chainport bridge transaction details.
 
 ${err}
 `);
