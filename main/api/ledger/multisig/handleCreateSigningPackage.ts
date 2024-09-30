@@ -1,6 +1,6 @@
 import { CreateSigningPackageRequest } from "@ironfish/sdk";
 
-import { manager } from "../manager";
+import { manager } from "../../manager";
 
 export async function handleCreateSigningPackage({
   request,

@@ -1,6 +1,6 @@
 import { AggregateSignatureSharesRequest } from "@ironfish/sdk";
 
-import { manager } from "../manager";
+import { manager } from "../../manager";
 
 export async function handleAggregateSignatureShares({
   request,
