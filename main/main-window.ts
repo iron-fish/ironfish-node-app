@@ -122,7 +122,9 @@ class MainWindow {
 
     this.window = createWindow("main", {
       icon,
+      height: 740,
       minWidth: 750,
+      width: 934,
       show: false,
       title: "Iron Fish Node App",
       titleBarStyle: "hidden",
@@ -132,7 +134,6 @@ class MainWindow {
         nodeIntegration: true,
       },
     });
-
     // If a link attempts to open a new window, open it in an external browser instead.
     this.window.webContents.setWindowOpenHandler(({ url }) => {
       log.log("Opening URL:", url);
