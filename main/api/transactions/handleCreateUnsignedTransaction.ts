@@ -1,31 +1,20 @@
-import { CreateTransactionRequest, RawTransactionSerde } from "@ironfish/sdk";
+import { RawTransactionSerde } from "@ironfish/sdk";
+import { z } from "zod";
 
+import { handleSendTransactionInput } from "./handleSendTransaction";
 import { manager } from "../manager";
+import { createRawTransaction } from "../utils/transactions";
 
-export async function handleCreateUnsignedTransaction({
-  request,
-}: {
-  request: CreateTransactionRequest;
-}) {
+export async function handleCreateUnsignedTransaction(request: z.infer<typeof handleSendTransactionInput>) {
   const ironfish = await manager.getIronfish();
   const rpcClient = await ironfish.rpcClient();
 
-  let feeRate = request.feeRate;
-  if (request.fee === null && request.feeRate === null) {
-    const response = await rpcClient.wallet.estimateFeeRates();
-    feeRate = response.content.fast;
-  }
+  const raw = await createRawTransaction(request);
 
-  const responseRaw = await rpcClient.wallet.createTransaction({
-    ...request,
-    feeRate,
-  });
-  const bytes = Buffer.from(responseRaw.content.transaction, "hex");
-  const raw = RawTransactionSerde.deserialize(bytes);
   const responseUnsigned = await rpcClient.wallet.buildTransaction({
-    account: request.account,
+    account: request.fromAccount,
     rawTransaction: RawTransactionSerde.serialize(raw).toString("hex"),
   });
 
-  return responseUnsigned.content;
+  return { unsignedTransaction: responseUnsigned.content.unsignedTransaction };
 }

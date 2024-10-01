@@ -76,7 +76,9 @@ class LedgerDkg {
 
   private refreshConnection = async () => {
     if (!this.app) {
+      console.log("refreshing connection");
       await this.connect();
+      console.log("connected");
     }
   };
 
@@ -91,26 +93,21 @@ class LedgerDkg {
   };
 
   reviewTransaction = async (transaction: string): Promise<Buffer> => {
-    if (!this.app) {
-      throw new Error("Connect to Ledger first");
-    }
-
     this.logger.info(
       "Please review and approve the outputs of this transaction on your ledger device.",
     );
 
-    const { hash } = await this.tryInstruction((app) =>
-      app.reviewTransaction(transaction),
-    );
+    const { hash } = await this.tryInstruction((app) => {
+      console.log("reviewTransactionStart");
+      const result = app.reviewTransaction(transaction);
+      console.log("reviewTransactionEnd");
+      return result;
+  });
 
     return hash;
   };
 
   dkgGetCommitments = async (transactionHash: string): Promise<Buffer> => {
-    if (!this.app) {
-      throw new Error("Connect to Ledger first");
-    }
-
     const { commitments } = await this.tryInstruction((app) =>
       app.dkgGetCommitments(transactionHash),
     );

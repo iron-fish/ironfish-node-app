@@ -1,9 +1,11 @@
 import { z } from "zod";
 
+import { handleCreateUnsignedTransaction } from "./handleCreateUnsignedTransaction";
 import { handleGetEstimatedFees } from "./handleGetEstimatedFees";
 import { handleGetTransaction } from "./handleGetTransaction";
 import { handleGetTransactions } from "./handleGetTransactions";
 import { handleGetTransactionsForContact } from "./handleGetTransactionsForContact";
+import { handleHashUnsignedTransaction } from "./handleHashUnsignedTransaction";
 import {
   handleSendTransaction,
   handleSendTransactionInput,
@@ -60,5 +62,15 @@ export const transactionRouter = t.router({
     .input(handleSendTransactionInput)
     .mutation(async (opts) => {
       return handleSendTransaction(opts.input);
+    }),
+  handleCreateUnsignedTransaction: t.procedure
+    .input(handleSendTransactionInput)
+    .mutation(async (opts) => {
+      return handleCreateUnsignedTransaction(opts.input);
+    }),
+  handleHashUnsignedTransaction: t.procedure
+    .input(z.string())
+    .mutation(async (opts) => {
+      return handleHashUnsignedTransaction(opts.input);
     }),
 });

@@ -49,6 +49,9 @@ const messages = defineMessages({
   yourNode: {
     defaultMessage: "Your Node",
   },
+  multisigLedger: {
+    defaultMessage: "Multisig Ledger",
+  },
 });
 
 const LINKS = [
@@ -85,6 +88,12 @@ const LINKS = [
   },
 ];
 
+const MultisigLedgerLink = {
+  label: messages.multisigLedger,
+  href: "/multisig-ledger",
+  icon: <ArrowSend />,
+}
+
 function ResponsiveLogo() {
   return (
     <Box>
@@ -114,6 +123,8 @@ function Sidebar() {
 
   const { flags } = useFeatureFlags();
 
+  const newLinks = flags.multisigLedgerSupport.enabled ? LINKS.concat(MultisigLedgerLink) : LINKS;
+
   return (
     <Flex flexDirection="column" alignItems="stretch" w="100%">
       <Box
@@ -124,7 +135,7 @@ function Sidebar() {
         <ResponsiveLogo />
       </Box>
       <VStack alignItems="flex-start" flexGrow={1}>
-        {LINKS.map(({ label, href, icon, id }) => {
+        {newLinks.map(({ label, href, icon, id }) => {
           // The bridge tab is only visible if the flag is enabled and we're not on mainnet
           if (id === "bridge" && !flags.chainportBridge.enabled) {
             return null;

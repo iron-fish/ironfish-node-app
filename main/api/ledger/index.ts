@@ -1,3 +1,4 @@
+import { UnsignedTransaction } from "@ironfish/sdk";
 import { observable } from "@trpc/server/observable";
 import { z } from "zod";
 
@@ -44,22 +45,38 @@ export const ledgerRouter = t.router({
   createSigningCommitment: t.procedure
     .input(z.object({ txHash: z.string() }))
     .mutation(async (opts) => {
-      return ledgerDkg.dkgGetCommitments(opts.input.txHash);
+      const result = await ledgerDkg.dkgGetCommitments(opts.input.txHash)
+      return result.toString("hex");
+    }),
+  reviewTransaction: t.procedure
+    .input(z.object({ unsignedTransaction: z.string() }))
+    .mutation(async (opts) => {
+      console.log("reviewTransaction");
+      const result = await ledgerDkg.reviewTransaction(opts.input.unsignedTransaction)
+      console.log("reviewTransactionComplete");
+      return result.toString("hex");
     }),
   createSignatureShare: t.procedure
     .input(
       z.object({
-        randomness: z.string(),
+        unsignedTransaction: z.string(),
         signingPackage: z.string(),
-        txHash: z.string(),
       }),
     )
     .mutation(async (opts) => {
-      return ledgerDkg.dkgSign(
-        opts.input.randomness,
+      const unsignedTransaction = new UnsignedTransaction(Buffer.from(opts.input.unsignedTransaction, "hex"));
+      const ref = unsignedTransaction.takeReference();
+      const publicKeyRandomness = ref.publicKeyRandomness();
+      const hash = ref.hash();
+      unsignedTransaction.returnReference();
+
+      const signatureShare = await ledgerDkg.dkgSign(
+        publicKeyRandomness,
         opts.input.signingPackage,
-        opts.input.txHash,
+        hash.toString('hex'),
       );
+
+      return signatureShare.toString("hex");
     }),
   aggregateSignatureShares: t.procedure
     .input(
