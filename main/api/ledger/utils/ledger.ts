@@ -237,7 +237,8 @@ class LedgerManager {
           ironfishAppReponse.error?.type !== "LEDGER_LOCKED";
         returnStatus.isIronfishAppOpen =
           ironfishAppReponse.status === "SUCCESS";
-        returnStatus.deviceName = transport.deviceModel?.productName ?? "";
+        returnStatus.deviceName =
+          transport.deviceModel?.productName ?? "Ledger";
 
         if (ironfishAppReponse.status === "SUCCESS") {
           const keyResponse = await ironfishAppReponse.data.retrieveKeys(
