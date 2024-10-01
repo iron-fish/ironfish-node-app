@@ -37,6 +37,13 @@ export default function Home() {
     }
   }, [initialStateData, router]);
 
+  // Encryption is not supported in the node app yet
+  useEffect(() => {
+    if (initialStateData === "encryption-not-supported") {
+      router.replace("/encryption-not-supported");
+    }
+  }, [initialStateData, router]);
+
   // If user is behind on syncing, go to snapshot download
   useEffect(() => {
     if (initialStateData === "snapshot-download-prompt") {

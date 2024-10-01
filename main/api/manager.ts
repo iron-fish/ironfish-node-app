@@ -6,7 +6,8 @@ import { userSettingsStore } from "../stores/userSettingsStore";
 export type InitialState =
   | "onboarding"
   | "snapshot-download-prompt"
-  | "start-node";
+  | "start-node"
+  | "encryption-not-supported";
 
 export class Manager {
   private _ironfish: Ironfish | null = null;
@@ -44,6 +45,11 @@ export class Manager {
     }
 
     const rpcClient = await ironfish.rpcClient();
+
+    const walletStatus = await rpcClient.wallet.getAccountsStatus();
+    if (walletStatus.content.encrypted) {
+      return "encryption-not-supported";
+    }
 
     const accountsResponse = await rpcClient.wallet.getAccounts();
 
