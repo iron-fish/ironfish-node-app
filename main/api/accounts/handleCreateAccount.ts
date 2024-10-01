@@ -3,20 +3,6 @@ import { AccountFormat } from "@ironfish/sdk";
 import { contactsStore } from "../../stores/contactsStore";
 import { manager } from "../manager";
 
-export async function handleAddContact({
-  name,
-  address,
-}: {
-  name: string;
-  address: string;
-}) {
-  try {
-    contactsStore.addContact({ name, address });
-  } catch (error) {
-    console.error("Failed to add contact", error);
-  }
-}
-
 export async function handleCreateAccount({ name }: { name: string }) {
   const ironfish = await manager.getIronfish();
   const rpcClient = await ironfish.rpcClient();
@@ -37,10 +23,14 @@ export async function handleCreateAccount({ name }: { name: string }) {
     throw new Error("Failed to get mnemonic phrase");
   }
 
-  await handleAddContact({
-    name: createResponse.content.name,
-    address: createResponse.content.publicAddress,
-  });
+  try {
+    contactsStore.addContact({
+      name,
+      address: createResponse.content.publicAddress,
+    });
+  } catch (error) {
+    console.error("Failed to add contact", error);
+  }
 
   return {
     name: createResponse.content.name,
