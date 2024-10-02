@@ -19,6 +19,7 @@ import { trpcReact, TRPCRouterOutputs } from "@/providers/TRPCProvider";
 import { PillButton } from "@/ui/PillButton/PillButton";
 import { CurrencyUtils } from "@/utils/currency";
 import { formatOre } from "@/utils/ironUtils";
+import { IRON_ID, IRON_SYMBOL } from "@shared/constants";
 
 import { StepIdle } from "./StepIdle";
 import { AssetOptionType } from "../../AssetAmountInput/utils";
@@ -95,7 +96,9 @@ export function BridgeConfirmationModal({
   const [convertedAmount, convertedAmountError] = CurrencyUtils.tryMajorToMinor(
     formData.amount,
     selectedAsset.asset.id,
-    selectedAsset.asset.verification,
+    {
+      decimals: chainportToken.decimals,
+    },
   );
 
   if (convertedAmountError) {
@@ -155,6 +158,14 @@ export function BridgeConfirmationModal({
       },
     );
 
+  const amountToSend = useMemo(() => {
+    const amount = CurrencyUtils.formatCurrency(
+      convertedAmount,
+      chainportToken.decimals,
+    );
+    return `${amount} ${selectedAsset.assetName}`;
+  }, [selectedAsset.assetName, convertedAmount, chainportToken.decimals]);
+
   const amountToReceive = useMemo(() => {
     if (isTransactionDetailsLoading || !txDetails) {
       return <Skeleton>PLACEHOLDER</Skeleton>;
@@ -169,12 +180,17 @@ export function BridgeConfirmationModal({
       chainportToken.decimals,
     );
 
-    return convertedAmount + " " + chainportToken.symbol;
+    return `${convertedAmount} ${
+      chainportToken.web3_address === IRON_ID
+        ? IRON_SYMBOL
+        : chainportToken.symbol
+    }`;
   }, [
     isTransactionDetailsLoading,
     txDetails,
     chainportToken.decimals,
     chainportToken.symbol,
+    chainportToken.web3_address,
   ]);
 
   const chainportGasFee = useMemo(() => {
@@ -198,10 +214,16 @@ export function BridgeConfirmationModal({
       return `${fee} PORTX`;
     }
 
-    return `${formatOre(
-      txDetails.bridge_fee.source_token_fee_amount ?? 0,
-    )} $IRON`;
-  }, [isTransactionDetailsLoading, txDetails]);
+    return `${CurrencyUtils.formatCurrency(
+      txDetails.bridge_fee.source_token_fee_amount,
+      chainportToken.decimals,
+    )} ${selectedAsset.assetName}`;
+  }, [
+    isTransactionDetailsLoading,
+    txDetails,
+    chainportToken.decimals,
+    selectedAsset.assetName,
+  ]);
 
   const handleClose = useCallback(() => {
     reset();
@@ -249,8 +271,7 @@ export function BridgeConfirmationModal({
               fromAccount={formData.fromAccount}
               targetNetwork={targetNetwork.label}
               targetNetworkIcon={targetNetwork.network_icon}
-              amount={formData.amount}
-              assetName={selectedAsset.assetName}
+              amountSending={amountToSend}
               amountReceiving={amountToReceive}
               targetAddress={formData.targetAddress}
               chainportGasFee={chainportGasFee}
