@@ -8,9 +8,13 @@ import { PillButton } from "@/ui/PillButton/PillButton";
 import { CopyField } from "./CopyField";
 
 export function CreateSigningCommitment({
+  identity,
+  unsignedTransaction,
   txHash,
   onSubmit,
 }: {
+  identity: string;
+  unsignedTransaction: string;
   txHash: string;
   onSubmit: (commitments: string[]) => void;
 }) {
@@ -34,7 +38,8 @@ export function CreateSigningCommitment({
       <div>
         <h1>Send the signing commitment to the coordinator</h1>
         <CopyField label={"Signing Commitment"} value={signingCommitment} />
-
+        <CopyField label={"Identity"} value={identity} />
+        <CopyField label={"Unsigned Transaction"} value={unsignedTransaction} />
         <Box>
           <TextareaInput
             label="Enter Signing Commitments from Participant Separated by Commas"

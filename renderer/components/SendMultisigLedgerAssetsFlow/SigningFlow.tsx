@@ -18,12 +18,14 @@ type Step3ReviewTransaction = {
 
 type Step4CreateSigningCommitment = {
   step: 4;
+  identity: string;
   unsignedTransaction: string;
   hash: string;
 };
 
 type Step5CreateSigningPackage = {
   step: 5;
+  identity: string;
   unsignedTransaction: string;
   signingCommitments: string[];
   hash: string;
@@ -31,6 +33,7 @@ type Step5CreateSigningPackage = {
 
 type Step6CreateSignatureShare = {
   step: 6;
+  identity: string;
   unsignedTransaction: string;
   signingCommitments: string[];
   hash: string;
@@ -39,6 +42,7 @@ type Step6CreateSignatureShare = {
 
 type Step7AggregateSignatureSharesAndBroadcast = {
   step: 7;
+  identity: string;
   unsignedTransaction: string;
   signingCommitments: string[];
   hash: string;
@@ -70,11 +74,12 @@ export function SendMultisigLedgerAssetsFlow() {
     return (
       <ReviewTransaction
         unsignedTransaction={signingState.unsignedTransaction}
-        onSubmit={(hash) => {
+        onSubmit={(hash, identity) => {
           setSigningState({
             step: 4,
             unsignedTransaction: signingState.unsignedTransaction,
             hash,
+            identity,
           });
         }}
       />
@@ -82,6 +87,8 @@ export function SendMultisigLedgerAssetsFlow() {
   } else if (step === 4) {
     return (
       <CreateSigningCommitment
+        identity={signingState.identity}
+        unsignedTransaction={signingState.unsignedTransaction}
         txHash={signingState.hash}
         onSubmit={(commitments) => {
           setSigningState({

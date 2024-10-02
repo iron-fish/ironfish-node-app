@@ -5,7 +5,7 @@ import { z } from "zod";
 import { handleAggregateSignatureShares } from "./multisig/handleAggregateSignatureShares";
 import { handleCreateSigningPackage } from "./multisig/handleCreateSigningPackage";
 import { ledgerDkg } from "./utils/dkg";
-import { ledgerManager, ConnectionStatus } from "./utils/ledger";
+import { ConnectionStatus, ledgerManager } from "./utils/ledger";
 import { handleSendTransactionInput } from "../transactions/handleSendTransaction";
 import { t } from "../trpc";
 
@@ -45,14 +45,22 @@ export const ledgerRouter = t.router({
   createSigningCommitment: t.procedure
     .input(z.object({ txHash: z.string() }))
     .mutation(async (opts) => {
-      const result = await ledgerDkg.dkgGetCommitments(opts.input.txHash)
+      const result = await ledgerDkg.dkgGetCommitments(opts.input.txHash);
+      return result.toString("hex");
+    }),
+  getIdentity: t.procedure
+    .input(z.object({ index: z.number() }))
+    .mutation(async (opts) => {
+      const result = await ledgerDkg.dkgGetIdentity(opts.input.index);
       return result.toString("hex");
     }),
   reviewTransaction: t.procedure
     .input(z.object({ unsignedTransaction: z.string() }))
     .mutation(async (opts) => {
       console.log("reviewTransaction");
-      const result = await ledgerDkg.reviewTransaction(opts.input.unsignedTransaction)
+      const result = await ledgerDkg.reviewTransaction(
+        opts.input.unsignedTransaction,
+      );
       console.log("reviewTransactionComplete");
       return result.toString("hex");
     }),
@@ -64,7 +72,9 @@ export const ledgerRouter = t.router({
       }),
     )
     .mutation(async (opts) => {
-      const unsignedTransaction = new UnsignedTransaction(Buffer.from(opts.input.unsignedTransaction, "hex"));
+      const unsignedTransaction = new UnsignedTransaction(
+        Buffer.from(opts.input.unsignedTransaction, "hex"),
+      );
       const ref = unsignedTransaction.takeReference();
       const publicKeyRandomness = ref.publicKeyRandomness();
       const hash = ref.hash();
@@ -73,7 +83,7 @@ export const ledgerRouter = t.router({
       const signatureShare = await ledgerDkg.dkgSign(
         publicKeyRandomness,
         opts.input.signingPackage,
-        hash.toString('hex'),
+        hash.toString("hex"),
       );
 
       return signatureShare.toString("hex");
