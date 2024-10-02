@@ -104,9 +104,9 @@ export function BridgeConfirmationModal({
 
   const {
     data: txDetails,
-    isLoading: isTransactionDetailsLoading,
     isError: isTransactionDetailError,
     error: transactionDetailError,
+    isFetching: isTransactionDetailsLoading,
   } = trpcReact.getChainportBridgeTransactionDetails.useQuery(
     {
       amount: convertedAmount.toString(),
@@ -116,6 +116,7 @@ export function BridgeConfirmationModal({
     },
     {
       retry: false,
+      refetchInterval: false,
       refetchOnWindowFocus: false,
       cacheTime: 0,
     },
