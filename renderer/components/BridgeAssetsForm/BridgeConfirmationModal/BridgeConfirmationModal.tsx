@@ -159,8 +159,12 @@ export function BridgeConfirmationModal({
     );
 
   const amountToSend = useMemo(() => {
-    return `${formData.amount} ${selectedAsset.assetName}`;
-  }, [selectedAsset.assetName, formData.amount]);
+    const amount = CurrencyUtils.formatCurrency(
+      convertedAmount,
+      chainportToken.decimals,
+    );
+    return `${amount} ${selectedAsset.assetName}`;
+  }, [selectedAsset.assetName, convertedAmount, chainportToken.decimals]);
 
   const amountToReceive = useMemo(() => {
     if (isTransactionDetailsLoading || !txDetails) {
