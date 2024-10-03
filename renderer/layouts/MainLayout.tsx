@@ -133,12 +133,7 @@ function Sidebar() {
         <ResponsiveLogo />
       </Box>
       <VStack alignItems="flex-start" flexGrow={1}>
-        {LINKS.map(({ label, href, icon, id }) => {
-          // The bridge tab is only visible if the flag is enabled and we're not on mainnet
-          if (id === "bridge" && !flags.chainportBridge.enabled) {
-            return null;
-          }
-
+        {LINKS.map(({ label, href, icon }) => {
           const isActive = router.pathname.startsWith(href);
           return (
             <ChakraLink
