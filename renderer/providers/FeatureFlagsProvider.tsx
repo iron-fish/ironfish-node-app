@@ -16,12 +16,6 @@ const FLAGS_DEFINITION = [
     key: "demoFlag",
   },
   {
-    name: "Chainport Bridge",
-    description:
-      "Turning this flag on will show the Bridge navigation item in the sidebar if the current network is Testnet.",
-    key: "chainportBridge",
-  },
-  {
     name: "Ledger Support",
     description:
       "Turning this flag on will enable importing Ledger accounts and signing transactions with your Ledger device.",
