@@ -51,6 +51,9 @@ const messages = defineMessages({
   yourNode: {
     defaultMessage: "Your Node",
   },
+  multisigLedger: {
+    defaultMessage: "Multisig Ledger",
+  },
 });
 
 const LINKS = [
@@ -85,6 +88,12 @@ const LINKS = [
     href: "/your-node",
     icon: <YourNode />,
   },
+  {
+    id: "multisigLedger",
+    label: messages.multisigLedger,
+    href: "/multisig-ledger",
+    icon: <ArrowSend />,
+  },
 ];
 
 function ResponsiveLogo() {
@@ -116,6 +125,7 @@ function Sidebar() {
   const { colorMode } = useColorMode();
   const { flags } = useFeatureFlags();
   const { mutate: setUserSettings } = trpcReact.setUserSettings.useMutation();
+
   return (
     <Flex flexDirection="column" alignItems="stretch" w="100%">
       <Box
@@ -136,6 +146,11 @@ function Sidebar() {
         {LINKS.map(({ label, href, icon, id }) => {
           // The bridge tab is only visible if the flag is enabled and we're not on mainnet
           if (id === "bridge" && !flags.chainportBridge.enabled) {
+            return null;
+          }
+
+          // The multisig Ledger tab is only visible if the flag is enabled
+          if (id === "multisigLedger" && !flags.multisigLedgerSupport.enabled) {
             return null;
           }
 
