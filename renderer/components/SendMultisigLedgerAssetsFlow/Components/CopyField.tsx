@@ -5,7 +5,7 @@ import { defineMessages, useIntl } from "react-intl";
 import { useCopyToClipboard } from "usehooks-ts";
 
 import { COLORS } from "@/ui/colors";
-import { FormField, FormFieldProps } from "@/ui/Forms/FormField/FormField";
+import { FormField } from "@/ui/Forms/FormField/FormField";
 import { useIFToast } from "@/ui/Toast/Toast";
 
 const messages = defineMessages({
@@ -39,12 +39,10 @@ export function CopyField({ value, label }: Props) {
       <FormField
         label={label}
         flexGrow={1}
-        triggerProps={
-          {
-            borderTopRightRadius: 0,
-            borderBottomRightRadius: 0,
-          } as FormFieldProps["triggerProps"]
-        }
+        triggerProps={{
+          borderTopRightRadius: 0,
+          borderBottomRightRadius: 0,
+        }}
       >
         <Input isReadOnly type="text" variant="unstyled" value={value} />
       </FormField>

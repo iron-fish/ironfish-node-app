@@ -426,11 +426,9 @@ export function SendAssetConfirmModal({
   pending,
   onCancel,
 }: {
-  pending: PendingTransactionData | null;
+  pending: PendingTransactionData;
   onCancel: () => void;
 }) {
-  if (!pending) return null;
-
   const { transactionData, selectedAccount, selectedAsset } = pending;
 
   return selectedAccount.isLedger ? (
@@ -477,10 +475,12 @@ export function SendAssetsForm() {
         accountsData={filteredAccounts}
         defaultToAddress={defaultToAddress}
       />
-      <SendAssetConfirmModal
-        pending={pending}
-        onCancel={() => setPending(null)}
-      />
+      {pending && (
+        <SendAssetConfirmModal
+          pending={pending}
+          onCancel={() => setPending(null)}
+        />
+      )}
     </>
   );
 }

@@ -2,12 +2,11 @@ import { Box, Flex, Input } from "@chakra-ui/react";
 import { useState } from "react";
 
 import { trpcReact } from "@/providers/TRPCProvider";
-import { FormField, FormFieldProps } from "@/ui/Forms/FormField/FormField";
+import { FormField } from "@/ui/Forms/FormField/FormField";
 import { PillButton } from "@/ui/PillButton/PillButton";
 
 import { CopyField } from "../Components/CopyField";
-
-type SigningRole = "participant" | "coordinator";
+import { SigningRole } from "../SigningFlow";
 
 export function CreateSigningCommitment({
   txHash,
@@ -50,12 +49,10 @@ export function CreateSigningCommitment({
                     label={"Other Signing Commitment"}
                     flexGrow={1}
                     key={index}
-                    triggerProps={
-                      {
-                        borderTopRightRadius: 0,
-                        borderBottomRightRadius: 0,
-                      } as FormFieldProps["triggerProps"]
-                    }
+                    triggerProps={{
+                      borderTopRightRadius: 0,
+                      borderBottomRightRadius: 0,
+                    }}
                   >
                     <Input
                       type="text"

@@ -35,13 +35,14 @@ class LedgerDkg {
         this.logger.debug(
           `Ledger ResponseError returnCode: ${error.returnCode.toString(16)}`,
         );
+
         if (error.returnCode === LedgerDeviceLockedError.returnCode) {
           throw new LedgerDeviceLockedError(
             "Please unlock your Ledger device.",
           );
-        } else if (
-          LedgerAppUnavailableError.returnCodes.includes(error.returnCode)
-        ) {
+        }
+
+        if (LedgerAppUnavailableError.returnCodes.includes(error.returnCode)) {
           throw new LedgerAppUnavailableError();
         }
 

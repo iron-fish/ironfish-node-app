@@ -88,13 +88,13 @@ const LINKS = [
     href: "/your-node",
     icon: <YourNode />,
   },
+  {
+    id: "multisigLedger",
+    label: messages.multisigLedger,
+    href: "/multisig-ledger",
+    icon: <ArrowSend />,
+  },
 ];
-
-const MultisigLedgerLink = {
-  label: messages.multisigLedger,
-  href: "/multisig-ledger",
-  icon: <ArrowSend />,
-};
 
 function ResponsiveLogo() {
   return (
@@ -126,10 +126,6 @@ function Sidebar() {
   const { flags } = useFeatureFlags();
   const { mutate: setUserSettings } = trpcReact.setUserSettings.useMutation();
 
-  const newLinks = flags.multisigLedgerSupport.enabled
-    ? LINKS.concat(MultisigLedgerLink)
-    : LINKS;
-
   return (
     <Flex flexDirection="column" alignItems="stretch" w="100%">
       <Box
@@ -147,9 +143,14 @@ function Sidebar() {
         <ResponsiveLogo />
       </Box>
       <VStack alignItems="flex-start" flexGrow={1}>
-        {newLinks.map(({ label, href, icon, id }) => {
+        {LINKS.map(({ label, href, icon, id }) => {
           // The bridge tab is only visible if the flag is enabled and we're not on mainnet
           if (id === "bridge" && !flags.chainportBridge.enabled) {
+            return null;
+          }
+
+          // The multisig Ledger tab is only visible if the flag is enabled
+          if (id === "multisigLedger" && !flags.multisigLedgerSupport.enabled) {
             return null;
           }
 

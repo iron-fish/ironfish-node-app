@@ -2,7 +2,7 @@ import { Flex } from "@chakra-ui/react";
 
 import { PillButton } from "@/ui/PillButton/PillButton";
 
-type SigningRole = "participant" | "coordinator";
+import { SigningRole } from "../SigningFlow";
 
 export function SelectRole({
   onChange,
@@ -18,7 +18,7 @@ export function SelectRole({
         marginRight={6}
         onClick={() => onChange("participant")}
       >
-        {"Participant"}
+        Participant
       </PillButton>
       <PillButton
         type="submit"
@@ -26,7 +26,7 @@ export function SelectRole({
         px={8}
         onClick={() => onChange("coordinator")}
       >
-        {"Coordinator"}
+        Coordinator
       </PillButton>
     </Flex>
   );

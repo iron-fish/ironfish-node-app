@@ -8,7 +8,7 @@ import {
   Tabs,
 } from "@chakra-ui/react";
 import { useRouter } from "next/router";
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { defineMessages, useIntl } from "react-intl";
 
 import octopus from "@/images/octopus.svg";
@@ -60,7 +60,14 @@ function CreateUnsignedTransactionForm({
     error,
   } = trpcReact.handleCreateUnsignedTransaction.useMutation();
 
-  const [pending, setPending] = useState<PendingTransactionData | null>(null);
+  const [pendingTransaction, setPendingTransaction] =
+    useState<PendingTransactionData | null>(null);
+
+  useEffect(() => {
+    if (pendingTransaction && isIdle) {
+      createUnsignedTransaction(pendingTransaction.transactionData);
+    }
+  }, [pendingTransaction, isIdle, createUnsignedTransaction]);
 
   if (!accountsData) {
     return null;
@@ -70,12 +77,7 @@ function CreateUnsignedTransactionForm({
     return <NoSpendingAccountsMessage />;
   }
 
-  if (pending) {
-    const { transactionData } = pending;
-    if (isIdle) {
-      createUnsignedTransaction(transactionData);
-    }
-
+  if (pendingTransaction) {
     return (
       <>
         {isLoading && "Creating Unsigned Transaction..."}
@@ -92,7 +94,7 @@ function CreateUnsignedTransactionForm({
               onClick={() => {
                 onSubmit(
                   unsignedTransactionData.unsignedTransaction,
-                  pending.selectedAccount.name,
+                  pendingTransaction.selectedAccount.name,
                 );
               }}
             >
@@ -108,7 +110,7 @@ function CreateUnsignedTransactionForm({
   return (
     <SendAssetsFormContent
       sendButtonText="Create Unsigned Transaction"
-      onPendingChange={setPending}
+      onPendingChange={setPendingTransaction}
       accountsData={accountsData}
       defaultToAddress={defaultToAddress}
     />
@@ -125,7 +127,7 @@ function InputUnsignedTransaction({
 
   const [unsignedTransaction, setUnsignedTransaction] = useState("");
   const [selectedAccount, setSelectedAccount] = useState<string | null>(
-    accounts.data ? accounts.data[0].name : "",
+    accounts.data?.[0]?.name ?? null,
   );
 
   const accountOptions = useMemo(() => {

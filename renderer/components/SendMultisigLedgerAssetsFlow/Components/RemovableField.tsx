@@ -2,7 +2,7 @@ import { CloseIcon } from "@chakra-ui/icons";
 import { Flex, HStack, Input } from "@chakra-ui/react";
 
 import { COLORS } from "@/ui/colors";
-import { FormField, FormFieldProps } from "@/ui/Forms/FormField/FormField";
+import { FormField } from "@/ui/Forms/FormField/FormField";
 
 type Props = {
   value: string;
@@ -17,12 +17,10 @@ export function RemovableField({ value, label, onChange, onRemove }: Props) {
       <FormField
         label={label}
         flexGrow={1}
-        triggerProps={
-          {
-            borderTopRightRadius: 0,
-            borderBottomRightRadius: 0,
-          } as FormFieldProps["triggerProps"]
-        }
+        triggerProps={{
+          borderTopRightRadius: 0,
+          borderBottomRightRadius: 0,
+        }}
       >
         <Input
           type="text"
