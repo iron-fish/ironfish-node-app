@@ -36,6 +36,9 @@
   "0FN3ev": {
     "message": "One last step! Confirm the account you'd like to connect to the Node App."
   },
+  "0TJsMy": {
+    "message": "Plug your Ledger device directly into your computer"
+  },
   "0rIM5R": {
     "message": "Remove Account"
   },
@@ -194,6 +197,9 @@
   },
   "9uOFF3": {
     "message": "Overview"
+  },
+  "AAQoj1": {
+    "message": "Review and approve the transaction information on your Ledger device."
   },
   "AFZGS9": {
     "message": "The Iron Fish Node App supports {languageCount} languages. If your preferred language isn't listed, please reach out and let us know!"
@@ -876,9 +882,6 @@
   },
   "tU2A8W": {
     "message": "View in Block Explorer"
-  },
-  "te+qx/": {
-    "message": "Review and approve the transaction information on your legder device."
   },
   "tf+yHL": {
     "message": "Fast"

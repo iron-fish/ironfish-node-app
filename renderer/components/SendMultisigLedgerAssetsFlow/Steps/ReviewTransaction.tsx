@@ -36,7 +36,7 @@ export function ReviewTransaction({
   } else if (isLoading) {
     return (
       <div>
-        <h1>Review and approve the transaction on your ledger...</h1>
+        <h1>Review and approve the transaction on your Ledger...</h1>
       </div>
     );
   }

@@ -174,7 +174,7 @@ const messages = defineMessages({
   },
   multisigReviewTransactionText: {
     defaultMessage:
-      "Review and approve the transaction information on your legder device.",
+      "Review and approve the transaction information on your Ledger device.",
   },
   multisigSigningCommitmentHeading: {
     defaultMessage: "Signing Commitments",
