@@ -11,8 +11,14 @@
   "+mLiOr": {
     "message": "Feature flags"
   },
+  "+q+M5P": {
+    "message": "Collect the signature shares from all of the participants to aggregate them."
+  },
   "/0TOL5": {
     "message": "Amount"
+  },
+  "/YxWvM": {
+    "message": "Sending a multisig transaction starts with creating an unsigned transaction: a fully generated transaction that is only missing the signature. The coordinator should create the unsigned transaction data and send it to you"
   },
   "/jJLYy": {
     "message": "Transactions"
@@ -195,6 +201,9 @@
   "APTRzH": {
     "message": "You don't have any accounts that can send transactions. You must create a new account or import an account with send permissions before you can send assets."
   },
+  "AeE0SX": {
+    "message": "Add the identities of the participants in the multisig transaction."
+  },
   "AetNAD": {
     "message": "Browse"
   },
@@ -216,6 +225,9 @@
   "C43FrR": {
     "message": "Amount:"
   },
+  "CxC3WU": {
+    "message": "Send Multisig Ledger Transaction"
+  },
   "D31nQ7": {
     "message": "An error occurred while estimating the transaction fee"
   },
@@ -233,6 +245,9 @@
   },
   "DnuK8f": {
     "message": "Turn this on if you want to specify a custom name for this account. Otherwise, the account name will be inferred from your exported account data."
+  },
+  "Eddg06": {
+    "message": "Signature Shares"
   },
   "F3l7xL": {
     "message": "Add Account"
@@ -352,6 +367,9 @@
   "Ld49Lh": {
     "message": "What would you like to name this account? This name is only visible to you."
   },
+  "Ldr1+Z": {
+    "message": "Submit the signed transaction to the network."
+  },
   "Lv0zJu": {
     "message": "Details"
   },
@@ -382,6 +400,9 @@
   "NRzTJh": {
     "message": "Connect Ledger"
   },
+  "NSs9IW": {
+    "message": "Get the signing package from the coordinator and sign the transaction."
+  },
   "NTPwsP": {
     "message": "Feature flags allow you to enable or disable experimental features. These features are not fully tested and may not work as expected."
   },
@@ -396,6 +417,12 @@
   },
   "O+Q7TL": {
     "message": "Submitted Sequence"
+  },
+  "O62iwU": {
+    "message": "Unsigned Transaction"
+  },
+  "OAm3TT": {
+    "message": "Put an explantaion here"
   },
   "OC6jXV": {
     "message": "Transaction Expiration Delta"
@@ -424,6 +451,9 @@
   "Pe0ogR": {
     "message": "Theme"
   },
+  "PiWxd9": {
+    "message": "Multisig Transaction"
+  },
   "Pq25uf": {
     "message": "Reset Node"
   },
@@ -450,6 +480,9 @@
   },
   "QwFX54": {
     "message": "Transaction Notes"
+  },
+  "RHsFBY": {
+    "message": "Input a signing commitment for each participant in the multisig transaction. These do not have to be in any particular order."
   },
   "RIUFf+": {
     "message": "Ukrainian"
@@ -610,6 +643,9 @@
   "bu6hO1": {
     "message": "Unlock your Ledger"
   },
+  "c/8gQC": {
+    "message": "Signing Package"
+  },
   "c/KktL": {
     "message": "Resources"
   },
@@ -712,6 +748,9 @@
   "jwIURF": {
     "message": "The selected account does not have enough funds to send this transaction"
   },
+  "k9/k1W": {
+    "message": "Send your signing share to the coordinator so they can aggregate the signatures."
+  },
   "kF9XUo": {
     "message": "Timestamp"
   },
@@ -720,6 +759,9 @@
   },
   "kNJdlj": {
     "message": "Restart App"
+  },
+  "kObD+J": {
+    "message": "Multisig Identities"
   },
   "kTt/ND": {
     "message": "Russian"
@@ -757,6 +799,9 @@
   "oZO6n5": {
     "message": "An app update is available. Wait for it to finish downloading and restart the app, or download the latest version from the <link>Iron Fish website</link>."
   },
+  "obZZi7": {
+    "message": "Sending a multisig transaction starts with creating an unsigned transaction: a fully generated transaction that is only missing the signature. As the coordinator either create a new unsigned transaction or use unsigned transaction data already created in the CLI. Then send that unsigned transaction data to the participants"
+  },
   "omnNfq": {
     "message": "About Fees"
   },
@@ -765,6 +810,9 @@
   },
   "p8bsw4": {
     "message": "Transaction Error"
+  },
+  "pAl4rq": {
+    "message": "Signing Commitments"
   },
   "pPk+ar": {
     "message": "From:"
@@ -780,6 +828,9 @@
   },
   "pqKz+h": {
     "message": "Slow"
+  },
+  "pvqPtw": {
+    "message": "Multisig Ledger"
   },
   "q0qMyV": {
     "message": "RSS"
@@ -826,6 +877,9 @@
   "tU2A8W": {
     "message": "View in Block Explorer"
   },
+  "te+qx/": {
+    "message": "Review and approve the transaction information on your legder device."
+  },
   "tf+yHL": {
     "message": "Fast"
   },
@@ -849,6 +903,9 @@
   },
   "vEiG+a": {
     "message": "Gas fee"
+  },
+  "vGJnQL": {
+    "message": "Review Transaction"
   },
   "vNT9Ip": {
     "message": "Mnemonic Phrase"
@@ -877,6 +934,9 @@
   "xP64Lw": {
     "message": "Address Book"
   },
+  "xfoZ0Z": {
+    "message": "Coordinators are responsible for gathering and combining all signatures and other information from participants. Participants sign the transaction and send their signatures and other data to the coordinator."
+  },
   "xkLxAx": {
     "message": "Account Created"
   },
@@ -897,6 +957,15 @@
   },
   "yLnnBl": {
     "message": "Transaction Submitted"
+  },
+  "yNVIfV": {
+    "message": "Submit Transaction"
+  },
+  "yPUogf": {
+    "message": "Select Role"
+  },
+  "yWnTVQ": {
+    "message": "Send the signing package to all of the participants so they can sign the transaction."
   },
   "yjpdGo": {
     "message": "You don't have any contacts"

@@ -33,6 +33,12 @@ const FLAGS_DEFINITION = [
       "Turning this flag on will allow double clicking the logo to change the theme",
     key: "themeToggle",
   },
+  {
+    name: "Multisig Ledger Support",
+    description:
+      "Turning this flag on will enable signing multisig transactions with your Ledger device.",
+    key: "multisigLedgerSupport",
+  },
 ] as const;
 
 type FlagsDefinition = Writable<(typeof FLAGS_DEFINITION)[number]>;
