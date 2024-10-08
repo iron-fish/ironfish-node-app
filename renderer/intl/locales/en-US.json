@@ -30,6 +30,9 @@
   "0FN3ev": {
     "message": "One last step! Confirm the account you'd like to connect to the Node App."
   },
+  "0YAxhZ": {
+    "message": "available"
+  },
   "0rIM5R": {
     "message": "Remove Account"
   },
@@ -216,9 +219,6 @@
   "C43FrR": {
     "message": "Amount:"
   },
-  "D31nQ7": {
-    "message": "An error occurred while estimating the transaction fee"
-  },
   "D3idYv": {
     "message": "Settings"
   },
@@ -358,6 +358,9 @@
   "M+isB1": {
     "message": "Bridge Provider"
   },
+  "M99Eqr": {
+    "message": "Add Memo"
+  },
   "MDZ4hi": {
     "message": "Already have an account? Enter your recovery credentials and continue using your account as expected."
   },
@@ -478,6 +481,9 @@
   "Seu2ON": {
     "message": "To:"
   },
+  "Sjo1P4": {
+    "message": "Custom"
+  },
   "T2yddR": {
     "message": "Your Node"
   },
@@ -516,6 +522,9 @@
   },
   "Uziuar": {
     "message": "Change Network"
+  },
+  "V3K3zJ": {
+    "message": "Enter custom value"
   },
   "VBDJ/l": {
     "message": "Your balance might not be accurate while you're syncing"

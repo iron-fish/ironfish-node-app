@@ -6,11 +6,14 @@ import {
   ModalBody,
 } from "@chakra-ui/react";
 import { useCallback, useEffect, useState } from "react";
+import { useFormContext } from "react-hook-form";
 import { useIntl, defineMessages } from "react-intl";
 
 import { AssetOptionType } from "@/components/AssetAmountInput/utils";
 import { trpcReact, TRPCRouterOutputs } from "@/providers/TRPCProvider";
 import { PillButton } from "@/ui/PillButton/PillButton";
+import { CurrencyUtils } from "@/utils/currency";
+import { parseIron } from "@/utils/ironUtils";
 
 import { StepConfirm } from "./Steps/StepConfirm";
 import { StepConnect } from "./Steps/StepConnect";
@@ -38,20 +41,23 @@ type LedgerStatus = {
 
 type Props = {
   isOpen: boolean;
-  transactionData: TransactionData;
   selectedAccount: TRPCRouterOutputs["getAccounts"][number];
-  selectedAsset?: AssetOptionType;
+  selectedAsset: AssetOptionType;
   onCancel: () => void;
+  estimatedFeesData: TRPCRouterOutputs["getEstimatedFees"];
 };
 
 export function ConfirmLedgerModal({
   isOpen,
   onCancel,
-  transactionData,
   selectedAccount,
   selectedAsset,
+  estimatedFeesData,
 }: Props) {
   const { formatMessage } = useIntl();
+
+  const { watch } = useFormContext();
+  const transactionData = watch();
 
   const [
     { isLedgerConnected, isLedgerUnlocked, isIronfishAppOpen },
@@ -133,9 +139,9 @@ export function ConfirmLedgerModal({
       <ModalContent maxW="100%" width="600px">
         {step === "IDLE" && (
           <ReviewTransaction
-            transactionData={transactionData}
             selectedAccount={selectedAccount}
             selectedAsset={selectedAsset}
+            estimatedFeesData={estimatedFeesData}
             onClose={handleClose}
             onSubmit={() => {
               setStep("CONNECT_LEDGER");
@@ -169,7 +175,35 @@ export function ConfirmLedgerModal({
                   !isIronfishAppOpen
                 }
                 onClick={() => {
-                  submitTransaction(transactionData);
+                  // Todo: consolidate logic with confirmTransactionModal
+                  let feeValue: number;
+                  if (transactionData.fee === "custom") {
+                    const feeString = transactionData.customFee.toString();
+                    feeValue = parseIron(feeString);
+                  } else {
+                    feeValue = estimatedFeesData[transactionData.fee] ?? 0;
+                  }
+
+                  const [normalizedAmount, amountError] =
+                    CurrencyUtils.tryMajorToMinor(
+                      transactionData.amount,
+                      transactionData.assetId,
+                      selectedAsset?.asset.verification,
+                    );
+
+                  if (!normalizedAmount) {
+                    console.log(`Error with amount: ${amountError}`);
+                    return;
+                  }
+                  const normalizedTransactionData = {
+                    fromAccount: transactionData.fromAccount,
+                    toAccount: transactionData.toAccount,
+                    assetId: transactionData.assetId,
+                    amount: normalizedAmount.toString(),
+                    fee: feeValue,
+                    memo: transactionData.memo,
+                  } as TransactionData;
+                  submitTransaction(normalizedTransactionData);
                   setStep("CONFIRM_TRANSACTION");
                 }}
               >

@@ -1,6 +1,7 @@
 import {
   Modal,
   ModalOverlay,
+  ModalCloseButton,
   ModalContent,
   ModalBody,
   Heading,
@@ -8,10 +9,13 @@ import {
   Progress,
 } from "@chakra-ui/react";
 import { useCallback } from "react";
+import { useFormContext } from "react-hook-form";
 import { defineMessages, useIntl } from "react-intl";
 
 import { AssetOptionType } from "@/components/AssetAmountInput/utils";
 import { trpcReact, TRPCRouterOutputs } from "@/providers/TRPCProvider";
+import { CurrencyUtils } from "@/utils/currency";
+import { parseIron } from "@/utils/ironUtils";
 
 import { ReviewTransaction } from "../SharedConfirmSteps/ReviewTransaction";
 import { SubmissionError } from "../SharedConfirmSteps/SubmissionError";
@@ -26,18 +30,18 @@ const messages = defineMessages({
 
 type Props = {
   isOpen: boolean;
-  transactionData: TransactionData;
   selectedAccount: TRPCRouterOutputs["getAccounts"][number];
-  selectedAsset?: AssetOptionType;
+  estimatedFeesData: TRPCRouterOutputs["getEstimatedFees"];
+  selectedAsset: AssetOptionType;
   onCancel: () => void;
 };
 
 export function ConfirmTransactionModal({
   isOpen,
-  transactionData,
   selectedAccount,
   selectedAsset,
   onCancel,
+  estimatedFeesData,
 }: Props) {
   const {
     mutate: sendTransaction,
@@ -50,6 +54,9 @@ export function ConfirmTransactionModal({
     error,
   } = trpcReact.sendTransaction.useMutation();
 
+  const { watch } = useFormContext();
+  const transactionData = watch();
+
   const { formatMessage } = useIntl();
 
   const handleClose = useCallback(() => {
@@ -58,21 +65,50 @@ export function ConfirmTransactionModal({
   }, [onCancel, reset]);
 
   const handleSubmit = useCallback(() => {
-    sendTransaction(transactionData);
-  }, [sendTransaction, transactionData]);
+    let feeValue: number;
+    if (transactionData.fee === "custom") {
+      const feeString = transactionData.customFee.toString();
+      feeValue = parseIron(feeString);
+    } else {
+      feeValue = estimatedFeesData[transactionData.fee] ?? 0;
+    }
+
+    const [normalizedAmount, amountError] = CurrencyUtils.tryMajorToMinor(
+      transactionData.amount,
+      transactionData.assetId,
+      selectedAsset?.asset.verification,
+    );
+
+    if (!normalizedAmount) {
+      console.log(`Error with amount: ${amountError}`);
+      return;
+    }
+
+    const normalizedTransactionData = {
+      fromAccount: transactionData.fromAccount,
+      toAccount: transactionData.toAccount,
+      assetId: transactionData.assetId,
+      amount: normalizedAmount.toString(),
+      fee: feeValue,
+      memo: transactionData.memo,
+    } as TransactionData;
+
+    sendTransaction(normalizedTransactionData);
+  }, [sendTransaction, transactionData, estimatedFeesData, selectedAsset]);
 
   return (
     <Modal isOpen={isOpen} onClose={handleClose}>
       <ModalOverlay />
       <ModalContent maxW="100%" width="600px">
+        <ModalCloseButton />
         {isIdle && (
           <ReviewTransaction
-            transactionData={transactionData}
             selectedAccount={selectedAccount}
             selectedAsset={selectedAsset}
             isLoading={isLoading}
             onClose={handleClose}
             onSubmit={handleSubmit}
+            estimatedFeesData={estimatedFeesData}
           />
         )}
         {isLoading && (

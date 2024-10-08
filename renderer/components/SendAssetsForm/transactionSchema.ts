@@ -27,7 +27,24 @@ export const transactionSchema = z.object({
     .refine((value) => {
       return Number(value) > 0;
     }, "Amount must be greater than 0"),
-  fee: z.union([z.literal("slow"), z.literal("average"), z.literal("fast")]),
+  fee: z.union([
+    z.literal("slow"),
+    z.literal("average"),
+    z.literal("fast"),
+    z.literal("custom"),
+  ]),
+  customFee: z
+    .union([
+      z.literal(""),
+      z
+        .string()
+        .refine((val) => {
+          const num = parseFloat(val);
+          return !isNaN(num) && num > 0;
+        }, "Must be a number greater than 0")
+        .transform((val) => parseFloat(val)),
+    ])
+    .optional(),
   memo: z
     .string()
     .refine(

@@ -7,6 +7,7 @@ import {
   Box,
   HStack,
 } from "@chakra-ui/react";
+import { useFormContext } from "react-hook-form";
 import { defineMessages, useIntl } from "react-intl";
 
 import { AssetOptionType } from "@/components/AssetAmountInput/utils";
@@ -15,9 +16,9 @@ import { TRPCRouterOutputs } from "@/providers/TRPCProvider";
 import { COLORS } from "@/ui/colors";
 import { PillButton } from "@/ui/PillButton/PillButton";
 import { CurrencyUtils } from "@/utils/currency";
-import { formatOre } from "@/utils/ironUtils";
 
-import { TransactionData } from "../transactionSchema";
+import FeeGridSelector from "./FeeGridSelector/FeeGridSelector";
+import { MemoInput } from "./MemoInput/MemoInput";
 
 const messages = defineMessages({
   confirmTransactionDetails: {
@@ -35,8 +36,17 @@ const messages = defineMessages({
   fee: {
     defaultMessage: "Fee:",
   },
-  memo: {
-    defaultMessage: "Memo:",
+  feeLabel: {
+    defaultMessage: "Fee ($IRON)",
+  },
+  slowFeeLabel: {
+    defaultMessage: "Slow",
+  },
+  averageFeeLabel: {
+    defaultMessage: "Average",
+  },
+  fastFeeLabel: {
+    defaultMessage: "Fast",
   },
   cancelTransaction: {
     defaultMessage: "Cancel Transaction",
@@ -50,24 +60,35 @@ const messages = defineMessages({
 });
 
 type Props = {
-  transactionData: TransactionData;
   selectedAccount: TRPCRouterOutputs["getAccounts"][number];
   onClose: () => void;
   onSubmit: () => void;
   isLoading?: boolean;
-  selectedAsset?: AssetOptionType;
+  selectedAsset: AssetOptionType;
+  estimatedFeesData: TRPCRouterOutputs["getEstimatedFees"] | undefined;
 };
 
 export function ReviewTransaction({
-  transactionData,
   selectedAccount,
   selectedAsset,
   isLoading,
   onClose,
   onSubmit,
+  estimatedFeesData,
 }: Props) {
   const { formatMessage } = useIntl();
+  const { watch } = useFormContext();
+  const transactionData = watch();
 
+  const [convertedAmount, conversionError] = CurrencyUtils.tryMajorToMinor(
+    transactionData.amount.toString(),
+    transactionData.assetId,
+    selectedAsset?.asset.verification,
+  );
+
+  if (!conversionError) {
+    console.log("Error: ", conversionError);
+  }
   return (
     <>
       <ModalBody px={16} pt={16}>
@@ -85,43 +106,28 @@ export function ReviewTransaction({
               {selectedAccount?.isLedger && <LedgerChip />}
             </HStack>
           </Box>
-
           <Box py={4} borderBottom="1.5px dashed #DEDFE2">
             <Text color={COLORS.GRAY_MEDIUM}>{formatMessage(messages.to)}</Text>
             <Text fontSize="md">{transactionData?.toAccount ?? ""}</Text>
           </Box>
-
           <Box py={4} borderBottom="1.5px dashed #DEDFE2">
             <Text color={COLORS.GRAY_MEDIUM}>
               {formatMessage(messages.amount)}
             </Text>
             <Text fontSize="md">
               {CurrencyUtils.render(
-                transactionData.amount.toString(),
+                convertedAmount?.toString() ?? "0",
                 transactionData.assetId,
                 selectedAsset?.asset.verification,
               )}{" "}
               {selectedAsset?.assetName ?? formatMessage(messages.unknownAsset)}
             </Text>
           </Box>
-
-          {transactionData?.fee && (
-            <Box py={4} borderBottom="1.5px dashed #DEDFE2">
-              <Text color={COLORS.GRAY_MEDIUM}>
-                {formatMessage(messages.fee)}
-              </Text>
-              <Text fontSize="md">
-                {formatOre(transactionData?.fee ?? 0)} $IRON
-              </Text>
-            </Box>
-          )}
-
-          <Box py={4} borderBottom="1.5px dashed #DEDFE2">
-            <Text color={COLORS.GRAY_MEDIUM}>
-              {formatMessage(messages.memo)}
-            </Text>
-            <Text fontSize="md">{transactionData?.memo}</Text>
-          </Box>
+          <FeeGridSelector
+            selectedAsset={selectedAsset}
+            estimatedFeesData={estimatedFeesData}
+          />
+          <MemoInput />
         </VStack>
       </ModalBody>
 
