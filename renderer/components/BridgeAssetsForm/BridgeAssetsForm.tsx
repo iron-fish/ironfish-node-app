@@ -48,7 +48,7 @@ const messages = defineMessages({
     defaultMessage: "Destination network",
   },
   networkErrorMessage: {
-    defaultMessage: "A network error occured, please try again",
+    defaultMessage: "A network error occurred, please try again",
   },
 });
 

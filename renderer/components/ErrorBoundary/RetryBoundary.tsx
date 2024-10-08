@@ -12,7 +12,7 @@ import { ErrorBoundary } from "./ErrorBoundary";
 
 const messages = defineMessages({
   errorStateHeading: {
-    defaultMessage: "An error occured",
+    defaultMessage: "An error occurred",
   },
   errorMessage: {
     defaultMessage: "Error Message",

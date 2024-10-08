@@ -142,7 +142,7 @@ export function ConnectLedgerModal({
               errorMessage={
                 importError?.message ||
                 markAsLedgerError?.message ||
-                "An unknown error occured. Please try again."
+                "An unknown error occurred. Please try again."
               }
             />
           )}
