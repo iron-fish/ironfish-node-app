@@ -16,6 +16,7 @@ import { TRPCRouterOutputs } from "@/providers/TRPCProvider";
 import { COLORS } from "@/ui/colors";
 import { PillButton } from "@/ui/PillButton/PillButton";
 import { CurrencyUtils } from "@/utils/currency";
+import { RenderError } from "@/ui/Forms/FormField/FormField";
 
 import FeeGridSelector from "./FeeGridSelector/FeeGridSelector";
 import { MemoInput } from "./MemoInput/MemoInput";
@@ -77,7 +78,10 @@ export function ReviewTransaction({
   estimatedFeesData,
 }: Props) {
   const { formatMessage } = useIntl();
-  const { watch } = useFormContext();
+  const {
+    watch,
+    formState: { errors },
+  } = useFormContext();
   const transactionData = watch();
 
   const [convertedAmount, conversionError] = CurrencyUtils.tryMajorToMinor(
@@ -86,9 +90,8 @@ export function ReviewTransaction({
     selectedAsset?.asset.verification,
   );
 
-  if (!conversionError) {
-    console.log("Error: ", conversionError);
-  }
+  const hasErrors = Object.keys(errors).length > 0 || conversionError;
+
   return (
     <>
       <ModalBody px={16} pt={16}>
@@ -128,6 +131,19 @@ export function ReviewTransaction({
             estimatedFeesData={estimatedFeesData}
           />
           <MemoInput />
+          {hasErrors && (
+            <Box py={4} borderBottom="1.5px dashed #DEDFE2">
+              <Text color={COLORS.RED} fontWeight="bold">
+                Errors:
+              </Text>
+              {Object.entries(errors).map(([key, error]) => (
+                <RenderError key={key} error={(error as any)?.message} />
+              ))}
+              {conversionError && (
+                <RenderError error="Error converting amount. Please check your input." />
+              )}
+            </Box>
+          )}
         </VStack>
       </ModalBody>
 
@@ -141,7 +157,14 @@ export function ReviewTransaction({
         >
           {formatMessage(messages.cancelTransaction)}
         </PillButton>
-        <PillButton size="sm" isDisabled={isLoading} onClick={onSubmit}>
+        <PillButton
+          size="sm"
+          isDisabled={isLoading || !!hasErrors}
+          onClick={() => {
+            const hasErrors = checkForErrors();
+            onSubmit();
+          }}
+        >
           {formatMessage(messages.confirmAndSend)}
         </PillButton>
       </ModalFooter>

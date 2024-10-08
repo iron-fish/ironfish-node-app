@@ -107,7 +107,8 @@ const FeeOption: React.FC<FeeOptionProps> = ({
         {isSelected && (
           <Box
             h={6}
-            width={6}
+            w={6}
+            minW={6}
             bg={COLORS.GREEN_DARK}
             borderRadius="full"
             position="relative"
@@ -187,13 +188,14 @@ const FeeGridSelector: React.FC<FeeGridSelectorProps> = ({
               <Controller
                 name="customFee"
                 control={control}
-                render={({ field: customFeeField }) => (
+                render={({ field: customFeeField, formState: { errors } }) => (
                   <TextInput
                     value={
                       customFeeField.value && feeField.value === "custom"
                         ? customFeeField.value
                         : ""
                     }
+                    error={errors.customFee?.message}
                     onKeyDown={handleKeyDown}
                     onSubmit={() => {
                       isPositiveValue(customFeeField.value) &&
@@ -225,7 +227,7 @@ const FeeGridSelector: React.FC<FeeGridSelectorProps> = ({
                     onChange={(e) => {
                       normalizeAmountInputChange({
                         changeEvent: e,
-                        selectedAsset: selectedAsset,
+                        selectedAsset,
                         onChange: (value) => {
                           customFeeField.onChange(value);
                           feeField.onChange("custom");

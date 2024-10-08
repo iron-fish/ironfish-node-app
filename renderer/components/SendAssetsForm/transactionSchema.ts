@@ -38,6 +38,7 @@ export const transactionSchema = z.object({
       z.literal(""),
       z
         .string()
+        .min(1)
         .refine((val) => {
           const num = parseFloat(val);
           return !isNaN(num) && num > 0;

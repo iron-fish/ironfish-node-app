@@ -247,11 +247,10 @@ export function SendAssetsFormContent({
                 return;
               }
 
-              console.log("data", data);
               setConfirmTransaction(true);
             },
             (errors) => {
-              console.log("Form validation failed:", errors);
+              // console.log("Form validation failed:", errors);
             },
           )}
         >
