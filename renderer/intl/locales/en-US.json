@@ -559,9 +559,6 @@
   "VBDJ/l": {
     "message": "Your balance might not be accurate while you're syncing"
   },
-  "VVlAZ6": {
-    "message": "From Account"
-  },
   "VqP8r/": {
     "message": "Memo:"
   },
@@ -600,6 +597,9 @@
   },
   "Xvk80E": {
     "message": "Please enter a name for this account"
+  },
+  "Y0TjmL": {
+    "message": "A network error occurred, please try again"
   },
   "YDkqMJ": {
     "message": "Incoming"
@@ -868,9 +868,6 @@
   "rqrhXg": {
     "message": "Confirm Your Recovery Phrase"
   },
-  "s3kz6s": {
-    "message": "A network error occured, please try again"
-  },
   "sXlL42": {
     "message": "Encrypted Wallets Unsupported"
   },
@@ -900,9 +897,6 @@
   },
   "uT4OlP": {
     "message": "Fee"
-  },
-  "uuDgUP": {
-    "message": "An error occured"
   },
   "vEiG+a": {
     "message": "Gas fee"

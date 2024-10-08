@@ -36,7 +36,7 @@ import { NoSpendingAccountsMessage } from "../EmptyStateMessage/shared/NoSpendin
 
 const messages = defineMessages({
   fromLabel: {
-    defaultMessage: "From Account",
+    defaultMessage: "From",
   },
   needHelp: {
     defaultMessage: "Need help?",
@@ -48,7 +48,7 @@ const messages = defineMessages({
     defaultMessage: "Destination network",
   },
   networkErrorMessage: {
-    defaultMessage: "A network error occured, please try again",
+    defaultMessage: "A network error occurred, please try again",
   },
 });
 
@@ -109,7 +109,7 @@ function BridgeAssetsFormContent({
   const destinationNetworkId = watch("destinationNetworkId");
   const targetAddress = watch("targetAddress");
 
-  const { data: tokenPathsResponse } =
+  const { data: tokenPathsResponse, isLoading: tokenPathsLoading } =
     trpcReact.getChainportTokenPaths.useQuery(
       {
         tokenId: chainportTokensMap[assetIdValue]?.id,
@@ -363,27 +363,31 @@ function BridgeAssetsFormContent({
             </HStack>
           }
           destinationNetworkInput={
-            <Select
-              {...register("destinationNetworkId")}
-              disabled={!availableNetworks}
-              value={destinationNetworkId ?? undefined}
-              label={formatMessage(messages.destinationNetwork)}
-              options={(availableNetworks ?? []).map((n) => ({
-                label: n.label,
-                value: n.chainport_network_id.toString(),
-              }))}
-              renderChildren={(children) => (
-                <HStack>
-                  {selectedNetwork && (
-                    <ChakraImage
-                      src={selectedNetwork.network_icon}
-                      boxSize="24px"
-                    />
-                  )}
-                  {children}
-                </HStack>
-              )}
-            />
+            tokenPathsLoading ? (
+              <Skeleton height={71} w="50%" />
+            ) : (
+              <Select
+                {...register("destinationNetworkId")}
+                disabled={!availableNetworks}
+                value={destinationNetworkId ?? undefined}
+                label={formatMessage(messages.destinationNetwork)}
+                options={(availableNetworks ?? []).map((n) => ({
+                  label: n.label,
+                  value: n.chainport_network_id.toString(),
+                }))}
+                renderChildren={(children) => (
+                  <HStack>
+                    {selectedNetwork && (
+                      <ChakraImage
+                        src={selectedNetwork.network_icon}
+                        boxSize="24px"
+                      />
+                    )}
+                    {children}
+                  </HStack>
+                )}
+              />
+            )
           }
           targetAddressInput={
             <TextInput
@@ -418,11 +422,16 @@ export function BridgeAssetsForm() {
   const {
     data: tokensData,
     isLoading: isChainportLoading,
+    isFetching: isChainportFetching,
     isError: isTokensError,
     error: tokensError,
   } = trpcReact.getChainportTokens.useQuery();
 
-  if (!filteredAccounts || isChainportLoading) {
+  if (
+    !filteredAccounts ||
+    isChainportLoading ||
+    (isTokensError && isChainportFetching)
+  ) {
     return (
       <BridgeAssetsFormShell
         status="LOADING"
