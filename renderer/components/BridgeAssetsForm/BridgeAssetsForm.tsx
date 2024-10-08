@@ -422,11 +422,16 @@ export function BridgeAssetsForm() {
   const {
     data: tokensData,
     isLoading: isChainportLoading,
+    isFetching: isChainportFetching,
     isError: isTokensError,
     error: tokensError,
   } = trpcReact.getChainportTokens.useQuery();
 
-  if (!filteredAccounts || isChainportLoading) {
+  if (
+    !filteredAccounts ||
+    isChainportLoading ||
+    (isTokensError && isChainportFetching)
+  ) {
     return (
       <BridgeAssetsFormShell
         status="LOADING"
