@@ -36,7 +36,7 @@ import { NoSpendingAccountsMessage } from "../EmptyStateMessage/shared/NoSpendin
 
 const messages = defineMessages({
   fromLabel: {
-    defaultMessage: "From Account",
+    defaultMessage: "From",
   },
   needHelp: {
     defaultMessage: "Need help?",
