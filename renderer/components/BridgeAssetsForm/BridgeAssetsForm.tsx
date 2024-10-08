@@ -109,7 +109,7 @@ function BridgeAssetsFormContent({
   const destinationNetworkId = watch("destinationNetworkId");
   const targetAddress = watch("targetAddress");
 
-  const { data: tokenPathsResponse } =
+  const { data: tokenPathsResponse, isLoading: tokenPathsLoading } =
     trpcReact.getChainportTokenPaths.useQuery(
       {
         tokenId: chainportTokensMap[assetIdValue]?.id,
@@ -363,27 +363,31 @@ function BridgeAssetsFormContent({
             </HStack>
           }
           destinationNetworkInput={
-            <Select
-              {...register("destinationNetworkId")}
-              disabled={!availableNetworks}
-              value={destinationNetworkId ?? undefined}
-              label={formatMessage(messages.destinationNetwork)}
-              options={(availableNetworks ?? []).map((n) => ({
-                label: n.label,
-                value: n.chainport_network_id.toString(),
-              }))}
-              renderChildren={(children) => (
-                <HStack>
-                  {selectedNetwork && (
-                    <ChakraImage
-                      src={selectedNetwork.network_icon}
-                      boxSize="24px"
-                    />
-                  )}
-                  {children}
-                </HStack>
-              )}
-            />
+            tokenPathsLoading ? (
+              <Skeleton height={71} w="50%" />
+            ) : (
+              <Select
+                {...register("destinationNetworkId")}
+                disabled={!availableNetworks}
+                value={destinationNetworkId ?? undefined}
+                label={formatMessage(messages.destinationNetwork)}
+                options={(availableNetworks ?? []).map((n) => ({
+                  label: n.label,
+                  value: n.chainport_network_id.toString(),
+                }))}
+                renderChildren={(children) => (
+                  <HStack>
+                    {selectedNetwork && (
+                      <ChakraImage
+                        src={selectedNetwork.network_icon}
+                        boxSize="24px"
+                      />
+                    )}
+                    {children}
+                  </HStack>
+                )}
+              />
+            )
           }
           targetAddressInput={
             <TextInput
