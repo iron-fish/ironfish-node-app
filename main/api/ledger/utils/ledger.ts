@@ -9,6 +9,7 @@ import IronfishApp, {
   ResponseViewKey,
   ResponseProofGenKey,
   ResponseSign,
+  KeyResponse,
 } from "@zondax/ledger-ironfish";
 import { z } from "zod";
 
@@ -33,6 +34,11 @@ const ERROR_TYPES = [
   "IRONFISH_NOT_OPEN",
   "CANNOT_OPEN_DEVICE",
 ];
+
+type ResponseError = {
+  returnCode: number;
+  errorMessage: string;
+};
 
 type Transport = Awaited<ReturnType<typeof TransportNodeHid.create>>;
 
@@ -138,11 +144,16 @@ class LedgerManager {
     const app = new IronfishApp(transport);
     let appInfo: Awaited<ReturnType<IronfishApp["appInfo"]>> | null = null;
     let retries = 3;
+    let error: string = "UNKNOWN_ERROR";
 
-    while (retries > 0 && appInfo?.appName !== IRONFISH_APP_NAME) {
+    while (
+      retries > 0 &&
+      (appInfo === null || appInfo?.appName !== IRONFISH_APP_NAME)
+    ) {
+      retries--;
+
       try {
         appInfo = await app.appInfo();
-
         if (appInfo.appName !== IRONFISH_APP_NAME) {
           logger.debug(
             `Unable to open Ironfish app. App info:\n\n${JSON.stringify(
@@ -155,28 +166,34 @@ class LedgerManager {
           throw new Error(`Invalid app name: ${appInfo.appName}`);
         }
       } catch (err) {
-        retries -= 1;
+        if (isResponseError(err)) {
+          logger.debug(
+            `Ledger ResponseError returnCode: ${err.returnCode.toString(16)}`,
+          );
+          if (err.returnCode === LedgerDeviceLockedError.returnCode) {
+            error = "LEDGER_LOCKED";
+          } else {
+            error = "IRONFISH_NOT_OPEN";
+          }
+        }
+        throw err;
+      }
+
+      if (app && appInfo?.appName === IRONFISH_APP_NAME) {
+        return {
+          status: "SUCCESS",
+          data: app,
+          error: null,
+        };
       }
     }
 
-    if (app && appInfo?.appName === IRONFISH_APP_NAME) {
-      return {
-        status: "SUCCESS",
-        data: app,
-        error: null,
-      };
-    }
-
     await this.disconnect();
-
     return {
       status: "ERROR",
       data: null,
       error: {
-        type:
-          appInfo?.returnCode === 0x5515
-            ? "LEDGER_LOCKED"
-            : "IRONFISH_NOT_OPEN",
+        type: error,
         message: `Failed to open Ironfish app. Latest app name: ${
           appInfo?.appName || "Unknown"
         }`,
@@ -220,15 +237,19 @@ class LedgerManager {
           ironfishAppReponse.error?.type !== "LEDGER_LOCKED";
         returnStatus.isIronfishAppOpen =
           ironfishAppReponse.status === "SUCCESS";
-        returnStatus.deviceName = transport.deviceModel?.productName ?? "";
+        returnStatus.deviceName =
+          transport.deviceModel?.productName ?? "Ledger";
 
         if (ironfishAppReponse.status === "SUCCESS") {
-          const keyResponse: ResponseAddress =
-            await ironfishAppReponse.data.retrieveKeys(
-              DERIVATION_PATH,
-              IronfishKeys.PublicAddress,
-              false,
-            );
+          const keyResponse = await ironfishAppReponse.data.retrieveKeys(
+            DERIVATION_PATH,
+            IronfishKeys.PublicAddress,
+            false,
+          );
+
+          if (!isResponseAddress(keyResponse)) {
+            throw new Error("No public address returned");
+          }
           returnStatus.publicAddress = keyResponse.publicAddress
             ? keyResponse.publicAddress.toString("hex")
             : "";
@@ -280,44 +301,37 @@ class LedgerManager {
           throw new Error(ironfishAppReponse.error.message);
         }
 
-        const publicAddressResponse: ResponseAddress =
+        const publicAddressResponse =
           await ironfishAppReponse.data.retrieveKeys(
             DERIVATION_PATH,
             IronfishKeys.PublicAddress,
             false,
           );
 
-        if (!publicAddressResponse.publicAddress) {
+        if (!isResponseAddress(publicAddressResponse)) {
           throw new Error("No public address returned");
         }
 
-        const viewKeyResponse: ResponseViewKey =
-          await ironfishAppReponse.data.retrieveKeys(
-            DERIVATION_PATH,
-            IronfishKeys.ViewKey,
-            true,
-          );
+        const viewKeyResponse = await ironfishAppReponse.data.retrieveKeys(
+          DERIVATION_PATH,
+          IronfishKeys.ViewKey,
+          true,
+        );
 
-        if (
-          !viewKeyResponse.viewKey ||
-          !viewKeyResponse.ovk ||
-          !viewKeyResponse.ivk
-        ) {
-          logger.debug(`No view key returned`);
-          logger.debug(viewKeyResponse.returnCode.toString());
-          throw new Error(viewKeyResponse.errorMessage);
+        if (!isResponseViewKey(viewKeyResponse)) {
+          throw new Error(`No view key returned`);
         }
 
-        const responsePGK: ResponseProofGenKey =
-          await ironfishAppReponse.data.retrieveKeys(
-            DERIVATION_PATH,
-            IronfishKeys.ProofGenerationKey,
-            false,
-          );
+        const responsePGK = await ironfishAppReponse.data.retrieveKeys(
+          DERIVATION_PATH,
+          IronfishKeys.ProofGenerationKey,
+          false,
+        );
 
-        if (!responsePGK.ak || !responsePGK.nsk) {
-          logger.debug(`No proof authorizing key returned`);
-          throw new Error(responsePGK.errorMessage);
+        if (!isResponseProofGenKey(responsePGK)) {
+          const error = `No proof authorizing key returned`;
+          logger.debug(error);
+          throw new Error(error);
         }
 
         const accountName = transport.deviceModel?.productName ?? "Ledger";
@@ -420,7 +434,7 @@ class LedgerManager {
         }
 
         if (!signResponse.signature) {
-          throw new Error(signResponse.errorMessage || "No signature returned");
+          throw new Error("No signature returned");
         }
 
         const ironfish = await manager.getIronfish();
@@ -452,6 +466,38 @@ class LedgerManager {
   cancelTransaction() {
     this.signTransactionPromise = null;
   }
+}
+
+function isResponseAddress(response: KeyResponse): response is ResponseAddress {
+  return "publicAddress" in response;
+}
+
+function isResponseViewKey(response: KeyResponse): response is ResponseViewKey {
+  return "viewKey" in response;
+}
+
+function isResponseProofGenKey(
+  response: KeyResponse,
+): response is ResponseProofGenKey {
+  return "ak" in response && "nsk" in response;
+}
+
+function isResponseError(error: unknown): error is ResponseError {
+  return (
+    "errorMessage" in (error as object) && "returnCode" in (error as object)
+  );
+}
+
+export class LedgerError extends Error {
+  name = this.constructor.name;
+}
+
+export class LedgerDeviceLockedError extends LedgerError {
+  static returnCode = 0x5515;
+}
+
+export class LedgerAppNotOpenError extends LedgerError {
+  static returnCode = 0x6f00;
 }
 
 export const ledgerManager = new LedgerManager();

@@ -12,7 +12,7 @@ const messages = defineMessages({
     defaultMessage: "Connect your Ledger",
   },
   plugDevice: {
-    defaultMessage: "Plug your ledger device directly into your computer",
+    defaultMessage: "Plug your Ledger device directly into your computer",
   },
   unlockLedger: {
     defaultMessage: "Unlock your Ledger",

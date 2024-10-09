@@ -11,6 +11,7 @@ import {
 } from "./handleExportAccount";
 import { handleGetAccount } from "./handleGetAccount";
 import { handleGetAccounts } from "./handleGetAccounts";
+import { handleGetMultisigLedgerAccounts } from "./handleGetMultisigLedgerAccounts";
 import {
   handleImportAccount,
   handleImportAccountInputs,
@@ -33,6 +34,7 @@ export const accountRouter = t.router({
       return handleGetAccount(opts.input);
     }),
   getAccounts: t.procedure.query(handleGetAccounts),
+  getMultisigLedgerAccounts: t.procedure.query(handleGetMultisigLedgerAccounts),
   createAccount: t.procedure
     .input(
       z.object({

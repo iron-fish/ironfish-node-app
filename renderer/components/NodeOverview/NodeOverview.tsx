@@ -1,11 +1,4 @@
-import {
-  Heading,
-  LightMode,
-  Text,
-  Box,
-  Grid,
-  GridItem,
-} from "@chakra-ui/react";
+import { Heading, Text, Box, Grid, GridItem } from "@chakra-ui/react";
 import { filesize } from "filesize";
 import Image from "next/image";
 import { ReactNode } from "react";
@@ -57,7 +50,13 @@ const messages = defineMessages({
 function Stat({ label, value }: { label: ReactNode; value: ReactNode }) {
   return (
     <Box>
-      <Text color="#9B7641" fontSize="sm" mb={2} whiteSpace="nowrap">
+      <Text
+        color="#9B7641"
+        _dark={{ color: "#9B7641" }}
+        fontSize="sm"
+        mb={2}
+        whiteSpace="nowrap"
+      >
         {label}
       </Text>
       <Heading color={COLORS.BLACK} fontSize={24} mb={4} whiteSpace="nowrap">
@@ -81,93 +80,94 @@ export function NodeOverview() {
 
   return (
     <>
-      <LightMode>
-        <ShadowCard
-          contentContainerProps={{
+      <ShadowCard
+        contentContainerProps={{
+          bg: "#FFCD85",
+          _dark: {
             bg: "#FFCD85",
-            p: 8,
-            pt: {
-              base: 8,
-              lg: "120px",
-            },
-            overflow: "hidden",
-            position: "relative",
+          },
+          p: 8,
+          pt: {
+            base: 8,
+            lg: 16,
+          },
+          overflow: "hidden",
+          position: "relative",
+        }}
+        mb={10}
+      >
+        <Box
+          position="absolute"
+          right={0}
+          top={0}
+          bottom={0}
+          display="flex"
+          alignItems="flex-end"
+          width={{
+            base: 0,
+            lg: "350px",
+            xl: "450px",
           }}
-          mb={10}
         >
-          <Box
-            position="absolute"
-            right={0}
-            top={0}
-            bottom={0}
-            display="flex"
-            alignItems="flex-end"
-            width={{
-              base: 0,
-              lg: "350px",
-              xl: "450px",
-            }}
-          >
-            <Image
-              src={nodeOverviewGlobe}
-              alt=""
-              style={{ objectFit: "contain" }}
+          <Image
+            src={nodeOverviewGlobe}
+            alt=""
+            style={{ objectFit: "contain" }}
+          />
+        </Box>
+        <Grid
+          position="relative"
+          templateColumns={{
+            base: "repeat(2, 1fr)",
+            lg: "repeat(3, min-content)",
+          }}
+          gap={8}
+          zIndex={1}
+        >
+          <GridItem>
+            <Stat
+              label={formatMessage(messages.connectedPeers)}
+              value={status?.peerNetwork.peers}
             />
-          </Box>
-          <Grid
-            position="relative"
-            templateColumns={{
-              base: "repeat(2, 1fr)",
-              lg: "repeat(3, min-content)",
-            }}
-            gap={8}
-            zIndex={1}
-          >
-            <GridItem>
-              <Stat
-                label={formatMessage(messages.connectedPeers)}
-                value={status?.peerNetwork.peers}
-              />
-            </GridItem>
-            <GridItem>
-              <Stat
-                label={formatMessage(messages.nodeStatus)}
-                value={status?.node.status}
-              />
-            </GridItem>
-            <GridItem>
-              <Stat
-                label={formatMessage(messages.outgoing)}
-                value={
-                  status && `${filesize(status.peerNetwork.outboundTraffic)}/s`
-                }
-              />
-            </GridItem>
-            <GridItem>
-              <Stat
-                label={formatMessage(messages.incoming)}
-                value={
-                  status && `${filesize(status.peerNetwork.inboundTraffic)}/s`
-                }
-              />
-            </GridItem>
-            <GridItem>
-              <Stat
-                label={formatMessage(messages.headHash)}
-                value={
-                  status && `...${truncateHash(status.blockchain.head.hash, 1)}`
-                }
-              />
-            </GridItem>
-            <GridItem>
-              <Stat
-                label={formatMessage(messages.headSequence)}
-                value={status?.blockchain.head.sequence}
-              />
-            </GridItem>
-          </Grid>
-        </ShadowCard>
-      </LightMode>
+          </GridItem>
+          <GridItem>
+            <Stat
+              label={formatMessage(messages.nodeStatus)}
+              value={status?.node.status}
+            />
+          </GridItem>
+          <GridItem>
+            <Stat
+              label={formatMessage(messages.outgoing)}
+              value={
+                status && `${filesize(status.peerNetwork.outboundTraffic)}/s`
+              }
+            />
+          </GridItem>
+          <GridItem>
+            <Stat
+              label={formatMessage(messages.incoming)}
+              value={
+                status && `${filesize(status.peerNetwork.inboundTraffic)}/s`
+              }
+            />
+          </GridItem>
+          <GridItem>
+            <Stat
+              label={formatMessage(messages.headHash)}
+              value={
+                status && `...${truncateHash(status.blockchain.head.hash, 1)}`
+              }
+            />
+          </GridItem>
+          <GridItem>
+            <Stat
+              label={formatMessage(messages.headSequence)}
+              value={status?.blockchain.head.sequence}
+            />
+          </GridItem>
+        </Grid>
+      </ShadowCard>
 
       <Box>
         <Heading as="h2" fontSize="2xl" mb={8}>

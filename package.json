@@ -22,10 +22,13 @@
   },
   "license": "MPL-2.0",
   "dependencies": {
-    "@ironfish/sdk": "2.5.0",
+    "@ironfish/sdk": "2.7.0",
+    "@ironfish/rust-nodejs": "2.7.0",
     "@ledgerhq/hw-transport-node-hid": "^6.29.1",
     "electron-serve": "^1.1.0",
-    "keccak": "^3.0.4"
+    "keccak": "^3.0.4",
+    "@zondax/ledger-ironfish-dkg": "npm:@zondax/ledger-ironfish@0.4.0",
+    "@zondax/ledger-js": "^1.0.1"
   },
   "devDependencies": {
     "@chakra-ui/icons": "^2.1.1",
@@ -53,7 +56,7 @@
     "@types/uuid": "^9.0.5",
     "@typescript-eslint/eslint-plugin": "^6.7.4",
     "@typescript-eslint/parser": "^6.7.4",
-    "@zondax/ledger-ironfish": "^0.1.2",
+    "@zondax/ledger-ironfish": "^0.5.1",
     "axios": "0.21.4",
     "babel-plugin-formatjs": "^10.5.10",
     "compare-versions": "6.1.0",
