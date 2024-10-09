@@ -4,15 +4,16 @@ import { manager } from "../manager";
 
 export async function handleGetEstimatedFees({
   accountName,
-  output,
+  outputs,
 }: {
   accountName: string;
-  output: {
-    amount: number;
-    memo: string;
+  outputs: {
     publicAddress: string;
-    assetId: string;
-  };
+    amount: string;
+    memo?: string;
+    memoHex?: string;
+    assetId?: string;
+  }[];
 }) {
   const ironfish = await manager.getIronfish();
   const rpcClient = await ironfish.rpcClient();
@@ -27,14 +28,7 @@ export async function handleGetEstimatedFees({
       rpcClient.wallet
         .createTransaction({
           account: accountName,
-          outputs: [
-            {
-              publicAddress: output.publicAddress,
-              amount: output.amount.toString(),
-              memo: output.memo,
-              assetId: output.assetId,
-            },
-          ],
+          outputs,
           feeRate,
         })
         .then((result) => result.content),

@@ -185,14 +185,16 @@ export function SendAssetsFormContent({
     trpcReact.getEstimatedFees.useQuery(
       {
         accountName: fromAccountValue,
-        output: {
-          amount: Number(assetAmountToSend),
-          assetId: assetIdValue,
-          memo: "",
-          // For fee estimation, the actual address of the recipient is not important, is just has to be
-          // a valid address. Therefore, we're just going to use the address of the first account.
-          publicAddress: accountsData[0].address,
-        },
+        outputs: [
+          {
+            amount: assetAmountToSend.toString(),
+            assetId: assetIdValue,
+            memo: "",
+            // For fee estimation, the actual address of the recipient is not important, is just has to be
+            // a valid address. Therefore, we're just going to use the address of the first account.
+            publicAddress: accountsData[0].address,
+          },
+        ],
       },
       {
         retry: false,
