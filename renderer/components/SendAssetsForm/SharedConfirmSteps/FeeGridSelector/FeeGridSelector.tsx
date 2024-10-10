@@ -19,9 +19,10 @@ import {
 } from "@/components/AssetAmountInput/utils";
 import { TRPCRouterOutputs } from "@/providers/TRPCProvider";
 import { COLORS } from "@/ui/colors";
+import { RenderError } from "@/ui/Forms/FormField/FormField";
 import { TextInput } from "@/ui/Forms/TextInput/TextInput";
 import { formatOre } from "@/utils/ironUtils";
-
+import { IRON_DECIMAL_PLACES } from "@shared/constants";
 import edit from "../icons/edit.svg";
 
 const messages = defineMessages({
@@ -93,13 +94,14 @@ const FeeOption: React.FC<FeeOptionProps> = ({
       bg={isSelected ? COLORS.GRAY_LIGHT : "white"}
       _dark={{
         bg: isSelected
-          ? COLORS.DARK_MODE.GRAY_LIGHT
+          ? COLORS.DARK_MODE.GRAY_MEDIUM
           : COLORS.DARK_MODE.GRAY_DARK,
+        borderColor: COLORS.DARK_MODE.GRAY_MEDIUM,
       }}
     >
       <HStack width="100%" justifyContent="space-between">
         <VStack alignItems="flex-start">
-          <Text fontWeight={200} color="muted">
+          <Text fontWeight={200} color="muted" _dark={{ color: "muted" }}>
             {label}
           </Text>
           <Text>{formatOre(fee)} $IRON</Text>
@@ -135,7 +137,11 @@ const FeeGridSelector: React.FC<FeeGridSelectorProps> = ({
   selectedAsset,
 }) => {
   const [showGrid, setShowGrid] = useState(true);
-  const { control, resetField } = useFormContext();
+  const {
+    control,
+    resetField,
+    formState: { errors },
+  } = useFormContext();
   const { formatMessage } = useIntl();
   const fee = useWatch({ control, name: "fee" });
   const customFee = useWatch({ control, name: "customFee" });
@@ -188,18 +194,30 @@ const FeeGridSelector: React.FC<FeeGridSelectorProps> = ({
               <Controller
                 name="customFee"
                 control={control}
-                render={({ field: customFeeField, formState: { errors } }) => (
+                render={({ field: customFeeField }) => (
                   <TextInput
                     value={
                       customFeeField.value && feeField.value === "custom"
                         ? customFeeField.value
                         : ""
                     }
-                    error={errors.customFee?.message}
                     onKeyDown={handleKeyDown}
                     onSubmit={() => {
                       isPositiveValue(customFeeField.value) &&
                         setShowGrid(false);
+                    }}
+                    label={formatMessage(messages.custom)}
+                    onFocus={() => feeField.onChange("custom")}
+                    onChange={(e) => {
+                      normalizeAmountInputChange({
+                        changeEvent: e,
+                        selectedAsset,
+                        onChange: (value) => {
+                          customFeeField.onChange(value);
+                          feeField.onChange("custom");
+                        },
+                        decimalsOverride: IRON_DECIMAL_PLACES,
+                      });
                     }}
                     icon={
                       customFeeField.value && (
@@ -222,20 +240,7 @@ const FeeGridSelector: React.FC<FeeGridSelectorProps> = ({
                         />
                       )
                     }
-                    label={formatMessage(messages.custom)}
-                    onFocus={() => feeField.onChange("custom")}
-                    onChange={(e) => {
-                      normalizeAmountInputChange({
-                        changeEvent: e,
-                        selectedAsset,
-                        onChange: (value) => {
-                          customFeeField.onChange(value);
-                          feeField.onChange("custom");
-                        },
-                      });
-                    }}
                     triggerProps={{
-                      border: "1px solid",
                       bg:
                         feeField.value === "custom"
                           ? COLORS.GRAY_LIGHT
@@ -263,6 +268,7 @@ const FeeGridSelector: React.FC<FeeGridSelectorProps> = ({
           </HStack>
         </VStack>
       )}
+      <RenderError error={errors.customFee?.message} />
     </Box>
   );
 };

@@ -54,7 +54,7 @@ export function ConfirmTransactionModal({
     error,
   } = trpcReact.sendTransaction.useMutation();
 
-  const { watch } = useFormContext();
+  const { watch, handleSubmit } = useFormContext();
   const transactionData = watch();
 
   const { formatMessage } = useIntl();
@@ -64,7 +64,7 @@ export function ConfirmTransactionModal({
     onCancel();
   }, [onCancel, reset]);
 
-  const handleSubmit = useCallback(() => {
+  const processForm = useCallback(() => {
     let feeValue: number;
     if (transactionData.fee === "custom") {
       const feeString = transactionData.customFee.toString();
@@ -92,8 +92,9 @@ export function ConfirmTransactionModal({
       fee: feeValue,
       memo: transactionData.memo,
     } as TransactionData;
-
-    sendTransaction(normalizedTransactionData);
+    console.log("normalizedTransactionData being sent");
+    console.dir(normalizedTransactionData);
+    // sendTransaction(normalizedTransactionData);
   }, [sendTransaction, transactionData, estimatedFeesData, selectedAsset]);
 
   return (
@@ -107,7 +108,7 @@ export function ConfirmTransactionModal({
             selectedAsset={selectedAsset}
             isLoading={isLoading}
             onClose={handleClose}
-            onSubmit={handleSubmit}
+            onSubmit={async () => await handleSubmit(processForm)()}
             estimatedFeesData={estimatedFeesData}
           />
         )}
@@ -133,7 +134,7 @@ export function ConfirmTransactionModal({
             errorMessage={error?.message ?? "Unknown error"}
             isLoading={isLoading}
             handleClose={handleClose}
-            handleSubmit={handleSubmit}
+            handleSubmit={processForm}
           />
         )}
       </ModalContent>

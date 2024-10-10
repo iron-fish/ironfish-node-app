@@ -50,7 +50,6 @@ export const Select = forwardRef<typeof RadixSelect.Trigger, Props>(
         name={name}
         onOpenChange={(nextValue) => setIsOpen(nextValue)}
         onValueChange={(nextValue) => {
-          console.log(`%c nextValue`, "font-weight: bold", nextValue);
           onChange({ target: { name, value: nextValue } });
         }}
         {...rest}

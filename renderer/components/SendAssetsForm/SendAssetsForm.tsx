@@ -26,7 +26,10 @@ import { truncateString } from "@/utils/truncateString";
 
 import { ConfirmLedgerModal } from "./ConfirmLedgerModal/ConfirmLedgerModal";
 import { ConfirmTransactionModal } from "./ConfirmTransactionModal/ConfirmTransactionModal";
-import { TransactionFormData, transactionSchema } from "./transactionSchema";
+import {
+  TransactionFormData,
+  createTransactionSchema,
+} from "./transactionSchema";
 import {
   AssetOptionType,
   normalizeAmountInputChange,
@@ -68,7 +71,7 @@ const messages = defineMessages({
 });
 
 export type PendingTransactionData = {
-  transactionData: TransactionData;
+  transactionData: TransactionFormData;
   selectedAccount: TRPCRouterOutputs["getAccounts"][number];
   selectedAsset?: AssetOptionType;
 };
@@ -108,6 +111,11 @@ export function SendAssetsFormContent({
 
   const defaultAssetId = accountsData[0]?.balances.iron.asset.id;
 
+  const transactionSchema = useMemo(
+    () => createTransactionSchema(formatMessage),
+    [formatMessage],
+  );
+
   const formMethods = useForm<TransactionFormData>({
     resolver: zodResolver(transactionSchema),
     mode: "onBlur",
@@ -125,11 +133,11 @@ export function SendAssetsFormContent({
     handleSubmit,
     formState: { errors },
     watch,
-    setError,
     clearErrors,
     resetField,
     setValue,
     register,
+    trigger,
     control,
   } = formMethods;
 
@@ -244,31 +252,35 @@ export function SendAssetsFormContent({
       {syncingMessage}
       <FormProvider {...formMethods}>
         <chakra.form
-          onSubmit={handleSubmit(
-            async (data) => {
-              const currentBalance = Number(
-                accountBalances[data.assetId].confirmed,
-              );
+        // onSubmit={handleSubmit(
+        //   async (data) => {
+        //     const currentBalance = Number(
+        //       accountBalances[data.assetId].confirmed,
+        //     );
 
-              if (currentBalance < assetAmountToSend) {
-                setError("amount", {
-                  type: "custom",
-                  message: formatMessage(messages.insufficientFundsError),
-                });
-                return;
-              }
+        //     if (currentBalance < assetAmountToSend) {
+        //       setError("amount", {
+        //         type: "custom",
+        //         message: formatMessage(messages.insufficientFundsError),
+        //       });
+        //       return;
+        //     }
 
-              setConfirmTransaction(true);
-            },
-            (errors) => {
-              // console.log("Form validation failed:", errors);
-            },
-          )}
+        //     setConfirmTransaction(true);
+        //   },
+        //   (errors) => {
+        //     console.log("Form validation failed:", errors);
+        //   },
+        // )}
         >
           <Container
-            _dark={{ bg: COLORS.DARK_MODE.GRAY_DARK }}
+            _dark={{
+              bg: "inherit",
+              border: "1px solid",
+              borderColor: COLORS.DARK_MODE.GRAY_MEDIUM,
+            }}
             bg={COLORS.GRAY_LIGHT}
-            borderRadius={1}
+            borderRadius={4}
             p={8}
           >
             <VStack gap={4} alignItems="stretch">
@@ -364,40 +376,56 @@ export function SendAssetsFormContent({
 
           <HStack mt={8} justifyContent="flex-end">
             <PillButton
-              type="submit"
+              onClick={async () => {
+                // setError("amount", {
+                //   type: "custom",
+                //   message: formatMessage(messages.insufficientFundsError),
+                // });
+                const validInputs = await trigger(
+                  ["amount", "toAccount", "assetId"],
+                  {
+                    shouldFocus: true,
+                  },
+                );
+
+                if (validInputs) {
+                  setConfirmTransaction(true);
+                }
+              }}
+              type="button"
               height="60px"
               px={8}
               isDisabled={!isAccountSynced}
             >
-              {formatMessage(messages.nextButton)}
+              {sendButtonText ?? formatMessage(messages.nextButton)}
             </PillButton>
           </HStack>
+
+          {(() => {
+            if (!confirmTransaction) return null;
+
+            return selectedAccount.isLedger ? (
+              <ConfirmLedgerModal
+                isOpen
+                selectedAsset={assetOptionsMap.get(assetIdValue)}
+                selectedAccount={selectedAccount}
+                onCancel={() => {
+                  setConfirmTransaction(false);
+                }}
+              />
+            ) : (
+              <ConfirmTransactionModal
+                isOpen
+                selectedAsset={assetOptionsMap.get(assetIdValue)}
+                selectedAccount={selectedAccount}
+                onCancel={() => {
+                  setConfirmTransaction(false);
+                }}
+                estimatedFeesData={estimatedFeesData}
+              />
+            );
+          })()}
         </chakra.form>
-
-        {(() => {
-          if (!confirmTransaction) return null;
-
-          return selectedAccount.isLedger ? (
-            <ConfirmLedgerModal
-              isOpen
-              selectedAsset={assetOptionsMap.get(assetIdValue)}
-              selectedAccount={selectedAccount}
-              onCancel={() => {
-                setConfirmTransaction(false);
-              }}
-            />
-          ) : (
-            <ConfirmTransactionModal
-              isOpen
-              selectedAsset={assetOptionsMap.get(assetIdValue)}
-              selectedAccount={selectedAccount}
-              onCancel={() => {
-                setConfirmTransaction(false);
-              }}
-              estimatedFeesData={estimatedFeesData}
-            />
-          );
-        })()}
       </FormProvider>
     </>
   );

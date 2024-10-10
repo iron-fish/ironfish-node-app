@@ -16,7 +16,6 @@ import { TRPCRouterOutputs } from "@/providers/TRPCProvider";
 import { COLORS } from "@/ui/colors";
 import { PillButton } from "@/ui/PillButton/PillButton";
 import { CurrencyUtils } from "@/utils/currency";
-import { RenderError } from "@/ui/Forms/FormField/FormField";
 
 import FeeGridSelector from "./FeeGridSelector/FeeGridSelector";
 import { MemoInput } from "./MemoInput/MemoInput";
@@ -48,6 +47,9 @@ const messages = defineMessages({
   },
   fastFeeLabel: {
     defaultMessage: "Fast",
+  },
+  feeError: {
+    defaultMessage: "A fee amount is required",
   },
   cancelTransaction: {
     defaultMessage: "Cancel Transaction",
@@ -81,6 +83,7 @@ export function ReviewTransaction({
   const {
     watch,
     formState: { errors },
+    setError,
   } = useFormContext();
   const transactionData = watch();
 
@@ -131,19 +134,6 @@ export function ReviewTransaction({
             estimatedFeesData={estimatedFeesData}
           />
           <MemoInput />
-          {hasErrors && (
-            <Box py={4} borderBottom="1.5px dashed #DEDFE2">
-              <Text color={COLORS.RED} fontWeight="bold">
-                Errors:
-              </Text>
-              {Object.entries(errors).map(([key, error]) => (
-                <RenderError key={key} error={(error as any)?.message} />
-              ))}
-              {conversionError && (
-                <RenderError error="Error converting amount. Please check your input." />
-              )}
-            </Box>
-          )}
         </VStack>
       </ModalBody>
 
@@ -159,10 +149,20 @@ export function ReviewTransaction({
         </PillButton>
         <PillButton
           size="sm"
+          type="submit"
           isDisabled={isLoading || !!hasErrors}
           onClick={() => {
-            const hasErrors = checkForErrors();
-            onSubmit();
+            if (
+              transactionData.fee === "custom" &&
+              !transactionData.customFee
+            ) {
+              setError("customFee", {
+                type: "custom",
+                message: formatMessage(messages.feeError),
+              });
+            } else {
+              onSubmit();
+            }
           }}
         >
           {formatMessage(messages.confirmAndSend)}

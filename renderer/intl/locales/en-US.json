@@ -36,11 +36,11 @@
   "0FN3ev": {
     "message": "One last step! Confirm the account you'd like to connect to the Node App."
   },
-  "0YAxhZ": {
-    "message": "available"
-  },
   "0TJsMy": {
     "message": "Plug your Ledger device directly into your computer"
+  },
+  "0YAxhZ": {
+    "message": "available"
   },
   "0rIM5R": {
     "message": "Remove Account"
@@ -95,6 +95,9 @@
   },
   "3euoRJ": {
     "message": "Recovery Phrase"
+  },
+  "3vA/R+": {
+    "message": "Memo can't be more than 32 bytes"
   },
   "47FYwb": {
     "message": "Cancel"
@@ -171,6 +174,9 @@
   "8JwFP/": {
     "message": "Custom account name?"
   },
+  "8WFqnl": {
+    "message": "Custom fee must be a number greater than 0"
+  },
   "8WtyrD": {
     "message": "Spanish"
   },
@@ -228,11 +234,17 @@
   "BxM6mJ": {
     "message": "Lowest to highest balance"
   },
+  "Byn5mN": {
+    "message": "A fee amount is required"
+  },
   "C2CIgC": {
     "message": "Sending"
   },
   "C43FrR": {
     "message": "Amount:"
+  },
+  "CxC3WU": {
+    "message": "Send Multisig Ledger Transaction"
   },
   "D3idYv": {
     "message": "Settings"
@@ -523,6 +535,9 @@
   "T2yddR": {
     "message": "Your Node"
   },
+  "TKmub+": {
+    "message": "This field is required"
+  },
   "TRfaIL": {
     "message": "Synced"
   },
@@ -661,6 +676,9 @@
   "c/KktL": {
     "message": "Resources"
   },
+  "c6lbIa": {
+    "message": "Amount must be greater than 0"
+  },
   "cwqQqt": {
     "message": "The fee for transacting on the destination chain"
   },
@@ -738,6 +756,9 @@
   },
   "hR0flV": {
     "message": "All your transactions, whether in $IRON or other custom assets, will be displayed in this section. To start a transaction, simply click on the 'Send' or 'Receive' tabs."
+  },
+  "i8SZTD": {
+    "message": "Invalid public address"
   },
   "iWiHY7": {
     "message": "The blockchain is syncing. Your balance may be inaccurate and sending transactions will be disabled until the sync is complete."
@@ -876,6 +897,9 @@
   },
   "s3kz6s": {
     "message": "A network error occured, please try again"
+  },
+  "sPA8hu": {
+    "message": "Amount must be a valid number"
   },
   "sXlL42": {
     "message": "Encrypted Wallets Unsupported"
