@@ -1,11 +1,9 @@
 import { z } from "zod";
 
-import { handleGetChainportBridgeTransactionEstimatedFees } from "./handleGetChainportBridgeTransactionEstimatedFees";
 import {
   handleSendChainportBridgeTransaction,
   handleSendChainportBridgeTransactionInput,
 } from "./handleSendChainportBridgeTransaction";
-import { buildTransactionRequestParamsInputs } from "./utils/buildTransactionRequestParams";
 import {
   fetchChainportBridgeTransaction,
   fetchChainportNetworks,
@@ -109,14 +107,6 @@ ${err}
 `);
         throw err;
       }
-    }),
-  getChainportBridgeTransactionEstimatedFees: t.procedure
-    .input(buildTransactionRequestParamsInputs)
-    .query(async (opts) => {
-      const result = await handleGetChainportBridgeTransactionEstimatedFees(
-        opts.input,
-      );
-      return result;
     }),
   sendChainportBridgeTransaction: t.procedure
     .input(handleSendChainportBridgeTransactionInput)

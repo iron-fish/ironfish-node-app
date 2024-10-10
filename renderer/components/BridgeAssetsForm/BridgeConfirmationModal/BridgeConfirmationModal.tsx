@@ -148,16 +148,25 @@ export function BridgeConfirmationModal({
     error: submitError,
   } = trpcReact.sendChainportBridgeTransaction.useMutation();
 
-  const { data: estimatedFeesData, error: estimatedFeesError } =
-    trpcReact.getChainportBridgeTransactionEstimatedFees.useQuery(
-      {
-        fromAccount: formData.fromAccount,
-        txDetails: txDetails!,
-      },
-      {
-        enabled: isSubmitIdle && !!txDetails,
-      },
-    );
+  const getEstimatedFeesQuery = trpcReact.getEstimatedFees.useQuery(
+    {
+      accountName: formData.fromAccount,
+      outputs: txDetails
+        ? [txDetails.bridge_output, txDetails.gas_fee_output]
+        : [],
+    },
+    {
+      cacheTime: 0,
+      enabled: isSubmitIdle && !!txDetails,
+      refetchOnWindowFocus: false,
+      retry: false,
+    },
+  );
+  const {
+    data: estimatedFeesData,
+    isLoading: isEstimatedFeesLoading,
+    isError: isEstimatedFeesError,
+  } = getEstimatedFeesQuery;
 
   const amountToSend = useMemo(() => {
     const amount = CurrencyUtils.formatCurrency(
@@ -281,8 +290,7 @@ export function BridgeConfirmationModal({
               onFeeRateChange={(nextValue) => {
                 setFeeRate(nextValue);
               }}
-              txDetails={txDetails}
-              error={estimatedFeesError?.message}
+              estimatedFees={getEstimatedFeesQuery}
             />
           )}
           {isSubmitLoading && (
@@ -342,6 +350,8 @@ export function BridgeConfirmationModal({
                 isDisabled={
                   isTransactionDetailsLoading ||
                   isTransactionDetailError ||
+                  isEstimatedFeesLoading ||
+                  isEstimatedFeesError ||
                   isSubmitLoading
                 }
               >

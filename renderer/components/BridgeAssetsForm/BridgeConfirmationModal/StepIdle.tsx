@@ -7,12 +7,12 @@ import {
   Code,
   Text,
 } from "@chakra-ui/react";
+import { UseTRPCQueryResult } from "@trpc/react-query/dist/shared";
 import { ReactNode } from "react";
 import { defineMessages, useIntl } from "react-intl";
 
 import chainportIcon from "@/images/chainport/chainport-icon-lg.png";
 import ironfishIcon from "@/images/chainport/ironfish-icon.png";
-import { trpcReact, TRPCRouterOutputs } from "@/providers/TRPCProvider";
 import { COLORS } from "@/ui/colors";
 import { Select } from "@/ui/Forms/Select/Select";
 import { BridgeArrows } from "@/ui/SVGs/BridgeArrows";
@@ -71,8 +71,6 @@ const messages = defineMessages({
   },
 });
 
-type TxDetails = TRPCRouterOutputs["getChainportBridgeTransactionDetails"];
-
 type Props = {
   fromAccount: string;
   targetNetwork: string;
@@ -82,9 +80,12 @@ type Props = {
   targetAddress: string;
   chainportGasFee: ReactNode;
   chainportBridgeFee: ReactNode;
+  estimatedFees: UseTRPCQueryResult<
+    { slow: number; average: number; fast: number },
+    { message: string }
+  >;
   feeRate: string;
   onFeeRateChange: (nextValue: "slow" | "average" | "fast") => void;
-  txDetails?: TxDetails;
   error?: string;
 };
 
@@ -97,23 +98,11 @@ export function StepIdle({
   targetAddress,
   chainportGasFee,
   chainportBridgeFee,
+  estimatedFees,
   feeRate,
   onFeeRateChange,
-  txDetails,
-  error,
 }: Props) {
   const { formatMessage } = useIntl();
-
-  const { data: estimatedFeesData } =
-    trpcReact.getChainportBridgeTransactionEstimatedFees.useQuery(
-      {
-        fromAccount: fromAccount,
-        txDetails: txDetails!,
-      },
-      {
-        enabled: !!txDetails,
-      },
-    );
 
   return (
     <>
@@ -211,24 +200,24 @@ export function StepIdle({
             {
               label:
                 formatMessage(messages.slowFeeLabel) +
-                (estimatedFeesData
-                  ? ` (${formatOre(estimatedFeesData.slow)} $IRON)`
+                (estimatedFees.data
+                  ? ` (${formatOre(estimatedFees.data.slow)} $IRON)`
                   : ""),
               value: "slow",
             },
             {
               label:
                 formatMessage(messages.averageFeeLabel) +
-                (estimatedFeesData
-                  ? ` (${formatOre(estimatedFeesData.average)} $IRON)`
+                (estimatedFees.data
+                  ? ` (${formatOre(estimatedFees.data.average)} $IRON)`
                   : ""),
               value: "average",
             },
             {
               label:
                 formatMessage(messages.fastFeeLabel) +
-                (estimatedFeesData
-                  ? ` (${formatOre(estimatedFeesData.fast)} $IRON)`
+                (estimatedFees.data
+                  ? ` (${formatOre(estimatedFees.data.fast)} $IRON)`
                   : ""),
               value: "fast",
             },
@@ -247,7 +236,7 @@ export function StepIdle({
 
         <Divider />
 
-        {error && (
+        {estimatedFees.isError && (
           <Code
             colorScheme="red"
             p={4}
@@ -257,7 +246,7 @@ export function StepIdle({
             overflow="auto"
             mb={6}
           >
-            <Text>{error}</Text>
+            <Text>{estimatedFees.error?.message}</Text>
           </Code>
         )}
       </VStack>
