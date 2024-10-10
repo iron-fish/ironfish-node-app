@@ -1,7 +1,6 @@
 import { Box, Flex, FlexProps, Text } from "@chakra-ui/react";
 import { useRouter } from "next/router";
 import { ReactNode } from "react";
-import { FaChevronRight } from "react-icons/fa";
 
 import { COLORS } from "@/ui/colors";
 
@@ -40,7 +39,8 @@ export function BaseLink({ title, icon, href, ...rest }: Props) {
       onClick={() => {
         router.push(href);
       }}
-      color={COLORS.GRAY_MEDIUM}
+      color={"#989898"}
+      role="group"
       _hover={{
         color: COLORS.BLACK,
       }}
@@ -55,15 +55,15 @@ export function BaseLink({ title, icon, href, ...rest }: Props) {
     >
       <Flex alignItems="center" justifyContent="center">
         <Box
-          color={COLORS.GRAY_MEDIUM}
+          color={"#989898"}
           _dark={{
-            color: "#ADAEB4",
+            color: COLORS.DARK_MODE.GRAY_LIGHT,
           }}
         >
           {icon}
         </Box>
         <Text
-          ml={18}
+          ml={15}
           mr={3}
           as="span"
           display={{
@@ -84,8 +84,29 @@ export function BaseLink({ title, icon, href, ...rest }: Props) {
           base: "none",
           md: "block",
         }}
+        color={COLORS.GRAY_MEDIUM}
+        _groupHover={{
+          color: COLORS.BLACK,
+          _dark: {
+            color: COLORS.WHITE,
+          },
+        }}
+        _dark={{
+          color: COLORS.DARK_MODE.GRAY_LIGHT,
+        }}
       >
-        <FaChevronRight fontSize="0.6em" />
+        <svg
+          width="14"
+          height="14"
+          viewBox="0 0 14 14"
+          fill="none"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <path
+            d="M8.96877 7L5.46877 10.5L4.6521 9.68333L7.33543 7L4.6521 4.31667L5.46877 3.5L8.96877 7Z"
+            fill="currentColor"
+          />
+        </svg>
       </Box>
     </Flex>
   );
