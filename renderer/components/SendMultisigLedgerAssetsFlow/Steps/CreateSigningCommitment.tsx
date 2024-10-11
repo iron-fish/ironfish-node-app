@@ -9,14 +9,14 @@ import { CopyField } from "../Components/CopyField";
 import { SigningRole } from "../SigningFlow";
 
 export function CreateSigningCommitment({
-  txHash,
+  unsignedTransaction,
   onSubmit,
   role,
   identities,
 }: {
   identities: string[];
   role: SigningRole;
-  txHash: string;
+  unsignedTransaction: string;
   onSubmit: (commitments: string[]) => void;
 }) {
   const {
@@ -35,7 +35,7 @@ export function CreateSigningCommitment({
   >(identities.slice(1).map(() => ""));
 
   if (isIdle) {
-    createSigningCommitment({ txHash, identities });
+    createSigningCommitment({ unsignedTransaction, identities });
   } else if (isSuccess) {
     return (
       <Flex direction={"column"} gap={6}>
@@ -89,13 +89,12 @@ export function CreateSigningCommitment({
     );
   } else if (isError) {
     return (
-      <div>
-        <h1>Error</h1>
-        <p>{error.message}</p>
+      <Box>
+        {`Error: ${error.message}`}
         <PillButton mt={8} height="60px" px={8} onClick={reset}>
           Retry
         </PillButton>
-      </div>
+      </Box>
     );
   } else if (isLoading) {
     return (
