@@ -6,7 +6,7 @@ import { z } from "zod";
 import { handleAggregateSignatureShares } from "./multisig/handleAggregateSignatureShares";
 import { handleCreateSigningPackage } from "./multisig/handleCreateSigningPackage";
 import { ledgerDkg } from "./utils/dkg";
-import { ledgerManager, ConnectionStatus } from "./utils/ledger";
+import { ledgerManager, ConnectionStatus } from "./utils/ledgerManager";
 import { handleSendTransactionInput } from "../transactions/handleSendTransaction";
 import { t } from "../trpc";
 
