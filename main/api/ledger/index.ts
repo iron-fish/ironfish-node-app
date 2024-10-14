@@ -5,8 +5,9 @@ import { z } from "zod";
 
 import { handleAggregateSignatureShares } from "./multisig/handleAggregateSignatureShares";
 import { handleCreateSigningPackage } from "./multisig/handleCreateSigningPackage";
-import { ledgerDkg } from "./utils/dkg";
+import { mapLedgerError } from "./utils/ledger";
 import { ledgerManager, ConnectionStatus } from "./utils/ledgerManager";
+import { ledgerMultiSigner } from "./utils/ledgerMultiSigner";
 import { handleSendTransactionInput } from "../transactions/handleSendTransaction";
 import { t } from "../trpc";
 
@@ -44,33 +45,43 @@ export const ledgerRouter = t.router({
       return ledgerManager.markAccountAsLedger(opts.input.publicAddress);
     }),
   createSigningCommitment: t.procedure
-    .input(z.object({ txHash: z.string(), identities: z.array(z.string()) }))
+    .input(
+      z.object({
+        unsignedTransaction: z.string(),
+        identities: z.array(z.string()),
+      }),
+    )
     .mutation(async (opts) => {
-      const rawCommitments = await ledgerDkg.dkgGetCommitments(
-        opts.input.txHash,
+      const transaction = new UnsignedTransaction(
+        Buffer.from(opts.input.unsignedTransaction, "hex"),
       );
+      const rawCommitments = await ledgerMultiSigner
+        .dkgGetCommitments(transaction)
+        .catch((e) => mapLedgerError(e, ledgerMultiSigner));
 
       const signingCommitment = multisig.SigningCommitment.fromRaw(
         opts.input.identities[0],
         rawCommitments,
-        Buffer.from(opts.input.txHash, "hex"),
+        transaction.hash(),
         opts.input.identities,
       );
 
       return signingCommitment.serialize().toString("hex");
     }),
   getLedgerIdentity: t.procedure.input(z.undefined()).mutation(async () => {
-    const identity = await ledgerDkg.dkgGetIdentity(0);
+    const identity = await ledgerMultiSigner
+      .dkgGetIdentity(0)
+      .catch((e) => mapLedgerError(e, ledgerMultiSigner));
+
     return identity.toString("hex");
   }),
   reviewTransaction: t.procedure
     .input(z.object({ unsignedTransaction: z.string() }))
     .mutation(async (opts) => {
-      console.log("reviewTransaction");
-      const result = await ledgerDkg.reviewTransaction(
-        opts.input.unsignedTransaction,
-      );
-      console.log("reviewTransactionComplete");
+      const result = await ledgerMultiSigner
+        .reviewTransaction(opts.input.unsignedTransaction)
+        .catch((e) => mapLedgerError(e, ledgerMultiSigner));
+
       return result.toString("hex");
     }),
   createSignatureShare: t.procedure
@@ -85,10 +96,6 @@ export const ledgerRouter = t.router({
       const unsignedTransaction = new UnsignedTransaction(
         Buffer.from(opts.input.unsignedTransaction, "hex"),
       );
-      const ref = unsignedTransaction.takeReference();
-      const publicKeyRandomness = ref.publicKeyRandomness();
-      const hash = ref.hash();
-      unsignedTransaction.returnReference();
 
       const frostSigningPackage = new multisig.SigningPackage(
         Buffer.from(opts.input.signingPackage, "hex"),
@@ -96,11 +103,9 @@ export const ledgerRouter = t.router({
         .frostSigningPackage()
         .toString("hex");
 
-      const frostSignatureShare = await ledgerDkg.dkgSign(
-        publicKeyRandomness,
-        frostSigningPackage,
-        hash.toString("hex"),
-      );
+      const frostSignatureShare = await ledgerMultiSigner
+        .dkgSign(unsignedTransaction, frostSigningPackage)
+        .catch((e) => mapLedgerError(e, ledgerMultiSigner));
 
       return multisig.SignatureShare.fromFrost(
         frostSignatureShare,
