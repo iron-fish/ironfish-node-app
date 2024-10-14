@@ -6,6 +6,7 @@ import {
   Flex,
   Code,
   Text,
+  Box,
 } from "@chakra-ui/react";
 import { UseTRPCQueryResult } from "@trpc/react-query/dist/shared";
 import { ReactNode } from "react";
@@ -29,6 +30,10 @@ const messages = defineMessages({
   },
   bridgeProviderLabel: {
     defaultMessage: "Bridge Provider",
+  },
+  bridgeProviderTerms: {
+    defaultMessage:
+      "By bridging your assets, you agree to Chainport's <link>terms of service</link>.",
   },
   sourceNetworkLabel: {
     defaultMessage: "Source Network",
@@ -124,6 +129,27 @@ export function StepIdle({
           icon={chainportIcon}
           href="https://www.chainport.io/"
         />
+
+        <Text
+          color={COLORS.GRAY_MEDIUM}
+          _dark={{
+            color: COLORS.DARK_MODE.GRAY_LIGHT,
+          }}
+        >
+          {formatMessage(messages.bridgeProviderTerms, {
+            link: (msg: ReactNode) => (
+              <Box
+                as="a"
+                rel="noreferrer"
+                target="_blank"
+                textDecoration="underline"
+                href="https://www.chainport.io/terms-of-services"
+              >
+                {msg}
+              </Box>
+            ),
+          })}
+        </Text>
 
         <Divider />
 
