@@ -236,15 +236,27 @@ export function SendAssetsFormContent({
   }, [assetIdValue, resetField, selectedAccount, accountBalances]);
 
   const { data: contactsData } = trpcReact.getContacts.useQuery();
+  const { data: allAccountsData } = trpcReact.getAccounts.useQuery();
+
   const formattedContacts = useMemo(() => {
-    return contactsData?.map((contact) => ({
+    const contacts = contactsData?.map((contact) => ({
       value: contact.address,
       label: {
         main: contact.name,
         sub: truncateString(contact.address, 2),
       },
     }));
-  }, [contactsData]);
+
+    const accounts = allAccountsData?.map((account) => ({
+      value: account.address,
+      label: {
+        main: account.name,
+        sub: truncateString(account.address, 2),
+      },
+    }));
+
+    return [...(contacts ?? []), ...(accounts ?? [])];
+  }, [contactsData, allAccountsData]);
 
   return (
     <>
