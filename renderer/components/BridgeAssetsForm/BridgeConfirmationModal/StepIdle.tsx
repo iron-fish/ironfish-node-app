@@ -45,7 +45,11 @@ const messages = defineMessages({
     defaultMessage: "Sending",
   },
   receivingLabel: {
-    defaultMessage: "Receiving",
+    defaultMessage: "Receiving (Estimated)",
+  },
+  receivingTooltip: {
+    defaultMessage:
+      "Sending amount minus the bridge fee. This is an estimate, and you may receive a slightly different amount.",
   },
   targetAddressLabel: {
     defaultMessage: "Target Address",
@@ -203,6 +207,7 @@ export function StepIdle({
             <LineItem
               label={formatMessage(messages.receivingLabel)}
               content={amountReceiving}
+              tooltip={formatMessage(messages.receivingTooltip)}
               icon={chainportIcon}
             />
           </GridItem>
