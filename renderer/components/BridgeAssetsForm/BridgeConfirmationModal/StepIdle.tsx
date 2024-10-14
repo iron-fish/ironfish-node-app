@@ -152,9 +152,11 @@ export function StepIdle({
             mx={8}
           >
             <Flex
+              _dark={{
+                bg: "#431848",
+              }}
               bg="#F3DEF5"
               color={COLORS.ORCHID}
-              border="3px solid white"
               borderRadius={4}
               alignItems="center"
               justifyContent="center"
