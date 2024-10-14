@@ -110,5 +110,8 @@
       "npm run extract:i18n",
       "git add renderer/intl/locales/en-US.json"
     ]
+  },
+  "resolutions": {
+    "@ledgerhq/errors": "^6.19.1"
   }
 }
