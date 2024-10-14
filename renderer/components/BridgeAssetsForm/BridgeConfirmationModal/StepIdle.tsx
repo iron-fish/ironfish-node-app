@@ -58,7 +58,7 @@ const messages = defineMessages({
     defaultMessage: "Gas fee",
   },
   gasFeeTooltip: {
-    defaultMessage: "The fee for transacting on the destination chain",
+    defaultMessage: "The fee for transacting on the target network",
   },
   bridgeFeeLabel: {
     defaultMessage: "Bridge fee",

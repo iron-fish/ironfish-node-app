@@ -661,9 +661,6 @@
   "c/KktL": {
     "message": "Resources"
   },
-  "cwqQqt": {
-    "message": "The fee for transacting on the destination chain"
-  },
   "dJMieh": {
     "message": "Connect account"
   },
@@ -873,6 +870,9 @@
   },
   "rqrhXg": {
     "message": "Confirm Your Recovery Phrase"
+  },
+  "ru6717": {
+    "message": "The fee for transacting on the target network"
   },
   "sXlL42": {
     "message": "Encrypted Wallets Unsupported"
