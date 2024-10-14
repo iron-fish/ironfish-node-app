@@ -3,150 +3,78 @@ import { defineMessages, useIntl } from "react-intl";
 
 import octopus from "@/images/octopus.svg";
 import { WithExplanatorySidebar } from "@/layouts/WithExplanatorySidebar";
-import { PillButton } from "@/ui/PillButton/PillButton";
 
 import { AggregateSignatureShares } from "./Steps/AggregateSignatureSharesAndBroadcast";
 import { CollectIdentities } from "./Steps/CollectIdentities";
 import { CreateSignatureShare } from "./Steps/CreateSignatureShare";
 import { CreateSigningCommitment } from "./Steps/CreateSigningCommitment";
-import {
-  CreateSigningPackage,
-  EnterSigningPackage,
-} from "./Steps/CreateSigningPackage";
+import { CreateSigningPackage } from "./Steps/CreateSigningPackage";
 import { GetUnsignedTransaction } from "./Steps/GetUnsignedTransaction";
 import { ReviewTransaction } from "./Steps/ReviewTransaction";
-import { SelectRole } from "./Steps/SelectRole";
 
-export type Step1ChoseRole = {
+export type Step1GetUnsignedTransaction = {
   step: 1;
 };
 
-export type Step2GetUnsignedTransaction = {
+export type Step2CollectIdentities = {
   step: 2;
-  role: SigningRole;
+  unsignedTransaction: string;
+  selectedAccount: string;
 };
 
-export type Step3CollectIdentities =
-  | {
-      step: 3;
-      role: "participant";
-      unsignedTransaction: string;
-      selectedAccount: string;
-    }
-  | {
-      step: 3;
-      role: "coordinator";
-      unsignedTransaction: string;
-      selectedAccount: string;
-    };
+export type Step3ReviewTransaction = {
+  step: 3;
+  unsignedTransaction: string;
+  selectedAccount: string;
+  identities: string[];
+};
 
-export type Step4ReviewTransaction =
-  | {
-      step: 4;
-      role: "participant";
-      unsignedTransaction: string;
-      selectedAccount: string;
-      identities: string[];
-    }
-  | {
-      step: 4;
-      role: "coordinator";
-      unsignedTransaction: string;
-      selectedAccount: string;
-      identities: string[];
-    };
+export type Step4CreateSigningCommitment = {
+  step: 4;
+  unsignedTransaction: string;
+  selectedAccount: string;
+  identities: string[];
+  txHash: string;
+};
 
-export type Step5CreateSigningCommitment =
-  | {
-      step: 5;
-      role: "participant";
-      unsignedTransaction: string;
-      selectedAccount: string;
-      identities: string[];
-      txHash: string;
-    }
-  | {
-      step: 5;
-      role: "coordinator";
-      unsignedTransaction: string;
-      selectedAccount: string;
-      identities: string[];
-      txHash: string;
-    };
+export type Step5CreateSigningPackage = {
+  step: 5;
+  unsignedTransaction: string;
+  selectedAccount: string;
+  identities: string[];
+  commitments: string[];
+  txHash: string;
+};
 
-export type Step6CreateSigningPackage =
-  | {
-      step: 6;
-      role: "participant";
-      unsignedTransaction: string;
-      selectedAccount: string;
-      identities: string[];
-      txHash: string;
-    }
-  | {
-      step: 6;
-      role: "coordinator";
-      unsignedTransaction: string;
-      selectedAccount: string;
-      identities: string[];
-      commitments: string[];
-      txHash: string;
-    };
+export type Step6CreateSignatureShare = {
+  step: 6;
+  unsignedTransaction: string;
+  selectedAccount: string;
+  identities: string[];
+  commitments: string[];
+  txHash: string;
+  signingPackage: string;
+};
 
-export type Step7CreateSignatureShare =
-  | {
-      step: 7;
-      role: "participant";
-      unsignedTransaction: string;
-      selectedAccount: string;
-      identities: string[];
-      txHash: string;
-      signingPackage: string;
-    }
-  | {
-      step: 7;
-      role: "coordinator";
-      unsignedTransaction: string;
-      selectedAccount: string;
-      identities: string[];
-      commitments: string[];
-      txHash: string;
-      signingPackage: string;
-    };
-
-export type Step8AggregateSignatureSharesAndBroadcast =
-  | {
-      step: 8;
-      role: "participant";
-      unsignedTransaction: string;
-      selectedAccount: string;
-      identities: string[];
-      txHash: string;
-      signingPackage: string;
-    }
-  | {
-      step: 8;
-      role: "coordinator";
-      unsignedTransaction: string;
-      selectedAccount: string;
-      identities: string[];
-      commitments: string[];
-      txHash: string;
-      signingPackage: string;
-      signatureShares: string[];
-    };
-
-export type SigningRole = "participant" | "coordinator";
+export type Step7AggregateSignatureSharesAndBroadcast = {
+  step: 7;
+  unsignedTransaction: string;
+  selectedAccount: string;
+  identities: string[];
+  commitments: string[];
+  txHash: string;
+  signingPackage: string;
+  signatureShares: string[];
+};
 
 export type SigningState =
-  | Step1ChoseRole
-  | Step2GetUnsignedTransaction
-  | Step3CollectIdentities
-  | Step4ReviewTransaction
-  | Step5CreateSigningCommitment
-  | Step6CreateSigningPackage
-  | Step7CreateSignatureShare
-  | Step8AggregateSignatureSharesAndBroadcast;
+  | Step1GetUnsignedTransaction
+  | Step2CollectIdentities
+  | Step3ReviewTransaction
+  | Step4CreateSigningCommitment
+  | Step5CreateSigningPackage
+  | Step6CreateSignatureShare
+  | Step7AggregateSignatureSharesAndBroadcast;
 
 const messages = defineMessages({
   multisigHeading: {
@@ -220,29 +148,19 @@ export function SendMultisigLedgerAssetsFlow() {
 
   if (step === 1) {
     return (
-      <WithExplanatorySidebar
-        heading={formatMessage(messages.multisigSelectRoleHeading)}
-        description={formatMessage(messages.multisigSelectRoleText)}
-        imgSrc={octopus}
-      >
-        <SelectRole onChange={(role) => setSigningStep({ step: 2, role })} />
-      </WithExplanatorySidebar>
-    );
-  } else if (step === 2) {
-    return (
       <GetUnsignedTransaction
         {...signingStep}
         onSubmit={({ unsignedTransaction, selectedAccount }) => {
           setSigningStep({
             ...signingStep,
-            step: 3,
+            step: 2,
             unsignedTransaction,
             selectedAccount,
           });
         }}
       />
     );
-  } else if (step === 3) {
+  } else if (step === 2) {
     return (
       <WithExplanatorySidebar
         heading={formatMessage(messages.multisigCollectIdentitiesHeading)}
@@ -251,12 +169,12 @@ export function SendMultisigLedgerAssetsFlow() {
       >
         <CollectIdentities
           onSubmit={(identities) =>
-            setSigningStep({ ...signingStep, step: 4, identities })
+            setSigningStep({ ...signingStep, step: 3, identities })
           }
         />
       </WithExplanatorySidebar>
     );
-  } else if (step === 4) {
+  } else if (step === 3) {
     return (
       <WithExplanatorySidebar
         heading={formatMessage(messages.multisigReviewTransactionHeading)}
@@ -266,12 +184,12 @@ export function SendMultisigLedgerAssetsFlow() {
         <ReviewTransaction
           {...signingStep}
           onSubmit={(txHash) =>
-            setSigningStep({ ...signingStep, step: 5, txHash })
+            setSigningStep({ ...signingStep, step: 4, txHash })
           }
         />
       </WithExplanatorySidebar>
     );
-  } else if (step === 5) {
+  } else if (step === 4) {
     return (
       <WithExplanatorySidebar
         heading={formatMessage(messages.multisigSigningCommitmentHeading)}
@@ -281,38 +199,16 @@ export function SendMultisigLedgerAssetsFlow() {
         <CreateSigningCommitment
           {...signingStep}
           onSubmit={(commitments) => {
-            if (signingStep.role === "participant") {
-              setSigningStep({ ...signingStep, step: 6 });
-            } else {
-              setSigningStep({
-                ...signingStep,
-                step: 6,
-                commitments: commitments,
-              });
-            }
+            setSigningStep({
+              ...signingStep,
+              step: 5,
+              commitments: commitments,
+            });
           }}
         />
       </WithExplanatorySidebar>
     );
-  } else if (step === 6) {
-    if (signingStep.role === "participant") {
-      return (
-        <WithExplanatorySidebar
-          heading={formatMessage(messages.multisigSigningPackageHeading)}
-          description={formatMessage(
-            messages.multisigSigningPackageParticipantText,
-          )}
-          imgSrc={octopus}
-        >
-          <EnterSigningPackage
-            onSubmit={(signingPackage) =>
-              setSigningStep({ ...signingStep, step: 7, signingPackage })
-            }
-          />
-        </WithExplanatorySidebar>
-      );
-    }
-
+  } else if (step === 5) {
     return (
       <WithExplanatorySidebar
         heading={formatMessage(messages.multisigSigningPackageHeading)}
@@ -324,16 +220,15 @@ export function SendMultisigLedgerAssetsFlow() {
         <CreateSigningPackage
           {...signingStep}
           onSubmit={(signingPackage) => {
-            setSigningStep({ ...signingStep, step: 7, signingPackage });
+            setSigningStep({ ...signingStep, step: 6, signingPackage });
           }}
         />
       </WithExplanatorySidebar>
     );
-  } else if (step === 7) {
-    const description =
-      signingStep.role === "participant"
-        ? formatMessage(messages.multisigSignatureShareParticipantText)
-        : formatMessage(messages.multisigSignatureShareCoordinatorText);
+  } else if (step === 6) {
+    const description = formatMessage(
+      messages.multisigSignatureShareCoordinatorText,
+    );
 
     return (
       <WithExplanatorySidebar
@@ -344,40 +239,12 @@ export function SendMultisigLedgerAssetsFlow() {
         <CreateSignatureShare
           {...signingStep}
           onSubmit={(signatureShares) => {
-            if (signingStep.role === "participant") {
-              setSigningStep({ ...signingStep, step: 8 });
-            } else {
-              setSigningStep({ ...signingStep, step: 8, signatureShares });
-            }
+            setSigningStep({ ...signingStep, step: 7, signatureShares });
           }}
         />
       </WithExplanatorySidebar>
     );
-  } else if (step === 8) {
-    if (signingStep.role === "participant") {
-      return (
-        <WithExplanatorySidebar
-          heading={"Signing Complete"}
-          description={
-            "The coordinator should have all the signatures and submit the transaction to the network."
-          }
-          imgSrc={octopus}
-        >
-          <div>
-            <h1></h1>
-            <PillButton
-              mt={8}
-              height="60px"
-              px={8}
-              onClick={() => setSigningStep({ step: 1 })}
-            >
-              Finish
-            </PillButton>
-          </div>
-        </WithExplanatorySidebar>
-      );
-    }
-
+  } else if (step === 7) {
     return (
       <WithExplanatorySidebar
         heading={formatMessage(messages.multisigSubmitTransactionHeading)}

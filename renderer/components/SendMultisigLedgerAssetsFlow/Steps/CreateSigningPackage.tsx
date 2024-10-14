@@ -1,8 +1,6 @@
 import { Box } from "@chakra-ui/react";
-import { useState } from "react";
 
 import { trpcReact } from "@/providers/TRPCProvider";
-import { TextareaInput } from "@/ui/Forms/TextareaInput/TextareaInput";
 import { PillButton } from "@/ui/PillButton/PillButton";
 
 import { CopyField } from "../Components/CopyField";
@@ -67,34 +65,4 @@ export function CreateSigningPackage({
       </div>
     );
   }
-}
-
-export function EnterSigningPackage({
-  onSubmit,
-}: {
-  onSubmit: (signingPackage: string) => void;
-}) {
-  const [signingPackage, setSigningPackage] = useState("");
-
-  return (
-    <Box>
-      <TextareaInput
-        label="Enter Signing Package from Coordinator"
-        value={signingPackage}
-        onChange={(e) => {
-          setSigningPackage(e.target.value);
-        }}
-      />
-      <PillButton
-        mt={8}
-        height="60px"
-        px={8}
-        onClick={() => {
-          onSubmit(signingPackage);
-        }}
-      >
-        Next
-      </PillButton>
-    </Box>
-  );
 }

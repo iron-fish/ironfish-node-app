@@ -6,16 +6,13 @@ import { FormField } from "@/ui/Forms/FormField/FormField";
 import { PillButton } from "@/ui/PillButton/PillButton";
 
 import { CopyField } from "../Components/CopyField";
-import { SigningRole } from "../SigningFlow";
 
 export function CreateSigningCommitment({
   unsignedTransaction,
   onSubmit,
-  role,
   identities,
 }: {
   identities: string[];
-  role: SigningRole;
   unsignedTransaction: string;
   onSubmit: (commitments: string[]) => void;
 }) {
@@ -40,51 +37,44 @@ export function CreateSigningCommitment({
     return (
       <Flex direction={"column"} gap={6}>
         <CopyField label={"My Signing Commitment"} value={signingCommitment} />
-        {role === "coordinator" && (
-          <Box>
-            <Flex direction={"column"} gap={5}>
-              {otherSigningCommitments.map((commitment, index) => {
-                return (
-                  <FormField
-                    label={"Other Signing Commitment"}
-                    flexGrow={1}
-                    key={index}
-                    triggerProps={{
-                      borderTopRightRadius: 0,
-                      borderBottomRightRadius: 0,
+        <Box>
+          <Flex direction={"column"} gap={5}>
+            {otherSigningCommitments.map((commitment, index) => {
+              return (
+                <FormField
+                  label={"Other Signing Commitment"}
+                  flexGrow={1}
+                  key={index}
+                  triggerProps={{
+                    borderTopRightRadius: 0,
+                    borderBottomRightRadius: 0,
+                  }}
+                >
+                  <Input
+                    type="text"
+                    variant="unstyled"
+                    value={commitment}
+                    onChange={(e) => {
+                      const newItems = [...otherSigningCommitments];
+                      newItems[index] = e.target.value;
+                      setOtherSigningCommitments(newItems);
                     }}
-                  >
-                    <Input
-                      type="text"
-                      variant="unstyled"
-                      value={commitment}
-                      onChange={(e) => {
-                        const newItems = [...otherSigningCommitments];
-                        newItems[index] = e.target.value;
-                        setOtherSigningCommitments(newItems);
-                      }}
-                    />
-                  </FormField>
-                );
-              })}
-            </Flex>
-            <PillButton
-              mt={8}
-              height="60px"
-              px={8}
-              onClick={() => {
-                onSubmit([...otherSigningCommitments, signingCommitment]);
-              }}
-            >
-              Next
-            </PillButton>
-          </Box>
-        )}
-        {role === "participant" && (
-          <PillButton mt={8} height="60px" px={8} onClick={() => onSubmit([])}>
+                  />
+                </FormField>
+              );
+            })}
+          </Flex>
+          <PillButton
+            mt={8}
+            height="60px"
+            px={8}
+            onClick={() => {
+              onSubmit([...otherSigningCommitments, signingCommitment]);
+            }}
+          >
             Next
           </PillButton>
-        )}
+        </Box>
       </Flex>
     );
   } else if (isError) {

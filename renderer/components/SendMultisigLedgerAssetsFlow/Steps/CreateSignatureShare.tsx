@@ -6,17 +6,14 @@ import { FormField } from "@/ui/Forms/FormField/FormField";
 import { PillButton } from "@/ui/PillButton/PillButton";
 
 import { CopyField } from "../Components/CopyField";
-import { SigningRole } from "../SigningFlow";
 
 export function CreateSignatureShare({
   signingPackage,
   unsignedTransaction,
   onSubmit,
-  role,
   identities,
 }: {
   identities: string[];
-  role: SigningRole;
   signingPackage: string;
   unsignedTransaction: string;
   onSubmit: (signatureShares: string[]) => void;
@@ -43,54 +40,43 @@ export function CreateSignatureShare({
       identity: identities[0],
     });
   } else if (isSuccess) {
-    if (role === "coordinator") {
-      return (
-        <Box>
-          <CopyField label={"My Signature Share"} value={signatureShare} />
-          <Flex direction={"column"} gap={5} mt={5}>
-            {otherSignatureShares.map((sigShare, index) => {
-              return (
-                <FormField
-                  label={"Signature Share"}
-                  flexGrow={1}
-                  key={index}
-                  triggerProps={{
-                    borderTopRightRadius: 0,
-                    borderBottomRightRadius: 0,
-                  }}
-                >
-                  <Input
-                    type="text"
-                    variant="unstyled"
-                    value={sigShare}
-                    onChange={(e) => {
-                      const newItems = [...otherSignatureShares];
-                      newItems[index] = e.target.value;
-                      setOtherSignatureShares(newItems);
-                    }}
-                  />
-                </FormField>
-              );
-            })}
-          </Flex>
-          <PillButton
-            mt={8}
-            height="60px"
-            px={8}
-            onClick={() => {
-              onSubmit([signatureShare, ...otherSignatureShares]);
-            }}
-          >
-            Next
-          </PillButton>
-        </Box>
-      );
-    }
-
     return (
       <Box>
         <CopyField label={"My Signature Share"} value={signatureShare} />
-        <PillButton mt={8} height="60px" px={8} onClick={() => onSubmit([])}>
+        <Flex direction={"column"} gap={5} mt={5}>
+          {otherSignatureShares.map((sigShare, index) => {
+            return (
+              <FormField
+                label={"Signature Share"}
+                flexGrow={1}
+                key={index}
+                triggerProps={{
+                  borderTopRightRadius: 0,
+                  borderBottomRightRadius: 0,
+                }}
+              >
+                <Input
+                  type="text"
+                  variant="unstyled"
+                  value={sigShare}
+                  onChange={(e) => {
+                    const newItems = [...otherSignatureShares];
+                    newItems[index] = e.target.value;
+                    setOtherSignatureShares(newItems);
+                  }}
+                />
+              </FormField>
+            );
+          })}
+        </Flex>
+        <PillButton
+          mt={8}
+          height="60px"
+          px={8}
+          onClick={() => {
+            onSubmit([signatureShare, ...otherSignatureShares]);
+          }}
+        >
           Next
         </PillButton>
       </Box>
