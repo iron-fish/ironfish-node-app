@@ -15,6 +15,7 @@ export function AggregateSignatureShares({
 }) {
   const {
     mutate: aggregateSignatureShares,
+    data,
     isIdle,
     isLoading,
     isError,
@@ -48,10 +49,12 @@ export function AggregateSignatureShares({
         <PillButton
           size="sm"
           onClick={() => {
-            router.push(`/accounts/${selectedAccount}`);
+            router.push(
+              `/accounts/${selectedAccount}/transaction/${data.txHash}`,
+            );
           }}
         >
-          {"View Account Transactions"}
+          {"View Transaction"}
         </PillButton>
       </Box>
     );

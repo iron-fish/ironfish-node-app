@@ -427,9 +427,6 @@
   "O62iwU": {
     "message": "Unsigned Transaction"
   },
-  "OAm3TT": {
-    "message": "Put an explantaion here"
-  },
   "OC6jXV": {
     "message": "Transaction Expiration Delta"
   },
@@ -456,9 +453,6 @@
   },
   "Pe0ogR": {
     "message": "Theme"
-  },
-  "PiWxd9": {
-    "message": "Multisig Transaction"
   },
   "Pq25uf": {
     "message": "Reset Node"
@@ -928,9 +922,6 @@
   "xP64Lw": {
     "message": "Address Book"
   },
-  "xfoZ0Z": {
-    "message": "Coordinators are responsible for gathering and combining all signatures and other information from participants. Participants sign the transaction and send their signatures and other data to the coordinator."
-  },
   "xkLxAx": {
     "message": "Account Created"
   },
@@ -954,9 +945,6 @@
   },
   "yNVIfV": {
     "message": "Submit Transaction"
-  },
-  "yPUogf": {
-    "message": "Select Role"
   },
   "yWnTVQ": {
     "message": "Send the signing package to all of the participants so they can sign the transaction."

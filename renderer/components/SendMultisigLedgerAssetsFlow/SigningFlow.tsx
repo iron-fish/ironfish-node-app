@@ -8,7 +8,6 @@ import { AggregateSignatureShares } from "./Steps/AggregateSignatureSharesAndBro
 import { CollectIdentities } from "./Steps/CollectIdentities";
 import { CreateSignatureShare } from "./Steps/CreateSignatureShare";
 import { CreateSigningCommitment } from "./Steps/CreateSigningCommitment";
-import { CreateSigningPackage } from "./Steps/CreateSigningPackage";
 import { GetUnsignedTransaction } from "./Steps/GetUnsignedTransaction";
 import { ReviewTransaction } from "./Steps/ReviewTransaction";
 
@@ -37,7 +36,7 @@ export type Step4CreateSigningCommitment = {
   txHash: string;
 };
 
-export type Step5CreateSigningPackage = {
+export type Step5CreateSignatureShare = {
   step: 5;
   unsignedTransaction: string;
   selectedAccount: string;
@@ -46,18 +45,8 @@ export type Step5CreateSigningPackage = {
   txHash: string;
 };
 
-export type Step6CreateSignatureShare = {
+export type Step6AggregateSignatureSharesAndBroadcast = {
   step: 6;
-  unsignedTransaction: string;
-  selectedAccount: string;
-  identities: string[];
-  commitments: string[];
-  txHash: string;
-  signingPackage: string;
-};
-
-export type Step7AggregateSignatureSharesAndBroadcast = {
-  step: 7;
   unsignedTransaction: string;
   selectedAccount: string;
   identities: string[];
@@ -72,24 +61,10 @@ export type SigningState =
   | Step2CollectIdentities
   | Step3ReviewTransaction
   | Step4CreateSigningCommitment
-  | Step5CreateSigningPackage
-  | Step6CreateSignatureShare
-  | Step7AggregateSignatureSharesAndBroadcast;
+  | Step5CreateSignatureShare
+  | Step6AggregateSignatureSharesAndBroadcast;
 
 const messages = defineMessages({
-  multisigHeading: {
-    defaultMessage: "Multisig Transaction",
-  },
-  multisigText: {
-    defaultMessage: "Put an explantaion here",
-  },
-  multisigSelectRoleHeading: {
-    defaultMessage: "Select Role",
-  },
-  multisigSelectRoleText: {
-    defaultMessage:
-      "Coordinators are responsible for gathering and combining all signatures and other information from participants. Participants sign the transaction and send their signatures and other data to the coordinator.",
-  },
   multisigCollectIdentitiesHeading: {
     defaultMessage: "Multisig Identities",
   },
@@ -209,23 +184,6 @@ export function SendMultisigLedgerAssetsFlow() {
       </WithExplanatorySidebar>
     );
   } else if (step === 5) {
-    return (
-      <WithExplanatorySidebar
-        heading={formatMessage(messages.multisigSigningPackageHeading)}
-        description={formatMessage(
-          messages.multisigSigningPackageCoordinatorText,
-        )}
-        imgSrc={octopus}
-      >
-        <CreateSigningPackage
-          {...signingStep}
-          onSubmit={(signingPackage) => {
-            setSigningStep({ ...signingStep, step: 6, signingPackage });
-          }}
-        />
-      </WithExplanatorySidebar>
-    );
-  } else if (step === 6) {
     const description = formatMessage(
       messages.multisigSignatureShareCoordinatorText,
     );
@@ -238,13 +196,18 @@ export function SendMultisigLedgerAssetsFlow() {
       >
         <CreateSignatureShare
           {...signingStep}
-          onSubmit={(signatureShares) => {
-            setSigningStep({ ...signingStep, step: 7, signatureShares });
+          onSubmit={(signingPackage, signatureShares) => {
+            setSigningStep({
+              ...signingStep,
+              step: 6,
+              signatureShares,
+              signingPackage,
+            });
           }}
         />
       </WithExplanatorySidebar>
     );
-  } else if (step === 7) {
+  } else if (step === 6) {
     return (
       <WithExplanatorySidebar
         heading={formatMessage(messages.multisigSubmitTransactionHeading)}
