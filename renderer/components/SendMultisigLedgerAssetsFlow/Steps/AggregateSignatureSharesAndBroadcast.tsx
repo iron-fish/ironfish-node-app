@@ -45,9 +45,10 @@ export function AggregateSignatureShares({
   } else if (isSuccess) {
     return (
       <Box>
-        <h1>Transaction Approved!</h1>
         <PillButton
-          size="sm"
+          mt={8}
+          height="60px"
+          px={8}
           onClick={() => {
             router.push(
               `/accounts/${selectedAccount}/transaction/${data.txHash}`,
