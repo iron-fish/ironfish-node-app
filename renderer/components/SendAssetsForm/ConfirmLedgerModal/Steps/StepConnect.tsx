@@ -1,9 +1,18 @@
-import { Heading, HStack, Flex, VStack, Text } from "@chakra-ui/react";
+import {
+  Heading,
+  HStack,
+  Flex,
+  VStack,
+  Text,
+  ModalBody,
+  ModalFooter,
+} from "@chakra-ui/react";
 import Image from "next/image";
 import { IoMdCheckmark } from "react-icons/io";
 import { useIntl, defineMessages } from "react-intl";
 
 import { COLORS } from "@/ui/colors";
+import { PillButton } from "@/ui/PillButton/PillButton";
 
 import connectImage from "./assets/connect.svg";
 
@@ -35,40 +44,65 @@ type Props = {
   isLedgerConnected: boolean;
   isLedgerUnlocked: boolean;
   isIronfishAppOpen: boolean;
+  onCancel: () => void;
+  onContinue: () => void;
+  isLoading: boolean;
 };
 
 export function StepConnect({
   isLedgerConnected,
   isLedgerUnlocked,
   isIronfishAppOpen,
+  onCancel,
+  onContinue,
+  isLoading,
 }: Props) {
   const { formatMessage } = useIntl();
   return (
     <>
-      <Heading mb={4}>{formatMessage(messages.headingConnectLedger)}</Heading>
-      <Image src={connectImage} alt="" />
-      <VStack alignItems="stretch" gap={2} mt={6}>
-        <ListItem
-          number="1"
-          content={formatMessage(messages.plugDevice)}
-          isNextStep={!isLedgerConnected}
-          isComplete={isLedgerConnected}
-        />
-        <ListItem
-          number="2"
-          content={formatMessage(messages.unlockLedger)}
-          isNextStep={isLedgerConnected && !isLedgerUnlocked}
-          isComplete={isLedgerUnlocked}
-        />
-        <ListItem
-          number="3"
-          content={formatMessage(messages.openApp)}
-          isNextStep={
-            isLedgerConnected && isLedgerUnlocked && !isIronfishAppOpen
+      <ModalBody px={16} pt={16}>
+        <Heading mb={4}>{formatMessage(messages.headingConnectLedger)}</Heading>
+        <Image src={connectImage} alt="" />
+        <VStack alignItems="stretch" gap={2} mt={6}>
+          <ListItem
+            number="1"
+            content={formatMessage(messages.plugDevice)}
+            isNextStep={!isLedgerConnected}
+            isComplete={isLedgerConnected}
+          />
+          <ListItem
+            number="2"
+            content={formatMessage(messages.unlockLedger)}
+            isNextStep={isLedgerConnected && !isLedgerUnlocked}
+            isComplete={isLedgerUnlocked}
+          />
+          <ListItem
+            number="3"
+            content={formatMessage(messages.openApp)}
+            isNextStep={
+              isLedgerConnected && isLedgerUnlocked && !isIronfishAppOpen
+            }
+            isComplete={isIronfishAppOpen}
+          />
+        </VStack>
+      </ModalBody>
+      <ModalFooter display="flex" gap={2} px={16} py={8}>
+        <PillButton size="sm" onClick={onCancel} variant="inverted" border={0}>
+          {formatMessage(messages.cancel)}
+        </PillButton>
+        <PillButton
+          size="sm"
+          isDisabled={
+            isLoading ||
+            !isLedgerConnected ||
+            !isLedgerUnlocked ||
+            !isIronfishAppOpen
           }
-          isComplete={isIronfishAppOpen}
-        />
-      </VStack>
+          onClick={onContinue}
+        >
+          {formatMessage(messages.continue)}
+        </PillButton>
+      </ModalFooter>
     </>
   );
 }

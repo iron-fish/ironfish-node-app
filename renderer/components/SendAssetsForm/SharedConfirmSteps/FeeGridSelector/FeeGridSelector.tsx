@@ -1,3 +1,4 @@
+import { useMemo } from "react";
 import { CheckIcon } from "@chakra-ui/icons";
 import {
   Box,
@@ -21,7 +22,7 @@ import { TRPCRouterOutputs } from "@/providers/TRPCProvider";
 import { COLORS } from "@/ui/colors";
 import { RenderError } from "@/ui/Forms/FormField/FormField";
 import { TextInput } from "@/ui/Forms/TextInput/TextInput";
-import { formatOre } from "@/utils/ironUtils";
+import { formatOre, parseIron } from "@/utils/ironUtils";
 import { IRON_DECIMAL_PLACES } from "@shared/constants";
 import edit from "../icons/edit.svg";
 
@@ -44,6 +45,10 @@ const messages = defineMessages({
   fee: {
     defaultMessage: "Fee",
   },
+  highFeeWarning: {
+    defaultMessage:
+      "Your custom fee is significantly higher than the fast fee.",
+  },
 });
 
 interface FeeOptionProps {
@@ -55,24 +60,30 @@ interface FeeOptionProps {
 
 const isPositiveValue = (val: string): boolean => {
   // Check for empty string
-  if (val.trim() === "") return false;
+  if (val.trim() === "") {
+    return false;
+  }
 
   // Split the string by decimal point
   const splitVal = val.split(".");
-  if (splitVal.length > 2) return false;
+  if (splitVal.length > 2) {
+    return false;
+  }
 
   const [integerVal, decimalVal] = splitVal;
 
   // Check if the input is just a decimal point
-  if (integerVal === "" && decimalVal === undefined) return false;
-
+  if (integerVal === "" && decimalVal === undefined) {
+    return false;
+  }
   // Check if the integer Val is valid
-  if (integerVal !== "" && !/^(0|[1-9]\d*)$/.test(integerVal)) return false;
-
+  if (integerVal !== "" && !/^(0|[1-9]\d*)$/.test(integerVal)) {
+    return false;
+  }
   // Check if the decimal Val is valid (if it exists)
-  if (decimalVal !== undefined && !/^\d+$/.test(decimalVal)) return false;
-
-  // Parse the number and check if it's greater than 0
+  if (decimalVal !== undefined && !/^\d+$/.test(decimalVal)) {
+    return false;
+  }
   const num = parseFloat(val);
   return !isNaN(num) && num > 0;
 };
@@ -83,6 +94,7 @@ const FeeOption: React.FC<FeeOptionProps> = ({
   isSelected,
   onSelect,
 }) => {
+  const { formatMessage } = useIntl();
   return (
     <Button
       variant="outline"
@@ -102,7 +114,7 @@ const FeeOption: React.FC<FeeOptionProps> = ({
       <HStack width="100%" justifyContent="space-between">
         <VStack alignItems="flex-start">
           <Text fontWeight={200} color="muted" _dark={{ color: "muted" }}>
-            {label}
+            {formatMessage(messages[label as keyof typeof messages])}
           </Text>
           <Text>{formatOre(fee)} $IRON</Text>
         </VStack>
@@ -143,8 +155,22 @@ const FeeGridSelector: React.FC<FeeGridSelectorProps> = ({
     formState: { errors },
   } = useFormContext();
   const { formatMessage } = useIntl();
+  const transactionData = useWatch();
   const fee = useWatch({ control, name: "fee" });
   const customFee = useWatch({ control, name: "customFee" });
+
+  const showHighFeeWarning = useMemo(() => {
+    if (
+      transactionData.fee !== "custom" ||
+      !transactionData.customFee ||
+      !estimatedFeesData
+    ) {
+      return false;
+    }
+    const fastFee = estimatedFeesData.fast;
+    const customFeeValue = parseIron(transactionData.customFee);
+    return customFeeValue >= fastFee * 5;
+  }, [transactionData.fee, transactionData.customFee, estimatedFeesData]);
 
   const getFormattedFee = () => {
     if (fee === "custom" && customFee) {
@@ -267,6 +293,11 @@ const FeeGridSelector: React.FC<FeeGridSelectorProps> = ({
             </Button>
           </HStack>
         </VStack>
+      )}
+      {showHighFeeWarning && (
+        <Text color="orange.500" mb={1}>
+          {formatMessage(messages.highFeeWarning)}
+        </Text>
       )}
       <RenderError error={errors.customFee?.message} />
     </Box>

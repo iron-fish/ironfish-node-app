@@ -55,6 +55,17 @@ export function MemoInput() {
                 {...field}
                 error={errors.memo?.message}
                 label={formatMessage(messages.memoLabel)}
+                onKeyDown={(e) => {
+                  if (e.key === "Enter" && field.value) {
+                    setShowMemoInput(false);
+                  }
+                }}
+                value={field.value ?? ""}
+                onChange={(e) =>
+                  field.onChange(
+                    sliceToUtf8Bytes(e.target.value, MAX_MEMO_SIZE),
+                  )
+                }
                 icon={
                   <HStack gap={2}>
                     <IconButton
@@ -88,12 +99,6 @@ export function MemoInput() {
                       icon={<CheckIcon />}
                     />
                   </HStack>
-                }
-                value={field.value ?? ""}
-                onChange={(e) =>
-                  field.onChange(
-                    sliceToUtf8Bytes(e.target.value, MAX_MEMO_SIZE),
-                  )
                 }
               />
             )}

@@ -1,17 +1,9 @@
-import {
-  Modal,
-  ModalOverlay,
-  ModalContent,
-  ModalFooter,
-  ModalBody,
-} from "@chakra-ui/react";
+import { Modal, ModalOverlay, ModalContent } from "@chakra-ui/react";
 import { useCallback, useEffect, useState } from "react";
 import { useFormContext } from "react-hook-form";
-import { useIntl, defineMessages } from "react-intl";
 
 import { AssetOptionType } from "@/components/AssetAmountInput/utils";
 import { trpcReact, TRPCRouterOutputs } from "@/providers/TRPCProvider";
-import { PillButton } from "@/ui/PillButton/PillButton";
 import { CurrencyUtils } from "@/utils/currency";
 import { parseIron } from "@/utils/ironUtils";
 
@@ -21,15 +13,6 @@ import { ReviewTransaction } from "../SharedConfirmSteps/ReviewTransaction";
 import { SubmissionError } from "../SharedConfirmSteps/SubmissionError";
 import { TransactionSubmitted } from "../SharedConfirmSteps/TransactionSubmitted";
 import { TransactionData } from "../transactionSchema";
-
-const messages = defineMessages({
-  cancel: {
-    defaultMessage: "Cancel",
-  },
-  continue: {
-    defaultMessage: "Continue",
-  },
-});
 
 type LedgerStatus = {
   isLedgerConnected: boolean;
@@ -54,8 +37,6 @@ export function ConfirmLedgerModal({
   selectedAsset,
   estimatedFeesData,
 }: Props) {
-  const { formatMessage } = useIntl();
-
   const { watch } = useFormContext();
   const transactionData = watch();
 
@@ -125,6 +106,38 @@ export function ConfirmLedgerModal({
     }
   }, [isLedgerConnected, isLedgerUnlocked, isIronfishAppOpen, step]);
 
+  const handleSubmitTransaction = useCallback(() => {
+    // Todo: consolidate logic with confirmTransactionModal
+    let feeValue: number;
+    if (transactionData.fee === "custom") {
+      const feeString = transactionData.customFee.toString();
+      feeValue = parseIron(feeString);
+    } else {
+      feeValue = estimatedFeesData[transactionData.fee] ?? 0;
+    }
+
+    const [normalizedAmount, amountError] = CurrencyUtils.tryMajorToMinor(
+      transactionData.amount,
+      transactionData.assetId,
+      selectedAsset?.asset.verification,
+    );
+
+    if (!normalizedAmount) {
+      console.log(`Error with amount: ${amountError}`);
+      return;
+    }
+    const normalizedTransactionData = {
+      fromAccount: transactionData.fromAccount,
+      toAccount: transactionData.toAccount,
+      assetId: transactionData.assetId,
+      amount: normalizedAmount.toString(),
+      fee: feeValue,
+      memo: transactionData.memo,
+    } as TransactionData;
+    submitTransaction(normalizedTransactionData);
+    setStep("CONFIRM_TRANSACTION");
+  }, [transactionData, estimatedFeesData, selectedAsset, submitTransaction]);
+
   const handleClose = useCallback(() => {
     if (step === "CONFIRM_TRANSACTION") {
       cancelTransaction();
@@ -149,85 +162,17 @@ export function ConfirmLedgerModal({
           />
         )}
         {step === "CONNECT_LEDGER" && (
-          <>
-            <ModalBody px={16} pt={16}>
-              <StepConnect
-                isLedgerConnected={isLedgerConnected}
-                isLedgerUnlocked={isLedgerUnlocked}
-                isIronfishAppOpen={isIronfishAppOpen}
-              />
-            </ModalBody>
-            <ModalFooter display="flex" gap={2} px={16} py={8}>
-              <PillButton
-                size="sm"
-                onClick={handleClose}
-                variant="inverted"
-                border={0}
-              >
-                {formatMessage(messages.cancel)}
-              </PillButton>
-              <PillButton
-                size="sm"
-                isDisabled={
-                  isLoading ||
-                  !isLedgerConnected ||
-                  !isLedgerUnlocked ||
-                  !isIronfishAppOpen
-                }
-                onClick={() => {
-                  // Todo: consolidate logic with confirmTransactionModal
-                  let feeValue: number;
-                  if (transactionData.fee === "custom") {
-                    const feeString = transactionData.customFee.toString();
-                    feeValue = parseIron(feeString);
-                  } else {
-                    feeValue = estimatedFeesData[transactionData.fee] ?? 0;
-                  }
-
-                  const [normalizedAmount, amountError] =
-                    CurrencyUtils.tryMajorToMinor(
-                      transactionData.amount,
-                      transactionData.assetId,
-                      selectedAsset?.asset.verification,
-                    );
-
-                  if (!normalizedAmount) {
-                    console.log(`Error with amount: ${amountError}`);
-                    return;
-                  }
-                  const normalizedTransactionData = {
-                    fromAccount: transactionData.fromAccount,
-                    toAccount: transactionData.toAccount,
-                    assetId: transactionData.assetId,
-                    amount: normalizedAmount.toString(),
-                    fee: feeValue,
-                    memo: transactionData.memo,
-                  } as TransactionData;
-                  submitTransaction(normalizedTransactionData);
-                  setStep("CONFIRM_TRANSACTION");
-                }}
-              >
-                {formatMessage(messages.continue)}
-              </PillButton>
-            </ModalFooter>
-          </>
+          <StepConnect
+            isLedgerConnected={isLedgerConnected}
+            isLedgerUnlocked={isLedgerUnlocked}
+            isIronfishAppOpen={isIronfishAppOpen}
+            onCancel={handleClose}
+            onContinue={handleSubmitTransaction}
+            isLoading={isLoading}
+          />
         )}
         {step === "CONFIRM_TRANSACTION" && (
-          <>
-            <ModalBody px={16} pt={16}>
-              <StepConfirm />
-            </ModalBody>
-            <ModalFooter display="flex" gap={2} px={16} py={8}>
-              <PillButton
-                size="sm"
-                onClick={handleClose}
-                variant="inverted"
-                border={0}
-              >
-                {formatMessage(messages.cancel)}
-              </PillButton>
-            </ModalFooter>
-          </>
+          <StepConfirm onCancel={handleClose} />
         )}
         {step === "TRANSACTION_SUBMITTED" && (
           <TransactionSubmitted
@@ -241,10 +186,7 @@ export function ConfirmLedgerModal({
             errorMessage={error?.message ?? ""}
             isLoading={isLoading}
             handleClose={handleClose}
-            handleSubmit={() => {
-              submitTransaction(transactionData);
-              setStep("CONFIRM_TRANSACTION");
-            }}
+            handleSubmit={handleSubmitTransaction}
           />
         )}
       </ModalContent>

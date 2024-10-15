@@ -92,9 +92,7 @@ export function ConfirmTransactionModal({
       fee: feeValue,
       memo: transactionData.memo,
     } as TransactionData;
-    console.log("normalizedTransactionData being sent");
-    console.dir(normalizedTransactionData);
-    // sendTransaction(normalizedTransactionData);
+    sendTransaction(normalizedTransactionData);
   }, [sendTransaction, transactionData, estimatedFeesData, selectedAsset]);
 
   return (

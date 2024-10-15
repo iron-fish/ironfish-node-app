@@ -130,7 +130,6 @@ export function SendAssetsFormContent({
   });
 
   const {
-    handleSubmit,
     formState: { errors },
     watch,
     clearErrors,
@@ -201,7 +200,6 @@ export function SendAssetsFormContent({
         retry: false,
         enabled:
           Number(amountValue) > 0 &&
-          !errors.memo &&
           !errors.amount &&
           !errors.toAccount &&
           !errors.assetId,
@@ -251,28 +249,7 @@ export function SendAssetsFormContent({
     <>
       {syncingMessage}
       <FormProvider {...formMethods}>
-        <chakra.form
-        // onSubmit={handleSubmit(
-        //   async (data) => {
-        //     const currentBalance = Number(
-        //       accountBalances[data.assetId].confirmed,
-        //     );
-
-        //     if (currentBalance < assetAmountToSend) {
-        //       setError("amount", {
-        //         type: "custom",
-        //         message: formatMessage(messages.insufficientFundsError),
-        //       });
-        //       return;
-        //     }
-
-        //     setConfirmTransaction(true);
-        //   },
-        //   (errors) => {
-        //     console.log("Form validation failed:", errors);
-        //   },
-        // )}
-        >
+        <chakra.form>
           <Container
             _dark={{
               bg: "inherit",
