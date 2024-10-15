@@ -406,9 +406,6 @@
   "NRzTJh": {
     "message": "Connect Ledger"
   },
-  "NSs9IW": {
-    "message": "Get the signing package from the coordinator and sign the transaction."
-  },
   "NTPwsP": {
     "message": "Feature flags allow you to enable or disable experimental features. These features are not fully tested and may not work as expected."
   },
@@ -642,9 +639,6 @@
   },
   "bu6hO1": {
     "message": "Unlock your Ledger"
-  },
-  "c/8gQC": {
-    "message": "Signing Package"
   },
   "c/KktL": {
     "message": "Resources"
@@ -945,9 +939,6 @@
   },
   "yNVIfV": {
     "message": "Submit Transaction"
-  },
-  "yWnTVQ": {
-    "message": "Send the signing package to all of the participants so they can sign the transaction."
   },
   "yjpdGo": {
     "message": "You don't have any contacts"

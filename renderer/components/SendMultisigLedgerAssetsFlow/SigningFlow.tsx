@@ -86,17 +86,6 @@ const messages = defineMessages({
     defaultMessage:
       "Input a signing commitment for each participant in the multisig transaction. These do not have to be in any particular order.",
   },
-  multisigSigningPackageHeading: {
-    defaultMessage: "Signing Package",
-  },
-  multisigSigningPackageCoordinatorText: {
-    defaultMessage:
-      "Send the signing package to all of the participants so they can sign the transaction.",
-  },
-  multisigSigningPackageParticipantText: {
-    defaultMessage:
-      "Get the signing package from the coordinator and sign the transaction.",
-  },
   multisigSignatureShareHeading: {
     defaultMessage: "Signature Shares",
   },
