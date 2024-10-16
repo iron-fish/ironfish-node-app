@@ -6,6 +6,7 @@ import {
   Flex,
   Code,
   Text,
+  Box,
 } from "@chakra-ui/react";
 import { UseTRPCQueryResult } from "@trpc/react-query/dist/shared";
 import { ReactNode } from "react";
@@ -30,6 +31,10 @@ const messages = defineMessages({
   bridgeProviderLabel: {
     defaultMessage: "Bridge Provider",
   },
+  bridgeProviderTerms: {
+    defaultMessage:
+      "By bridging your assets, you agree to Chainport's <link>terms of service</link>.",
+  },
   sourceNetworkLabel: {
     defaultMessage: "Source Network",
   },
@@ -40,7 +45,11 @@ const messages = defineMessages({
     defaultMessage: "Sending",
   },
   receivingLabel: {
-    defaultMessage: "Receiving",
+    defaultMessage: "Receiving (Estimated)",
+  },
+  receivingTooltip: {
+    defaultMessage:
+      "Sending amount minus the bridge fee. This is an estimate, and you may receive a slightly different amount.",
   },
   targetAddressLabel: {
     defaultMessage: "Target Address",
@@ -49,7 +58,7 @@ const messages = defineMessages({
     defaultMessage: "Gas fee",
   },
   gasFeeTooltip: {
-    defaultMessage: "The fee for transacting on the destination chain",
+    defaultMessage: "The fee for transacting on the target network",
   },
   bridgeFeeLabel: {
     defaultMessage: "Bridge fee",
@@ -125,6 +134,27 @@ export function StepIdle({
           href="https://www.chainport.io/"
         />
 
+        <Text
+          color={COLORS.GRAY_MEDIUM}
+          _dark={{
+            color: COLORS.DARK_MODE.GRAY_LIGHT,
+          }}
+        >
+          {formatMessage(messages.bridgeProviderTerms, {
+            link: (msg: ReactNode) => (
+              <Box
+                as="a"
+                rel="noreferrer"
+                target="_blank"
+                textDecoration="underline"
+                href="https://www.chainport.io/terms-of-services"
+              >
+                {msg}
+              </Box>
+            ),
+          })}
+        </Text>
+
         <Divider />
 
         <Grid templateColumns="auto 1fr auto">
@@ -152,9 +182,11 @@ export function StepIdle({
             mx={8}
           >
             <Flex
+              _dark={{
+                bg: "#431848",
+              }}
               bg="#F3DEF5"
               color={COLORS.ORCHID}
-              border="3px solid white"
               borderRadius={4}
               alignItems="center"
               justifyContent="center"
@@ -175,6 +207,7 @@ export function StepIdle({
             <LineItem
               label={formatMessage(messages.receivingLabel)}
               content={amountReceiving}
+              tooltip={formatMessage(messages.receivingTooltip)}
               icon={chainportIcon}
             />
           </GridItem>

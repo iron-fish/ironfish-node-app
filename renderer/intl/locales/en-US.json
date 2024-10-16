@@ -93,6 +93,9 @@
   "3euoRJ": {
     "message": "Recovery Phrase"
   },
+  "3v74IM": {
+    "message": "By bridging your assets, you agree to Chainport's <link>terms of service</link>."
+  },
   "47FYwb": {
     "message": "Cancel"
   },
@@ -149,6 +152,9 @@
   },
   "6q3tCn": {
     "message": "Connecting"
+  },
+  "6ugwQB": {
+    "message": "Receiving (Estimated)"
   },
   "7/GPHF": {
     "message": "Iron Fish transaction fee"
@@ -340,6 +346,9 @@
     "description": "Change as in the money that is returned to the sender after a transaction",
     "message": "Change"
   },
+  "KIbwgQ": {
+    "message": "Sending amount minus the bridge fee. This is an estimate, and you may receive a slightly different amount."
+  },
   "KJMlfb": {
     "message": "Destination network"
   },
@@ -432,9 +441,6 @@
   },
   "OC6jXV": {
     "message": "Transaction Expiration Delta"
-  },
-  "OEEl0G": {
-    "message": "Receiving"
   },
   "OfA95/": {
     "message": "Selected file: {fileName}"
@@ -655,9 +661,6 @@
   "c/KktL": {
     "message": "Resources"
   },
-  "cwqQqt": {
-    "message": "The fee for transacting on the destination chain"
-  },
   "dJMieh": {
     "message": "Connect account"
   },
@@ -867,6 +870,9 @@
   },
   "rqrhXg": {
     "message": "Confirm Your Recovery Phrase"
+  },
+  "ru6717": {
+    "message": "The fee for transacting on the target network"
   },
   "sXlL42": {
     "message": "Encrypted Wallets Unsupported"
