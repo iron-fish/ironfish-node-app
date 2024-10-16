@@ -45,6 +45,7 @@ export function AggregateSignatureShares({
   } else if (isSuccess) {
     return (
       <Box>
+        Transaction submitted successfully!
         <PillButton
           mt={8}
           height="60px"
