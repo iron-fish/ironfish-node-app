@@ -14,13 +14,12 @@ import { defineMessages, useIntl } from "react-intl";
 
 import { AssetOptionType } from "@/components/AssetAmountInput/utils";
 import { trpcReact, TRPCRouterOutputs } from "@/providers/TRPCProvider";
-import { CurrencyUtils } from "@/utils/currency";
-import { parseIron } from "@/utils/ironUtils";
+import { normalizeTransactionData } from "@/utils/transactionUtils";
 
 import { ReviewTransaction } from "../SharedConfirmSteps/ReviewTransaction";
 import { SubmissionError } from "../SharedConfirmSteps/SubmissionError";
 import { TransactionSubmitted } from "../SharedConfirmSteps/TransactionSubmitted";
-import { TransactionData } from "../transactionSchema";
+import { TransactionFormData } from "../transactionSchema";
 
 const messages = defineMessages({
   submittingTransaction: {
@@ -54,7 +53,7 @@ export function ConfirmTransactionModal({
     error,
   } = trpcReact.sendTransaction.useMutation();
 
-  const { watch, handleSubmit } = useFormContext();
+  const { watch, handleSubmit } = useFormContext<TransactionFormData>();
   const transactionData = watch();
 
   const { formatMessage } = useIntl();
@@ -65,33 +64,11 @@ export function ConfirmTransactionModal({
   }, [onCancel, reset]);
 
   const processForm = useCallback(() => {
-    let feeValue: number;
-    if (transactionData.fee === "custom") {
-      const feeString = transactionData.customFee.toString();
-      feeValue = parseIron(feeString);
-    } else {
-      feeValue = estimatedFeesData[transactionData.fee] ?? 0;
-    }
-
-    const [normalizedAmount, amountError] = CurrencyUtils.tryMajorToMinor(
-      transactionData.amount,
-      transactionData.assetId,
-      selectedAsset?.asset.verification,
+    const { normalizedTransactionData, errors } = normalizeTransactionData(
+      transactionData,
+      estimatedFeesData,
+      selectedAsset,
     );
-
-    if (!normalizedAmount) {
-      console.log(`Error with amount: ${amountError}`);
-      return;
-    }
-
-    const normalizedTransactionData = {
-      fromAccount: transactionData.fromAccount,
-      toAccount: transactionData.toAccount,
-      assetId: transactionData.assetId,
-      amount: normalizedAmount.toString(),
-      fee: feeValue,
-      memo: transactionData.memo,
-    } as TransactionData;
     sendTransaction(normalizedTransactionData);
   }, [sendTransaction, transactionData, estimatedFeesData, selectedAsset]);
 

@@ -150,6 +150,9 @@
   "6P/bTL": {
     "message": "Connection Type"
   },
+  "6SbRe2": {
+    "message": "Your custom fee is significantly higher than the fast fee."
+  },
   "6Zll8z": {
     "message": "Reset the node. You'll have to re-scan the blockchain, but your accounts and funds will not be affected."
   },

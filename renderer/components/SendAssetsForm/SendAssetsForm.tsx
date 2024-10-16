@@ -35,6 +35,7 @@ import {
   normalizeAmountInputChange,
   useAccountAssets,
 } from "../AssetAmountInput/utils";
+import { AssetAmountInput } from "../AssetAmountInput/AssetAmountInput";
 import { NoSpendingAccountsMessage } from "../EmptyStateMessage/shared/NoSpendingAccountsMessage";
 import { LedgerChip } from "../LedgerChip/LedgerChip";
 import {
@@ -135,6 +136,7 @@ export function SendAssetsFormContent({
     clearErrors,
     resetField,
     setValue,
+    setError,
     register,
     trigger,
     control,
@@ -160,8 +162,12 @@ export function SendAssetsFormContent({
     );
   }, [accountsData, fromAccountValue]);
 
-  const { accountBalances, assetOptionsMap, assetOptions } =
-    useAccountAssets(selectedAccount);
+  const { accountBalances, assetOptions, assetOptionsMap } = useAccountAssets(
+    selectedAccount,
+    {
+      balanceInLabel: false,
+    },
+  );
 
   const assetAmountToSend = useMemo(() => {
     const assetToSend = assetOptionsMap.get(assetIdValue);
@@ -182,7 +188,6 @@ export function SendAssetsFormContent({
     return amountToSend;
   }, [amountValue, assetIdValue, assetOptionsMap]);
 
-  // Todo: Error handling - possibly move this to the review step
   const { data: estimatedFeesData, error: _estimatedFeesError } =
     trpcReact.getEstimatedFees.useQuery(
       {
@@ -245,6 +250,10 @@ export function SendAssetsFormContent({
     }));
   }, [contactsData]);
 
+  const selectedAsset = useMemo(() => {
+    return assetOptionsMap.get(assetIdValue);
+  }, [assetIdValue, assetOptionsMap]);
+
   return (
     <>
       {syncingMessage}
@@ -277,23 +286,28 @@ export function SendAssetsFormContent({
                 value={toAccountValue}
                 setValue={setValue}
               />
-              <Flex gap={0}>
-                <Box flex={1}>
-                  <Controller
-                    name="amount"
-                    control={control}
-                    render={({ field }) => (
+              <Controller
+                name="amount"
+                control={control}
+                render={({ field }) => (
+                  <AssetAmountInput
+                    assetOptions={assetOptions}
+                    assetOptionsMap={assetOptionsMap}
+                    assetIdValue={assetIdValue}
+                    onAssetIdChange={async (e) => {
+                      setValue("assetId", e.target.value);
+                      field.onChange("0");
+                    }}
+                    error={errors.amount?.message}
+                    inputElement={
                       <TextInput
                         {...field}
-                        triggerProps={{
-                          border: "1px solid",
-                          borderRadius: "0",
-                        }}
-                        value={field.value ?? ""}
+                        aria-label="Amount"
+                        value={amountValue}
                         onChange={(e) => {
                           normalizeAmountInputChange({
                             changeEvent: e,
-                            selectedAsset: assetOptionsMap.get(assetIdValue),
+                            selectedAsset: selectedAsset,
                             onStart: () => clearErrors("root.serverError"),
                             onChange: field.onChange,
                           });
@@ -311,31 +325,16 @@ export function SendAssetsFormContent({
                             field.onChange(field.value.slice(0, -1));
                           }
                         }}
-                        label={formatMessage(messages.amountLabel)}
-                        error={errors.amount?.message}
+                        triggerProps={{
+                          borderTopRightRadius: 0,
+                          borderBottomRightRadius: 0,
+                          borderRightWidth: 0,
+                        }}
                       />
-                    )}
+                    }
                   />
-                </Box>
-                <Select
-                  {...register("assetId")}
-                  value={assetIdValue}
-                  label={formatMessage(messages.assetLabel)}
-                  options={assetOptions.map((opt) => ({
-                    ...opt,
-                    label: opt.assetName,
-                  }))}
-                  error={errors.assetId?.message}
-                  border={"none"}
-                  borderRadius={0}
-                  triggerProps={{
-                    border: "1px solid",
-                    borderLeft: "1px none",
-                    borderRadius: "0",
-                    whiteSpace: "nowrap",
-                  }}
-                />
-              </Flex>
+                )}
+              />
               <RenderError
                 error={
                   errors.root?.serverError
@@ -344,20 +343,25 @@ export function SendAssetsFormContent({
                 }
               />
             </VStack>
-            <Text color="muted" mt={2}>
-              {`${assetOptionsMap.get(assetIdValue)
-                ?.confirmedBalance} ${assetOptionsMap.get(assetIdValue)
-                ?.assetName} ${formatMessage(messages.available)}`}
-            </Text>
           </Container>
 
           <HStack mt={8} justifyContent="flex-end">
             <PillButton
               onClick={async () => {
-                // setError("amount", {
-                //   type: "custom",
-                //   message: formatMessage(messages.insufficientFundsError),
-                // });
+                const currentBalance = Number(
+                  accountBalances[assetIdValue].confirmed,
+                );
+
+                // Custom error check
+                if (currentBalance < assetAmountToSend) {
+                  setError("amount", {
+                    type: "custom",
+                    message: formatMessage(messages.insufficientFundsError),
+                  });
+                  return;
+                }
+
+                // Check form errors
                 const validInputs = await trigger(
                   ["amount", "toAccount", "assetId"],
                   {
@@ -379,12 +383,14 @@ export function SendAssetsFormContent({
           </HStack>
 
           {(() => {
-            if (!confirmTransaction) return null;
+            if (!confirmTransaction || !estimatedFeesData || !selectedAsset)
+              return null;
 
             return selectedAccount.isLedger ? (
               <ConfirmLedgerModal
                 isOpen
-                selectedAsset={assetOptionsMap.get(assetIdValue)}
+                selectedAsset={selectedAsset}
+                estimatedFeesData={estimatedFeesData}
                 selectedAccount={selectedAccount}
                 onCancel={() => {
                   setConfirmTransaction(false);
@@ -393,7 +399,7 @@ export function SendAssetsFormContent({
             ) : (
               <ConfirmTransactionModal
                 isOpen
-                selectedAsset={assetOptionsMap.get(assetIdValue)}
+                selectedAsset={selectedAsset}
                 selectedAccount={selectedAccount}
                 onCancel={() => {
                   setConfirmTransaction(false);
@@ -422,6 +428,7 @@ export function SendAssetConfirmModal({
       isOpen
       transactionData={transactionData}
       selectedAsset={selectedAsset}
+      estimatedFeesData={estimatedFeesData}
       selectedAccount={selectedAccount}
       onCancel={onCancel}
     />
@@ -429,6 +436,7 @@ export function SendAssetConfirmModal({
     <ConfirmTransactionModal
       isOpen
       transactionData={transactionData}
+      estimatedFeesData={estimatedFeesData}
       selectedAsset={selectedAsset}
       selectedAccount={selectedAccount}
       onCancel={onCancel}

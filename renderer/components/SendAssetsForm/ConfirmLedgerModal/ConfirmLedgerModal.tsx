@@ -12,7 +12,8 @@ import { StepConnect } from "./Steps/StepConnect";
 import { ReviewTransaction } from "../SharedConfirmSteps/ReviewTransaction";
 import { SubmissionError } from "../SharedConfirmSteps/SubmissionError";
 import { TransactionSubmitted } from "../SharedConfirmSteps/TransactionSubmitted";
-import { TransactionData } from "../transactionSchema";
+import { TransactionData, TransactionFormData } from "../transactionSchema";
+import { normalizeTransactionData } from "@/utils/transactionUtils";
 
 type LedgerStatus = {
   isLedgerConnected: boolean;
@@ -37,7 +38,7 @@ export function ConfirmLedgerModal({
   selectedAsset,
   estimatedFeesData,
 }: Props) {
-  const { watch } = useFormContext();
+  const { watch } = useFormContext<TransactionFormData>();
   const transactionData = watch();
 
   const [
@@ -107,35 +108,20 @@ export function ConfirmLedgerModal({
   }, [isLedgerConnected, isLedgerUnlocked, isIronfishAppOpen, step]);
 
   const handleSubmitTransaction = useCallback(() => {
-    // Todo: consolidate logic with confirmTransactionModal
-    let feeValue: number;
-    if (transactionData.fee === "custom") {
-      const feeString = transactionData.customFee.toString();
-      feeValue = parseIron(feeString);
-    } else {
-      feeValue = estimatedFeesData[transactionData.fee] ?? 0;
-    }
-
-    const [normalizedAmount, amountError] = CurrencyUtils.tryMajorToMinor(
-      transactionData.amount,
-      transactionData.assetId,
-      selectedAsset?.asset.verification,
+    const result = normalizeTransactionData(
+      transactionData,
+      estimatedFeesData,
+      selectedAsset,
     );
-
-    if (!normalizedAmount) {
-      console.log(`Error with amount: ${amountError}`);
-      return;
+    if (result && !result.errors.message) {
+      submitTransaction(result.normalizedTransactionData);
+      setStep("CONFIRM_TRANSACTION");
+    } else {
+      // Handle error case, e.g., show an error message
+      console.error(
+        result?.errors.message || "Failed to normalize transaction data",
+      );
     }
-    const normalizedTransactionData = {
-      fromAccount: transactionData.fromAccount,
-      toAccount: transactionData.toAccount,
-      assetId: transactionData.assetId,
-      amount: normalizedAmount.toString(),
-      fee: feeValue,
-      memo: transactionData.memo,
-    } as TransactionData;
-    submitTransaction(normalizedTransactionData);
-    setStep("CONFIRM_TRANSACTION");
   }, [transactionData, estimatedFeesData, selectedAsset, submitTransaction]);
 
   const handleClose = useCallback(() => {

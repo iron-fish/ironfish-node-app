@@ -2,9 +2,12 @@ import { CurrencyUtils } from "@/utils/currency";
 import { parseIron } from "@/utils/ironUtils";
 import { AssetOptionType } from "@/components/AssetAmountInput/utils";
 import { TRPCRouterOutputs } from "@/providers/TRPCProvider";
-import { TransactionData } from "@/components/SendAssetsForm/transactionSchema";
+import {
+  TransactionData,
+  TransactionFormData,
+} from "@/components/SendAssetsForm/transactionSchema";
 
-export const isPositiveValue = (val: string): boolean => {
+export const isPositiveInputValue = (val: string): boolean => {
   // Check for empty string
   if (val.trim() === "") return false;
 
@@ -44,23 +47,32 @@ export const getFormattedFee = (
   return CurrencyUtils.formatOre(0);
 };
 
+interface NormalizedTransactionResult {
+  normalizedTransactionData: TransactionData | null;
+  errors: {
+    message?: string;
+  };
+}
+
 export const normalizeTransactionData = (
-  transactionData: Partial<TransactionData>,
-  estimatedFeesData: TRPCRouterOutputs["getEstimatedFees"],
+  transactionData: TransactionFormData,
+  estimatedFeesData: Record<string, number>,
   selectedAsset: AssetOptionType,
-): TransactionData | null => {
+): NormalizedTransactionResult => {
   let feeValue: number;
   if (transactionData.fee === "custom") {
-    const feeString = transactionData.customFee?.toString() ?? "0";
+    if (!transactionData.customFee) {
+      return {
+        normalizedTransactionData: null,
+        errors: {
+          message: "Custom fee must be a number greater than 0",
+        },
+      };
+    }
+    const feeString = transactionData.customFee.toString();
     feeValue = parseIron(feeString);
-  } else if (transactionData.fee) {
-    feeValue = estimatedFeesData[transactionData.fee] ?? 0;
   } else {
-    return null;
-  }
-
-  if (!transactionData.amount || !transactionData.assetId) {
-    return null;
+    feeValue = estimatedFeesData[transactionData.fee] ?? 0;
   }
 
   const [normalizedAmount, amountError] = CurrencyUtils.tryMajorToMinor(
@@ -70,16 +82,26 @@ export const normalizeTransactionData = (
   );
 
   if (!normalizedAmount) {
-    console.log(`Error with amount: ${amountError}`);
-    return null;
+    return {
+      normalizedTransactionData: null,
+      errors: {
+        message:
+          amountError?.message ||
+          "There was an issue processing your transaction amount",
+      },
+    };
   }
-
-  return {
-    fromAccount: transactionData.fromAccount ?? "",
-    toAccount: transactionData.toAccount ?? "",
+  const normalizedTransactionData = {
+    fromAccount: transactionData.fromAccount,
+    toAccount: transactionData.toAccount,
     assetId: transactionData.assetId,
     amount: normalizedAmount.toString(),
     fee: feeValue,
-    memo: transactionData.memo ?? "",
+    memo: transactionData.memo,
+  } as TransactionData;
+
+  return {
+    normalizedTransactionData,
+    errors: {},
   };
 };

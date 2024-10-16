@@ -63,17 +63,12 @@ export const createTransactionSchema = (
         z.literal("custom"),
       ]),
       customFee: z
-        .union([
-          z.literal(""),
-          z
-            .string()
-            .min(1)
-            .refine((val) => {
-              const num = parseFloat(val);
-              return !isNaN(num) && num > 0;
-            }, formatMessage(messages.invalidCustomFee))
-            .transform((val) => parseFloat(val)),
-        ])
+        .string()
+        .min(1)
+        .refine((val) => {
+          const num = parseFloat(val);
+          return !isNaN(num) && num > 0;
+        }, formatMessage(messages.invalidCustomFee))
         .optional(),
       memo: z
         .string()

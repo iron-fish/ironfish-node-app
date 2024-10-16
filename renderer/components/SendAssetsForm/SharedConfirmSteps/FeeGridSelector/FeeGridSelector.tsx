@@ -2,6 +2,7 @@ import { useMemo } from "react";
 import { CheckIcon } from "@chakra-ui/icons";
 import {
   Box,
+  Flex,
   Grid,
   Text,
   Button,
@@ -18,6 +19,7 @@ import {
   AssetOptionType,
   normalizeAmountInputChange,
 } from "@/components/AssetAmountInput/utils";
+import { isPositiveInputValue } from "@/utils/transactionUtils";
 import { TRPCRouterOutputs } from "@/providers/TRPCProvider";
 import { COLORS } from "@/ui/colors";
 import { RenderError } from "@/ui/Forms/FormField/FormField";
@@ -57,36 +59,6 @@ interface FeeOptionProps {
   isSelected: boolean;
   onSelect: () => void;
 }
-
-const isPositiveValue = (val: string): boolean => {
-  // Check for empty string
-  if (val.trim() === "") {
-    return false;
-  }
-
-  // Split the string by decimal point
-  const splitVal = val.split(".");
-  if (splitVal.length > 2) {
-    return false;
-  }
-
-  const [integerVal, decimalVal] = splitVal;
-
-  // Check if the input is just a decimal point
-  if (integerVal === "" && decimalVal === undefined) {
-    return false;
-  }
-  // Check if the integer Val is valid
-  if (integerVal !== "" && !/^(0|[1-9]\d*)$/.test(integerVal)) {
-    return false;
-  }
-  // Check if the decimal Val is valid (if it exists)
-  if (decimalVal !== undefined && !/^\d+$/.test(decimalVal)) {
-    return false;
-  }
-  const num = parseFloat(val);
-  return !isNaN(num) && num > 0;
-};
 
 const FeeOption: React.FC<FeeOptionProps> = ({
   label,
@@ -186,7 +158,7 @@ const FeeGridSelector: React.FC<FeeGridSelectorProps> = ({
 
   const handleKeyDown = (e: KeyboardEvent<HTMLInputElement>) => {
     if (e.key === "Enter") {
-      if (isPositiveValue(customFee)) {
+      if (isPositiveInputValue(customFee)) {
         setShowGrid(false);
       }
     }
@@ -255,7 +227,9 @@ const FeeGridSelector: React.FC<FeeGridSelectorProps> = ({
                           bg={COLORS.GREEN_DARK}
                           onClick={() => setShowGrid(false)}
                           aria-label="Save memo"
-                          isDisabled={!isPositiveValue(customFeeField.value)}
+                          isDisabled={
+                            !isPositiveInputValue(customFeeField.value)
+                          }
                           _disabled={{
                             bg: COLORS.GREEN_DARK,
                             opacity: 0.4,
@@ -295,9 +269,17 @@ const FeeGridSelector: React.FC<FeeGridSelectorProps> = ({
         </VStack>
       )}
       {showHighFeeWarning && (
-        <Text color="orange.500" mb={1}>
-          {formatMessage(messages.highFeeWarning)}
-        </Text>
+        <Flex
+          justifyContent="center"
+          alignItems="center"
+          bg="#FFE5DD"
+          p={2}
+          borderRadius={2}
+        >
+          <Text color={COLORS.RED}>
+            {formatMessage(messages.highFeeWarning)}
+          </Text>
+        </Flex>
       )}
       <RenderError error={errors.customFee?.message} />
     </Box>
