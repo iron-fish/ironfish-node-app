@@ -99,7 +99,7 @@ function BridgeAssetsFormContent({
       fromAccount: defaultFromAccount,
       assetId: defaultAssetId,
       destinationNetworkId: null,
-      targetAddress: "",
+      destinationAddress: "",
     },
   });
 
@@ -107,7 +107,7 @@ function BridgeAssetsFormContent({
   const fromAccountValue = watch("fromAccount");
   const assetIdValue = watch("assetId");
   const destinationNetworkId = watch("destinationNetworkId");
-  const targetAddress = watch("targetAddress");
+  const destinationAddress = watch("destinationAddress");
 
   const { data: tokenPathsResponse, isLoading: tokenPathsLoading } =
     trpcReact.getChainportTokenPaths.useQuery(
@@ -180,12 +180,12 @@ function BridgeAssetsFormContent({
     [selectedAsset, setError],
   );
 
-  const targetAddressIcon = useMemo(() => {
-    if (targetAddress.length === 0) {
+  const destinationAddressIcon = useMemo(() => {
+    if (destinationAddress.length === 0) {
       return null;
     }
 
-    return targetAddress.length > 0 && isAddress(targetAddress) ? (
+    return destinationAddress.length > 0 && isAddress(destinationAddress) ? (
       <chakra.svg width="18" height="13" viewBox="0 0 18 13" fill="none" mr={1}>
         <path
           d="M6.54961 13L0.849609 7.29998L2.27461 5.87498L6.54961 10.15L15.7246 0.974976L17.1496 2.39998L6.54961 13Z"
@@ -193,7 +193,7 @@ function BridgeAssetsFormContent({
         />
       </chakra.svg>
     ) : null;
-  }, [targetAddress]);
+  }, [destinationAddress]);
 
   // Try to reset selected asset to a valid one if the current one is disabled
   useEffect(() => {
@@ -257,7 +257,7 @@ function BridgeAssetsFormContent({
             fromAccount: data.fromAccount,
             assetId: data.assetId,
             destinationNetwork: destinationNetwork,
-            targetAddress: getChecksumAddress(data.targetAddress),
+            destinationAddress: getChecksumAddress(data.destinationAddress),
           });
         })}
       >
@@ -389,12 +389,12 @@ function BridgeAssetsFormContent({
               />
             )
           }
-          targetAddressInput={
+          destinationAddressInput={
             <TextInput
-              {...register("targetAddress")}
-              label="Target Address"
-              error={formErrors.targetAddress?.message}
-              icon={targetAddressIcon}
+              {...register("destinationAddress")}
+              label="Destination Address"
+              error={formErrors.destinationAddress?.message}
+              icon={destinationAddressIcon}
             />
           }
           topLevelErrorMessage={transactionDetailsError}
@@ -404,7 +404,7 @@ function BridgeAssetsFormContent({
         <BridgeConfirmationModal
           onClose={() => setConfirmationData(null)}
           formData={confirmationData}
-          targetNetwork={confirmationData.destinationNetwork}
+          destinationNetwork={confirmationData.destinationNetwork}
           selectedAsset={assetOptionsMap.get(confirmationData.assetId)!}
           chainportToken={chainportTokensMap[confirmationData.assetId]!}
           handleTransactionDetailsError={(errorMessage) =>

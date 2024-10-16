@@ -26,6 +26,9 @@
   "/km2Zu": {
     "message": "Import Account"
   },
+  "/nrkEG": {
+    "message": "The fee for transacting on the destination network"
+  },
   "/tbC+S": {
     "description": "Button to export account in the specified format",
     "message": "Export Account"
@@ -68,9 +71,6 @@
   },
   "2qzbcD": {
     "message": "Min Peers"
-  },
-  "3+EYHL": {
-    "message": "Target Network"
   },
   "3/a0Ho": {
     "message": "We're not able to download release notes right now."
@@ -168,6 +168,9 @@
   "7N6OYQ": {
     "message": "View Transaction"
   },
+  "7Qw9T7": {
+    "message": "Destination Network"
+  },
   "8GvVWZ": {
     "message": "Something went wrong, please try again."
   },
@@ -248,9 +251,6 @@
   },
   "D5NqQO": {
     "message": "Memo"
-  },
-  "DOMotB": {
-    "message": "Target Address"
   },
   "Dh1MGS": {
     "message": "Account Syncing"
@@ -538,6 +538,9 @@
   "TzwzhT": {
     "message": "You can remove and reimport your accounts whenever you like, provided that you possess the account keys. It is highly recommended to maintain a backup of your account keys in a secure location."
   },
+  "U78NhE": {
+    "message": "Complete"
+  },
   "ULXFfP": {
     "message": "Receive"
   },
@@ -724,6 +727,9 @@
   "hR0flV": {
     "message": "All your transactions, whether in $IRON or other custom assets, will be displayed in this section. To start a transaction, simply click on the 'Send' or 'Receive' tabs."
   },
+  "iFsDVR": {
+    "message": "Loading"
+  },
   "iWiHY7": {
     "message": "The blockchain is syncing. Your balance may be inaccurate and sending transactions will be disabled until the sync is complete."
   },
@@ -762,6 +768,9 @@
   },
   "kTt/ND": {
     "message": "Russian"
+  },
+  "kbpDqo": {
+    "message": "Preparing destination txn"
   },
   "krty63": {
     "message": "Need help?"
@@ -850,6 +859,9 @@
   "rGIQdX": {
     "message": "Back to Account Overview"
   },
+  "raexxM": {
+    "message": "Submitted"
+  },
   "rbrahO": {
     "message": "Close"
   },
@@ -859,8 +871,8 @@
   "rqrhXg": {
     "message": "Confirm Your Recovery Phrase"
   },
-  "ru6717": {
-    "message": "The fee for transacting on the target network"
+  "rrBTkh": {
+    "message": "Submitted destination txn"
   },
   "sXlL42": {
     "message": "Encrypted Wallets Unsupported"
@@ -903,6 +915,9 @@
   },
   "vV69eP": {
     "message": "Downloading a snapshot is the fastest way to sync with the network."
+  },
+  "vXCeIi": {
+    "message": "Failed"
   },
   "vaP4MI": {
     "message": "It currently holds:"
