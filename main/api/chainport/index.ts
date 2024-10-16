@@ -11,7 +11,7 @@ import {
   fetchChainportTokens,
   fetchChainportTransactionStatus,
 } from "./vendor/requests";
-import { ChainportNetwork } from "./vendor/types";
+import { ChainportTokenWithNetwork } from "./vendor/types";
 import {
   assertTokenPathsApiResponse,
   assertTokensApiResponse,
@@ -52,7 +52,9 @@ ${err}
       }),
     )
     .query(
-      async (opts): Promise<{ chainportTokenPaths: ChainportNetwork[] }> => {
+      async (
+        opts,
+      ): Promise<{ chainportTokenPaths: ChainportTokenWithNetwork[] }> => {
         const ironfish = await manager.getIronfish();
         const rpcClient = await ironfish.rpcClient();
         const network = await rpcClient.chain.getNetworkInfo();

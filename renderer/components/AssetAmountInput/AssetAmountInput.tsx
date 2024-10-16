@@ -52,6 +52,12 @@ export function AssetAmountInput({
           }}
           renderChildren={(children) => (
             <HStack minWidth="100px">
+              <Image
+                src={selectedAsset?.asset.verification.logoURI ?? ""}
+                alt=""
+                height="24"
+                width="24"
+              />
               {children}
               {selectedAsset?.asset.verification.status === "verified" && (
                 <Image src={verifiedIcon} alt="" />

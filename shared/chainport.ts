@@ -3,6 +3,7 @@ import { z } from "zod";
 import type {
   ChainportNetwork,
   ChainportToken,
+  ChainportTokenWithNetwork,
 } from "../main/api/chainport/vendor/types";
 
 type ZodTypeValue<Value, ZodType extends z.ZodType> = undefined extends Value
@@ -57,7 +58,12 @@ const chainportTokenSchema = createSchema<ChainportToken>({
 });
 
 const TokensApiResponseSchema = z.array(chainportTokenSchema);
-const TokenPathsApiResponseSchema = z.array(chainportNetworkSchema);
+const TokenPathsApiResponseSchema = z.array(
+  createSchema<ChainportTokenWithNetwork>({
+    token: chainportTokenSchema,
+    network: chainportNetworkSchema,
+  }),
+);
 
 export function assertTokensApiResponse(data: unknown): ChainportToken[] {
   try {
@@ -70,7 +76,9 @@ ${err}
   }
 }
 
-export function assertTokenPathsApiResponse(data: unknown): ChainportNetwork[] {
+export function assertTokenPathsApiResponse(
+  data: unknown,
+): ChainportTokenWithNetwork[] {
   try {
     return TokenPathsApiResponseSchema.parse(data);
   } catch (err) {
