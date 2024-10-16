@@ -198,19 +198,19 @@ export function GetUnsignedTransaction({
     >
       <Tabs isLazy>
         <TabList mt={3} mb={8}>
-          <Tab>{"Create Transaction"}</Tab>
           <Tab>{"Enter Unsigned Transaction"}</Tab>
+          <Tab>{"Create Transfer Transaction"}</Tab>
         </TabList>
         <TabPanels>
           <TabPanel p={0}>
-            <CreateUnsignedTransactionForm
+            <InputUnsignedTransaction
               onSubmit={(unsignedTransaction, selectedAccount) => {
                 onSubmit({ unsignedTransaction, selectedAccount });
               }}
             />
           </TabPanel>
           <TabPanel p={0}>
-            <InputUnsignedTransaction
+            <CreateUnsignedTransactionForm
               onSubmit={(unsignedTransaction, selectedAccount) => {
                 onSubmit({ unsignedTransaction, selectedAccount });
               }}
