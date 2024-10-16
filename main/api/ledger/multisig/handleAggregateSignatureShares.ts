@@ -1,4 +1,4 @@
-import { AggregateSignatureSharesRequest } from "@ironfish/sdk";
+import { AggregateSignatureSharesRequest, Transaction } from "@ironfish/sdk";
 
 import { manager } from "../../manager";
 
@@ -10,5 +10,9 @@ export async function handleAggregateSignatureShares(
 
   const response =
     await rpcClient.wallet.multisig.aggregateSignatureShares(request);
-  return response.content;
+
+  const transaction = new Transaction(
+    Buffer.from(response.content.transaction, "hex"),
+  );
+  return { ...response.content, txHash: transaction.hash().toString("hex") };
 }

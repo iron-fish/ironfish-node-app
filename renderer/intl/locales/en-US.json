@@ -415,9 +415,6 @@
   "NRzTJh": {
     "message": "Connect Ledger"
   },
-  "NSs9IW": {
-    "message": "Get the signing package from the coordinator and sign the transaction."
-  },
   "NTPwsP": {
     "message": "Feature flags allow you to enable or disable experimental features. These features are not fully tested and may not work as expected."
   },
@@ -435,9 +432,6 @@
   },
   "O62iwU": {
     "message": "Unsigned Transaction"
-  },
-  "OAm3TT": {
-    "message": "Put an explantaion here"
   },
   "OC6jXV": {
     "message": "Transaction Expiration Delta"
@@ -462,9 +456,6 @@
   },
   "Pe0ogR": {
     "message": "Theme"
-  },
-  "PiWxd9": {
-    "message": "Multisig Transaction"
   },
   "Pq25uf": {
     "message": "Reset Node"
@@ -654,9 +645,6 @@
   },
   "bu6hO1": {
     "message": "Unlock your Ledger"
-  },
-  "c/8gQC": {
-    "message": "Signing Package"
   },
   "c/KktL": {
     "message": "Resources"
@@ -934,9 +922,6 @@
   "xP64Lw": {
     "message": "Address Book"
   },
-  "xfoZ0Z": {
-    "message": "Coordinators are responsible for gathering and combining all signatures and other information from participants. Participants sign the transaction and send their signatures and other data to the coordinator."
-  },
   "xkLxAx": {
     "message": "Account Created"
   },
@@ -960,12 +945,6 @@
   },
   "yNVIfV": {
     "message": "Submit Transaction"
-  },
-  "yPUogf": {
-    "message": "Select Role"
-  },
-  "yWnTVQ": {
-    "message": "Send the signing package to all of the participants so they can sign the transaction."
   },
   "yjpdGo": {
     "message": "You don't have any contacts"

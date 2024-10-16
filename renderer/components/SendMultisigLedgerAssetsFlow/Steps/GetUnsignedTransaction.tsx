@@ -25,7 +25,6 @@ import {
   SendAssetsFormContent,
 } from "../../SendAssetsForm/SendAssetsForm";
 import { CopyField } from "../Components/CopyField";
-import { SigningRole } from "../SigningFlow";
 
 const messages = defineMessages({
   multisigGetUnsignedTransactionHeading: {
@@ -180,10 +179,8 @@ function InputUnsignedTransaction({
 }
 
 export function GetUnsignedTransaction({
-  role,
   onSubmit,
 }: {
-  role: SigningRole;
   onSubmit: (transactionInfo: {
     unsignedTransaction: string;
     selectedAccount: string;
@@ -191,54 +188,36 @@ export function GetUnsignedTransaction({
 }) {
   const { formatMessage } = useIntl();
 
-  if (role === "coordinator") {
-    return (
-      <WithExplanatorySidebar
-        heading={formatMessage(messages.multisigGetUnsignedTransactionHeading)}
-        description={formatMessage(
-          messages.multisigCoordinatorGetUnsignedTransactionText,
-        )}
-        imgSrc={octopus}
-      >
-        <Tabs isLazy>
-          <TabList mt={3} mb={8}>
-            <Tab>{"Create Transaction"}</Tab>
-            <Tab>{"Enter Unsigned Transaction"}</Tab>
-          </TabList>
-          <TabPanels>
-            <TabPanel p={0}>
-              <CreateUnsignedTransactionForm
-                onSubmit={(unsignedTransaction, selectedAccount) => {
-                  onSubmit({ unsignedTransaction, selectedAccount });
-                }}
-              />
-            </TabPanel>
-            <TabPanel p={0}>
-              <InputUnsignedTransaction
-                onSubmit={(unsignedTransaction, selectedAccount) => {
-                  onSubmit({ unsignedTransaction, selectedAccount });
-                }}
-              />
-            </TabPanel>
-          </TabPanels>
-        </Tabs>
-      </WithExplanatorySidebar>
-    );
-  }
-
   return (
     <WithExplanatorySidebar
       heading={formatMessage(messages.multisigGetUnsignedTransactionHeading)}
       description={formatMessage(
-        messages.multisigParticipantGetUnsignedTransactionText,
+        messages.multisigCoordinatorGetUnsignedTransactionText,
       )}
       imgSrc={octopus}
     >
-      <InputUnsignedTransaction
-        onSubmit={(unsignedTransaction, selectedAccount) => {
-          onSubmit({ unsignedTransaction, selectedAccount });
-        }}
-      />
+      <Tabs isLazy>
+        <TabList mt={3} mb={8}>
+          <Tab>{"Create Transaction"}</Tab>
+          <Tab>{"Enter Unsigned Transaction"}</Tab>
+        </TabList>
+        <TabPanels>
+          <TabPanel p={0}>
+            <CreateUnsignedTransactionForm
+              onSubmit={(unsignedTransaction, selectedAccount) => {
+                onSubmit({ unsignedTransaction, selectedAccount });
+              }}
+            />
+          </TabPanel>
+          <TabPanel p={0}>
+            <InputUnsignedTransaction
+              onSubmit={(unsignedTransaction, selectedAccount) => {
+                onSubmit({ unsignedTransaction, selectedAccount });
+              }}
+            />
+          </TabPanel>
+        </TabPanels>
+      </Tabs>
     </WithExplanatorySidebar>
   );
 }
