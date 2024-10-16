@@ -94,7 +94,7 @@ export function BridgeTransactionInformation({
       type={transaction.type}
       address={chainportData.address}
       networkIcon={otherNetwork?.network_icon ?? ""}
-      targetTxHash={destinationTxHashContent?.txHash ?? undefined}
+      destinationTxHash={destinationTxHashContent?.txHash ?? undefined}
       blockExplorerUrl={destinationTxHashContent?.href}
       sourceNetwork={sourceNetwork}
       {...rest}

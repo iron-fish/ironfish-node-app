@@ -19,10 +19,10 @@ const chainportStatusMessages = defineMessages({
     defaultMessage: "Submitted",
   },
   bridge_pending: {
-    defaultMessage: "Preparing target txn",
+    defaultMessage: "Preparing destination txn",
   },
   bridge_submitted: {
-    defaultMessage: "Submitted target txn",
+    defaultMessage: "Submitted destination txn",
   },
   complete: {
     defaultMessage: "Complete",

@@ -72,7 +72,7 @@ type ChainportNetwork =
 type Props = {
   onClose: () => void;
   formData: BridgeAssetsConfirmationData;
-  targetNetwork: ChainportNetwork;
+  destinationNetwork: ChainportNetwork;
   selectedAsset: AssetOptionType;
   chainportToken: ChainportToken;
   handleTransactionDetailsError: (error: string) => void;
@@ -81,7 +81,7 @@ type Props = {
 export function BridgeConfirmationModal({
   onClose,
   formData,
-  targetNetwork,
+  destinationNetwork,
   selectedAsset,
   chainportToken,
   handleTransactionDetailsError,
@@ -114,8 +114,8 @@ export function BridgeConfirmationModal({
     {
       amount: convertedAmount.toString(),
       assetId: chainportToken.web3_address,
-      to: formData.targetAddress,
-      selectedNetwork: targetNetwork.chainport_network_id,
+      to: formData.destinationAddress,
+      selectedNetwork: destinationNetwork.chainport_network_id,
     },
     {
       retry: false,
@@ -279,11 +279,11 @@ export function BridgeConfirmationModal({
           {isSubmitIdle && (
             <StepIdle
               fromAccount={formData.fromAccount}
-              targetNetwork={targetNetwork.label}
-              targetNetworkIcon={targetNetwork.network_icon}
+              destinationNetwork={destinationNetwork.label}
+              destinationNetworkIcon={destinationNetwork.network_icon}
               amountSending={amountToSend}
               amountReceiving={amountToReceive}
-              targetAddress={formData.targetAddress}
+              destinationAddress={formData.destinationAddress}
               chainportGasFee={chainportGasFee}
               chainportBridgeFee={chainportBridgeFee}
               feeRate={feeRate}

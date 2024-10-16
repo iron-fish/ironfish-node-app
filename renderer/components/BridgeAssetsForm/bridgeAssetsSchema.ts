@@ -16,7 +16,7 @@ export const bridgeAssetsFormSchema = z.object({
     }, "Amount must be greater than 0"),
   assetId: z.string().min(1),
   destinationNetworkId: z.string().min(1).nullable(),
-  targetAddress: z.string().superRefine((value, ctx) => {
+  destinationAddress: z.string().superRefine((value, ctx) => {
     try {
       getChecksumAddress(value);
     } catch (err) {
