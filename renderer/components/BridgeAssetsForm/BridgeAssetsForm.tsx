@@ -439,7 +439,7 @@ export function BridgeAssetsForm() {
         assetAmountInput={<Skeleton height={71} />}
         bridgeProviderInput={<Skeleton height={71} w="50%" />}
         destinationNetworkInput={<Skeleton height={71} w="50%" />}
-        targetAddressInput={<Skeleton height={71} w="100%" />}
+        destinationAddressInput={<Skeleton height={71} w="100%" />}
       />
     );
   }
