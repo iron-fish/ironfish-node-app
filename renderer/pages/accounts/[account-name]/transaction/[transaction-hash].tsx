@@ -7,6 +7,7 @@ import { BridgeTransactionProgressIndicator } from "@/components/BridgeTransacti
 import { CopyAddress } from "@/components/CopyAddress/CopyAddress";
 import { NotesList } from "@/components/NotesList/NotesList";
 import { TransactionInformation } from "@/components/TransactionInformation/TransactionInformation";
+import { useTransactionPolling } from "@/hooks/useTransactionPolling";
 import MainLayout from "@/layouts/MainLayout";
 import { trpcReact } from "@/providers/TRPCProvider";
 import { asQueryString } from "@/utils/parseRouteQuery";
@@ -38,10 +39,10 @@ function SingleTransactionContent({
     name: accountName,
   });
 
-  const { data: transactionData } = trpcReact.getTransaction.useQuery({
+  const { transactionData } = useTransactionPolling(
     accountName,
     transactionHash,
-  });
+  );
 
   if (!accountData) {
     return null;

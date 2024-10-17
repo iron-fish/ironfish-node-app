@@ -5,10 +5,10 @@ import type {
   TransactionStatus,
   TransactionType,
 } from "@ironfish/sdk";
-import { useState, useEffect, ReactNode, useMemo } from "react";
+import { ReactNode, useMemo } from "react";
 import { MessageDescriptor, useIntl } from "react-intl";
 
-import { trpcReact } from "@/providers/TRPCProvider";
+import { useTransactionPolling } from "@/hooks/useTransactionPolling";
 import { MaybeLink } from "@/ui/ChakraLink/ChakraLink";
 import { COLORS } from "@/ui/colors";
 import { ShadowCard } from "@/ui/ShadowCard/ShadowCard";
@@ -132,24 +132,11 @@ export function NoteRow({
   isBridge?: boolean;
 }) {
   const { formatMessage } = useIntl();
-  const [status, setStatus] = useState<TransactionStatus>(initialStatus);
-
-  const { data: transactionData } = trpcReact.getTransaction.useQuery(
-    { accountName, transactionHash },
-    {
-      enabled:
-        status === "pending" ||
-        status === "unconfirmed" ||
-        status === "unknown",
-      refetchInterval: 5000,
-    },
+  const { status = initialStatus } = useTransactionPolling(
+    accountName,
+    transactionHash,
+    initialStatus,
   );
-
-  useEffect(() => {
-    if (transactionData && transactionData.transaction.status !== status) {
-      setStatus(transactionData.transaction.status);
-    }
-  }, [transactionData, status]);
 
   const statusDisplay = getNoteStatusDisplay(
     type,
