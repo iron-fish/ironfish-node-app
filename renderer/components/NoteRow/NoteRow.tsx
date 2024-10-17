@@ -8,6 +8,7 @@ import type {
 import { ReactNode, useMemo } from "react";
 import { MessageDescriptor, useIntl } from "react-intl";
 
+import { useTransactionPolling } from "@/hooks/useTransactionPolling";
 import { MaybeLink } from "@/ui/ChakraLink/ChakraLink";
 import { COLORS } from "@/ui/colors";
 import { ShadowCard } from "@/ui/ShadowCard/ShadowCard";
@@ -106,7 +107,7 @@ export function NoteRow({
   from,
   to,
   type,
-  status,
+  status: initialStatus,
   memo,
   transactionHash,
   asTransaction = false,
@@ -131,6 +132,11 @@ export function NoteRow({
   isBridge?: boolean;
 }) {
   const { formatMessage } = useIntl();
+  const { status = initialStatus } = useTransactionPolling(
+    accountName,
+    transactionHash,
+    initialStatus,
+  );
 
   const statusDisplay = getNoteStatusDisplay(
     type,
