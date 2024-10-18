@@ -7,7 +7,6 @@ import { BridgeTransactionProgressIndicator } from "@/components/BridgeTransacti
 import { CopyAddress } from "@/components/CopyAddress/CopyAddress";
 import { NotesList } from "@/components/NotesList/NotesList";
 import { TransactionInformation } from "@/components/TransactionInformation/TransactionInformation";
-import { useTransactionPolling } from "@/hooks/useTransactionPolling";
 import MainLayout from "@/layouts/MainLayout";
 import { trpcReact } from "@/providers/TRPCProvider";
 import { asQueryString } from "@/utils/parseRouteQuery";
@@ -39,10 +38,10 @@ function SingleTransactionContent({
     name: accountName,
   });
 
-  const { transactionData } = useTransactionPolling(
+  const { data: transactionData } = trpcReact.getTransaction.useQuery({
     accountName,
     transactionHash,
-  );
+  });
 
   if (!accountData) {
     return null;
@@ -56,12 +55,9 @@ function SingleTransactionContent({
           label: formatMessage(messages.backToAccountOverview),
         }}
       >
-        <HStack mb={8} gap={4}>
-          <Heading>{accountName}</Heading>
-          <CopyAddress
-            address={accountData.address}
-            transform="translateY(0.4em)"
-          />
+        <HStack alignItems="baseline" mb={8} gap={4}>
+          <Heading fontSize="28px">{accountName}</Heading>
+          <CopyAddress address={accountData.address} />
         </HStack>
         <Skeleton height={600} />
       </MainLayout>
@@ -95,12 +91,9 @@ function SingleTransactionContent({
         label: formatMessage(messages.backToAccountOverview),
       }}
     >
-      <HStack mb={8} gap={4}>
-        <Heading>{accountName}</Heading>
-        <CopyAddress
-          address={accountData.address}
-          transform="translateY(0.4em)"
-        />
+      <HStack alignItems="baseline" mb={8} gap={4}>
+        <Heading fontSize="28px">{accountName}</Heading>
+        <CopyAddress address={accountData.address} />
       </HStack>
       {transactionData.chainportData &&
         transactionData.transaction.type === "send" && (
