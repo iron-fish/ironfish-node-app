@@ -14,6 +14,7 @@ import { COLORS } from "@/ui/colors";
 import { ShadowCard } from "@/ui/ShadowCard/ShadowCard";
 import { CurrencyUtils } from "@/utils/currency";
 import { formatDate } from "@/utils/formatDate";
+import { refetchTransactionUntilTerminal } from "@/utils/transactionUtils";
 
 import { BridgeIcon } from "./icons/BridgeIcon";
 import { ChangeIcon } from "./icons/ChangeIcon";
@@ -138,13 +139,7 @@ export function NoteRow({
   trpcReact.getTransaction.useQuery(
     { accountName, transactionHash },
     {
-      refetchInterval: (query) => {
-        const txStatus = query?.transaction.status || initialStatus;
-        const isTerminalStatus =
-          txStatus === "confirmed" || txStatus === "expired";
-
-        return !isTerminalStatus ? 5000 : false;
-      },
+      refetchInterval: refetchTransactionUntilTerminal,
       onSuccess: (data) => {
         if (data.transaction.status !== status) {
           setStatus(data.transaction.status);
