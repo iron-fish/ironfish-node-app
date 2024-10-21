@@ -137,6 +137,9 @@ export const Combobox = forwardRef<HTMLInputElement, Props>(function Combobox(
               type="button"
               display="block"
               w="100%"
+              background={
+                option.value === value ? COLORS.GRAY_LIGHT : "transparent"
+              }
               textAlign="left"
               onMouseDown={(e) => {
                 e.preventDefault();
