@@ -18,7 +18,7 @@ export function BridgeAssetsFormShell({
   assetAmountInput,
   bridgeProviderInput,
   destinationNetworkInput,
-  targetAddressInput,
+  destinationAddressInput,
   topLevelErrorMessage,
 }: {
   status?: "LOADING";
@@ -26,7 +26,7 @@ export function BridgeAssetsFormShell({
   assetAmountInput: ReactNode;
   bridgeProviderInput: ReactNode;
   destinationNetworkInput: ReactNode;
-  targetAddressInput: ReactNode;
+  destinationAddressInput: ReactNode;
   topLevelErrorMessage?: string;
 }) {
   const { formatMessage } = useIntl();
@@ -86,7 +86,7 @@ export function BridgeAssetsFormShell({
             }}
           >
             <HStack>{destinationNetworkInput}</HStack>
-            <Box>{targetAddressInput}</Box>
+            <Box>{destinationAddressInput}</Box>
           </VStack>
         </VStack>
       </VStack>

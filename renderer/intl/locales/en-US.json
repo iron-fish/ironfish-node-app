@@ -26,6 +26,9 @@
   "/km2Zu": {
     "message": "Import Account"
   },
+  "/nrkEG": {
+    "message": "The fee for transacting on the destination network"
+  },
   "/tbC+S": {
     "description": "Button to export account in the specified format",
     "message": "Export Account"
@@ -68,9 +71,6 @@
   },
   "2qzbcD": {
     "message": "Min Peers"
-  },
-  "3+EYHL": {
-    "message": "Target Network"
   },
   "3/a0Ho": {
     "message": "We're not able to download release notes right now."
@@ -168,6 +168,9 @@
   "7N6OYQ": {
     "message": "View Transaction"
   },
+  "7Qw9T7": {
+    "message": "Destination Network"
+  },
   "8GvVWZ": {
     "message": "Something went wrong, please try again."
   },
@@ -248,9 +251,6 @@
   },
   "D5NqQO": {
     "message": "Memo"
-  },
-  "DOMotB": {
-    "message": "Target Address"
   },
   "Dh1MGS": {
     "message": "Account Syncing"
@@ -858,9 +858,6 @@
   },
   "rqrhXg": {
     "message": "Confirm Your Recovery Phrase"
-  },
-  "ru6717": {
-    "message": "The fee for transacting on the target network"
   },
   "sXlL42": {
     "message": "Encrypted Wallets Unsupported"
