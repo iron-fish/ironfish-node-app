@@ -5,6 +5,7 @@ import { Virtuoso } from "react-virtuoso";
 import { NoteHeadings } from "@/components/NoteRow/NoteHeadings";
 import { NoteRow } from "@/components/NoteRow/NoteRow";
 import { useScrollElementContext } from "@/layouts/MainLayout";
+import { trpcReact } from "@/providers/TRPCProvider";
 
 import { TransactionNote } from "../../../shared/types";
 import { EmptyStateMessage } from "../EmptyStateMessage/EmptyStateMessage";
@@ -45,6 +46,8 @@ export function NotesList({
   onEndReached,
 }: Props) {
   const { formatMessage } = useIntl();
+  const { data: contacts, isLoading: isContactsLoading } =
+    trpcReact.getContacts.useQuery();
   const customScrollElement = useScrollElementContext();
 
   if (isError) {
@@ -67,14 +70,16 @@ export function NotesList({
     );
   }
 
+  const isNotesListLoading = isLoading || isContactsLoading;
+
   return (
     <Box>
       <Heading as="h2" fontSize="2xl" mb={8}>
         {heading}
       </Heading>
       <NoteHeadings asTransactions={asTransactions} />
-      {isLoading && <Skeleton height="600px" />}
-      {!isLoading && customScrollElement && (
+      {isNotesListLoading && <Skeleton height="600px" />}
+      {!isNotesListLoading && customScrollElement && (
         <Virtuoso
           customScrollParent={customScrollElement}
           data={notes}
@@ -87,6 +92,11 @@ export function NotesList({
                 assetId={note.assetId}
                 value={note.value}
                 timestamp={note.timestamp}
+                contact={contacts?.find((contact) => {
+                  return note.type === "send"
+                    ? contact.address === note.to
+                    : contact.address === note.from;
+                })}
                 from={note.from}
                 to={note.to}
                 transactionHash={note.transactionHash}
