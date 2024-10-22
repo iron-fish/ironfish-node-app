@@ -258,6 +258,13 @@ export function SendAssetsFormContent({
     return [...(contacts ?? []), ...(accounts ?? [])];
   }, [contactsData, allAccountsData]);
 
+  const accountNameInAddressBook = useMemo(() => {
+    const fullContact = formattedContacts.find(
+      (contact) => contact.value === toAccountValue,
+    );
+    return fullContact?.label.main;
+  }, [formattedContacts, toAccountValue]);
+
   return (
     <>
       {syncingMessage}
@@ -312,7 +319,9 @@ export function SendAssetsFormContent({
 
           <Combobox
             {...register("toAccount")}
-            label={formatMessage(messages.toLabel)}
+            label={`${formatMessage(messages.toLabel)}${
+              accountNameInAddressBook ? ": " + accountNameInAddressBook : ""
+            }`}
             error={errors.toAccount?.message}
             options={formattedContacts}
             value={toAccountValue}
