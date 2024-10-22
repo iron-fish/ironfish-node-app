@@ -8,6 +8,7 @@ import type {
 import { ReactNode, useMemo } from "react";
 import { MessageDescriptor, useIntl } from "react-intl";
 
+import { TRPCRouterOutputs } from "@/providers/TRPCProvider";
 import { MaybeLink } from "@/ui/ChakraLink/ChakraLink";
 import { COLORS } from "@/ui/colors";
 import { ShadowCard } from "@/ui/ShadowCard/ShadowCard";
@@ -77,10 +78,12 @@ function NoteTo({
   to,
   from,
   type,
+  contact,
 }: {
   to: string | string[];
   from: string;
   type: TransactionType;
+  contact?: TRPCRouterOutputs["getContacts"][number] | undefined;
 }) {
   const { formatMessage } = useIntl();
 
@@ -93,6 +96,7 @@ function NoteTo({
       color={COLORS.BLACK}
       _dark={{ color: COLORS.WHITE }}
       address={type === "send" ? to : from}
+      addressLabel={contact?.name}
     />
   );
 }
@@ -111,6 +115,7 @@ export function NoteRow({
   transactionHash,
   asTransaction = false,
   isBridge = false,
+  contact,
 }: {
   accountName: string;
   asset?: RpcAsset;
@@ -123,6 +128,7 @@ export function NoteRow({
   status: TransactionStatus;
   memo: string | string[];
   transactionHash: string;
+  contact?: TRPCRouterOutputs["getContacts"][number] | undefined;
   /**
    * Render the row as if it were a transaction (link it to the transaction details page,
    * show the status as the transaction's status)
@@ -160,7 +166,7 @@ export function NoteRow({
         {`${majorString} ${symbol}`}
       </Text>,
       <Text as="span" key={key++}>
-        <NoteTo to={to} from={from} type={type} />
+        <NoteTo to={to} from={from} type={type} contact={contact} />
       </Text>,
       <Text as="span" key={key++}>
         {formatDate(timestamp)}
