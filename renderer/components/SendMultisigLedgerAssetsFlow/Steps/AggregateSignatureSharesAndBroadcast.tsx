@@ -15,6 +15,7 @@ export function AggregateSignatureShares({
 }) {
   const {
     mutate: aggregateSignatureShares,
+    data,
     isIdle,
     isLoading,
     isError,
@@ -44,26 +45,29 @@ export function AggregateSignatureShares({
   } else if (isSuccess) {
     return (
       <Box>
-        <h1>Transaction Approved!</h1>
+        Transaction submitted successfully!
         <PillButton
-          size="sm"
+          mt={8}
+          height="60px"
+          px={8}
           onClick={() => {
-            router.push(`/accounts/${selectedAccount}`);
+            router.push(
+              `/accounts/${selectedAccount}/transaction/${data.txHash}`,
+            );
           }}
         >
-          {"View Account Transactions"}
+          {"View Transaction"}
         </PillButton>
       </Box>
     );
   } else if (isError) {
     return (
-      <div>
-        <h1>Error</h1>
-        <p>{error.message}</p>
+      <Box>
+        {`Error: ${error.message}`}
         <PillButton mt={8} height="60px" px={8} onClick={reset}>
           Retry
         </PillButton>
-      </div>
+      </Box>
     );
   } else if (isLoading) {
     return (

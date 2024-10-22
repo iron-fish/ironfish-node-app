@@ -26,6 +26,9 @@
   "/km2Zu": {
     "message": "Import Account"
   },
+  "/nrkEG": {
+    "message": "The fee for transacting on the destination network"
+  },
   "/tbC+S": {
     "description": "Button to export account in the specified format",
     "message": "Export Account"
@@ -72,9 +75,6 @@
   "2qzbcD": {
     "message": "Min Peers"
   },
-  "3+EYHL": {
-    "message": "Target Network"
-  },
   "3/a0Ho": {
     "message": "We're not able to download release notes right now."
   },
@@ -98,6 +98,9 @@
   },
   "3vA/R+": {
     "message": "Memo can't be more than 32 bytes"
+  },
+  "3v74IM": {
+    "message": "By bridging your assets, you agree to Chainport's <link>terms of service</link>."
   },
   "47FYwb": {
     "message": "Cancel"
@@ -159,6 +162,9 @@
   "6q3tCn": {
     "message": "Connecting"
   },
+  "6ugwQB": {
+    "message": "Receiving (Estimated)"
+  },
   "7/GPHF": {
     "message": "Iron Fish transaction fee"
   },
@@ -170,6 +176,9 @@
   },
   "7N6OYQ": {
     "message": "View Transaction"
+  },
+  "7Qw9T7": {
+    "message": "Destination Network"
   },
   "8GvVWZ": {
     "message": "Something went wrong, please try again."
@@ -254,9 +263,6 @@
   },
   "D5NqQO": {
     "message": "Memo"
-  },
-  "DOMotB": {
-    "message": "Target Address"
   },
   "Dh1MGS": {
     "message": "Account Syncing"
@@ -352,6 +358,9 @@
     "description": "Change as in the money that is returned to the sender after a transaction",
     "message": "Change"
   },
+  "KIbwgQ": {
+    "message": "Sending amount minus the bridge fee. This is an estimate, and you may receive a slightly different amount."
+  },
   "KJMlfb": {
     "message": "Destination network"
   },
@@ -421,9 +430,6 @@
   "NRzTJh": {
     "message": "Connect Ledger"
   },
-  "NSs9IW": {
-    "message": "Get the signing package from the coordinator and sign the transaction."
-  },
   "NTPwsP": {
     "message": "Feature flags allow you to enable or disable experimental features. These features are not fully tested and may not work as expected."
   },
@@ -442,14 +448,8 @@
   "O62iwU": {
     "message": "Unsigned Transaction"
   },
-  "OAm3TT": {
-    "message": "Put an explantaion here"
-  },
   "OC6jXV": {
     "message": "Transaction Expiration Delta"
-  },
-  "OEEl0G": {
-    "message": "Receiving"
   },
   "OfA95/": {
     "message": "Selected file: {fileName}"
@@ -471,9 +471,6 @@
   },
   "Pe0ogR": {
     "message": "Theme"
-  },
-  "PiWxd9": {
-    "message": "Multisig Transaction"
   },
   "Pq25uf": {
     "message": "Reset Node"
@@ -583,9 +580,6 @@
   "VBDJ/l": {
     "message": "Your balance might not be accurate while you're syncing"
   },
-  "VVlAZ6": {
-    "message": "From Account"
-  },
   "VqP8r/": {
     "message": "Memo:"
   },
@@ -624,6 +618,9 @@
   },
   "Xvk80E": {
     "message": "Please enter a name for this account"
+  },
+  "Y0TjmL": {
+    "message": "A network error occurred, please try again"
   },
   "YDkqMJ": {
     "message": "Incoming"
@@ -672,9 +669,6 @@
   },
   "bu6hO1": {
     "message": "Unlock your Ledger"
-  },
-  "c/8gQC": {
-    "message": "Signing Package"
   },
   "c/KktL": {
     "message": "Resources"
@@ -934,9 +928,6 @@
   "uT4OlP": {
     "message": "Fee"
   },
-  "uuDgUP": {
-    "message": "An error occured"
-  },
   "vEiG+a": {
     "message": "Gas fee"
   },
@@ -964,14 +955,8 @@
   "wsALI4": {
     "message": "Enter Encoded Key"
   },
-  "xOBoiD": {
-    "message": "Plug your ledger device directly into your computer"
-  },
   "xP64Lw": {
     "message": "Address Book"
-  },
-  "xfoZ0Z": {
-    "message": "Coordinators are responsible for gathering and combining all signatures and other information from participants. Participants sign the transaction and send their signatures and other data to the coordinator."
   },
   "xkLxAx": {
     "message": "Account Created"
@@ -996,12 +981,6 @@
   },
   "yNVIfV": {
     "message": "Submit Transaction"
-  },
-  "yPUogf": {
-    "message": "Select Role"
-  },
-  "yWnTVQ": {
-    "message": "Send the signing package to all of the participants so they can sign the transaction."
   },
   "yjpdGo": {
     "message": "You don't have any contacts"

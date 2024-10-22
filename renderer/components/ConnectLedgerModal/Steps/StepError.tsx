@@ -7,7 +7,7 @@ import errorImage from "./assets/error.svg";
 
 const messages = defineMessages({
   heading: {
-    defaultMessage: "An error occured",
+    defaultMessage: "An error occurred",
   },
 });
 

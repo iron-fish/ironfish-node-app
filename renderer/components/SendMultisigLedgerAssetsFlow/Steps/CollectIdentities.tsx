@@ -78,13 +78,12 @@ export function CollectIdentities({
     );
   } else if (isError) {
     return (
-      <div>
-        <h1>Error</h1>
-        <p>{error.message}</p>
+      <Box>
+        {`Error: ${error.message}`}
         <PillButton mt={8} height="60px" px={8} onClick={reset}>
           Retry
         </PillButton>
-      </div>
+      </Box>
     );
   } else if (isLoading) {
     return (
