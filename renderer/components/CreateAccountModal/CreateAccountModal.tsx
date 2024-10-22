@@ -128,6 +128,13 @@ export function CreateAccountModal({
                   label={formatMessage(messages.accountName)}
                   error={errors.name?.message}
                   isDisabled={isLoading}
+                  onKeyDown={(event) => {
+                    if (event.key === "Enter") {
+                      handleSubmit((values) => {
+                        createAccount(values);
+                      })();
+                    }
+                  }}
                 />
               </VStack>
 
