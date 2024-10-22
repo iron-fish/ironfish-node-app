@@ -55,12 +55,9 @@ function SingleTransactionContent({
           label: formatMessage(messages.backToAccountOverview),
         }}
       >
-        <HStack mb={8} gap={4}>
-          <Heading>{accountName}</Heading>
-          <CopyAddress
-            address={accountData.address}
-            transform="translateY(0.4em)"
-          />
+        <HStack alignItems="baseline" mb={8} gap={4}>
+          <Heading fontSize="28px">{accountName}</Heading>
+          <CopyAddress address={accountData.address} />
         </HStack>
         <Skeleton height={600} />
       </MainLayout>
@@ -94,12 +91,9 @@ function SingleTransactionContent({
         label: formatMessage(messages.backToAccountOverview),
       }}
     >
-      <HStack mb={8} gap={4}>
-        <Heading>{accountName}</Heading>
-        <CopyAddress
-          address={accountData.address}
-          transform="translateY(0.4em)"
-        />
+      <HStack alignItems="baseline" mb={8} gap={4}>
+        <Heading fontSize="28px">{accountName}</Heading>
+        <CopyAddress address={accountData.address} />
       </HStack>
       {transactionData.chainportData &&
         transactionData.transaction.type === "send" && (
