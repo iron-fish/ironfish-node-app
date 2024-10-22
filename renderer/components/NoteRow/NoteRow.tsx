@@ -5,14 +5,16 @@ import type {
   TransactionStatus,
   TransactionType,
 } from "@ironfish/sdk";
-import { ReactNode, useMemo } from "react";
+import { ReactNode, useMemo, useState } from "react";
 import { MessageDescriptor, useIntl } from "react-intl";
 
+import { trpcReact } from "@/providers/TRPCProvider";
 import { MaybeLink } from "@/ui/ChakraLink/ChakraLink";
 import { COLORS } from "@/ui/colors";
 import { ShadowCard } from "@/ui/ShadowCard/ShadowCard";
 import { CurrencyUtils } from "@/utils/currency";
 import { formatDate } from "@/utils/formatDate";
+import { refetchTransactionUntilTerminal } from "@/utils/transactionUtils";
 
 import { BridgeIcon } from "./icons/BridgeIcon";
 import { ChangeIcon } from "./icons/ChangeIcon";
@@ -106,7 +108,7 @@ export function NoteRow({
   from,
   to,
   type,
-  status,
+  status: initialStatus,
   memo,
   transactionHash,
   asTransaction = false,
@@ -131,6 +133,20 @@ export function NoteRow({
   isBridge?: boolean;
 }) {
   const { formatMessage } = useIntl();
+  const [status, setStatus] = useState(initialStatus);
+
+  // Poll Transaction if it is a non-terminal status
+  trpcReact.getTransaction.useQuery(
+    { accountName, transactionHash },
+    {
+      refetchInterval: refetchTransactionUntilTerminal,
+      onSuccess: (data) => {
+        if (data.transaction.status !== status) {
+          setStatus(data.transaction.status);
+        }
+      },
+    },
+  );
 
   const statusDisplay = getNoteStatusDisplay(
     type,

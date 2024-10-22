@@ -10,6 +10,7 @@ import { TransactionInformation } from "@/components/TransactionInformation/Tran
 import MainLayout from "@/layouts/MainLayout";
 import { trpcReact } from "@/providers/TRPCProvider";
 import { asQueryString } from "@/utils/parseRouteQuery";
+import { refetchTransactionUntilTerminal } from "@/utils/transactionUtils";
 
 const messages = defineMessages({
   backToAccountOverview: {
@@ -38,10 +39,15 @@ function SingleTransactionContent({
     name: accountName,
   });
 
-  const { data: transactionData } = trpcReact.getTransaction.useQuery({
-    accountName,
-    transactionHash,
-  });
+  const { data: transactionData } = trpcReact.getTransaction.useQuery(
+    {
+      accountName,
+      transactionHash,
+    },
+    {
+      refetchInterval: refetchTransactionUntilTerminal,
+    },
+  );
 
   if (!accountData) {
     return null;
