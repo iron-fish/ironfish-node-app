@@ -4,6 +4,7 @@ import { AccountFormat, encodeAccountImport } from "@ironfish/sdk";
 import { z } from "zod";
 
 import {
+  LedgerActionRejected,
   LedgerAppNotOpen,
   LedgerClaNotSupportedError,
   LedgerConnectError,
@@ -167,40 +168,48 @@ class LedgerManager {
     fee,
     memo,
   }: z.infer<typeof handleSendTransactionInput>) => {
-    const unsignedTransaction = await createUnsignedTransaction({
-      fromAccount,
-      toAccount,
-      assetId,
-      amount,
-      fee,
-      memo,
-    });
+    try {
+      const unsignedTransaction = await createUnsignedTransaction({
+        fromAccount,
+        toAccount,
+        assetId,
+        amount,
+        fee,
+        memo,
+      });
 
-    const signature = await this.taskQueue.enqueue(async () => {
-      this.signTransactionPromise =
-        this.ledgerSingleSigner.sign(unsignedTransaction);
+      const signature = await this.taskQueue.enqueue(async () => {
+        this.signTransactionPromise =
+          this.ledgerSingleSigner.sign(unsignedTransaction);
 
-      return this.signTransactionPromise;
-    });
+        return this.signTransactionPromise;
+      });
 
-    if (!this.signTransactionPromise) {
-      return null;
+      if (!this.signTransactionPromise) {
+        return null;
+      }
+
+      const ironfish = await manager.getIronfish();
+      const rpcClient = await ironfish.rpcClient();
+
+      const addSignatureResponse = await rpcClient.wallet.addSignature({
+        unsignedTransaction,
+        signature: signature.toString("hex"),
+      });
+
+      const addTransactionResponse = await rpcClient.wallet.addTransaction({
+        transaction: addSignatureResponse.content.transaction,
+        broadcast: true,
+      });
+
+      return addTransactionResponse.content;
+    } catch (err) {
+      if (err instanceof LedgerActionRejected) {
+        throw new Error("TRANSACTION_REJECTED");
+      }
+
+      throw err;
     }
-
-    const ironfish = await manager.getIronfish();
-    const rpcClient = await ironfish.rpcClient();
-
-    const addSignatureResponse = await rpcClient.wallet.addSignature({
-      unsignedTransaction,
-      signature: signature.toString("hex"),
-    });
-
-    const addTransactionResponse = await rpcClient.wallet.addTransaction({
-      transaction: addSignatureResponse.content.transaction,
-      broadcast: true,
-    });
-
-    return addTransactionResponse.content;
   };
 
   cancelTransaction() {

@@ -14,6 +14,7 @@ import { PillButton } from "@/ui/PillButton/PillButton";
 
 import { StepConfirm } from "./Steps/StepConfirm";
 import { StepConnect } from "./Steps/StepConnect";
+import { TransactionRejected } from "./Steps/TransactionRejected";
 import { ReviewTransaction } from "../SharedConfirmSteps/ReviewTransaction";
 import { SubmissionError } from "../SharedConfirmSteps/SubmissionError";
 import { TransactionSubmitted } from "../SharedConfirmSteps/TransactionSubmitted";
@@ -202,17 +203,31 @@ export function ConfirmLedgerModal({
             handleClose={handleClose}
           />
         )}
-        {step === "SUBMISSION_ERROR" && (
-          <SubmissionError
-            errorMessage={error?.message ?? ""}
-            isLoading={isLoading}
-            handleClose={handleClose}
-            handleSubmit={() => {
-              submitTransaction(transactionData);
-              setStep("CONFIRM_TRANSACTION");
-            }}
-          />
-        )}
+
+        {step === "SUBMISSION_ERROR" &&
+          error?.message === "TRANSACTION_REJECTED" && (
+            <TransactionRejected
+              isLoading={isLoading}
+              handleClose={handleClose}
+              handleSubmit={() => {
+                submitTransaction(transactionData);
+                setStep("CONFIRM_TRANSACTION");
+              }}
+            />
+          )}
+
+        {step === "SUBMISSION_ERROR" &&
+          error?.message !== "TRANSACTION_REJECTED" && (
+            <SubmissionError
+              errorMessage={error?.message ?? ""}
+              isLoading={isLoading}
+              handleClose={handleClose}
+              handleSubmit={() => {
+                submitTransaction(transactionData);
+                setStep("CONFIRM_TRANSACTION");
+              }}
+            />
+          )}
       </ModalContent>
     </Modal>
   );
