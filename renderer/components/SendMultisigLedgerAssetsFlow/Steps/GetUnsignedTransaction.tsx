@@ -13,7 +13,7 @@ import { defineMessages, useIntl } from "react-intl";
 
 import octopus from "@/images/octopus.svg";
 import { WithExplanatorySidebar } from "@/layouts/WithExplanatorySidebar";
-import { trpcReact } from "@/providers/TRPCProvider";
+import { trpcReact, TRPCRouterOutputs } from "@/providers/TRPCProvider";
 import { Select } from "@/ui/Forms/Select/Select";
 import { TextareaInput } from "@/ui/Forms/TextareaInput/TextareaInput";
 import { PillButton } from "@/ui/PillButton/PillButton";
@@ -122,11 +122,33 @@ function InputUnsignedTransaction({
   onSubmit: (unsignedTransaction: string, selectedAccount: string) => void;
 }) {
   const accounts = trpcReact.getMultisigLedgerAccounts.useQuery();
-  const accountsData = accounts.data;
 
+  if (accounts.isLoading) {
+    return "Loading Accounts...";
+  }
+
+  if (accounts.isError) {
+    return `Error loading accounts ${accounts.error.message}`;
+  }
+
+  return (
+    <InputUnsignedTransactionWithAccounts
+      onSubmit={onSubmit}
+      accountsData={accounts.data}
+    />
+  );
+}
+
+function InputUnsignedTransactionWithAccounts({
+  onSubmit,
+  accountsData,
+}: {
+  onSubmit: (unsignedTransaction: string, selectedAccount: string) => void;
+  accountsData: TRPCRouterOutputs["getMultisigLedgerAccounts"];
+}) {
   const [unsignedTransaction, setUnsignedTransaction] = useState("");
   const [selectedAccount, setSelectedAccount] = useState<string | null>(
-    accounts.data?.[0]?.name ?? null,
+    accountsData[0]?.name ?? null,
   );
 
   const accountOptions = useMemo(() => {
