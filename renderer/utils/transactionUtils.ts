@@ -2,7 +2,7 @@ import type { TransactionStatus } from "@ironfish/sdk";
 
 import { TRPCRouterOutputs } from "@/providers/TRPCProvider";
 
-const isTransactionTerminal = (status: TransactionStatus) => {
+export const isTransactionStatusTerminal = (status: TransactionStatus) => {
   return status === "confirmed" || status === "expired";
 };
 
@@ -13,7 +13,7 @@ export const refetchTransactionUntilTerminal = (
     return 5000;
   }
   const txStatus = query.transaction.status;
-  const isTerminalStatus = isTransactionTerminal(txStatus);
+  const isTerminalStatus = isTransactionStatusTerminal(txStatus);
 
   return !isTerminalStatus ? 5000 : false;
 };
