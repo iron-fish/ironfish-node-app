@@ -70,14 +70,8 @@ export function CollectIdentities({
           px={8}
           onClick={() => {
             // Trim whitespace from all identities
-            const allIdentities = otherIdentities.reduce(
-              (acc, identity) => {
-                if (identity) {
-                  acc.push(identity.trim());
-                }
-                return acc;
-              },
-              [myIdentity],
+            const allIdentities = [myIdentity, ...otherIdentities].map(
+              (identity) => identity.trim(),
             );
             onSubmit(allIdentities);
           }}
