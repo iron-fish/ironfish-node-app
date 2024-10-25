@@ -149,11 +149,6 @@ function Sidebar() {
             return null;
           }
 
-          // The multisig Ledger tab is only visible if the flag is enabled
-          if (id === "multisigLedger" && !flags.multisigLedgerSupport.enabled) {
-            return null;
-          }
-
           const isActive = router.pathname.startsWith(href);
           return (
             <ChakraLink
