@@ -324,6 +324,9 @@
   "JM4YI+": {
     "message": "Are you sure you want to remove this account?"
   },
+  "Jhtmlc": {
+    "message": "The transaction has been rejected from your Ledger device. Please try again if you'd like to continue."
+  },
   "Jjpq7w": {
     "message": "Block Sequence"
   },
@@ -338,6 +341,9 @@
   },
   "K3r6DQ": {
     "message": "Delete"
+  },
+  "K6NOTC": {
+    "message": "Transaction Rejected"
   },
   "KBiJ4L": {
     "message": "To proceed with connecting your account to the Iron Fish Node app, please approve the request on your Ledger device."
