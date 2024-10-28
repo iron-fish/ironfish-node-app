@@ -69,7 +69,11 @@ export function CollectIdentities({
           height="60px"
           px={8}
           onClick={() => {
-            onSubmit([myIdentity, ...otherIdentities]);
+            // Trim whitespace from all identities
+            const allIdentities = [myIdentity, ...otherIdentities].map(
+              (identity) => identity.trim(),
+            );
+            onSubmit(allIdentities);
           }}
         >
           Next

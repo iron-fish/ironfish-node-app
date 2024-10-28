@@ -45,9 +45,18 @@ export function ReceiveAccountsContent({
     return accountsData?.map((account) => {
       return {
         label: account.name,
-        value: account.address,
+        value: account.name,
       };
     });
+  }, [accountsData]);
+  const addressLookup = useMemo(() => {
+    return accountsData?.reduce(
+      (acc, account) => {
+        acc[account.name] = account.address;
+        return acc;
+      },
+      {} as Record<string, string>,
+    );
   }, [accountsData]);
 
   const defaultAccount = useMemo(() => {
@@ -73,7 +82,7 @@ export function ReceiveAccountsContent({
     },
   });
 
-  const addressValue = watch("account");
+  const selectedAccount = watch("account");
 
   return (
     <MainLayout>
@@ -92,12 +101,12 @@ export function ReceiveAccountsContent({
           <VStack alignItems="stretch" gap={4}>
             <Select
               {...register("account")}
-              value={addressValue}
+              value={selectedAccount}
               label={formatMessage(messages.fromLabel)}
               options={accountOptions}
               error={errors.account?.message}
             />
-            <AccountAddressDisplay address={addressValue} />
+            <AccountAddressDisplay address={addressLookup[selectedAccount]} />
           </VStack>
         )}
       </WithExplanatorySidebar>
