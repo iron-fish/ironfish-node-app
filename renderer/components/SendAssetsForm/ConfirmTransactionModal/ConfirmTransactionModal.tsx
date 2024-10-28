@@ -25,6 +25,9 @@ const messages = defineMessages({
   submittingTransaction: {
     defaultMessage: "Submitting Transaction",
   },
+  transactionError: {
+    defaultMessage: "Something went wrong with your transaction, please retry.",
+  },
 });
 
 type Props = {
@@ -53,8 +56,9 @@ export function ConfirmTransactionModal({
     error,
   } = trpcReact.sendTransaction.useMutation();
 
-  const { watch, handleSubmit } = useFormContext<TransactionFormData>();
-  const transactionData = watch();
+  const { watch, handleSubmit, setError } =
+    useFormContext<TransactionFormData>();
+  const transactionFormData = watch();
 
   const { formatMessage } = useIntl();
 
@@ -63,14 +67,21 @@ export function ConfirmTransactionModal({
     onCancel();
   }, [onCancel, reset]);
 
-  const processForm = useCallback(() => {
+  const processForm = useCallback(async () => {
     const { normalizedTransactionData, errors } = normalizeTransactionData(
-      transactionData,
+      transactionFormData,
       estimatedFeesData,
       selectedAsset,
     );
-    sendTransaction(normalizedTransactionData);
-  }, [sendTransaction, transactionData, estimatedFeesData, selectedAsset]);
+    if (errors) {
+      setError("root.serverError", {
+        message: errors?.message || formatMessage(messages.transactionError),
+      });
+    }
+    if (normalizedTransactionData) {
+      sendTransaction(normalizedTransactionData);
+    }
+  }, [sendTransaction, transactionFormData, estimatedFeesData, selectedAsset]);
 
   return (
     <Modal isOpen={isOpen} onClose={handleClose}>

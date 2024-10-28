@@ -1,19 +1,24 @@
 import { Modal, ModalOverlay, ModalContent } from "@chakra-ui/react";
 import { useCallback, useEffect, useState } from "react";
 import { useFormContext } from "react-hook-form";
+import { defineMessages, useIntl } from "react-intl";
 
 import { AssetOptionType } from "@/components/AssetAmountInput/utils";
 import { trpcReact, TRPCRouterOutputs } from "@/providers/TRPCProvider";
-import { CurrencyUtils } from "@/utils/currency";
-import { parseIron } from "@/utils/ironUtils";
+import { normalizeTransactionData } from "@/utils/transactionUtils";
 
 import { StepConfirm } from "./Steps/StepConfirm";
 import { StepConnect } from "./Steps/StepConnect";
 import { ReviewTransaction } from "../SharedConfirmSteps/ReviewTransaction";
 import { SubmissionError } from "../SharedConfirmSteps/SubmissionError";
 import { TransactionSubmitted } from "../SharedConfirmSteps/TransactionSubmitted";
-import { TransactionData, TransactionFormData } from "../transactionSchema";
-import { normalizeTransactionData } from "@/utils/transactionUtils";
+import { TransactionFormData } from "../transactionSchema";
+
+const messages = defineMessages({
+  transactionError: {
+    defaultMessage: "Something went wrong with your transaction, please retry.",
+  },
+});
 
 type LedgerStatus = {
   isLedgerConnected: boolean;
@@ -39,6 +44,7 @@ export function ConfirmLedgerModal({
   estimatedFeesData,
 }: Props) {
   const { watch } = useFormContext<TransactionFormData>();
+  const { formatMessage } = useIntl();
   const transactionData = watch();
 
   const [
@@ -53,6 +59,7 @@ export function ConfirmLedgerModal({
   }));
 
   const [_statusError, setStatusError] = useState("");
+  const { setError } = useFormContext();
 
   const [step, setStep] = useState<
     | "IDLE"
@@ -73,7 +80,7 @@ export function ConfirmLedgerModal({
 
   useEffect(() => {
     if (
-      !["CONNECT_LEDGER", "ERROR"].includes(step) &&
+      !["CONNECT_LEDGER", "ERROR", "IDLE"].includes(step) &&
       (!isLedgerConnected || !isLedgerUnlocked || !isIronfishAppOpen)
     ) {
       setStep("CONNECT_LEDGER");
@@ -108,21 +115,28 @@ export function ConfirmLedgerModal({
   }, [isLedgerConnected, isLedgerUnlocked, isIronfishAppOpen, step]);
 
   const handleSubmitTransaction = useCallback(() => {
-    const result = normalizeTransactionData(
+    const { normalizedTransactionData, errors } = normalizeTransactionData(
       transactionData,
       estimatedFeesData,
       selectedAsset,
     );
-    if (result && !result.errors.message) {
-      submitTransaction(result.normalizedTransactionData);
+
+    if (normalizedTransactionData) {
+      submitTransaction(normalizedTransactionData);
       setStep("CONFIRM_TRANSACTION");
-    } else {
-      // Handle error case, e.g., show an error message
-      console.error(
-        result?.errors.message || "Failed to normalize transaction data",
-      );
+    } else if (errors) {
+      setError("root.serverError", {
+        message: errors?.message || formatMessage(messages.transactionError),
+      });
+      setStep("IDLE");
     }
-  }, [transactionData, estimatedFeesData, selectedAsset, submitTransaction]);
+  }, [
+    transactionData,
+    estimatedFeesData,
+    selectedAsset,
+    submitTransaction,
+    setError,
+  ]);
 
   const handleClose = useCallback(() => {
     if (step === "CONFIRM_TRANSACTION") {
@@ -132,49 +146,51 @@ export function ConfirmLedgerModal({
     onCancel();
   }, [onCancel, reset, step, cancelTransaction]);
 
+  const stepMap = {
+    IDLE: (
+      <ReviewTransaction
+        selectedAccount={selectedAccount}
+        selectedAsset={selectedAsset}
+        estimatedFeesData={estimatedFeesData}
+        onClose={handleClose}
+        onSubmit={() => {
+          setStep("CONNECT_LEDGER");
+        }}
+      />
+    ),
+    CONNECT_LEDGER: (
+      <StepConnect
+        isLedgerConnected={isLedgerConnected}
+        isLedgerUnlocked={isLedgerUnlocked}
+        isIronfishAppOpen={isIronfishAppOpen}
+        onCancel={handleClose}
+        onContinue={handleSubmitTransaction}
+        isLoading={isLoading}
+      />
+    ),
+    CONFIRM_TRANSACTION: <StepConfirm onCancel={handleClose} />,
+    TRANSACTION_SUBMITTED: (
+      <TransactionSubmitted
+        fromAccount={selectedAccount.name}
+        transactionHash={submittedTransactionData?.hash ?? ""}
+        handleClose={handleClose}
+      />
+    ),
+    SUBMISSION_ERROR: (
+      <SubmissionError
+        errorMessage={error?.message ?? ""}
+        isLoading={isLoading}
+        handleClose={handleClose}
+        handleSubmit={handleSubmitTransaction}
+      />
+    ),
+  };
+
   return (
     <Modal isOpen={isOpen} onClose={handleClose}>
       <ModalOverlay />
       <ModalContent maxW="100%" width="600px">
-        {step === "IDLE" && (
-          <ReviewTransaction
-            selectedAccount={selectedAccount}
-            selectedAsset={selectedAsset}
-            estimatedFeesData={estimatedFeesData}
-            onClose={handleClose}
-            onSubmit={() => {
-              setStep("CONNECT_LEDGER");
-            }}
-          />
-        )}
-        {step === "CONNECT_LEDGER" && (
-          <StepConnect
-            isLedgerConnected={isLedgerConnected}
-            isLedgerUnlocked={isLedgerUnlocked}
-            isIronfishAppOpen={isIronfishAppOpen}
-            onCancel={handleClose}
-            onContinue={handleSubmitTransaction}
-            isLoading={isLoading}
-          />
-        )}
-        {step === "CONFIRM_TRANSACTION" && (
-          <StepConfirm onCancel={handleClose} />
-        )}
-        {step === "TRANSACTION_SUBMITTED" && (
-          <TransactionSubmitted
-            fromAccount={selectedAccount.name}
-            transactionHash={submittedTransactionData?.hash ?? ""}
-            handleClose={handleClose}
-          />
-        )}
-        {step === "SUBMISSION_ERROR" && (
-          <SubmissionError
-            errorMessage={error?.message ?? ""}
-            isLoading={isLoading}
-            handleClose={handleClose}
-            handleSubmit={handleSubmitTransaction}
-          />
-        )}
+        {stepMap[step]}
       </ModalContent>
     </Modal>
   );

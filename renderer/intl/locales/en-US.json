@@ -17,6 +17,9 @@
   "/0TOL5": {
     "message": "Amount"
   },
+  "/Vzel6": {
+    "message": "Something went wrong with your transaction, please retry."
+  },
   "/YxWvM": {
     "message": "Sending a multisig transaction starts with creating an unsigned transaction: a fully generated transaction that is only missing the signature. The coordinator should create the unsigned transaction data and send it to you"
   },
@@ -96,11 +99,11 @@
   "3euoRJ": {
     "message": "Recovery Phrase"
   },
-  "3vA/R+": {
-    "message": "Memo can't be more than 32 bytes"
-  },
   "3v74IM": {
     "message": "By bridging your assets, you agree to Chainport's <link>terms of service</link>."
+  },
+  "3vA/R+": {
+    "message": "Memo can't be more than 32 bytes"
   },
   "47FYwb": {
     "message": "Cancel"
@@ -113,6 +116,9 @@
   },
   "4woaDB": {
     "message": "Submitting Transaction"
+  },
+  "4zOJay": {
+    "message": "Something went wrong finalizing your transaction"
   },
   "551bXe": {
     "message": "View Only"
@@ -185,9 +191,6 @@
   },
   "8JwFP/": {
     "message": "Custom account name?"
-  },
-  "8WFqnl": {
-    "message": "Custom fee must be a number greater than 0"
   },
   "8WtyrD": {
     "message": "Spanish"
@@ -676,9 +679,6 @@
   "c6lbIa": {
     "message": "Amount must be greater than 0"
   },
-  "cwqQqt": {
-    "message": "The fee for transacting on the destination chain"
-  },
   "dJMieh": {
     "message": "Connect account"
   },
@@ -690,6 +690,9 @@
   },
   "dTSUUK": {
     "message": "If you remove this account without exporting it first, YOU WILL LOSE ACCESS TO IT."
+  },
+  "e0hVig": {
+    "message": "Fill out the 'To' and 'Amount' fields to see estimated fees."
   },
   "e6HIlS": {
     "message": "Destination Address"
@@ -891,9 +894,6 @@
   },
   "rqrhXg": {
     "message": "Confirm Your Recovery Phrase"
-  },
-  "s3kz6s": {
-    "message": "A network error occured, please try again"
   },
   "sPA8hu": {
     "message": "Amount must be a valid number"

@@ -23,8 +23,7 @@ const messages = defineMessages({
     defaultMessage: "Memo (32 characters max)",
   },
 });
-
-export function MemoInput() {
+const MemoInput = () => {
   const { formatMessage } = useIntl();
   const [showMemoInput, setShowMemoInput] = useState(false);
   const { control, watch } = useFormContext();
@@ -131,4 +130,6 @@ export function MemoInput() {
   };
 
   return <>{renderMemoContent()}</>;
-}
+};
+
+export default MemoInput;

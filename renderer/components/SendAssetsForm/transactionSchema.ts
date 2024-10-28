@@ -1,5 +1,5 @@
-import * as z from "zod";
 import { defineMessages } from "react-intl";
+import * as z from "zod";
 
 import { getTrpcVanillaClient } from "@/providers/TRPCProvider";
 import { sliceToUtf8Bytes } from "@/utils/sliceToUtf8Bytes";
@@ -15,9 +15,6 @@ const messages = defineMessages({
   },
   amountMustBePositive: {
     defaultMessage: "Amount must be greater than 0",
-  },
-  invalidCustomFee: {
-    defaultMessage: "Custom fee must be a number greater than 0",
   },
   memoTooLong: {
     defaultMessage: "Memo can't be more than 32 bytes",
@@ -62,14 +59,7 @@ export const createTransactionSchema = (
         z.literal("fast"),
         z.literal("custom"),
       ]),
-      customFee: z
-        .string()
-        .min(1)
-        .refine((val) => {
-          const num = parseFloat(val);
-          return !isNaN(num) && num > 0;
-        }, formatMessage(messages.invalidCustomFee))
-        .optional(),
+      customFee: z.string().optional(),
       memo: z
         .string()
         .refine(
@@ -80,8 +70,14 @@ export const createTransactionSchema = (
     })
     .refine(
       (data) => {
+        // We only need to check customFee if the fee is custom
+        // Otherwise, the customFee isn't used when creating the transaction
         if (data.fee === "custom") {
-          return data.customFee !== undefined && data.customFee !== "";
+          return (
+            data.customFee !== undefined &&
+            data.customFee !== "" &&
+            Number(data.customFee) > 0
+          );
         }
         return true;
       },
@@ -95,6 +91,6 @@ export type TransactionFormData = z.infer<
   ReturnType<typeof createTransactionSchema>
 >;
 
-export type TransactionData = Omit<TransactionFormData, "fee"> & {
+export type TransactionData = Omit<TransactionFormData, "customFee"> & {
   fee: number | null;
 };

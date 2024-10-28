@@ -1,17 +1,17 @@
-import { useMemo } from "react";
 import { CheckIcon } from "@chakra-ui/icons";
 import {
   Box,
+  Button,
   Flex,
   Grid,
-  Text,
-  Button,
-  IconButton,
   HStack,
+  IconButton,
+  Skeleton,
+  Text,
   VStack,
 } from "@chakra-ui/react";
 import Image from "next/image";
-import React, { useState, KeyboardEvent } from "react";
+import React, { useMemo, useState, KeyboardEvent } from "react";
 import { useFormContext, Controller, useWatch } from "react-hook-form";
 import { defineMessages, useIntl } from "react-intl";
 
@@ -19,13 +19,13 @@ import {
   AssetOptionType,
   normalizeAmountInputChange,
 } from "@/components/AssetAmountInput/utils";
-import { isPositiveInputValue } from "@/utils/transactionUtils";
 import { TRPCRouterOutputs } from "@/providers/TRPCProvider";
 import { COLORS } from "@/ui/colors";
 import { RenderError } from "@/ui/Forms/FormField/FormField";
 import { TextInput } from "@/ui/Forms/TextInput/TextInput";
 import { formatOre, parseIron } from "@/utils/ironUtils";
 import { IRON_DECIMAL_PLACES } from "@shared/constants";
+
 import edit from "../icons/edit.svg";
 
 const messages = defineMessages({
@@ -50,6 +50,10 @@ const messages = defineMessages({
   highFeeWarning: {
     defaultMessage:
       "Your custom fee is significantly higher than the fast fee.",
+  },
+  seeFeesInstructions: {
+    defaultMessage:
+      "Fill out the 'To' and 'Amount' fields to see estimated fees.",
   },
 });
 
@@ -127,22 +131,26 @@ const FeeGridSelector: React.FC<FeeGridSelectorProps> = ({
     formState: { errors },
   } = useFormContext();
   const { formatMessage } = useIntl();
-  const transactionData = useWatch();
+  const transactionFormData = useWatch();
   const fee = useWatch({ control, name: "fee" });
   const customFee = useWatch({ control, name: "customFee" });
 
   const showHighFeeWarning = useMemo(() => {
     if (
-      transactionData.fee !== "custom" ||
-      !transactionData.customFee ||
+      transactionFormData.fee !== "custom" ||
+      !transactionFormData.customFee ||
       !estimatedFeesData
     ) {
       return false;
     }
     const fastFee = estimatedFeesData.fast;
-    const customFeeValue = parseIron(transactionData.customFee);
+    const customFeeValue = parseIron(transactionFormData.customFee);
     return customFeeValue >= fastFee * 5;
-  }, [transactionData.fee, transactionData.customFee, estimatedFeesData]);
+  }, [
+    transactionFormData.fee,
+    transactionFormData.customFee,
+    estimatedFeesData,
+  ]);
 
   const getFormattedFee = () => {
     if (fee === "custom" && customFee) {
@@ -158,14 +166,14 @@ const FeeGridSelector: React.FC<FeeGridSelectorProps> = ({
 
   const handleKeyDown = (e: KeyboardEvent<HTMLInputElement>) => {
     if (e.key === "Enter") {
-      if (isPositiveInputValue(customFee)) {
+      if (Number(customFee) > 0) {
         setShowGrid(false);
       }
     }
   };
 
   if (!estimatedFeesData) {
-    return <Text>Loading...</Text>;
+    return <FeeGridSkeleton showGrid={showGrid} />;
   }
 
   return (
@@ -201,8 +209,7 @@ const FeeGridSelector: React.FC<FeeGridSelectorProps> = ({
                     }
                     onKeyDown={handleKeyDown}
                     onSubmit={() => {
-                      isPositiveValue(customFeeField.value) &&
-                        setShowGrid(false);
+                      Number(customFeeField.value) > 0 && setShowGrid(false);
                     }}
                     label={formatMessage(messages.custom)}
                     onFocus={() => feeField.onChange("custom")}
@@ -227,9 +234,7 @@ const FeeGridSelector: React.FC<FeeGridSelectorProps> = ({
                           bg={COLORS.GREEN_DARK}
                           onClick={() => setShowGrid(false)}
                           aria-label="Save memo"
-                          isDisabled={
-                            !isPositiveInputValue(customFeeField.value)
-                          }
+                          isDisabled={Number(customFeeField.value) <= 0}
                           _disabled={{
                             bg: COLORS.GREEN_DARK,
                             opacity: 0.4,
@@ -282,6 +287,55 @@ const FeeGridSelector: React.FC<FeeGridSelectorProps> = ({
         </Flex>
       )}
       <RenderError error={errors.customFee?.message} />
+    </Box>
+  );
+};
+
+const FeeGridSkeleton = ({ showGrid }: { showGrid: boolean }) => {
+  const feeLabels = ["Slow", "Average", "Fast", "Custom"];
+  const { formatMessage } = useIntl();
+  return showGrid ? (
+    <Box py={2} borderBottom="1.5px dashed #DEDFE2">
+      <Grid
+        height="128px"
+        pb={2}
+        templateRows="1fr 1fr"
+        templateColumns="1fr 1fr"
+      >
+        {feeLabels.map((label) => (
+          <Box
+            border="1px solid"
+            _dark={{
+              background: COLORS.DARK_MODE.GRAY_DARK,
+              borderColor: COLORS.DARK_MODE.GRAY_MEDIUM,
+            }}
+            p={3}
+            key={label}
+            height="100%"
+          >
+            <HStack width="100%" justifyContent="space-between">
+              <VStack alignItems="flex-start">
+                <Text
+                  fontWeight={200}
+                  color="muted"
+                  _dark={{
+                    color: "muted",
+                  }}
+                >
+                  {label}
+                </Text>
+              </VStack>
+            </HStack>
+          </Box>
+        ))}
+      </Grid>
+      <Text color="muted">{formatMessage(messages.seeFeesInstructions)}</Text>
+    </Box>
+  ) : (
+    <Box py={2} borderBottom="1.5px dashed #DEDFE2">
+      <Text color="muted">Fee</Text>
+      <Skeleton my="1" width="40%" height="24px" />
+      <Text color="muted">{formatMessage(messages.seeFeesInstructions)}</Text>
     </Box>
   );
 };

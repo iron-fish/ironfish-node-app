@@ -1,12 +1,4 @@
-import {
-  Box,
-  Container,
-  Flex,
-  HStack,
-  Text,
-  VStack,
-  chakra,
-} from "@chakra-ui/react";
+import { Container, HStack, Skeleton, VStack, chakra } from "@chakra-ui/react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useRouter } from "next/router";
 import { useEffect, useMemo, useState } from "react";
@@ -22,20 +14,24 @@ import { TextInput } from "@/ui/Forms/TextInput/TextInput";
 import { PillButton } from "@/ui/PillButton/PillButton";
 import { CurrencyUtils } from "@/utils/currency";
 import { asQueryString } from "@/utils/parseRouteQuery";
+import { normalizeTransactionData } from "@/utils/transactionUtils";
 import { truncateString } from "@/utils/truncateString";
 
 import { ConfirmLedgerModal } from "./ConfirmLedgerModal/ConfirmLedgerModal";
 import { ConfirmTransactionModal } from "./ConfirmTransactionModal/ConfirmTransactionModal";
+import FeeGridSelector from "./SharedConfirmSteps/FeeGridSelector/FeeGridSelector";
+import MemoInput from "./SharedConfirmSteps/MemoInput/MemoInput";
 import {
+  TransactionData,
   TransactionFormData,
   createTransactionSchema,
 } from "./transactionSchema";
+import { AssetAmountInput } from "../AssetAmountInput/AssetAmountInput";
 import {
   AssetOptionType,
   normalizeAmountInputChange,
   useAccountAssets,
 } from "../AssetAmountInput/utils";
-import { AssetAmountInput } from "../AssetAmountInput/AssetAmountInput";
 import { NoSpendingAccountsMessage } from "../EmptyStateMessage/shared/NoSpendingAccountsMessage";
 import { LedgerChip } from "../LedgerChip/LedgerChip";
 import {
@@ -69,32 +65,41 @@ const messages = defineMessages({
   available: {
     defaultMessage: "available",
   },
+  finalizingTransactionError: {
+    defaultMessage: "Something went wrong finalizing your transaction",
+  },
 });
 
+// Todo: This should be named better to differentiate between `transactionData`, `transactionFormData` and `pendingTransactionData`
+// "transactionFormData" - the data from the form and has string fields for the fee + a customFee field
+// "transactionData" - what is sent to create a transaction: the function normalizeTransactionData takes in the form data and returns this
+// "pendingTransactionData" - a superset of transactionData that includes the full selected account and asset objects which are used to contextualize the UI in the multisig flow
 export type PendingTransactionData = {
-  transactionData: TransactionFormData;
+  transactionData: TransactionData;
   selectedAccount: TRPCRouterOutputs["getAccounts"][number];
-  selectedAsset?: AssetOptionType;
+  selectedAsset: AssetOptionType;
 };
 
 export function SendAssetsFormContent({
   sendButtonText,
   accountsData,
   defaultToAddress,
-  onPendingChange,
+  onNextButton,
+  isMultisig,
 }: {
   sendButtonText?: string;
   accountsData: TRPCRouterOutputs["getAccounts"];
   defaultToAddress?: string | null;
-  onPendingChange: (pending: PendingTransactionData) => void;
+  onNextButton?: (pendingTransactionData: PendingTransactionData) => void;
+  isMultisig?: boolean;
 }) {
   const router = useRouter();
   const { formatMessage } = useIntl();
 
-  const [confirmTransaction, setConfirmTransaction] = useState(false);
+  const [showConfirmModal, setShowConfirmModal] = useState(false);
 
   const accountOptions = useMemo(() => {
-    return accountsData?.map((account) => {
+    return accountsData.map((account) => {
       return {
         label: account.name,
         value: account.name,
@@ -110,7 +115,7 @@ export function SendAssetsFormContent({
     return queryMatch ? queryMatch.value : accountOptions[0]?.value;
   }, [accountOptions, router.query.account]);
 
-  const defaultAssetId = accountsData[0]?.balances.iron.asset.id;
+  const defaultAssetId = accountsData[0].balances.iron.asset.id;
 
   const transactionSchema = useMemo(
     () => createTransactionSchema(formatMessage),
@@ -157,7 +162,7 @@ export function SendAssetsFormContent({
 
   const selectedAccount = useMemo(() => {
     return (
-      accountsData?.find((account) => account.name === fromAccountValue) ??
+      accountsData.find((account) => account.name === fromAccountValue) ??
       accountsData[0]
     );
   }, [accountsData, fromAccountValue]);
@@ -265,8 +270,58 @@ export function SendAssetsFormContent({
   }, [contactsData, allAccountsData]);
 
   const selectedAsset = useMemo(() => {
-    return assetOptionsMap.get(assetIdValue);
-  }, [assetIdValue, assetOptionsMap]);
+    // Accounts always have $IRON as an asset
+    return assetOptionsMap.get(assetIdValue) || assetOptions[0];
+  }, [assetIdValue, assetOptionsMap, assetOptions]);
+
+  const canAffordTransaction = () => {
+    const currentBalance = Number(accountBalances[assetIdValue].confirmed);
+    if (currentBalance < assetAmountToSend) {
+      setError("amount", {
+        type: "custom",
+        message: formatMessage(messages.insufficientFundsError),
+      });
+      return false;
+    }
+    return true;
+  };
+
+  const isSingleSignerValid = async () => {
+    if (!canAffordTransaction()) {
+      return false;
+    }
+    // We only check these inputs since single signer has a second step with form inputs
+    const validInputs = await trigger(["amount", "toAccount", "assetId"], {
+      shouldFocus: true,
+    });
+
+    return validInputs;
+  };
+
+  const isMultisigValid = async () => {
+    const hasInfoForEstimating = await trigger([
+      "amount",
+      "toAccount",
+      "assetId",
+    ]);
+
+    if (!canAffordTransaction()) {
+      return false;
+    }
+
+    if (!estimatedFeesData && hasInfoForEstimating) {
+      setError("root.serverError", {
+        type: "custom",
+        message: "Something went wrong estimating transaction fees",
+      });
+      return false;
+    }
+
+    // Check all form inputs
+    const hasValidForm = await trigger();
+
+    return hasValidForm && !!estimatedFeesData;
+  };
 
   return (
     <>
@@ -322,7 +377,10 @@ export function SendAssetsFormContent({
                           normalizeAmountInputChange({
                             changeEvent: e,
                             selectedAsset: selectedAsset,
-                            onStart: () => clearErrors("root.serverError"),
+                            onStart: () => {
+                              clearErrors("root.serverError");
+                              clearErrors("amount");
+                            },
                             onChange: field.onChange,
                           });
                         }}
@@ -349,6 +407,15 @@ export function SendAssetsFormContent({
                   />
                 )}
               />
+              {isMultisig && (
+                <>
+                  <FeeGridSelector
+                    estimatedFeesData={estimatedFeesData}
+                    selectedAsset={selectedAsset}
+                  />
+                  <MemoInput />
+                </>
+              )}
               <RenderError
                 error={
                   errors.root?.serverError
@@ -362,29 +429,31 @@ export function SendAssetsFormContent({
           <HStack mt={8} justifyContent="flex-end">
             <PillButton
               onClick={async () => {
-                const currentBalance = Number(
-                  accountBalances[assetIdValue].confirmed,
-                );
-
-                // Custom error check
-                if (currentBalance < assetAmountToSend) {
-                  setError("amount", {
-                    type: "custom",
-                    message: formatMessage(messages.insufficientFundsError),
-                  });
-                  return;
-                }
-
-                // Check form errors
-                const validInputs = await trigger(
-                  ["amount", "toAccount", "assetId"],
-                  {
-                    shouldFocus: true,
-                  },
-                );
-
-                if (validInputs) {
-                  setConfirmTransaction(true);
+                // Make sure we have everything to continue with the multisig flow
+                if (isMultisig && onNextButton && (await isMultisigValid())) {
+                  // Using assertion since we know we have estimatedFeesData from the check above
+                  const { normalizedTransactionData, errors } =
+                    normalizeTransactionData(
+                      formMethods.getValues(),
+                      estimatedFeesData!,
+                      selectedAsset,
+                    );
+                  if (normalizedTransactionData) {
+                    onNextButton({
+                      transactionData: normalizedTransactionData,
+                      selectedAccount,
+                      selectedAsset,
+                    });
+                  } else if (errors) {
+                    setError("root.serverError", {
+                      type: "custom",
+                      message: formatMessage(
+                        messages.finalizingTransactionError,
+                      ),
+                    });
+                  }
+                } else if (await isSingleSignerValid()) {
+                  setShowConfirmModal(true);
                 }
               }}
               type="button"
@@ -395,33 +464,16 @@ export function SendAssetsFormContent({
               {sendButtonText ?? formatMessage(messages.nextButton)}
             </PillButton>
           </HStack>
-
-          {(() => {
-            if (!confirmTransaction || !estimatedFeesData || !selectedAsset)
-              return null;
-
-            return selectedAccount.isLedger ? (
-              <ConfirmLedgerModal
-                isOpen
-                selectedAsset={selectedAsset}
-                estimatedFeesData={estimatedFeesData}
-                selectedAccount={selectedAccount}
-                onCancel={() => {
-                  setConfirmTransaction(false);
-                }}
-              />
-            ) : (
-              <ConfirmTransactionModal
-                isOpen
-                selectedAsset={selectedAsset}
-                selectedAccount={selectedAccount}
-                onCancel={() => {
-                  setConfirmTransaction(false);
-                }}
-                estimatedFeesData={estimatedFeesData}
-              />
-            );
-          })()}
+          {!isMultisig && showConfirmModal && estimatedFeesData ? (
+            <SendAssetConfirmModal
+              selectedAccount={selectedAccount}
+              selectedAsset={selectedAsset}
+              estimatedFeesData={estimatedFeesData}
+              onCancel={() => {
+                setShowConfirmModal(false);
+              }}
+            />
+          ) : null}
         </chakra.form>
       </FormProvider>
     </>
@@ -429,18 +481,19 @@ export function SendAssetsFormContent({
 }
 
 export function SendAssetConfirmModal({
-  pending,
+  estimatedFeesData,
   onCancel,
+  selectedAccount,
+  selectedAsset,
 }: {
-  pending: PendingTransactionData;
   onCancel: () => void;
+  estimatedFeesData: TRPCRouterOutputs["getEstimatedFees"];
+  selectedAccount: TRPCRouterOutputs["getAccounts"][number];
+  selectedAsset: AssetOptionType;
 }) {
-  const { transactionData, selectedAccount, selectedAsset } = pending;
-
   return selectedAccount.isLedger ? (
     <ConfirmLedgerModal
       isOpen
-      transactionData={transactionData}
       selectedAsset={selectedAsset}
       estimatedFeesData={estimatedFeesData}
       selectedAccount={selectedAccount}
@@ -449,24 +502,26 @@ export function SendAssetConfirmModal({
   ) : (
     <ConfirmTransactionModal
       isOpen
-      transactionData={transactionData}
-      estimatedFeesData={estimatedFeesData}
       selectedAsset={selectedAsset}
       selectedAccount={selectedAccount}
       onCancel={onCancel}
+      estimatedFeesData={estimatedFeesData}
     />
   );
 }
 
 export function SendAssetsForm() {
   const router = useRouter();
-  const { data: accountsData } = trpcReact.getAccounts.useQuery();
+  const { data: accountsData, isLoading: accountsLoading } =
+    trpcReact.getAccounts.useQuery();
   const filteredAccounts = accountsData?.filter((a) => {
     return !a.status.viewOnly || a.isLedger;
   });
   const defaultToAddress = asQueryString(router.query.to);
 
-  const [pending, setPending] = useState<PendingTransactionData | null>(null);
+  if (accountsLoading) {
+    return <Skeleton />;
+  }
 
   if (!filteredAccounts) {
     return null;
@@ -477,18 +532,9 @@ export function SendAssetsForm() {
   }
 
   return (
-    <>
-      <SendAssetsFormContent
-        onPendingChange={setPending}
-        accountsData={filteredAccounts}
-        defaultToAddress={defaultToAddress}
-      />
-      {pending && (
-        <SendAssetConfirmModal
-          pending={pending}
-          onCancel={() => setPending(null)}
-        />
-      )}
-    </>
+    <SendAssetsFormContent
+      accountsData={filteredAccounts}
+      defaultToAddress={defaultToAddress}
+    />
   );
 }

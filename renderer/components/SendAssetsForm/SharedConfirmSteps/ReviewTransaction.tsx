@@ -14,11 +14,12 @@ import { AssetOptionType } from "@/components/AssetAmountInput/utils";
 import { LedgerChip } from "@/components/LedgerChip/LedgerChip";
 import { TRPCRouterOutputs } from "@/providers/TRPCProvider";
 import { COLORS } from "@/ui/colors";
+import { RenderError } from "@/ui/Forms/FormField/FormField";
 import { PillButton } from "@/ui/PillButton/PillButton";
 import { CurrencyUtils } from "@/utils/currency";
 
 import FeeGridSelector from "./FeeGridSelector/FeeGridSelector";
-import { MemoInput } from "./MemoInput/MemoInput";
+import MemoInput from "./MemoInput/MemoInput";
 
 const messages = defineMessages({
   confirmTransactionDetails: {
@@ -60,6 +61,9 @@ const messages = defineMessages({
   unknownAsset: {
     defaultMessage: "unknown asset",
   },
+  transactionError: {
+    defaultMessage: "Something went wrong with your transaction, please retry.",
+  },
 });
 
 type Props = {
@@ -85,13 +89,20 @@ export function ReviewTransaction({
     formState: { errors },
     setError,
   } = useFormContext();
-  const transactionData = watch();
+  const transactionFormData = watch();
 
   const [convertedAmount, conversionError] = CurrencyUtils.tryMajorToMinor(
-    transactionData.amount.toString(),
-    transactionData.assetId,
+    transactionFormData.amount.toString(),
+    transactionFormData.assetId,
     selectedAsset?.asset.verification,
   );
+
+  if (conversionError) {
+    setError("root.serverError", {
+      type: "custom",
+      message: formatMessage(messages.transactionError),
+    });
+  }
 
   const hasErrors = Object.keys(errors).length > 0 || conversionError;
 
@@ -114,7 +125,7 @@ export function ReviewTransaction({
           </Box>
           <Box py={4} borderBottom="1.5px dashed #DEDFE2">
             <Text color={COLORS.GRAY_MEDIUM}>{formatMessage(messages.to)}</Text>
-            <Text fontSize="md">{transactionData?.toAccount ?? ""}</Text>
+            <Text fontSize="md">{transactionFormData?.toAccount ?? ""}</Text>
           </Box>
           <Box py={4} borderBottom="1.5px dashed #DEDFE2">
             <Text color={COLORS.GRAY_MEDIUM}>
@@ -123,7 +134,7 @@ export function ReviewTransaction({
             <Text fontSize="md">
               {CurrencyUtils.render(
                 convertedAmount?.toString() ?? "0",
-                transactionData.assetId,
+                transactionFormData.assetId,
                 selectedAsset?.asset.verification,
               )}{" "}
               {selectedAsset?.assetName ?? formatMessage(messages.unknownAsset)}
@@ -135,6 +146,11 @@ export function ReviewTransaction({
           />
           <MemoInput />
         </VStack>
+        <RenderError
+          error={
+            errors.root?.serverError ? errors.root?.serverError?.message : null
+          }
+        />
       </ModalBody>
 
       <ModalFooter display="flex" gap={2} px={16} py={8}>
@@ -152,17 +168,7 @@ export function ReviewTransaction({
           type="submit"
           isDisabled={isLoading || !!hasErrors}
           onClick={() => {
-            if (
-              transactionData.fee === "custom" &&
-              !transactionData.customFee
-            ) {
-              setError("customFee", {
-                type: "custom",
-                message: formatMessage(messages.feeError),
-              });
-            } else {
-              onSubmit();
-            }
+            onSubmit();
           }}
         >
           {formatMessage(messages.confirmAndSend)}
