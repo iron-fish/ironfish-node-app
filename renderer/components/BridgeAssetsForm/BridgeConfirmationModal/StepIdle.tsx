@@ -85,7 +85,9 @@ type Props = {
   destinationNetwork: string;
   destinationNetworkIcon: string;
   amountSending: ReactNode;
+  amountSendingIcon: string | undefined;
   amountReceiving: ReactNode;
+  amountReceivingIcon: string;
   destinationAddress: string;
   chainportGasFee: ReactNode;
   chainportBridgeFee: ReactNode;
@@ -103,7 +105,9 @@ export function StepIdle({
   destinationNetwork,
   destinationNetworkIcon,
   amountSending,
+  amountSendingIcon,
   amountReceiving,
+  amountReceivingIcon,
   destinationAddress,
   chainportGasFee,
   chainportBridgeFee,
@@ -200,7 +204,7 @@ export function StepIdle({
             <LineItem
               label={formatMessage(messages.sendingLabel)}
               content={amountSending}
-              icon={ironfishIcon}
+              icon={amountSendingIcon ?? ironfishIcon}
             />
           </GridItem>
           <GridItem>
@@ -208,7 +212,7 @@ export function StepIdle({
               label={formatMessage(messages.receivingLabel)}
               content={amountReceiving}
               tooltip={formatMessage(messages.receivingTooltip)}
-              icon={chainportIcon}
+              icon={amountReceivingIcon}
             />
           </GridItem>
         </Grid>

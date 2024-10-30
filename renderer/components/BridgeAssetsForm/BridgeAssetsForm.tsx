@@ -138,6 +138,12 @@ function BridgeAssetsFormContent({
           ...item,
           label: (
             <HStack>
+              <Image
+                src={item.asset.verification.logoURI ?? ""}
+                alt=""
+                width="24"
+                height="24"
+              />
               <ItemText>{item.label}</ItemText>
               {item.asset.verification.status === "verified" && (
                 <Image src={verifiedIcon} alt="" />
@@ -158,7 +164,7 @@ function BridgeAssetsFormContent({
 
   const selectedAsset = assetOptionsMap.get(assetIdValue);
   const selectedNetwork = availableNetworks?.find(
-    (n) => destinationNetworkId === n.chainport_network_id.toString(),
+    (n) => destinationNetworkId === n.network.chainport_network_id.toString(),
   );
 
   const handleIfAmountExceedsBalance = useCallback(
@@ -229,7 +235,7 @@ function BridgeAssetsFormContent({
     ) {
       setValue(
         "destinationNetworkId",
-        availableNetworks[0].chainport_network_id.toString(),
+        availableNetworks[0].network.chainport_network_id.toString(),
       );
     }
   }, [availableNetworks, destinationNetworkId, setValue]);
@@ -242,7 +248,8 @@ function BridgeAssetsFormContent({
 
           const destinationNetwork = availableNetworks?.find(
             (n) =>
-              data.destinationNetworkId === n.chainport_network_id.toString(),
+              data.destinationNetworkId ===
+              n.network.chainport_network_id.toString(),
           );
           if (!destinationNetwork) {
             return;
@@ -372,14 +379,24 @@ function BridgeAssetsFormContent({
                 value={destinationNetworkId ?? undefined}
                 label={formatMessage(messages.destinationNetwork)}
                 options={(availableNetworks ?? []).map((n) => ({
-                  label: n.label,
-                  value: n.chainport_network_id.toString(),
+                  label: (
+                    <HStack>
+                      <Image
+                        src={n.network.network_icon}
+                        alt={n.network.label}
+                        width="24"
+                        height="24"
+                      />
+                      <ItemText>{n.network.label}</ItemText>
+                    </HStack>
+                  ),
+                  value: n.network.chainport_network_id.toString(),
                 }))}
                 renderChildren={(children) => (
                   <HStack>
                     {selectedNetwork && (
                       <ChakraImage
-                        src={selectedNetwork.network_icon}
+                        src={selectedNetwork.network.network_icon}
                         boxSize="24px"
                       />
                     )}

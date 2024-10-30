@@ -19,7 +19,6 @@ import { trpcReact, TRPCRouterOutputs } from "@/providers/TRPCProvider";
 import { PillButton } from "@/ui/PillButton/PillButton";
 import { CurrencyUtils } from "@/utils/currency";
 import { formatOre } from "@/utils/ironUtils";
-import { IRON_ID, IRON_SYMBOL } from "@shared/constants";
 
 import { StepIdle } from "./StepIdle";
 import { AssetOptionType } from "../../AssetAmountInput/utils";
@@ -115,7 +114,7 @@ export function BridgeConfirmationModal({
       amount: convertedAmount.toString(),
       assetId: chainportToken.web3_address,
       to: formData.destinationAddress,
-      selectedNetwork: destinationNetwork.chainport_network_id,
+      selectedNetwork: destinationNetwork.network.chainport_network_id,
     },
     {
       retry: false,
@@ -190,17 +189,12 @@ export function BridgeConfirmationModal({
       chainportToken.decimals,
     );
 
-    return `${convertedAmount} ${
-      chainportToken.web3_address === IRON_ID
-        ? IRON_SYMBOL
-        : chainportToken.symbol
-    }`;
+    return `${convertedAmount} ${destinationNetwork.token.symbol}`;
   }, [
     isTransactionDetailsLoading,
     txDetails,
+    destinationNetwork.token.symbol,
     chainportToken.decimals,
-    chainportToken.symbol,
-    chainportToken.web3_address,
   ]);
 
   const chainportGasFee = useMemo(() => {
@@ -279,10 +273,12 @@ export function BridgeConfirmationModal({
           {isSubmitIdle && (
             <StepIdle
               fromAccount={formData.fromAccount}
-              destinationNetwork={destinationNetwork.label}
-              destinationNetworkIcon={destinationNetwork.network_icon}
+              destinationNetwork={destinationNetwork.network.label}
+              destinationNetworkIcon={destinationNetwork.network.network_icon}
               amountSending={amountToSend}
+              amountSendingIcon={selectedAsset.asset.verification.logoURI}
               amountReceiving={amountToReceive}
+              amountReceivingIcon={destinationNetwork.token.token_image}
               destinationAddress={formData.destinationAddress}
               chainportGasFee={chainportGasFee}
               chainportBridgeFee={chainportBridgeFee}
