@@ -71,7 +71,7 @@ type ChainportNetwork =
 type Props = {
   onClose: () => void;
   formData: BridgeAssetsConfirmationData;
-  targetNetwork: ChainportNetwork;
+  destinationNetwork: ChainportNetwork;
   selectedAsset: AssetOptionType;
   chainportToken: ChainportToken;
   handleTransactionDetailsError: (error: string) => void;
@@ -80,7 +80,7 @@ type Props = {
 export function BridgeConfirmationModal({
   onClose,
   formData,
-  targetNetwork,
+  destinationNetwork,
   selectedAsset,
   chainportToken,
   handleTransactionDetailsError,
@@ -113,8 +113,8 @@ export function BridgeConfirmationModal({
     {
       amount: convertedAmount.toString(),
       assetId: chainportToken.web3_address,
-      to: formData.targetAddress,
-      selectedNetwork: targetNetwork.network.chainport_network_id,
+      to: formData.destinationAddress,
+      selectedNetwork: destinationNetwork.network.chainport_network_id,
     },
     {
       retry: false,
@@ -189,11 +189,11 @@ export function BridgeConfirmationModal({
       chainportToken.decimals,
     );
 
-    return `${convertedAmount} ${targetNetwork.token.symbol}`;
+    return `${convertedAmount} ${destinationNetwork.token.symbol}`;
   }, [
     isTransactionDetailsLoading,
     txDetails,
-    targetNetwork.token.symbol,
+    destinationNetwork.token.symbol,
     chainportToken.decimals,
   ]);
 
@@ -273,13 +273,13 @@ export function BridgeConfirmationModal({
           {isSubmitIdle && (
             <StepIdle
               fromAccount={formData.fromAccount}
-              targetNetwork={targetNetwork.network.label}
-              targetNetworkIcon={targetNetwork.network.network_icon}
+              destinationNetwork={destinationNetwork.network.label}
+              destinationNetworkIcon={destinationNetwork.network.network_icon}
               amountSending={amountToSend}
               amountSendingIcon={selectedAsset.asset.verification.logoURI}
               amountReceiving={amountToReceive}
-              amountReceivingIcon={targetNetwork.token.token_image}
-              targetAddress={formData.targetAddress}
+              amountReceivingIcon={destinationNetwork.token.token_image}
+              destinationAddress={formData.destinationAddress}
               chainportGasFee={chainportGasFee}
               chainportBridgeFee={chainportBridgeFee}
               feeRate={feeRate}

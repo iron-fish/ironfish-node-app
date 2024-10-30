@@ -38,8 +38,8 @@ const messages = defineMessages({
   sourceNetworkLabel: {
     defaultMessage: "Source Network",
   },
-  targetNetworkLabel: {
-    defaultMessage: "Target Network",
+  destinationNetworkLabel: {
+    defaultMessage: "Destination Network",
   },
   sendingLabel: {
     defaultMessage: "Sending",
@@ -51,14 +51,14 @@ const messages = defineMessages({
     defaultMessage:
       "Sending amount minus the bridge fee. This is an estimate, and you may receive a slightly different amount.",
   },
-  targetAddressLabel: {
-    defaultMessage: "Target Address",
+  destinationAddressLabel: {
+    defaultMessage: "Destination Address",
   },
   gasFeeLabel: {
     defaultMessage: "Gas fee",
   },
   gasFeeTooltip: {
-    defaultMessage: "The fee for transacting on the target network",
+    defaultMessage: "The fee for transacting on the destination network",
   },
   bridgeFeeLabel: {
     defaultMessage: "Bridge fee",
@@ -82,13 +82,13 @@ const messages = defineMessages({
 
 type Props = {
   fromAccount: string;
-  targetNetwork: string;
-  targetNetworkIcon: string;
+  destinationNetwork: string;
+  destinationNetworkIcon: string;
   amountSending: ReactNode;
   amountSendingIcon: string | undefined;
   amountReceiving: ReactNode;
   amountReceivingIcon: string;
-  targetAddress: string;
+  destinationAddress: string;
   chainportGasFee: ReactNode;
   chainportBridgeFee: ReactNode;
   estimatedFees: UseTRPCQueryResult<
@@ -102,13 +102,13 @@ type Props = {
 
 export function StepIdle({
   fromAccount,
-  targetNetwork,
-  targetNetworkIcon,
+  destinationNetwork,
+  destinationNetworkIcon,
   amountSending,
   amountSendingIcon,
   amountReceiving,
   amountReceivingIcon,
-  targetAddress,
+  destinationAddress,
   chainportGasFee,
   chainportBridgeFee,
   estimatedFees,
@@ -171,9 +171,9 @@ export function StepIdle({
           </GridItem>
           <GridItem>
             <LineItem
-              label={formatMessage(messages.targetNetworkLabel)}
-              content={targetNetwork}
-              icon={targetNetworkIcon}
+              label={formatMessage(messages.destinationNetworkLabel)}
+              content={destinationNetwork}
+              icon={destinationNetworkIcon}
             />
           </GridItem>
           <GridItem
@@ -220,8 +220,8 @@ export function StepIdle({
         <Divider />
 
         <LineItem
-          label={formatMessage(messages.targetAddressLabel)}
-          content={targetAddress}
+          label={formatMessage(messages.destinationAddressLabel)}
+          content={destinationAddress}
         />
 
         <Divider />

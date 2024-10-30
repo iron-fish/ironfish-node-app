@@ -22,22 +22,10 @@ const FLAGS_DEFINITION = [
     key: "chainportBridge",
   },
   {
-    name: "Ledger Support",
-    description:
-      "Turning this flag on will enable importing Ledger accounts and signing transactions with your Ledger device.",
-    key: "ledgerSupport",
-  },
-  {
     name: "Global Theme Toggle",
     description:
       "Turning this flag on will allow double clicking the logo to change the theme",
     key: "themeToggle",
-  },
-  {
-    name: "Multisig Ledger Support",
-    description:
-      "Turning this flag on will enable signing multisig transactions with your Ledger device.",
-    key: "multisigLedgerSupport",
   },
 ] as const;
 

@@ -5,14 +5,19 @@ import type {
   TransactionStatus,
   TransactionType,
 } from "@ironfish/sdk";
-import { ReactNode, useMemo } from "react";
+import { ReactNode, useMemo, useState } from "react";
 import { MessageDescriptor, useIntl } from "react-intl";
 
+import { trpcReact, TRPCRouterOutputs } from "@/providers/TRPCProvider";
 import { MaybeLink } from "@/ui/ChakraLink/ChakraLink";
 import { COLORS } from "@/ui/colors";
 import { ShadowCard } from "@/ui/ShadowCard/ShadowCard";
 import { CurrencyUtils } from "@/utils/currency";
 import { formatDate } from "@/utils/formatDate";
+import {
+  refetchTransactionUntilTerminal,
+  isTransactionStatusTerminal,
+} from "@/utils/transactionUtils";
 
 import { BridgeIcon } from "./icons/BridgeIcon";
 import { ChangeIcon } from "./icons/ChangeIcon";
@@ -77,10 +82,12 @@ function NoteTo({
   to,
   from,
   type,
+  contact,
 }: {
   to: string | string[];
   from: string;
   type: TransactionType;
+  contact?: TRPCRouterOutputs["getContacts"][number] | undefined;
 }) {
   const { formatMessage } = useIntl();
 
@@ -93,6 +100,7 @@ function NoteTo({
       color={COLORS.BLACK}
       _dark={{ color: COLORS.WHITE }}
       address={type === "send" ? to : from}
+      addressLabel={contact?.name}
     />
   );
 }
@@ -106,11 +114,12 @@ export function NoteRow({
   from,
   to,
   type,
-  status,
+  status: initialStatus,
   memo,
   transactionHash,
   asTransaction = false,
   isBridge = false,
+  contact,
 }: {
   accountName: string;
   asset?: RpcAsset;
@@ -123,6 +132,7 @@ export function NoteRow({
   status: TransactionStatus;
   memo: string | string[];
   transactionHash: string;
+  contact?: TRPCRouterOutputs["getContacts"][number] | undefined;
   /**
    * Render the row as if it were a transaction (link it to the transaction details page,
    * show the status as the transaction's status)
@@ -131,6 +141,21 @@ export function NoteRow({
   isBridge?: boolean;
 }) {
   const { formatMessage } = useIntl();
+  const [status, setStatus] = useState(initialStatus);
+
+  // Poll Transaction if it is a non-terminal status
+  trpcReact.getTransaction.useQuery(
+    { accountName, transactionHash },
+    {
+      enabled: asTransaction && !isTransactionStatusTerminal(status),
+      refetchInterval: refetchTransactionUntilTerminal,
+      onSuccess: (data) => {
+        if (data.transaction.status !== status) {
+          setStatus(data.transaction.status);
+        }
+      },
+    },
+  );
 
   const statusDisplay = getNoteStatusDisplay(
     type,
@@ -160,7 +185,7 @@ export function NoteRow({
         {`${majorString} ${symbol}`}
       </Text>,
       <Text as="span" key={key++}>
-        <NoteTo to={to} from={from} type={type} />
+        <NoteTo to={to} from={from} type={type} contact={contact} />
       </Text>,
       <Text as="span" key={key++}>
         {formatDate(timestamp)}

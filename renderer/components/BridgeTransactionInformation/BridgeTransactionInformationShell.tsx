@@ -48,7 +48,7 @@ type Props = BoxProps & {
   type: ReactNode;
   address: string;
   networkIcon?: string;
-  targetTxHash?: string;
+  destinationTxHash?: string;
   blockExplorerUrl?: string;
   sourceNetwork?: {
     name: string;
@@ -61,7 +61,7 @@ export function BridgeTransactionInformationShell({
   type,
   address,
   networkIcon,
-  targetTxHash,
+  destinationTxHash,
   blockExplorerUrl,
   sourceNetwork,
   ...rest
@@ -176,12 +176,12 @@ export function BridgeTransactionInformationShell({
                   </Text>
                   <Box fontSize="md">
                     <VStack alignItems="flex-start">
-                      {targetTxHash ? (
+                      {destinationTxHash ? (
                         <CopyAddress
                           fontSize="md"
                           color={COLORS.BLACK}
                           _dark={{ color: COLORS.WHITE }}
-                          address={targetTxHash}
+                          address={destinationTxHash}
                           parts={2}
                         />
                       ) : (
