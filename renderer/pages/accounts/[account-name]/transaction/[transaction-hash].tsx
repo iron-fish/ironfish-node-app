@@ -10,6 +10,7 @@ import { TransactionInformation } from "@/components/TransactionInformation/Tran
 import MainLayout from "@/layouts/MainLayout";
 import { trpcReact } from "@/providers/TRPCProvider";
 import { asQueryString } from "@/utils/parseRouteQuery";
+import { refetchTransactionUntilTerminal } from "@/utils/transactionUtils";
 
 const messages = defineMessages({
   backToAccountOverview: {
@@ -38,10 +39,15 @@ function SingleTransactionContent({
     name: accountName,
   });
 
-  const { data: transactionData } = trpcReact.getTransaction.useQuery({
-    accountName,
-    transactionHash,
-  });
+  const { data: transactionData } = trpcReact.getTransaction.useQuery(
+    {
+      accountName,
+      transactionHash,
+    },
+    {
+      refetchInterval: refetchTransactionUntilTerminal,
+    },
+  );
 
   if (!accountData) {
     return null;
@@ -55,12 +61,9 @@ function SingleTransactionContent({
           label: formatMessage(messages.backToAccountOverview),
         }}
       >
-        <HStack mb={8} gap={4}>
-          <Heading>{accountName}</Heading>
-          <CopyAddress
-            address={accountData.address}
-            transform="translateY(0.4em)"
-          />
+        <HStack alignItems="baseline" mb={8} gap={4}>
+          <Heading fontSize="28px">{accountName}</Heading>
+          <CopyAddress address={accountData.address} />
         </HStack>
         <Skeleton height={600} />
       </MainLayout>
@@ -94,12 +97,9 @@ function SingleTransactionContent({
         label: formatMessage(messages.backToAccountOverview),
       }}
     >
-      <HStack mb={8} gap={4}>
-        <Heading>{accountName}</Heading>
-        <CopyAddress
-          address={accountData.address}
-          transform="translateY(0.4em)"
-        />
+      <HStack alignItems="baseline" mb={8} gap={4}>
+        <Heading fontSize="28px">{accountName}</Heading>
+        <CopyAddress address={accountData.address} />
       </HStack>
       {transactionData.chainportData &&
         transactionData.transaction.type === "send" && (

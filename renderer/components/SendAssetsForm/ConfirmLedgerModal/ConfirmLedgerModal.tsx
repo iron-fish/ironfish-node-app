@@ -8,6 +8,7 @@ import { normalizeTransactionData } from "@/utils/transactionUtils";
 
 import { StepConfirm } from "./Steps/StepConfirm";
 import { StepConnect } from "./Steps/StepConnect";
+import { TransactionRejected } from "./Steps/TransactionRejected";
 import { ReviewTransaction } from "../SharedConfirmSteps/ReviewTransaction";
 import { SubmissionError } from "../SharedConfirmSteps/SubmissionError";
 import { TransactionSubmitted } from "../SharedConfirmSteps/TransactionSubmitted";
@@ -168,14 +169,21 @@ export function ConfirmLedgerModal({
         handleClose={handleClose}
       />
     ),
-    SUBMISSION_ERROR: (
-      <SubmissionError
-        errorMessage={error?.message ?? ""}
-        isLoading={isLoading}
-        handleClose={handleClose}
-        handleSubmit={handleSubmitTransaction}
-      />
-    ),
+    SUBMISSION_ERROR:
+      error?.message === "TRANSACTION_REJECTED" ? (
+        <TransactionRejected
+          isLoading={isLoading}
+          handleClose={handleClose}
+          handleSubmit={handleSubmitTransaction}
+        />
+      ) : (
+        <SubmissionError
+          errorMessage={error?.message ?? ""}
+          isLoading={isLoading}
+          handleClose={handleClose}
+          handleSubmit={handleSubmitTransaction}
+        />
+      ),
   };
 
   return (
