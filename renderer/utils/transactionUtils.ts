@@ -22,9 +22,7 @@ export const getFormattedFee = (
 
 interface NormalizedTransactionResult {
   normalizedTransactionData: TransactionData | null;
-  errors: {
-    message?: string;
-  };
+  error: string;
 }
 
 export const normalizeTransactionData = (
@@ -37,9 +35,7 @@ export const normalizeTransactionData = (
     if (!transactionFormData.customFee) {
       return {
         normalizedTransactionData: null,
-        errors: {
-          message: "Custom fee must be a number greater than 0",
-        },
+        error: "Custom fee must be a number greater than 0",
       };
     }
     const feeString = transactionFormData.customFee.toString();
@@ -59,11 +55,9 @@ export const normalizeTransactionData = (
   if (!normalizedAmount || amountError) {
     return {
       normalizedTransactionData: null,
-      errors: {
-        message:
-          amountError?.message ||
-          "There was an issue processing your transaction",
-      },
+      error:
+        amountError?.message ||
+        "There was an issue processing your transaction",
     };
   }
   const normalizedTransactionData = {
@@ -77,6 +71,6 @@ export const normalizeTransactionData = (
 
   return {
     normalizedTransactionData,
-    errors: {},
+    error: "",
   };
 };

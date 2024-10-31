@@ -68,20 +68,26 @@ export function ConfirmTransactionModal({
   }, [onCancel, reset]);
 
   const processForm = useCallback(async () => {
-    const { normalizedTransactionData, errors } = normalizeTransactionData(
+    const { normalizedTransactionData, error } = normalizeTransactionData(
       transactionFormData,
       estimatedFeesData,
       selectedAsset,
     );
-    if (errors) {
+    if (error) {
       setError("root.serverError", {
-        message: errors?.message || formatMessage(messages.transactionError),
+        message: error,
       });
     }
     if (normalizedTransactionData) {
       sendTransaction(normalizedTransactionData);
     }
-  }, [sendTransaction, transactionFormData, estimatedFeesData, selectedAsset]);
+  }, [
+    sendTransaction,
+    transactionFormData,
+    estimatedFeesData,
+    selectedAsset,
+    setError,
+  ]);
 
   return (
     <Modal isOpen={isOpen} onClose={handleClose}>

@@ -432,7 +432,7 @@ export function SendAssetsFormContent({
                 // Make sure we have everything to continue with the multisig flow
                 if (isMultisig && onNextButton && (await isMultisigValid())) {
                   // Using assertion since we know we have estimatedFeesData from the check above
-                  const { normalizedTransactionData, errors } =
+                  const { normalizedTransactionData, error } =
                     normalizeTransactionData(
                       formMethods.getValues(),
                       estimatedFeesData!,
@@ -444,12 +444,9 @@ export function SendAssetsFormContent({
                       selectedAccount,
                       selectedAsset,
                     });
-                  } else if (errors) {
+                  } else if (error) {
                     setError("root.serverError", {
-                      type: "custom",
-                      message: formatMessage(
-                        messages.finalizingTransactionError,
-                      ),
+                      message: error,
                     });
                   }
                 } else if (await isSingleSignerValid()) {
@@ -520,7 +517,7 @@ export function SendAssetsForm() {
   const defaultToAddress = asQueryString(router.query.to);
 
   if (accountsLoading) {
-    return <Skeleton />;
+    return <Skeleton height="320px" />;
   }
 
   if (!filteredAccounts) {

@@ -127,8 +127,8 @@ const FeeGridSelector: React.FC<FeeGridSelectorProps> = ({
   const [showGrid, setShowGrid] = useState(true);
   const {
     control,
-    resetField,
     formState: { errors },
+    clearErrors,
   } = useFormContext();
   const { formatMessage } = useIntl();
   const transactionFormData = useWatch();
@@ -192,7 +192,7 @@ const FeeGridSelector: React.FC<FeeGridSelectorProps> = ({
                   isSelected={feeField.value === key}
                   onSelect={() => {
                     feeField.onChange(key);
-                    resetField("customFee");
+                    clearErrors("customFee");
                     setShowGrid(false);
                   }}
                 />
@@ -219,6 +219,7 @@ const FeeGridSelector: React.FC<FeeGridSelectorProps> = ({
                         selectedAsset,
                         onChange: (value) => {
                           customFeeField.onChange(value);
+                          clearErrors("root.serverError");
                           feeField.onChange("custom");
                         },
                         decimalsOverride: IRON_DECIMAL_PLACES,

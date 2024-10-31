@@ -1,7 +1,6 @@
 import { Modal, ModalOverlay, ModalContent } from "@chakra-ui/react";
 import { useCallback, useEffect, useState } from "react";
 import { useFormContext } from "react-hook-form";
-import { defineMessages, useIntl } from "react-intl";
 
 import { AssetOptionType } from "@/components/AssetAmountInput/utils";
 import { trpcReact, TRPCRouterOutputs } from "@/providers/TRPCProvider";
@@ -13,12 +12,6 @@ import { ReviewTransaction } from "../SharedConfirmSteps/ReviewTransaction";
 import { SubmissionError } from "../SharedConfirmSteps/SubmissionError";
 import { TransactionSubmitted } from "../SharedConfirmSteps/TransactionSubmitted";
 import { TransactionFormData } from "../transactionSchema";
-
-const messages = defineMessages({
-  transactionError: {
-    defaultMessage: "Something went wrong with your transaction, please retry.",
-  },
-});
 
 type LedgerStatus = {
   isLedgerConnected: boolean;
@@ -44,8 +37,7 @@ export function ConfirmLedgerModal({
   estimatedFeesData,
 }: Props) {
   const { watch } = useFormContext<TransactionFormData>();
-  const { formatMessage } = useIntl();
-  const transactionData = watch();
+  const transactionFormData = watch();
 
   const [
     { isLedgerConnected, isLedgerUnlocked, isIronfishAppOpen },
@@ -115,8 +107,8 @@ export function ConfirmLedgerModal({
   }, [isLedgerConnected, isLedgerUnlocked, isIronfishAppOpen, step]);
 
   const handleSubmitTransaction = useCallback(() => {
-    const { normalizedTransactionData, errors } = normalizeTransactionData(
-      transactionData,
+    const { normalizedTransactionData, error } = normalizeTransactionData(
+      transactionFormData,
       estimatedFeesData,
       selectedAsset,
     );
@@ -124,14 +116,14 @@ export function ConfirmLedgerModal({
     if (normalizedTransactionData) {
       submitTransaction(normalizedTransactionData);
       setStep("CONFIRM_TRANSACTION");
-    } else if (errors) {
+    } else if (error) {
       setError("root.serverError", {
-        message: errors?.message || formatMessage(messages.transactionError),
+        message: error,
       });
       setStep("IDLE");
     }
   }, [
-    transactionData,
+    transactionFormData,
     estimatedFeesData,
     selectedAsset,
     submitTransaction,
