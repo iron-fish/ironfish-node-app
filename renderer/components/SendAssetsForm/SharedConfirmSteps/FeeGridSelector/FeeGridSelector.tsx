@@ -86,6 +86,9 @@ const FeeOption: React.FC<FeeOptionProps> = ({
           : COLORS.DARK_MODE.GRAY_DARK,
         borderColor: COLORS.DARK_MODE.GRAY_MEDIUM,
       }}
+      _focus={{
+        zIndex: 2,
+      }}
     >
       <HStack width="100%" justifyContent="space-between">
         <VStack alignItems="flex-start">

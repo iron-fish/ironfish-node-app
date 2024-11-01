@@ -108,11 +108,11 @@ export function ConfirmLedgerModal({
   }, [isLedgerConnected, isLedgerUnlocked, isIronfishAppOpen, step]);
 
   const handleSubmitTransaction = useCallback(() => {
-    const { normalizedTransactionData, error } = normalizeTransactionData(
+    const { normalizedTransactionData, error } = normalizeTransactionData({
       transactionFormData,
       estimatedFeesData,
       selectedAsset,
-    );
+    });
 
     if (normalizedTransactionData) {
       submitTransaction(normalizedTransactionData);

@@ -22,16 +22,31 @@ export const getFormattedFee = (
   return formatOre(0);
 };
 
-interface NormalizedTransactionResult {
-  normalizedTransactionData: TransactionData | null;
+type NormalizedTransactionSuccess = {
+  normalizedTransactionData: TransactionData;
+  error: null;
+};
+
+type NormalizedTransactionError = {
+  normalizedTransactionData: null;
   error: string;
+};
+
+type NormalizedTransactionResult =
+  | NormalizedTransactionSuccess
+  | NormalizedTransactionError;
+
+interface NormalizeTransactionArgs {
+  transactionFormData: TransactionFormData;
+  estimatedFeesData: TRPCRouterOutputs["getEstimatedFees"];
+  selectedAsset: AssetOptionType;
 }
 
-export const normalizeTransactionData = (
-  transactionFormData: TransactionFormData,
-  estimatedFeesData: TRPCRouterOutputs["getEstimatedFees"],
-  selectedAsset: AssetOptionType,
-): NormalizedTransactionResult => {
+export const normalizeTransactionData = ({
+  transactionFormData,
+  estimatedFeesData,
+  selectedAsset,
+}: NormalizeTransactionArgs): NormalizedTransactionResult => {
   let feeValue: number;
   if (transactionFormData.fee === "custom") {
     if (!transactionFormData.customFee) {
@@ -52,8 +67,6 @@ export const normalizeTransactionData = (
     selectedAsset?.asset.verification,
   );
 
-  console;
-
   if (!normalizedAmount || amountError) {
     return {
       normalizedTransactionData: null,
@@ -73,7 +86,7 @@ export const normalizeTransactionData = (
 
   return {
     normalizedTransactionData,
-    error: "",
+    error: null,
   };
 };
 

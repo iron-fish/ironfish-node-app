@@ -68,11 +68,11 @@ export function ConfirmTransactionModal({
   }, [onCancel, reset]);
 
   const processForm = useCallback(async () => {
-    const { normalizedTransactionData, error } = normalizeTransactionData(
+    const { normalizedTransactionData, error } = normalizeTransactionData({
       transactionFormData,
       estimatedFeesData,
       selectedAsset,
-    );
+    });
     if (error) {
       setError("root.serverError", {
         message: error,

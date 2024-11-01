@@ -80,19 +80,29 @@ export type PendingTransactionData = {
   selectedAsset: AssetOptionType;
 };
 
+type BaseProps = {
+  sendButtonText?: string;
+  accountsData: TRPCRouterOutputs["getAccounts"];
+  defaultToAddress?: string | null;
+};
+
+type SingleSignerProps = BaseProps & {
+  isMultisig?: false;
+  onNextButton?: never;
+};
+
+type MultisigProps = BaseProps & {
+  isMultisig: true;
+  onNextButton: (pendingTransactionData: PendingTransactionData) => void;
+};
+
 export function SendAssetsFormContent({
   sendButtonText,
   accountsData,
   defaultToAddress,
-  onNextButton,
   isMultisig,
-}: {
-  sendButtonText?: string;
-  accountsData: TRPCRouterOutputs["getAccounts"];
-  defaultToAddress?: string | null;
-  onNextButton?: (pendingTransactionData: PendingTransactionData) => void;
-  isMultisig?: boolean;
-}) {
+  onNextButton,
+}: SingleSignerProps | MultisigProps) {
   const router = useRouter();
   const { formatMessage } = useIntl();
 
@@ -440,27 +450,37 @@ export function SendAssetsFormContent({
           <HStack mt={8} justifyContent="flex-end">
             <PillButton
               onClick={async () => {
-                // Make sure we have everything to continue with the multisig flow
-                if (isMultisig && onNextButton && (await isMultisigValid())) {
-                  // Using assertion since we know we have estimatedFeesData from the check above
+                const isValidFormData = isMultisig
+                  ? await isMultisigValid()
+                  : await isSingleSignerValid();
+
+                if (!isValidFormData) {
+                  return;
+                }
+                if (isMultisig) {
+                  // Using assertion since we know we have estimatedFeesData from `isValidMultisig`
                   const { normalizedTransactionData, error } =
-                    normalizeTransactionData(
-                      formMethods.getValues(),
-                      estimatedFeesData!,
+                    normalizeTransactionData({
+                      transactionFormData: formMethods.getValues(),
+                      estimatedFeesData: estimatedFeesData!,
                       selectedAsset,
-                    );
+                    });
+
+                  if (error) {
+                    setError("root.serverError", {
+                      message: error,
+                    });
+                    return;
+                  }
+
                   if (normalizedTransactionData) {
                     onNextButton({
                       transactionData: normalizedTransactionData,
                       selectedAccount,
                       selectedAsset,
                     });
-                  } else if (error) {
-                    setError("root.serverError", {
-                      message: error,
-                    });
                   }
-                } else if (await isSingleSignerValid()) {
+                } else {
                   setShowConfirmModal(true);
                 }
               }}
@@ -472,7 +492,7 @@ export function SendAssetsFormContent({
               {sendButtonText ?? formatMessage(messages.nextButton)}
             </PillButton>
           </HStack>
-          {!isMultisig && showConfirmModal && estimatedFeesData ? (
+          {showConfirmModal && estimatedFeesData ? (
             <SendAssetConfirmModal
               selectedAccount={selectedAccount}
               selectedAsset={selectedAsset}
