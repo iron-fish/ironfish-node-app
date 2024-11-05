@@ -73,12 +73,12 @@ export function ConfirmTransactionModal({
       estimatedFeesData,
       selectedAsset,
     });
-    if (error) {
+
+    if (error !== null) {
       setError("root.serverError", {
         message: error,
       });
-    }
-    if (normalizedTransactionData) {
+    } else {
       sendTransaction(normalizedTransactionData);
     }
   }, [

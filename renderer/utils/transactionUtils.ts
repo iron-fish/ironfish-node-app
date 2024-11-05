@@ -82,7 +82,7 @@ export const normalizeTransactionData = ({
     amount: normalizedAmount.toString(),
     fee: feeValue,
     memo: transactionFormData.memo,
-  } as TransactionData;
+  };
 
   return {
     normalizedTransactionData,

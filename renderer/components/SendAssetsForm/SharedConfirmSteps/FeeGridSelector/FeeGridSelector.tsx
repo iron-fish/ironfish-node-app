@@ -26,8 +26,8 @@ import { TextInput } from "@/ui/Forms/TextInput/TextInput";
 import { formatOre, parseIron } from "@/utils/ironUtils";
 import { IRON_DECIMAL_PLACES } from "@shared/constants";
 
+import { TransactionFormData } from "../../transactionSchema";
 import edit from "../icons/edit.svg";
-
 const messages = defineMessages({
   slow: {
     defaultMessage: "Slow",
@@ -64,12 +64,7 @@ interface FeeOptionProps {
   onSelect: () => void;
 }
 
-const FeeOption: React.FC<FeeOptionProps> = ({
-  label,
-  fee,
-  isSelected,
-  onSelect,
-}) => {
+const FeeOption = ({ label, fee, isSelected, onSelect }: FeeOptionProps) => {
   const { formatMessage } = useIntl();
   return (
     <Button
@@ -123,16 +118,16 @@ interface FeeGridSelectorProps {
   selectedAsset: AssetOptionType;
 }
 
-const FeeGridSelector: React.FC<FeeGridSelectorProps> = ({
+function FeeGridSelector({
   estimatedFeesData,
   selectedAsset,
-}) => {
+}: FeeGridSelectorProps) {
   const [showGrid, setShowGrid] = useState(true);
   const {
     control,
     formState: { errors },
     clearErrors,
-  } = useFormContext();
+  } = useFormContext<TransactionFormData>();
   const { formatMessage } = useIntl();
   const transactionFormData = useWatch();
   const fee = useWatch({ control, name: "fee" });
@@ -293,7 +288,7 @@ const FeeGridSelector: React.FC<FeeGridSelectorProps> = ({
       <RenderError error={errors.customFee?.message} />
     </Box>
   );
-};
+}
 
 const FeeGridSkeleton = ({ showGrid }: { showGrid: boolean }) => {
   const feeLabels = ["Slow", "Average", "Fast", "Custom"];

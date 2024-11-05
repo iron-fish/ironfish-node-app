@@ -9,7 +9,7 @@ import { COLORS } from "@/ui/colors";
 import { TextInput } from "@/ui/Forms/TextInput/TextInput";
 import { sliceToUtf8Bytes } from "@/utils/sliceToUtf8Bytes";
 
-import { MAX_MEMO_SIZE } from "../../transactionSchema";
+import { MAX_MEMO_SIZE, TransactionFormData } from "../../transactionSchema";
 import edit from "../icons/edit.svg";
 
 const messages = defineMessages({
@@ -26,7 +26,7 @@ const messages = defineMessages({
 const MemoInput = () => {
   const { formatMessage } = useIntl();
   const [showMemoInput, setShowMemoInput] = useState(false);
-  const { control, watch } = useFormContext();
+  const { control, watch } = useFormContext<TransactionFormData>();
   const memo = watch("memo");
 
   const renderMemoContent = () => {

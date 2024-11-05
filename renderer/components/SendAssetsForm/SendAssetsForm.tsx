@@ -88,12 +88,12 @@ type BaseProps = {
 
 type SingleSignerProps = BaseProps & {
   isMultisig?: false;
-  onNextButton?: never;
+  onNextButtonClick?: never;
 };
 
 type MultisigProps = BaseProps & {
   isMultisig: true;
-  onNextButton: (pendingTransactionData: PendingTransactionData) => void;
+  onNextButtonClick: (pendingTransactionData: PendingTransactionData) => void;
 };
 
 export function SendAssetsFormContent({
@@ -101,7 +101,7 @@ export function SendAssetsFormContent({
   accountsData,
   defaultToAddress,
   isMultisig,
-  onNextButton,
+  onNextButtonClick,
 }: SingleSignerProps | MultisigProps) {
   const router = useRouter();
   const { formatMessage } = useIntl();
@@ -309,15 +309,14 @@ export function SendAssetsFormContent({
   };
 
   const isMultisigValid = async () => {
+    if (!canAffordTransaction()) {
+      return false;
+    }
     const hasInfoForEstimating = await trigger([
       "amount",
       "toAccount",
       "assetId",
     ]);
-
-    if (!canAffordTransaction()) {
-      return false;
-    }
 
     if (!estimatedFeesData && hasInfoForEstimating) {
       setError("root.serverError", {
@@ -450,14 +449,13 @@ export function SendAssetsFormContent({
           <HStack mt={8} justifyContent="flex-end">
             <PillButton
               onClick={async () => {
-                const isValidFormData = isMultisig
-                  ? await isMultisigValid()
-                  : await isSingleSignerValid();
-
-                if (!isValidFormData) {
-                  return;
-                }
-                if (isMultisig) {
+                if (!isMultisig) {
+                  const isValid = await isSingleSignerValid();
+                  if (!isValid) return;
+                  setShowConfirmModal(true);
+                } else {
+                  const isFormValid = await isMultisigValid();
+                  if (!isFormValid) return;
                   // Using assertion since we know we have estimatedFeesData from `isValidMultisig`
                   const { normalizedTransactionData, error } =
                     normalizeTransactionData({
@@ -466,22 +464,17 @@ export function SendAssetsFormContent({
                       selectedAsset,
                     });
 
-                  if (error) {
+                  if (error !== null) {
                     setError("root.serverError", {
                       message: error,
                     });
-                    return;
-                  }
-
-                  if (normalizedTransactionData) {
-                    onNextButton({
+                  } else {
+                    onNextButtonClick({
                       transactionData: normalizedTransactionData,
                       selectedAccount,
                       selectedAsset,
                     });
                   }
-                } else {
-                  setShowConfirmModal(true);
                 }
               }}
               type="button"

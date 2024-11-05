@@ -113,15 +113,14 @@ export function ConfirmLedgerModal({
       estimatedFeesData,
       selectedAsset,
     });
-
-    if (normalizedTransactionData) {
-      submitTransaction(normalizedTransactionData);
-      setStep("CONFIRM_TRANSACTION");
-    } else if (error) {
+    if (error !== null) {
       setError("root.serverError", {
         message: error,
       });
       setStep("IDLE");
+    } else {
+      submitTransaction(normalizedTransactionData);
+      setStep("CONFIRM_TRANSACTION");
     }
   }, [
     transactionFormData,

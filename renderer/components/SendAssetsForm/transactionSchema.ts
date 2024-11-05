@@ -91,6 +91,6 @@ export type TransactionFormData = z.infer<
   ReturnType<typeof createTransactionSchema>
 >;
 
-export type TransactionData = Omit<TransactionFormData, "customFee"> & {
+export type TransactionData = Omit<TransactionFormData, "customFee" | "fee"> & {
   fee: number | null;
 };
