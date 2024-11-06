@@ -90,14 +90,14 @@ const FeeOption = ({ label, fee, isSelected, onSelect }: FeeOptionProps) => {
           <Text fontWeight={200} color="muted" _dark={{ color: "muted" }}>
             {formatMessage(messages[label as keyof typeof messages])}
           </Text>
-          <Text>{formatOre(fee)} $IRON</Text>
+          <Text fontWeight={400}>{formatOre(fee)} $IRON</Text>
         </VStack>
         {isSelected && (
           <Box
             h={6}
             w={6}
             minW={6}
-            bg={COLORS.GREEN_DARK}
+            bg="#5BA54C"
             borderRadius="full"
             position="relative"
             display="flex"
@@ -127,6 +127,7 @@ function FeeGridSelector({
     control,
     formState: { errors },
     clearErrors,
+    resetField,
   } = useFormContext<TransactionFormData>();
   const { formatMessage } = useIntl();
   const transactionFormData = useWatch();
@@ -181,7 +182,39 @@ function FeeGridSelector({
           name="fee"
           control={control}
           render={({ field: feeField }) => (
-            <Grid pb={2} templateRows="1fr 1fr" templateColumns="1fr 1fr">
+            <Grid
+              mb={2}
+              templateRows="1fr 1fr"
+              templateColumns="1fr 1fr"
+              border="1px solid"
+              borderRadius="4px"
+              _dark={{
+                borderColor: COLORS.DARK_MODE.GRAY_MEDIUM,
+              }}
+              sx={{
+                "& > button:nth-of-type(1)": {
+                  borderTopLeftRadius: "4px",
+                  borderTop: "none",
+                  borderLeft: "none",
+                },
+                "& > button:nth-of-type(2)": {
+                  borderTopRightRadius: "4px",
+                  borderLeft: "none",
+                  borderRight: "none",
+                  borderTop: "none",
+                },
+                "& > button:nth-of-type(3)": {
+                  borderBottomLeftRadius: "4px",
+                  borderBottom: "none",
+                  borderLeft: "none",
+                  borderTop: "none",
+                },
+                "& > div:last-child": {
+                  borderBottomRightRadius: "4px",
+                  border: "none",
+                },
+              }}
+            >
               {Object.entries(estimatedFeesData).map(([key, fee]) => (
                 <FeeOption
                   key={key}
@@ -191,6 +224,7 @@ function FeeGridSelector({
                   onSelect={() => {
                     feeField.onChange(key);
                     clearErrors("customFee");
+                    resetField("customFee");
                     setShowGrid(false);
                   }}
                 />
@@ -229,8 +263,10 @@ function FeeGridSelector({
                           variant="ghost"
                           borderRadius="full"
                           color="white"
-                          size="sm"
-                          bg={COLORS.GREEN_DARK}
+                          h={6}
+                          w={6}
+                          minW={6}
+                          bg="#5BA54C"
                           onClick={() => setShowGrid(false)}
                           aria-label="Save memo"
                           isDisabled={Number(customFeeField.value) <= 0}
@@ -240,7 +276,10 @@ function FeeGridSelector({
                             cursor: "not-allowed",
                             _hover: { bg: COLORS.GREEN_DARK },
                           }}
-                          icon={<CheckIcon />}
+                          _hover={{
+                            opacity: 0.8,
+                          }}
+                          icon={<CheckIcon w={3} />}
                         />
                       )
                     }
@@ -249,7 +288,7 @@ function FeeGridSelector({
                         feeField.value === "custom"
                           ? COLORS.GRAY_LIGHT
                           : "white",
-                      borderRadius: "0",
+                      border: "none",
                     }}
                   />
                 )}
@@ -266,7 +305,12 @@ function FeeGridSelector({
               {` `}
               $IRON
             </Text>
-            <Button variant="ghost" size="sm" onClick={() => setShowGrid(true)}>
+            <Button
+              px={1}
+              variant="ghost"
+              size="sm"
+              onClick={() => setShowGrid(true)}
+            >
               <Image src={edit} alt="edit fee" />
             </Button>
           </HStack>
@@ -279,6 +323,9 @@ function FeeGridSelector({
           bg="#FFE5DD"
           p={2}
           borderRadius={2}
+          _dark={{
+            bg: COLORS.DARK_MODE.RED,
+          }}
         >
           <Text color={COLORS.RED}>
             {formatMessage(messages.highFeeWarning)}
