@@ -6,13 +6,45 @@ import {
   VStack,
   Text,
 } from "@chakra-ui/react";
+import { defineMessages, useIntl } from "react-intl";
 
 import { useFeatureFlags } from "@/providers/FeatureFlagsProvider";
 import { COLORS } from "@/ui/colors";
 
 import { SettingsCard } from "../AppSettings/SettingsCard";
 
-export function FeatureFlagsList() {
+const messages = defineMessages({
+  turnOnFeatureFlags: {
+    defaultMessage: "Turn on feature flags",
+  },
+  turnOffFeatureFlags: {
+    defaultMessage: "Turn off feature flags",
+  },
+});
+
+export function FeatureFlags() {
+  const { areFlagsEnabled, toggleFeatureFlags } = useFeatureFlags();
+  const { formatMessage } = useIntl();
+  return (
+    <>
+      <Text>Toggle Feature Flags</Text>
+      <SettingsCard mb={4}>
+        <Switch
+          flexDirection="row-reverse"
+          isChecked={areFlagsEnabled}
+          onChange={toggleFeatureFlags}
+        >
+          {areFlagsEnabled
+            ? formatMessage(messages.turnOffFeatureFlags)
+            : formatMessage(messages.turnOnFeatureFlags)}
+        </Switch>
+      </SettingsCard>
+      {areFlagsEnabled && <FeatureFlagsList />}
+    </>
+  );
+}
+
+function FeatureFlagsList() {
   const { flags, toggleFlag } = useFeatureFlags();
 
   return (

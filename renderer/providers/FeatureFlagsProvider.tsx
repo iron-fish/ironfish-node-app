@@ -3,7 +3,6 @@ import {
   createContext,
   useCallback,
   useContext,
-  useEffect,
   useMemo,
 } from "react";
 import { Writable } from "type-fest";
@@ -47,6 +46,7 @@ type ContextType = {
   areFlagsEnabled: boolean;
   flags: FlagsValueMap;
   toggleFlag: (flag: FlagKey) => void;
+  toggleFeatureFlags: () => void;
 };
 
 const defaultValues = Object.fromEntries(
@@ -64,6 +64,7 @@ const Context = createContext<ContextType>({
   areFlagsEnabled: false,
   flags: defaultFlagValues,
   toggleFlag: () => {},
+  toggleFeatureFlags: () => {},
 });
 
 type Props = {
@@ -94,11 +95,8 @@ export function FeatureFlagsProvider({ children }: Props) {
     ) as FlagsValueMap;
   }, [flagsState, areFlagsEnabled]);
 
-  useEffect(() => {
-    // @ts-expect-error This is a dev-only feature
-    window.toggleFeatureFlags = () => {
-      setAreFlagsEnabled((prev) => !prev);
-    };
+  const toggleFeatureFlags = useCallback(() => {
+    setAreFlagsEnabled((prev) => !prev);
   }, [setAreFlagsEnabled]);
 
   const toggleFlag = useCallback(
@@ -117,8 +115,9 @@ export function FeatureFlagsProvider({ children }: Props) {
       areFlagsEnabled,
       flags: flagsValue,
       toggleFlag,
+      toggleFeatureFlags,
     };
-  }, [areFlagsEnabled, toggleFlag, flagsValue]);
+  }, [areFlagsEnabled, toggleFlag, flagsValue, toggleFeatureFlags]);
 
   return <Context.Provider value={value}>{children}</Context.Provider>;
 }

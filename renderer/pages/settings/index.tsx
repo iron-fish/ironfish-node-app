@@ -8,7 +8,7 @@ import {
 } from "@chakra-ui/react";
 import { defineMessages, useIntl } from "react-intl";
 
-import { FeatureFlagsList } from "@/components/FeatureFlagsList/FeatureFlagsList";
+import { FeatureFlags } from "@/components/FeatureFlagsList/FeatureFlagsList";
 import { LanguageSelector } from "@/components/LanguageSelector/LanguageSelector";
 import { NetworkSelector } from "@/components/NetworkSelector/NetworkSelector";
 import candyIronFish from "@/images/candy-iron-fish.svg";
@@ -17,7 +17,6 @@ import languageBubble from "@/images/language-bubble.svg";
 import sunMoon from "@/images/sun-moon.svg";
 import MainLayout from "@/layouts/MainLayout";
 import { WithExplanatorySidebar } from "@/layouts/WithExplanatorySidebar";
-import { useFeatureFlags } from "@/providers/FeatureFlagsProvider";
 import { DarkModeSettingsCard } from "@/ui/DarkModeSwitch/DarkModeSettingsCard";
 
 const messages = defineMessages({
@@ -55,7 +54,6 @@ const messages = defineMessages({
 
 export default function Settings() {
   const { formatMessage } = useIntl();
-  const { areFlagsEnabled } = useFeatureFlags();
 
   return (
     <MainLayout>
@@ -67,9 +65,7 @@ export default function Settings() {
           <Tab>{formatMessage(messages.networkTab)}</Tab>
           <Tab>{formatMessage(messages.languageTab)}</Tab>
           <Tab>{formatMessage(messages.themeTab)}</Tab>
-          {areFlagsEnabled && (
-            <Tab>{formatMessage(messages.featureFlagsTab)}</Tab>
-          )}
+          <Tab>{formatMessage(messages.featureFlagsTab)}</Tab>
         </TabList>
 
         <TabPanels>
@@ -100,17 +96,15 @@ export default function Settings() {
               <DarkModeSettingsCard />
             </WithExplanatorySidebar>
           </TabPanel>
-          {areFlagsEnabled && (
-            <TabPanel p={0}>
-              <WithExplanatorySidebar
-                heading={formatMessage(messages.featureFlagsTab)}
-                description={formatMessage(messages.featureFlagsDescription)}
-                imgSrc={flagFish}
-              >
-                <FeatureFlagsList />
-              </WithExplanatorySidebar>
-            </TabPanel>
-          )}
+          <TabPanel p={0}>
+            <WithExplanatorySidebar
+              heading={formatMessage(messages.featureFlagsTab)}
+              description={formatMessage(messages.featureFlagsDescription)}
+              imgSrc={flagFish}
+            >
+              <FeatureFlags />
+            </WithExplanatorySidebar>
+          </TabPanel>
         </TabPanels>
       </Tabs>
     </MainLayout>
