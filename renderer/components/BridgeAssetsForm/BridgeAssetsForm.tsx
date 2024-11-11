@@ -143,6 +143,9 @@ function BridgeAssetsFormContent({
                 alt=""
                 width="24"
                 height="24"
+                style={{
+                  borderRadius: "4px",
+                }}
               />
               <ItemText>{item.label}</ItemText>
               {item.asset.verification.status === "verified" && (
