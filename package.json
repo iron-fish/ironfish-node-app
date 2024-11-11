@@ -22,7 +22,7 @@
   },
   "license": "MPL-2.0",
   "dependencies": {
-    "@ironfish/sdk": "2.8.1",
+    "@ironfish/sdk": "2.9.0",
     "@ironfish/rust-nodejs": "2.7.0",
     "@ledgerhq/errors": "6.19.1",
     "@ledgerhq/hw-transport-node-hid": "6.29.5",
