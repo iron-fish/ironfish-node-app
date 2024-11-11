@@ -1,5 +1,6 @@
 import { RpcClient } from "@ironfish/sdk";
 
+import { getExternalChainHead } from "./accounts/utils/getExternalChainHead";
 import { Ironfish } from "./ironfish/Ironfish";
 import { userSettingsStore } from "../stores/userSettingsStore";
 
@@ -11,6 +12,7 @@ export type InitialState =
 
 export class Manager {
   private _ironfish: Ironfish | null = null;
+  private _externalChainHead?: { sequence: number; hash: string };
 
   async getIronfish(): Promise<Ironfish> {
     if (this._ironfish) return this._ironfish;
@@ -21,6 +23,13 @@ export class Manager {
       networkId,
     });
     return this._ironfish;
+  }
+
+  async getExternalChainHead(): Promise<
+    { sequence: number; hash: string } | undefined
+  > {
+    const networkId = await userSettingsStore.getSetting("networkId");
+    return getExternalChainHead(networkId);
   }
 
   async shouldDownloadSnapshot(): Promise<boolean> {

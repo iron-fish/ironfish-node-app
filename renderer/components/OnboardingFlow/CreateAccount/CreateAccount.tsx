@@ -11,6 +11,11 @@ type Steps = "create" | "confirm";
 function useMaybeNewAccount() {
   const { data: accountsData, refetch: refetchGetAccounts } =
     trpcReact.getAccounts.useQuery();
+  const { data: chainHead, isLoading: chainHeadIsLoading } =
+    trpcReact.getExternalChainHead.useQuery(undefined, {
+      cacheTime: 1000 * 60 * 10,
+      staleTime: 1000 * 60 * 10,
+    });
   const { mutate: createAccount, isIdle: isCreateIdle } =
     trpcReact.createAccount.useMutation();
   const accountName = accountsData?.[0]?.name;
@@ -25,12 +30,15 @@ function useMaybeNewAccount() {
   );
 
   useEffect(() => {
-    if (!isCreateIdle || accountsData === undefined) return;
+    if (!isCreateIdle || accountsData === undefined || chainHeadIsLoading)
+      return;
 
     if (accountsData.length === 0) {
       createAccount(
         {
           name: "New Account",
+          createdAt: chainHead?.sequence,
+          head: chainHead,
         },
         {
           onSuccess: () => {
@@ -39,7 +47,14 @@ function useMaybeNewAccount() {
         },
       );
     }
-  }, [accountsData, createAccount, isCreateIdle, refetchGetAccounts]);
+  }, [
+    accountsData,
+    createAccount,
+    isCreateIdle,
+    refetchGetAccounts,
+    chainHeadIsLoading,
+    chainHead,
+  ]);
 
   const mnemonicPhrase = exportData?.account;
 
