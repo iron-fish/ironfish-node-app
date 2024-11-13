@@ -10,10 +10,12 @@ function lowerCaseAZ(str: string) {
   });
 }
 
+export function formatMnemonicWord(word: string) {
+  return lowerCaseAZ(word).trim();
+}
+
 export function formatMnemonicArray(phrase: Array<string>) {
-  return phrase.map((word) => {
-    return lowerCaseAZ(word).trim();
-  });
+  return phrase.map(formatMnemonicWord);
 }
 
 export function formatMnemonic(phrase: string | Array<string>) {
