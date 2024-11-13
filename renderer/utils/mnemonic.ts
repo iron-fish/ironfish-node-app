@@ -10,13 +10,9 @@ export function formatMnemonicWord(word: string) {
     .replace(/\s+/g, "");
 }
 
-export function formatMnemonicArray(phrase: Array<string>) {
-  return phrase.map(formatMnemonicWord);
-}
-
 export function formatMnemonic(phrase: string | Array<string>) {
   const asArray = Array.isArray(phrase) ? phrase : phrase.split(/\s+/);
-  return formatMnemonicArray(asArray).join(" ");
+  return asArray.map(formatMnemonicWord).join(" ");
 }
 
 export function validateMnemonic(

@@ -18,7 +18,7 @@ import { useCopyToClipboard, useToggle } from "usehooks-ts";
 import { COLORS } from "@/ui/colors";
 import { useIFToast } from "@/ui/Toast/Toast";
 import { useHasGroupBlur } from "@/utils/formUtils";
-import { formatMnemonicArray, formatMnemonicWord } from "@/utils/mnemonic";
+import { formatMnemonicWord } from "@/utils/mnemonic";
 import { MergeProps } from "@/utils/react";
 
 import { FormField, FormFieldProps } from "../FormField/FormField";
@@ -102,7 +102,7 @@ export function MnemonicPhrase({
 
       const clipboardText = e.clipboardData.getData("text");
 
-      const words = formatMnemonicArray(clipboardText.split(/\s+/g));
+      const words = clipboardText.split(/\s+/g).map(formatMnemonicWord);
 
       const index = parseInt(number, 10) - 1;
 
