@@ -4,14 +4,10 @@ export const EMPTY_MNEMONIC_ARRAY = Array.from(
   () => "",
 );
 
-function lowerCaseAZ(str: string) {
-  return str.replace(/([A-Z])/g, (char) => {
-    return char.toLowerCase();
-  });
-}
-
 export function formatMnemonicWord(word: string) {
-  return lowerCaseAZ(word).trim();
+  return word
+    .replace(/([A-Z])/g, (char) => char.toLowerCase())
+    .replace(/\s+/g, "");
 }
 
 export function formatMnemonicArray(phrase: Array<string>) {
