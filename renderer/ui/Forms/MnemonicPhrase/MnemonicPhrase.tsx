@@ -18,11 +18,7 @@ import { useCopyToClipboard, useToggle } from "usehooks-ts";
 import { COLORS } from "@/ui/colors";
 import { useIFToast } from "@/ui/Toast/Toast";
 import { useHasGroupBlur } from "@/utils/formUtils";
-import {
-  formatMnemonic,
-  formatMnemonicArray,
-  formatMnemonicWord,
-} from "@/utils/mnemonic";
+import { formatMnemonicArray, formatMnemonicWord } from "@/utils/mnemonic";
 import { MergeProps } from "@/utils/react";
 
 import { FormField, FormFieldProps } from "../FormField/FormField";
@@ -86,8 +82,8 @@ export function MnemonicPhrase({
       const nextValues = phrase
         .toSpliced(index, 1, formatMnemonicWord(e.target.value))
         .slice(0, PHRASE_ITEM_COUNT);
-      const formatted = formatMnemonic(nextValues);
-      onChange(formatted.split(/\s+/));
+
+      onChange(nextValues);
     },
     [onChange, phrase],
   );
