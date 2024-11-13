@@ -18,6 +18,7 @@ import { useCopyToClipboard, useToggle } from "usehooks-ts";
 import { COLORS } from "@/ui/colors";
 import { useIFToast } from "@/ui/Toast/Toast";
 import { useHasGroupBlur } from "@/utils/formUtils";
+import { formatMnemonic } from "@/utils/mnemonic";
 import { MergeProps } from "@/utils/react";
 
 import { FormField, FormFieldProps } from "../FormField/FormField";
@@ -79,9 +80,10 @@ export function MnemonicPhrase({
       }
       const index = parseInt(number, 10) - 1;
       const nextValues = phrase
-        .toSpliced(index, 1, e.target.value)
+        .toSpliced(index, 1, e.target.value.toLowerCase().replace(/\s+/g, ""))
         .slice(0, PHRASE_ITEM_COUNT);
-      onChange(nextValues);
+      const formatted = formatMnemonic(nextValues);
+      onChange(formatted.split(/\s+/));
     },
     [onChange, phrase],
   );
@@ -98,7 +100,11 @@ export function MnemonicPhrase({
         throw new Error("data-number not found in mnemonic phrase input");
       }
 
-      const words = e.clipboardData.getData("text").trim().split(/\s+/g);
+      const words = e.clipboardData
+        .getData("text")
+        .toLowerCase()
+        .trim()
+        .split(/\s+/g);
       const index = parseInt(number, 10) - 1;
 
       if (words.length === PHRASE_ITEM_COUNT) {

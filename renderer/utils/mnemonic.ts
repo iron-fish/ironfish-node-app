@@ -4,9 +4,21 @@ export const EMPTY_MNEMONIC_ARRAY = Array.from(
   () => "",
 );
 
+function lowerCaseAZ(str: string) {
+  return str.replace(/([A-Z])/g, (char) => {
+    return char.toLowerCase();
+  });
+}
+
+export function formatMnemonicArray(phrase: Array<string>) {
+  return phrase.map((word) => {
+    return lowerCaseAZ(word).trim();
+  });
+}
+
 export function formatMnemonic(phrase: string | Array<string>) {
-  const asString = Array.isArray(phrase) ? phrase.join(" ") : phrase;
-  return asString.trim().replace(/\s+/g, " ");
+  const asArray = Array.isArray(phrase) ? phrase : phrase.split(/\s+/);
+  return formatMnemonicArray(asArray).join(" ");
 }
 
 export function validateMnemonic(
