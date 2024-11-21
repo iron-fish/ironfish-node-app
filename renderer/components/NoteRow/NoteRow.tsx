@@ -211,6 +211,7 @@ export function NoteRow({
     to,
     type,
     value,
+    contact,
   ]);
 
   return (

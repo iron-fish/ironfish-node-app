@@ -17,6 +17,9 @@
   "/0TOL5": {
     "message": "Amount"
   },
+  "/Vzel6": {
+    "message": "Something went wrong with your transaction, please retry."
+  },
   "/YxWvM": {
     "message": "Sending a multisig transaction starts with creating an unsigned transaction: a fully generated transaction that is only missing the signature. The coordinator should create the unsigned transaction data and send it to you"
   },
@@ -41,6 +44,9 @@
   },
   "0TJsMy": {
     "message": "Plug your Ledger device directly into your computer"
+  },
+  "0YAxhZ": {
+    "message": "available"
   },
   "0rIM5R": {
     "message": "Remove Account"
@@ -96,6 +102,9 @@
   "3v74IM": {
     "message": "By bridging your assets, you agree to Chainport's <link>terms of service</link>."
   },
+  "3vA/R+": {
+    "message": "Memo can't be more than 32 bytes"
+  },
   "47FYwb": {
     "message": "Cancel"
   },
@@ -107,6 +116,9 @@
   },
   "4woaDB": {
     "message": "Submitting Transaction"
+  },
+  "4zOJay": {
+    "message": "Something went wrong finalizing your transaction"
   },
   "551bXe": {
     "message": "View Only"
@@ -146,6 +158,9 @@
   },
   "6P/bTL": {
     "message": "Connection Type"
+  },
+  "6SbRe2": {
+    "message": "Your custom fee is significantly higher than the fast fee."
   },
   "6Zll8z": {
     "message": "Reset the node. You'll have to re-scan the blockchain, but your accounts and funds will not be affected."
@@ -234,6 +249,9 @@
   "BxM6mJ": {
     "message": "Lowest to highest balance"
   },
+  "Byn5mN": {
+    "message": "A fee amount is required"
+  },
   "C2CIgC": {
     "message": "Sending"
   },
@@ -242,9 +260,6 @@
   },
   "CxC3WU": {
     "message": "Send Multisig Ledger Transaction"
-  },
-  "D31nQ7": {
-    "message": "An error occurred while estimating the transaction fee"
   },
   "D3idYv": {
     "message": "Settings"
@@ -397,6 +412,9 @@
   "M+isB1": {
     "message": "Bridge Provider"
   },
+  "M99Eqr": {
+    "message": "Add Memo"
+  },
   "MDZ4hi": {
     "message": "Already have an account? Enter your recovery credentials and continue using your account as expected."
   },
@@ -520,8 +538,14 @@
   "Seu2ON": {
     "message": "To:"
   },
+  "Sjo1P4": {
+    "message": "Custom"
+  },
   "T2yddR": {
     "message": "Your Node"
+  },
+  "TKmub+": {
+    "message": "This field is required"
   },
   "TRfaIL": {
     "message": "Synced"
@@ -544,9 +568,6 @@
   "TzwzhT": {
     "message": "You can remove and reimport your accounts whenever you like, provided that you possess the account keys. It is highly recommended to maintain a backup of your account keys in a secure location."
   },
-  "U78NhE": {
-    "message": "Complete"
-  },
   "ULXFfP": {
     "message": "Receive"
   },
@@ -561,6 +582,9 @@
   },
   "Uziuar": {
     "message": "Change Network"
+  },
+  "V3K3zJ": {
+    "message": "Enter custom value"
   },
   "VBDJ/l": {
     "message": "Your balance might not be accurate while you're syncing"
@@ -658,6 +682,9 @@
   "c/KktL": {
     "message": "Resources"
   },
+  "c6lbIa": {
+    "message": "Amount must be greater than 0"
+  },
   "dJMieh": {
     "message": "Connect account"
   },
@@ -669,6 +696,9 @@
   },
   "dTSUUK": {
     "message": "If you remove this account without exporting it first, YOU WILL LOSE ACCESS TO IT."
+  },
+  "e0hVig": {
+    "message": "Fill out the 'To' and 'Amount' fields to see estimated fees."
   },
   "e6HIlS": {
     "message": "Destination Address"
@@ -733,8 +763,8 @@
   "hR0flV": {
     "message": "All your transactions, whether in $IRON or other custom assets, will be displayed in this section. To start a transaction, simply click on the 'Send' or 'Receive' tabs."
   },
-  "iFsDVR": {
-    "message": "Loading"
+  "i8SZTD": {
+    "message": "Invalid public address"
   },
   "iWiHY7": {
     "message": "The blockchain is syncing. Your balance may be inaccurate and sending transactions will be disabled until the sync is complete."
@@ -774,9 +804,6 @@
   },
   "kTt/ND": {
     "message": "Russian"
-  },
-  "kbpDqo": {
-    "message": "Preparing destination txn"
   },
   "krty63": {
     "message": "Need help?"
@@ -865,9 +892,6 @@
   "rGIQdX": {
     "message": "Back to Account Overview"
   },
-  "raexxM": {
-    "message": "Submitted"
-  },
   "rbrahO": {
     "message": "Close"
   },
@@ -877,8 +901,8 @@
   "rqrhXg": {
     "message": "Confirm Your Recovery Phrase"
   },
-  "rrBTkh": {
-    "message": "Submitted destination txn"
+  "sPA8hu": {
+    "message": "Amount must be a valid number"
   },
   "sXlL42": {
     "message": "Encrypted Wallets Unsupported"
@@ -921,9 +945,6 @@
   },
   "vV69eP": {
     "message": "Downloading a snapshot is the fastest way to sync with the network."
-  },
-  "vXCeIi": {
-    "message": "Failed"
   },
   "vaP4MI": {
     "message": "It currently holds:"

@@ -17,7 +17,7 @@ type SelectOption = {
   icon?: ReactNode;
 };
 
-type SelectRootProps = Simplify<ComponentProps<typeof RadixSelect.Root>>;
+export type SelectRootProps = Simplify<ComponentProps<typeof RadixSelect.Root>>;
 
 type Props = FormFieldProps &
   Omit<SelectRootProps, "onValueChange"> & {
