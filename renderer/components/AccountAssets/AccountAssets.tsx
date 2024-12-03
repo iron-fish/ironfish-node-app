@@ -57,6 +57,9 @@ export function AccountAssets({ accountName }: { accountName: string }) {
     name: accountName,
   });
 
+  const { mutate: exportTransaction } =
+    trpcReact.handleExportTransactions.useMutation();
+
   const { data: isSynced = { synced: false, progress: 0 } } =
     trpcReact.isAccountSynced.useQuery(
       {
@@ -78,6 +81,10 @@ export function AccountAssets({ accountName }: { accountName: string }) {
   const cardBg = getGradientObject(
     getAddressGradientColor(accountData.address),
   ).to;
+
+  const exportTransactions = () => {
+    exportTransaction({ accounts: [accountName], format: "notes" });
+  };
 
   return (
     <Box>
@@ -149,6 +156,14 @@ export function AccountAssets({ accountName }: { accountName: string }) {
                       {formatMessage(messages.receiveButton)}
                     </PillButton>
                   </ChakraLink>
+                  <PillButton
+                    size="sm"
+                    as="div"
+                    onClick={() => exportTransactions()}
+                  >
+                    <ArrowSend transform="scale(0.8)" />
+                    {"Export Transactions"}
+                  </PillButton>
                 </HStack>
               </Flex>
               <Image alt="" src={treasureChest} />

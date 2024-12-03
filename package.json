@@ -22,14 +22,15 @@
   },
   "license": "MPL-2.0",
   "dependencies": {
-    "@ironfish/sdk": "2.9.0",
     "@ironfish/rust-nodejs": "2.7.0",
+    "@ironfish/sdk": "2.9.0",
     "@ledgerhq/errors": "6.19.1",
     "@ledgerhq/hw-transport-node-hid": "6.29.5",
     "@zondax/ledger-ironfish": "1.0.0",
     "@zondax/ledger-js": "1.0.1",
     "electron-serve": "^1.1.0",
-    "keccak": "^3.0.4"
+    "keccak": "^3.0.4",
+    "natural-orderby": "^5.0.0"
   },
   "devDependencies": {
     "@chakra-ui/icons": "^2.1.1",
