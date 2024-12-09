@@ -25,6 +25,7 @@ import {
   SendAssetsFormContent,
 } from "../../SendAssetsForm/SendAssetsForm";
 import { CopyField } from "../Components/CopyField";
+import { VerifyLedgerAddress } from "../Components/VerifyLedgerAddress";
 
 const messages = defineMessages({
   multisigGetUnsignedTransactionHeading: {
@@ -222,6 +223,7 @@ export function GetUnsignedTransaction({
         <TabList mt={3} mb={8}>
           <Tab>{"Enter Unsigned Transaction"}</Tab>
           <Tab>{"Create Transfer Transaction"}</Tab>
+          <Tab>{"Verify Ledger Address"}</Tab>
         </TabList>
         <TabPanels>
           <TabPanel p={0}>
@@ -237,6 +239,9 @@ export function GetUnsignedTransaction({
                 onSubmit({ unsignedTransaction, selectedAccount });
               }}
             />
+          </TabPanel>
+          <TabPanel p={0}>
+            <VerifyLedgerAddress />
           </TabPanel>
         </TabPanels>
       </Tabs>
