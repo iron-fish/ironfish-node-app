@@ -1,42 +1,66 @@
 import { Box, Code, HStack, Spinner, Text, VStack } from "@chakra-ui/react";
+import { defineMessages, useIntl } from "react-intl";
 
 import { trpcReact } from "@/providers/TRPCProvider";
 import { COLORS } from "@/ui/colors";
 import { PillButton } from "@/ui/PillButton/PillButton";
 
+const messages = defineMessages({
+  appNotOpen: {
+    defaultMessage:
+      "Your Ledger device is locked or the Ironfish app is not open.",
+  },
+  transactionRejected: {
+    defaultMessage: "The transaction was rejected on your Ledger device.",
+  },
+  viewAddressInstructions: {
+    defaultMessage:
+      "View the public address of your connected Ledger device by clicking the button below.",
+  },
+  deviceDisplayInstructions: {
+    defaultMessage:
+      "Your device will display its public address, and if you approve the request we will also display the address below.",
+  },
+  devicePrerequisites: {
+    defaultMessage:
+      "Ensure that your Ledger device is unlocked and that the Ironfish app is open before proceeding.",
+  },
+  addressLabel: {
+    defaultMessage: "Address:",
+  },
+  viewAddressButton: {
+    defaultMessage: "View Address",
+  },
+  genericError: {
+    defaultMessage: "Something went wrong, please try again.",
+  },
+});
+
 function getErrorMessage(error: string) {
   if (error === "APP_NOT_OPEN") {
-    return "Your Ledger device is locked or the Ironfish app is not open.";
+    return messages.appNotOpen;
   }
 
   if (error === "TRANSACTION_REJECTED") {
-    return "The transaction was rejected on your Ledger device.";
+    return messages.transactionRejected;
   }
 
-  return error;
+  return messages.genericError;
 }
 
 export function ViewLedgerAddress() {
+  const { formatMessage } = useIntl();
   const { mutate, isLoading, data, error, isSuccess, isError } =
     trpcReact.verifyAddress.useMutation();
 
   return (
     <Box>
       <VStack alignItems="stretch">
-        <Text>
-          View the public address of your connected Ledger device by clicking
-          the button below.
-        </Text>
+        <Text>{formatMessage(messages.viewAddressInstructions)}</Text>
 
-        <Text>
-          Your device will display its public address, and if you approve the
-          request we will also display the address below.
-        </Text>
+        <Text>{formatMessage(messages.deviceDisplayInstructions)}</Text>
 
-        <Text>
-          Ensure that your Ledger device is unlocked and that the Ironfish app
-          is open before proceeding.
-        </Text>
+        <Text>{formatMessage(messages.devicePrerequisites)}</Text>
       </VStack>
 
       <Box my={6}>
@@ -58,7 +82,9 @@ export function ViewLedgerAddress() {
               </HStack>
             ) : (
               <VStack alignItems="stretch">
-                <Text fontWeight="bold">Address:</Text>
+                <Text fontWeight="bold">
+                  {formatMessage(messages.addressLabel)}
+                </Text>
                 <Text>{data}</Text>
               </VStack>
             )}
@@ -75,14 +101,16 @@ export function ViewLedgerAddress() {
             overflow="auto"
             mb={6}
           >
-            <Text as="pre">{getErrorMessage(error.message)}</Text>
+            <Text as="pre">
+              {formatMessage(getErrorMessage(error.message))}
+            </Text>
           </Code>
         )}
       </Box>
 
       <HStack>
         <PillButton isDisabled={isLoading} onClick={() => mutate()}>
-          View Address
+          {formatMessage(messages.viewAddressButton)}
         </PillButton>
       </HStack>
     </Box>
