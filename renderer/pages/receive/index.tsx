@@ -42,7 +42,7 @@ const messages = defineMessages({
     defaultMessage: "From",
   },
   ledgerDescription: {
-    defaultMessage: "Utilities for interacting with your Ledger device.",
+    defaultMessage: "View your public address on your Ledger device.",
   },
 });
 
