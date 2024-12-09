@@ -210,7 +210,7 @@ function Sidebar() {
 type Props = {
   children: ReactNode;
   backLinkProps?: {
-    label: string;
+    label: string | null;
     href: string;
   };
 };

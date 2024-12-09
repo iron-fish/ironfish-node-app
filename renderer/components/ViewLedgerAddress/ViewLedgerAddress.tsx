@@ -25,6 +25,9 @@ const messages = defineMessages({
     defaultMessage:
       "Ensure that your Ledger device is unlocked and that the Ironfish app is open before proceeding.",
   },
+  approveRequest: {
+    defaultMessage: "Please approve the request on your Ledger device.",
+  },
   addressLabel: {
     defaultMessage: "Address:",
   },
@@ -77,9 +80,10 @@ export function ViewLedgerAddress() {
             }}
           >
             {isLoading ? (
-              <HStack justifyContent="center" my={4}>
+              <VStack justifyContent="center" my={4} gap={4}>
                 <Spinner opacity="0.5" size="lg" />
-              </HStack>
+                <Text>{formatMessage(messages.approveRequest)}</Text>
+              </VStack>
             ) : (
               <VStack alignItems="stretch">
                 <Text fontWeight="bold">
