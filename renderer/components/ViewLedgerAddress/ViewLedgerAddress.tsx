@@ -16,7 +16,7 @@ function getErrorMessage(error: string) {
   return error;
 }
 
-export function VerifyLedgerAddress() {
+export function ViewLedgerAddress() {
   const { mutate, isLoading, data, error, isSuccess, isError } =
     trpcReact.verifyAddress.useMutation();
 
@@ -24,9 +24,13 @@ export function VerifyLedgerAddress() {
     <Box>
       <VStack alignItems="stretch">
         <Text>
-          Verify your Ledger address by clicking the button below. Your Ledger
-          device will display its public address, and if you approve the
-          request, we will display the address below.
+          View the public address of your connected Ledger device by clicking
+          the button below.
+        </Text>
+
+        <Text>
+          Your device will display its public address, and if you approve the
+          request we will also display the address below.
         </Text>
 
         <Text>
@@ -78,7 +82,7 @@ export function VerifyLedgerAddress() {
 
       <HStack>
         <PillButton isDisabled={isLoading} onClick={() => mutate()}>
-          Verify
+          View Address
         </PillButton>
       </HStack>
     </Box>

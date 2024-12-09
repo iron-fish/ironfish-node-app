@@ -460,6 +460,9 @@
   "PLUyno": {
     "message": "Switch between light and dark mode."
   },
+  "POEtw2": {
+    "message": "Utilities for interacting with your Ledger device."
+  },
   "Pe0ogR": {
     "message": "Theme"
   },
@@ -867,6 +870,9 @@
   },
   "sXlL42": {
     "message": "Encrypted Wallets Unsupported"
+  },
+  "scwekL": {
+    "message": "Ledger"
   },
   "tBX0Dj": {
     "message": "Your Iron Fish wallet is encrypted. Encrypted wallets are not yet supported in the node app. Please decrypt your wallet using the CLI to use the node app."
