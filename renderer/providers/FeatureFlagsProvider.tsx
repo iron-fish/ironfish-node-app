@@ -27,6 +27,12 @@ const FLAGS_DEFINITION = [
       "Turning this flag on will allow double clicking the logo to change the theme",
     key: "themeToggle",
   },
+  {
+    name: "Multisig Ledger",
+    description:
+      "Turning this flag on will allow you to use a Ledger device to sign transactions using a multisig wallet. You will need to have the Ironfish DKG app installed on your Ledger device.",
+    key: "multisigLedger",
+  },
 ] as const;
 
 type FlagsDefinition = Writable<(typeof FLAGS_DEFINITION)[number]>;

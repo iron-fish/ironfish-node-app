@@ -144,6 +144,10 @@ function Sidebar() {
       </Box>
       <VStack alignItems="flex-start" flexGrow={1}>
         {LINKS.map(({ label, href, icon, id }) => {
+          // Multisig Ledger is only visible if the flag is enabled
+          if (id === "multisigLedger" && !flags.multisigLedger.enabled) {
+            return null;
+          }
           // The bridge tab is only visible if the flag is enabled and we're not on mainnet
           if (id === "bridge" && !flags.chainportBridge.enabled) {
             return null;
