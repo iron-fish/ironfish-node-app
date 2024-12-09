@@ -430,6 +430,9 @@
   "NX/nQR": {
     "message": "Changing node settings can optimize performance, improve connectivity, enhance security, and manage resources effectively."
   },
+  "NXKaWE": {
+    "message": "The request was rejected on your Ledger device."
+  },
   "NZYRdf": {
     "message": "Mainnet"
   },
@@ -615,9 +618,6 @@
   },
   "YFT4rG": {
     "message": "Keys"
-  },
-  "YcKi+X": {
-    "message": "The transaction was rejected on your Ledger device."
   },
   "Yeh8je": {
     "message": "This Ledger account has already been imported"

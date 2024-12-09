@@ -11,7 +11,7 @@ const messages = defineMessages({
       "Your Ledger device is locked or the Ironfish app is not open.",
   },
   transactionRejected: {
-    defaultMessage: "The transaction was rejected on your Ledger device.",
+    defaultMessage: "The request was rejected on your Ledger device.",
   },
   viewAddressInstructions: {
     defaultMessage:
