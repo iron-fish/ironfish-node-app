@@ -29,107 +29,114 @@ const MemoInput = () => {
   const { control, watch } = useFormContext<TransactionFormData>();
   const memo = watch("memo");
 
-  const renderMemoContent = () => {
-    if (!showMemoInput && !memo) {
-      return (
-        <Button
-          onClick={() => setShowMemoInput(true)}
-          width="fit-content"
-          variant="ghost"
-          size="sm"
-        >
-          <Text color={COLORS.VIOLET}>+ {formatMessage(messages.addMemo)}</Text>
-        </Button>
-      );
-    }
+  if (!showMemoInput && !memo) {
+    return (
+      <Button
+        onClick={() => setShowMemoInput(true)}
+        width="fit-content"
+        variant="ghost"
+        px={0}
+        size="sm"
+        _hover={{
+          bg: "transparent",
+          textDecoration: "underline",
+          textDecorationColor: COLORS.VIOLET,
+        }}
+      >
+        <Text fontWeight={400} color={COLORS.VIOLET}>
+          + {formatMessage(messages.addMemo)}
+        </Text>
+      </Button>
+    );
+  }
 
-    if (showMemoInput) {
-      return (
-        <Box py={4} borderBottom="1.5px dashed #DEDFE2">
-          <Controller
-            name="memo"
-            control={control}
-            render={({ field, formState: { errors } }) => (
-              <TextInput
-                {...field}
-                error={errors.memo?.message}
-                label={formatMessage(messages.memoLabel)}
-                onKeyDown={(e) => {
-                  if (e.key === "Enter" && field.value) {
-                    setShowMemoInput(false);
-                  }
-                }}
-                value={field.value ?? ""}
-                onChange={(e) =>
-                  field.onChange(
-                    sliceToUtf8Bytes(e.target.value, MAX_MEMO_SIZE),
-                  )
+  if (!showMemoInput && memo) {
+    return (
+      <Flex flexDir="column" pt="4">
+        <Text as="div" color={COLORS.GRAY_MEDIUM}>
+          {formatMessage(messages.memo)}
+        </Text>
+        <HStack gap={2}>
+          <Text fontSize="md">{memo}</Text>
+          <Button
+            variant="ghost"
+            size="sm"
+            px={1}
+            onClick={() => setShowMemoInput(true)}
+          >
+            <Image src={edit} alt="edit memo" />
+          </Button>
+        </HStack>
+      </Flex>
+    );
+  }
+
+  if (showMemoInput) {
+    return (
+      <Box py={4} borderBottom="1.5px dashed #DEDFE2">
+        <Controller
+          name="memo"
+          control={control}
+          render={({ field, formState: { errors } }) => (
+            <TextInput
+              {...field}
+              error={errors.memo?.message}
+              label={formatMessage(messages.memoLabel)}
+              onKeyDown={(e) => {
+                if (e.key === "Enter" && field.value) {
+                  setShowMemoInput(false);
                 }
-                icon={
-                  <HStack gap={2}>
-                    <IconButton
-                      borderRadius="full"
-                      color="white"
-                      variant="ghost"
-                      size="sm"
-                      onClick={() => {
-                        field.onChange("");
-                        setShowMemoInput(false);
-                      }}
-                      bg={COLORS.RED}
-                      aria-label="Clear memo"
-                      icon={<CloseIcon />}
-                    />
-                    <IconButton
-                      variant="ghost"
-                      borderRadius="full"
-                      color="white"
-                      size="sm"
-                      bg={COLORS.GREEN_DARK}
-                      onClick={() => setShowMemoInput(false)}
-                      aria-label="Save memo"
-                      isDisabled={!field.value}
-                      _disabled={{
-                        bg: COLORS.GREEN_DARK,
-                        opacity: 0.4,
-                        cursor: "not-allowed",
-                        _hover: { bg: COLORS.GREEN_DARK },
-                      }}
-                      icon={<CheckIcon />}
-                    />
-                  </HStack>
-                }
-              />
-            )}
-          />
-        </Box>
-      );
-    }
-
-    if (!showMemoInput && memo) {
-      return (
-        <Flex flexDir="column" pt="4">
-          <Text as="div" color={COLORS.GRAY_MEDIUM}>
-            {formatMessage(messages.memo)}
-          </Text>
-          <HStack gap={2}>
-            <Text fontSize="md">{memo}</Text>
-            <Button
-              variant="ghost"
-              size="sm"
-              onClick={() => setShowMemoInput(true)}
-            >
-              <Image src={edit} alt="edit memo" />
-            </Button>
-          </HStack>
-        </Flex>
-      );
-    }
-
-    return null;
-  };
-
-  return <>{renderMemoContent()}</>;
+              }}
+              value={field.value ?? ""}
+              onChange={(e) =>
+                field.onChange(sliceToUtf8Bytes(e.target.value, MAX_MEMO_SIZE))
+              }
+              icon={
+                <HStack gap={2}>
+                  <IconButton
+                    aria-label="Clear memo"
+                    borderRadius="full"
+                    color="white"
+                    variant="ghost"
+                    size="sm"
+                    onClick={() => {
+                      field.onChange("");
+                      setShowMemoInput(false);
+                    }}
+                    bg={COLORS.RED}
+                    _hover={{
+                      opacity: 0.8,
+                    }}
+                    icon={<CloseIcon />}
+                  />
+                  <IconButton
+                    aria-label="Save memo"
+                    variant="ghost"
+                    borderRadius="full"
+                    color="white"
+                    size="sm"
+                    bg="#5BA54C"
+                    _hover={{
+                      opacity: 0.8,
+                    }}
+                    onClick={() => setShowMemoInput(false)}
+                    isDisabled={!field.value}
+                    _disabled={{
+                      bg: COLORS.GREEN_DARK,
+                      opacity: 0.4,
+                      cursor: "not-allowed",
+                      _hover: { bg: COLORS.GREEN_DARK },
+                    }}
+                    icon={<CheckIcon />}
+                  />
+                </HStack>
+              }
+            />
+          )}
+        />
+      </Box>
+    );
+  }
 };
 
 export default MemoInput;
