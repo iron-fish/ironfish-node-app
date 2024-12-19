@@ -344,9 +344,37 @@ const FeeGridSkeleton = ({ showGrid }: { showGrid: boolean }) => {
     <Box py={2} borderBottom="1.5px dashed #DEDFE2">
       <Grid
         height="128px"
-        pb={2}
         templateRows="1fr 1fr"
         templateColumns="1fr 1fr"
+        border="1px solid"
+        borderRadius="4px"
+        _dark={{
+          borderColor: COLORS.DARK_MODE.GRAY_MEDIUM,
+        }}
+        // nth-of-type is preferred for ssr of nth-child
+        sx={{
+          "& > div:nth-of-type(1)": {
+            borderTopLeftRadius: "4px",
+            borderTop: "none",
+            borderLeft: "none",
+          },
+          "& > div:nth-of-type(2)": {
+            borderTopRightRadius: "4px",
+            borderLeft: "none",
+            borderRight: "none",
+            borderTop: "none",
+          },
+          "& > div:nth-of-type(3)": {
+            borderBottomLeftRadius: "4px",
+            borderBottom: "none",
+            borderLeft: "none",
+            borderTop: "none",
+          },
+          "& > div:nth-of-type(4)": {
+            borderBottomRightRadius: "4px",
+            border: "none",
+          },
+        }}
       >
         {feeLabels.map((label) => (
           <Box
@@ -375,7 +403,9 @@ const FeeGridSkeleton = ({ showGrid }: { showGrid: boolean }) => {
           </Box>
         ))}
       </Grid>
-      <Text color="muted">{formatMessage(messages.seeFeesInstructions)}</Text>
+      <Text pt={2} color="muted">
+        {formatMessage(messages.seeFeesInstructions)}
+      </Text>
     </Box>
   ) : (
     <Box py={2} borderBottom="1.5px dashed #DEDFE2">
