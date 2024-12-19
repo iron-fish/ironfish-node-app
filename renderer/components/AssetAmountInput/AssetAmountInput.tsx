@@ -57,6 +57,9 @@ export function AssetAmountInput({
                 alt=""
                 height="24"
                 width="24"
+                style={{
+                  borderRadius: "4px",
+                }}
               />
               {children}
               {selectedAsset?.asset.verification.status === "verified" && (

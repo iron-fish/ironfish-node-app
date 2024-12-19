@@ -108,8 +108,9 @@ function CreateUnsignedTransactionForm({
 
   return (
     <SendAssetsFormContent
+      isMultisig
       sendButtonText="Create Unsigned Transaction"
-      onPendingChange={setPendingTransaction}
+      onNextButtonClick={setPendingTransaction}
       accountsData={accountsData}
       defaultToAddress={defaultToAddress}
     />
