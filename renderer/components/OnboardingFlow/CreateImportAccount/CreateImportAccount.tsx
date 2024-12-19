@@ -2,6 +2,7 @@ import { Box, Heading, HStack, Text } from "@chakra-ui/react";
 import { useRouter } from "next/router";
 import { defineMessages, useIntl } from "react-intl";
 
+import { trpcReact } from "@/providers/TRPCProvider";
 import { COLORS } from "@/ui/colors";
 import { PillButton } from "@/ui/PillButton/PillButton";
 import { ShadowCard } from "@/ui/ShadowCard/ShadowCard";
@@ -28,6 +29,12 @@ const messages = defineMessages({
 export function CreateImportAccount() {
   const router = useRouter();
   const { formatMessage } = useIntl();
+
+  // Initiate query and cache the data for a subsequent call when creating the account
+  trpcReact.getExternalChainHead.useQuery(undefined, {
+    cacheTime: 1000 * 60 * 10,
+    staleTime: 1000 * 60 * 10,
+  });
 
   return (
     <Box>

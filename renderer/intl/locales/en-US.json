@@ -5,6 +5,9 @@
   "+RhnH+": {
     "message": "Empty"
   },
+  "+VatSc": {
+    "message": "Ensure that your Ledger device is unlocked and that the Ironfish app is open before proceeding."
+  },
   "+gH1Ai": {
     "message": "Node Name"
   },
@@ -445,6 +448,9 @@
   "NX/nQR": {
     "message": "Changing node settings can optimize performance, improve connectivity, enhance security, and manage resources effectively."
   },
+  "NXKaWE": {
+    "message": "The request was rejected on your Ledger device."
+  },
   "NZYRdf": {
     "message": "Mainnet"
   },
@@ -477,6 +483,9 @@
   },
   "PLUyno": {
     "message": "Switch between light and dark mode."
+  },
+  "POEtw2": {
+    "message": "Utilities for interacting with your Ledger device."
   },
   "Pe0ogR": {
     "message": "Theme"
@@ -769,6 +778,9 @@
   "iWiHY7": {
     "message": "The blockchain is syncing. Your balance may be inaccurate and sending transactions will be disabled until the sync is complete."
   },
+  "iqo0HR": {
+    "message": "View Address"
+  },
   "is+QTN": {
     "message": "Contact Settings"
   },
@@ -804,6 +816,12 @@
   },
   "kTt/ND": {
     "message": "Russian"
+  },
+  "klgjDZ": {
+    "message": "View the public address of your connected Ledger device by clicking the button below."
+  },
+  "koRMZ3": {
+    "message": "Address:"
   },
   "krty63": {
     "message": "Need help?"
@@ -892,6 +910,9 @@
   "rGIQdX": {
     "message": "Back to Account Overview"
   },
+  "rKs+bp": {
+    "message": "Please approve the request on your Ledger device."
+  },
   "rbrahO": {
     "message": "Close"
   },
@@ -906,6 +927,9 @@
   },
   "sXlL42": {
     "message": "Encrypted Wallets Unsupported"
+  },
+  "scwekL": {
+    "message": "Ledger"
   },
   "tBX0Dj": {
     "message": "Your Iron Fish wallet is encrypted. Encrypted wallets are not yet supported in the node app. Please decrypt your wallet using the CLI to use the node app."
@@ -924,6 +948,9 @@
   },
   "tjHKMS": {
     "message": "Sender Address"
+  },
+  "trO2pQ": {
+    "message": "Your Ledger device is locked or the Ironfish app is not open."
   },
   "tzMNF3": {
     "message": "Status"
@@ -960,6 +987,9 @@
   },
   "wsALI4": {
     "message": "Enter Encoded Key"
+  },
+  "x5CZLw": {
+    "message": "Your device will display its public address, and if you approve the request we will also display the address below."
   },
   "xP64Lw": {
     "message": "Address Book"
@@ -1008,6 +1038,9 @@
   },
   "zFegDD": {
     "message": "Contact"
+  },
+  "zHNkbi": {
+    "message": "View your public address on your Ledger device."
   },
   "zR2zr+": {
     "message": "Address copied to clipboard"

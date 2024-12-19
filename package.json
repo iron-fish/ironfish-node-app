@@ -2,7 +2,7 @@
   "private": true,
   "name": "ironfish-node-app",
   "description": "Iron Fish Node App",
-  "version": "3.0.11",
+  "version": "3.0.14",
   "author": "IF Labs <engineering@iflabs.network> (https://iflabs.network)",
   "main": "app/background.js",
   "scripts": {
@@ -22,8 +22,8 @@
   },
   "license": "MPL-2.0",
   "dependencies": {
-    "@ironfish/sdk": "2.8.1",
-    "@ironfish/rust-nodejs": "2.7.0",
+    "@ironfish/sdk": "2.10.0",
+    "@ironfish/rust-nodejs": "2.9.0",
     "@ledgerhq/errors": "6.19.1",
     "@ledgerhq/hw-transport-node-hid": "6.29.5",
     "@zondax/ledger-ironfish": "1.0.0",

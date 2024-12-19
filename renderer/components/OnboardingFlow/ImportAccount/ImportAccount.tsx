@@ -13,6 +13,7 @@ import { defineMessages, useIntl } from "react-intl";
 
 import { BackButton } from "@/components/BackButton/BackButton";
 import { trpcReact } from "@/providers/TRPCProvider";
+import { formatMnemonic } from "@/utils/mnemonic";
 
 import { EncodedKeyImport } from "./EncodedKeyImport";
 import { FileImport } from "./FileImport";
@@ -73,7 +74,7 @@ export function ImportAccount() {
                 importAccount(
                   {
                     name,
-                    account,
+                    account: formatMnemonic(account),
                   },
                   {
                     onSuccess: () => {

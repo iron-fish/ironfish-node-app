@@ -215,6 +215,29 @@ class LedgerManager {
   cancelTransaction() {
     this.signTransactionPromise = null;
   }
+
+  verifyPublicAddress = async () => {
+    try {
+      const publicAddress = await this.ledgerSingleSigner.getPublicAddress({
+        showInDevice: true,
+      });
+
+      return publicAddress;
+    } catch (err) {
+      if (err instanceof LedgerActionRejected) {
+        throw new Error("TRANSACTION_REJECTED");
+      }
+
+      if (
+        err instanceof LedgerAppNotOpen ||
+        err instanceof LedgerDeviceLockedError
+      ) {
+        throw new Error("APP_NOT_OPEN");
+      }
+
+      throw new Error("Something went wrong, please try again");
+    }
+  };
 }
 
 export const ledgerManager = new LedgerManager();

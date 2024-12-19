@@ -4,9 +4,15 @@ export const EMPTY_MNEMONIC_ARRAY = Array.from(
   () => "",
 );
 
+export function formatMnemonicWord(word: string) {
+  return word
+    .replace(/([A-Z])/g, (char) => char.toLowerCase())
+    .replace(/\s+/g, "");
+}
+
 export function formatMnemonic(phrase: string | Array<string>) {
-  const asString = Array.isArray(phrase) ? phrase.join(" ") : phrase;
-  return asString.trim().replace(/\s+/g, " ");
+  const asArray = Array.isArray(phrase) ? phrase : phrase.split(/\s+/);
+  return asArray.map(formatMnemonicWord).join(" ");
 }
 
 export function validateMnemonic(

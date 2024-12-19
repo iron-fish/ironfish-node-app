@@ -1,4 +1,12 @@
-import { Heading, VStack } from "@chakra-ui/react";
+import {
+  Heading,
+  VStack,
+  Tabs,
+  Tab,
+  TabList,
+  TabPanels,
+  TabPanel,
+} from "@chakra-ui/react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useRouter } from "next/router";
 import { useMemo } from "react";
@@ -8,6 +16,8 @@ import * as z from "zod";
 
 import { AccountAddressDisplay } from "@/components/AccountAddressDisplay/AccountAddressDisplay";
 import { NoAccountsMessage } from "@/components/EmptyStateMessage/shared/NoAccountsMessage";
+import { ViewLedgerAddress } from "@/components/ViewLedgerAddress/ViewLedgerAddress";
+import candyIronFish from "@/images/candy-iron-fish.svg";
 import octopus from "@/images/octopus.svg";
 import MainLayout from "@/layouts/MainLayout";
 import { WithExplanatorySidebar } from "@/layouts/WithExplanatorySidebar";
@@ -15,6 +25,9 @@ import { TRPCRouterOutputs, trpcReact } from "@/providers/TRPCProvider";
 import { Select } from "@/ui/Forms/Select/Select";
 
 const messages = defineMessages({
+  accountsTab: {
+    defaultMessage: "Accounts",
+  },
   receiveHeading: {
     defaultMessage: "Receive",
   },
@@ -27,6 +40,9 @@ const messages = defineMessages({
   },
   fromLabel: {
     defaultMessage: "From",
+  },
+  ledgerDescription: {
+    defaultMessage: "View your public address on your Ledger device.",
   },
 });
 
@@ -86,30 +102,53 @@ export function ReceiveAccountsContent({
 
   return (
     <MainLayout>
-      <Heading fontSize={28} lineHeight="160%" mb={5}>
+      <Heading fontSize={28} lineHeight="160%">
         {formatMessage(messages.receiveHeading)}
       </Heading>
 
-      <WithExplanatorySidebar
-        heading={formatMessage(messages.transactionDetailsHeading)}
-        description={formatMessage(messages.transactionDetailsText)}
-        imgSrc={octopus}
-      >
-        {defaultAccount === null ? (
-          <NoAccountsMessage />
-        ) : (
-          <VStack alignItems="stretch" gap={4}>
-            <Select
-              {...register("account")}
-              value={selectedAccount}
-              label={formatMessage(messages.fromLabel)}
-              options={accountOptions}
-              error={errors.account?.message}
-            />
-            <AccountAddressDisplay address={addressLookup[selectedAccount]} />
-          </VStack>
-        )}
-      </WithExplanatorySidebar>
+      <Tabs isLazy>
+        <TabList mt={3} mb={8}>
+          <Tab>{formatMessage(messages.accountsTab)}</Tab>
+          <Tab>Ledger</Tab>
+        </TabList>
+
+        <TabPanels>
+          <TabPanel p={0}>
+            <WithExplanatorySidebar
+              heading={formatMessage(messages.transactionDetailsHeading)}
+              description={formatMessage(messages.transactionDetailsText)}
+              imgSrc={octopus}
+            >
+              {defaultAccount === null ? (
+                <NoAccountsMessage />
+              ) : (
+                <VStack alignItems="stretch" gap={4}>
+                  <Select
+                    {...register("account")}
+                    value={selectedAccount}
+                    label={formatMessage(messages.fromLabel)}
+                    options={accountOptions}
+                    error={errors.account?.message}
+                  />
+                  <AccountAddressDisplay
+                    address={addressLookup[selectedAccount]}
+                  />
+                </VStack>
+              )}
+            </WithExplanatorySidebar>
+          </TabPanel>
+
+          <TabPanel p={0}>
+            <WithExplanatorySidebar
+              heading="Ledger"
+              description={formatMessage(messages.ledgerDescription)}
+              imgSrc={candyIronFish}
+            >
+              <ViewLedgerAddress />
+            </WithExplanatorySidebar>
+          </TabPanel>
+        </TabPanels>
+      </Tabs>
     </MainLayout>
   );
 }

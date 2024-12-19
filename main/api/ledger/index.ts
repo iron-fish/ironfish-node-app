@@ -137,4 +137,7 @@ export const ledgerRouter = t.router({
     .mutation(async (opts) => {
       return handleCreateSigningPackage(opts.input);
     }),
+  verifyAddress: t.procedure.mutation(async () => {
+    return ledgerManager.verifyPublicAddress();
+  }),
 });
