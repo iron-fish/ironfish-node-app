@@ -33,8 +33,8 @@
 
 ## Deploying a release
 
-1. New builds will be created on every commit to `main` and published to a draft GitHub release, [found here](https://github.com/iron-fish/ironfish-node-app/releases).
-1. When you're ready to deploy a release, first ensure there are no ongoing `Publish Release` [GitHub Actions](https://github.com/iron-fish/ironfish-node-app/actions), then test the build on the draft.
+1. New builds are created on every commit to `main` and published to a draft GitHub release, [found here](https://github.com/iron-fish/ironfish-node-app/releases).
+1. When you're ready to deploy a release, first ensure there are no ongoing `Publish Release` [GitHub Actions](https://github.com/iron-fish/ironfish-node-app/actions), then test the build found on the draft release.
 1. After testing, edit the draft release, and click Publish Release. This should tag the latest commit on main with the draft release's version number.
 1. Increment the version in `package.json` and push that commit to `main`. A new draft release should be created with the new version number. 
 
