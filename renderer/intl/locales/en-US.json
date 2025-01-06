@@ -553,9 +553,6 @@
   "TzwzhT": {
     "message": "You can remove and reimport your accounts whenever you like, provided that you possess the account keys. It is highly recommended to maintain a backup of your account keys in a secure location."
   },
-  "U78NhE": {
-    "message": "Complete"
-  },
   "ULXFfP": {
     "message": "Receive"
   },
@@ -742,9 +739,6 @@
   "hR0flV": {
     "message": "All your transactions, whether in $IRON or other custom assets, will be displayed in this section. To start a transaction, simply click on the 'Send' or 'Receive' tabs."
   },
-  "iFsDVR": {
-    "message": "Loading"
-  },
   "iWiHY7": {
     "message": "The blockchain is syncing. Your balance may be inaccurate and sending transactions will be disabled until the sync is complete."
   },
@@ -786,9 +780,6 @@
   },
   "kTt/ND": {
     "message": "Russian"
-  },
-  "kbpDqo": {
-    "message": "Preparing destination txn"
   },
   "klgjDZ": {
     "message": "View the public address of your connected Ledger device by clicking the button below."
@@ -886,9 +877,6 @@
   "rKs+bp": {
     "message": "Please approve the request on your Ledger device."
   },
-  "raexxM": {
-    "message": "Submitted"
-  },
   "rbrahO": {
     "message": "Close"
   },
@@ -897,9 +885,6 @@
   },
   "rqrhXg": {
     "message": "Confirm Your Recovery Phrase"
-  },
-  "rrBTkh": {
-    "message": "Submitted destination txn"
   },
   "sXlL42": {
     "message": "Encrypted Wallets Unsupported"
@@ -948,9 +933,6 @@
   },
   "vV69eP": {
     "message": "Downloading a snapshot is the fastest way to sync with the network."
-  },
-  "vXCeIi": {
-    "message": "Failed"
   },
   "vaP4MI": {
     "message": "It currently holds:"
