@@ -14,7 +14,6 @@ import { defineMessages, useIntl } from "react-intl";
 import { ConnectLedgerModal } from "@/components/ConnectLedgerModal/ConnectLedgerModal";
 import { CreateAccountModal } from "@/components/CreateAccountModal/CreateAccountModal";
 import { ImportAccountModal } from "@/components/ImportAccountModal/ImportAccountModal";
-import { useFeatureFlags } from "@/providers/FeatureFlagsProvider";
 import { PillButton } from "@/ui/PillButton/PillButton";
 import { CreateAccount } from "@/ui/SVGs/CreateAccount";
 
@@ -38,7 +37,6 @@ const messages = defineMessages({
 });
 
 export function AddAccountDropdown() {
-  const { flags } = useFeatureFlags();
   const { formatMessage } = useIntl();
 
   const {
@@ -83,16 +81,12 @@ export function AddAccountDropdown() {
               <Text fontSize="md">{formatMessage(messages.importAccount)}</Text>
             </HStack>
           </MenuItem>
-          {flags.ledgerSupport.enabled && (
-            <MenuItem onClick={onLedgerOpen}>
-              <HStack gap={3}>
-                <Image src={ledgerIcon} alt="" />
-                <Text fontSize="md">
-                  {formatMessage(messages.connectLedger)}
-                </Text>
-              </HStack>
-            </MenuItem>
-          )}
+          <MenuItem onClick={onLedgerOpen}>
+            <HStack gap={3}>
+              <Image src={ledgerIcon} alt="" />
+              <Text fontSize="md">{formatMessage(messages.connectLedger)}</Text>
+            </HStack>
+          </MenuItem>
         </MenuList>
       </Menu>
       {isCreateOpen && <CreateAccountModal isOpen onClose={onCreateClose} />}

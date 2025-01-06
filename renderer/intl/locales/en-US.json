@@ -5,20 +5,32 @@
   "+RhnH+": {
     "message": "Empty"
   },
+  "+VatSc": {
+    "message": "Ensure that your Ledger device is unlocked and that the Ironfish app is open before proceeding."
+  },
   "+gH1Ai": {
     "message": "Node Name"
   },
   "+mLiOr": {
     "message": "Feature flags"
   },
+  "+q+M5P": {
+    "message": "Collect the signature shares from all of the participants to aggregate them."
+  },
   "/0TOL5": {
     "message": "Amount"
+  },
+  "/YxWvM": {
+    "message": "Sending a multisig transaction starts with creating an unsigned transaction: a fully generated transaction that is only missing the signature. The coordinator should create the unsigned transaction data and send it to you"
   },
   "/jJLYy": {
     "message": "Transactions"
   },
   "/km2Zu": {
     "message": "Import Account"
+  },
+  "/nrkEG": {
+    "message": "The fee for transacting on the destination network"
   },
   "/tbC+S": {
     "description": "Button to export account in the specified format",
@@ -29,6 +41,9 @@
   },
   "0FN3ev": {
     "message": "One last step! Confirm the account you'd like to connect to the Node App."
+  },
+  "0TJsMy": {
+    "message": "Plug your Ledger device directly into your computer"
   },
   "0rIM5R": {
     "message": "Remove Account"
@@ -60,9 +75,6 @@
   "2qzbcD": {
     "message": "Min Peers"
   },
-  "3+EYHL": {
-    "message": "Target Network"
-  },
   "3/a0Ho": {
     "message": "We're not able to download release notes right now."
   },
@@ -83,6 +95,9 @@
   },
   "3euoRJ": {
     "message": "Recovery Phrase"
+  },
+  "3v74IM": {
+    "message": "By bridging your assets, you agree to Chainport's <link>terms of service</link>."
   },
   "47FYwb": {
     "message": "Cancel"
@@ -141,6 +156,9 @@
   "6q3tCn": {
     "message": "Connecting"
   },
+  "6ugwQB": {
+    "message": "Receiving (Estimated)"
+  },
   "7/GPHF": {
     "message": "Iron Fish transaction fee"
   },
@@ -152,6 +170,9 @@
   },
   "7N6OYQ": {
     "message": "View Transaction"
+  },
+  "7Qw9T7": {
+    "message": "Destination Network"
   },
   "8GvVWZ": {
     "message": "Something went wrong, please try again."
@@ -189,11 +210,17 @@
   "9uOFF3": {
     "message": "Overview"
   },
+  "AAQoj1": {
+    "message": "Review and approve the transaction information on your Ledger device."
+  },
   "AFZGS9": {
     "message": "The Iron Fish Node App supports {languageCount} languages. If your preferred language isn't listed, please reach out and let us know!"
   },
   "APTRzH": {
     "message": "You don't have any accounts that can send transactions. You must create a new account or import an account with send permissions before you can send assets."
+  },
+  "AeE0SX": {
+    "message": "Add the identities of the participants in the multisig transaction."
   },
   "AetNAD": {
     "message": "Browse"
@@ -216,6 +243,9 @@
   "C43FrR": {
     "message": "Amount:"
   },
+  "CxC3WU": {
+    "message": "Send Multisig Ledger Transaction"
+  },
   "D31nQ7": {
     "message": "An error occurred while estimating the transaction fee"
   },
@@ -225,14 +255,14 @@
   "D5NqQO": {
     "message": "Memo"
   },
-  "DOMotB": {
-    "message": "Target Address"
-  },
   "Dh1MGS": {
     "message": "Account Syncing"
   },
   "DnuK8f": {
     "message": "Turn this on if you want to specify a custom name for this account. Otherwise, the account name will be inferred from your exported account data."
+  },
+  "Eddg06": {
+    "message": "Signature Shares"
   },
   "F3l7xL": {
     "message": "Add Account"
@@ -297,6 +327,9 @@
   "JM4YI+": {
     "message": "Are you sure you want to remove this account?"
   },
+  "Jhtmlc": {
+    "message": "The transaction has been rejected from your Ledger device. Please try again if you'd like to continue."
+  },
   "Jjpq7w": {
     "message": "Block Sequence"
   },
@@ -312,12 +345,18 @@
   "K3r6DQ": {
     "message": "Delete"
   },
+  "K6NOTC": {
+    "message": "Transaction Rejected"
+  },
   "KBiJ4L": {
     "message": "To proceed with connecting your account to the Iron Fish Node app, please approve the request on your Ledger device."
   },
   "KGELcL": {
     "description": "Change as in the money that is returned to the sender after a transaction",
     "message": "Change"
+  },
+  "KIbwgQ": {
+    "message": "Sending amount minus the bridge fee. This is an estimate, and you may receive a slightly different amount."
   },
   "KJMlfb": {
     "message": "Destination network"
@@ -351,6 +390,9 @@
   },
   "Ld49Lh": {
     "message": "What would you like to name this account? This name is only visible to you."
+  },
+  "Ldr1+Z": {
+    "message": "Submit the signed transaction to the network."
   },
   "Lv0zJu": {
     "message": "Details"
@@ -388,6 +430,9 @@
   "NX/nQR": {
     "message": "Changing node settings can optimize performance, improve connectivity, enhance security, and manage resources effectively."
   },
+  "NXKaWE": {
+    "message": "The request was rejected on your Ledger device."
+  },
   "NZYRdf": {
     "message": "Mainnet"
   },
@@ -397,11 +442,11 @@
   "O+Q7TL": {
     "message": "Submitted Sequence"
   },
+  "O62iwU": {
+    "message": "Unsigned Transaction"
+  },
   "OC6jXV": {
     "message": "Transaction Expiration Delta"
-  },
-  "OEEl0G": {
-    "message": "Receiving"
   },
   "OfA95/": {
     "message": "Selected file: {fileName}"
@@ -420,6 +465,9 @@
   },
   "PLUyno": {
     "message": "Switch between light and dark mode."
+  },
+  "POEtw2": {
+    "message": "Utilities for interacting with your Ledger device."
   },
   "Pe0ogR": {
     "message": "Theme"
@@ -450,6 +498,9 @@
   },
   "QwFX54": {
     "message": "Transaction Notes"
+  },
+  "RHsFBY": {
+    "message": "Input a signing commitment for each participant in the multisig transaction. These do not have to be in any particular order."
   },
   "RIUFf+": {
     "message": "Ukrainian"
@@ -502,6 +553,9 @@
   "TzwzhT": {
     "message": "You can remove and reimport your accounts whenever you like, provided that you possess the account keys. It is highly recommended to maintain a backup of your account keys in a secure location."
   },
+  "U78NhE": {
+    "message": "Complete"
+  },
   "ULXFfP": {
     "message": "Receive"
   },
@@ -519,9 +573,6 @@
   },
   "VBDJ/l": {
     "message": "Your balance might not be accurate while you're syncing"
-  },
-  "VVlAZ6": {
-    "message": "From Account"
   },
   "VqP8r/": {
     "message": "Memo:"
@@ -561,6 +612,9 @@
   },
   "Xvk80E": {
     "message": "Please enter a name for this account"
+  },
+  "Y0TjmL": {
+    "message": "A network error occurred, please try again"
   },
   "YDkqMJ": {
     "message": "Incoming"
@@ -612,9 +666,6 @@
   },
   "c/KktL": {
     "message": "Resources"
-  },
-  "cwqQqt": {
-    "message": "The fee for transacting on the destination chain"
   },
   "dJMieh": {
     "message": "Connect account"
@@ -691,8 +742,14 @@
   "hR0flV": {
     "message": "All your transactions, whether in $IRON or other custom assets, will be displayed in this section. To start a transaction, simply click on the 'Send' or 'Receive' tabs."
   },
+  "iFsDVR": {
+    "message": "Loading"
+  },
   "iWiHY7": {
     "message": "The blockchain is syncing. Your balance may be inaccurate and sending transactions will be disabled until the sync is complete."
+  },
+  "iqo0HR": {
+    "message": "View Address"
   },
   "is+QTN": {
     "message": "Contact Settings"
@@ -712,6 +769,9 @@
   "jwIURF": {
     "message": "The selected account does not have enough funds to send this transaction"
   },
+  "k9/k1W": {
+    "message": "Send your signing share to the coordinator so they can aggregate the signatures."
+  },
   "kF9XUo": {
     "message": "Timestamp"
   },
@@ -721,8 +781,20 @@
   "kNJdlj": {
     "message": "Restart App"
   },
+  "kObD+J": {
+    "message": "Multisig Identities"
+  },
   "kTt/ND": {
     "message": "Russian"
+  },
+  "kbpDqo": {
+    "message": "Preparing destination txn"
+  },
+  "klgjDZ": {
+    "message": "View the public address of your connected Ledger device by clicking the button below."
+  },
+  "koRMZ3": {
+    "message": "Address:"
   },
   "krty63": {
     "message": "Need help?"
@@ -757,6 +829,9 @@
   "oZO6n5": {
     "message": "An app update is available. Wait for it to finish downloading and restart the app, or download the latest version from the <link>Iron Fish website</link>."
   },
+  "obZZi7": {
+    "message": "Sending a multisig transaction starts with creating an unsigned transaction: a fully generated transaction that is only missing the signature. As the coordinator either create a new unsigned transaction or use unsigned transaction data already created in the CLI. Then send that unsigned transaction data to the participants"
+  },
   "omnNfq": {
     "message": "About Fees"
   },
@@ -765,6 +840,9 @@
   },
   "p8bsw4": {
     "message": "Transaction Error"
+  },
+  "pAl4rq": {
+    "message": "Signing Commitments"
   },
   "pPk+ar": {
     "message": "From:"
@@ -780,6 +858,9 @@
   },
   "pqKz+h": {
     "message": "Slow"
+  },
+  "pvqPtw": {
+    "message": "Multisig Ledger"
   },
   "q0qMyV": {
     "message": "RSS"
@@ -802,6 +883,12 @@
   "rGIQdX": {
     "message": "Back to Account Overview"
   },
+  "rKs+bp": {
+    "message": "Please approve the request on your Ledger device."
+  },
+  "raexxM": {
+    "message": "Submitted"
+  },
   "rbrahO": {
     "message": "Close"
   },
@@ -811,11 +898,14 @@
   "rqrhXg": {
     "message": "Confirm Your Recovery Phrase"
   },
-  "s3kz6s": {
-    "message": "A network error occured, please try again"
+  "rrBTkh": {
+    "message": "Submitted destination txn"
   },
   "sXlL42": {
     "message": "Encrypted Wallets Unsupported"
+  },
+  "scwekL": {
+    "message": "Ledger"
   },
   "tBX0Dj": {
     "message": "Your Iron Fish wallet is encrypted. Encrypted wallets are not yet supported in the node app. Please decrypt your wallet using the CLI to use the node app."
@@ -835,6 +925,9 @@
   "tjHKMS": {
     "message": "Sender Address"
   },
+  "trO2pQ": {
+    "message": "Your Ledger device is locked or the Ironfish app is not open."
+  },
   "tzMNF3": {
     "message": "Status"
   },
@@ -844,17 +937,20 @@
   "uT4OlP": {
     "message": "Fee"
   },
-  "uuDgUP": {
-    "message": "An error occured"
-  },
   "vEiG+a": {
     "message": "Gas fee"
+  },
+  "vGJnQL": {
+    "message": "Review Transaction"
   },
   "vNT9Ip": {
     "message": "Mnemonic Phrase"
   },
   "vV69eP": {
     "message": "Downloading a snapshot is the fastest way to sync with the network."
+  },
+  "vXCeIi": {
+    "message": "Failed"
   },
   "vaP4MI": {
     "message": "It currently holds:"
@@ -871,8 +967,8 @@
   "wsALI4": {
     "message": "Enter Encoded Key"
   },
-  "xOBoiD": {
-    "message": "Plug your ledger device directly into your computer"
+  "x5CZLw": {
+    "message": "Your device will display its public address, and if you approve the request we will also display the address below."
   },
   "xP64Lw": {
     "message": "Address Book"
@@ -898,6 +994,9 @@
   "yLnnBl": {
     "message": "Transaction Submitted"
   },
+  "yNVIfV": {
+    "message": "Submit Transaction"
+  },
   "yjpdGo": {
     "message": "You don't have any contacts"
   },
@@ -918,6 +1017,9 @@
   },
   "zFegDD": {
     "message": "Contact"
+  },
+  "zHNkbi": {
+    "message": "View your public address on your Ledger device."
   },
   "zR2zr+": {
     "message": "Address copied to clipboard"

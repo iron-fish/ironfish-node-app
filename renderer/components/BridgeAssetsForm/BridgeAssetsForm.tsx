@@ -36,7 +36,7 @@ import { NoSpendingAccountsMessage } from "../EmptyStateMessage/shared/NoSpendin
 
 const messages = defineMessages({
   fromLabel: {
-    defaultMessage: "From Account",
+    defaultMessage: "From",
   },
   needHelp: {
     defaultMessage: "Need help?",
@@ -48,7 +48,7 @@ const messages = defineMessages({
     defaultMessage: "Destination network",
   },
   networkErrorMessage: {
-    defaultMessage: "A network error occured, please try again",
+    defaultMessage: "A network error occurred, please try again",
   },
 });
 
@@ -99,7 +99,7 @@ function BridgeAssetsFormContent({
       fromAccount: defaultFromAccount,
       assetId: defaultAssetId,
       destinationNetworkId: null,
-      targetAddress: "",
+      destinationAddress: "",
     },
   });
 
@@ -107,9 +107,9 @@ function BridgeAssetsFormContent({
   const fromAccountValue = watch("fromAccount");
   const assetIdValue = watch("assetId");
   const destinationNetworkId = watch("destinationNetworkId");
-  const targetAddress = watch("targetAddress");
+  const destinationAddress = watch("destinationAddress");
 
-  const { data: tokenPathsResponse } =
+  const { data: tokenPathsResponse, isLoading: tokenPathsLoading } =
     trpcReact.getChainportTokenPaths.useQuery(
       {
         tokenId: chainportTokensMap[assetIdValue]?.id,
@@ -138,6 +138,12 @@ function BridgeAssetsFormContent({
           ...item,
           label: (
             <HStack>
+              <Image
+                src={item.asset.verification.logoURI ?? ""}
+                alt=""
+                width="24"
+                height="24"
+              />
               <ItemText>{item.label}</ItemText>
               {item.asset.verification.status === "verified" && (
                 <Image src={verifiedIcon} alt="" />
@@ -158,7 +164,7 @@ function BridgeAssetsFormContent({
 
   const selectedAsset = assetOptionsMap.get(assetIdValue);
   const selectedNetwork = availableNetworks?.find(
-    (n) => destinationNetworkId === n.chainport_network_id.toString(),
+    (n) => destinationNetworkId === n.network.chainport_network_id.toString(),
   );
 
   const handleIfAmountExceedsBalance = useCallback(
@@ -180,12 +186,12 @@ function BridgeAssetsFormContent({
     [selectedAsset, setError],
   );
 
-  const targetAddressIcon = useMemo(() => {
-    if (targetAddress.length === 0) {
+  const destinationAddressIcon = useMemo(() => {
+    if (destinationAddress.length === 0) {
       return null;
     }
 
-    return targetAddress.length > 0 && isAddress(targetAddress) ? (
+    return destinationAddress.length > 0 && isAddress(destinationAddress) ? (
       <chakra.svg width="18" height="13" viewBox="0 0 18 13" fill="none" mr={1}>
         <path
           d="M6.54961 13L0.849609 7.29998L2.27461 5.87498L6.54961 10.15L15.7246 0.974976L17.1496 2.39998L6.54961 13Z"
@@ -193,7 +199,7 @@ function BridgeAssetsFormContent({
         />
       </chakra.svg>
     ) : null;
-  }, [targetAddress]);
+  }, [destinationAddress]);
 
   // Try to reset selected asset to a valid one if the current one is disabled
   useEffect(() => {
@@ -229,7 +235,7 @@ function BridgeAssetsFormContent({
     ) {
       setValue(
         "destinationNetworkId",
-        availableNetworks[0].chainport_network_id.toString(),
+        availableNetworks[0].network.chainport_network_id.toString(),
       );
     }
   }, [availableNetworks, destinationNetworkId, setValue]);
@@ -242,7 +248,8 @@ function BridgeAssetsFormContent({
 
           const destinationNetwork = availableNetworks?.find(
             (n) =>
-              data.destinationNetworkId === n.chainport_network_id.toString(),
+              data.destinationNetworkId ===
+              n.network.chainport_network_id.toString(),
           );
           if (!destinationNetwork) {
             return;
@@ -257,7 +264,7 @@ function BridgeAssetsFormContent({
             fromAccount: data.fromAccount,
             assetId: data.assetId,
             destinationNetwork: destinationNetwork,
-            targetAddress: getChecksumAddress(data.targetAddress),
+            destinationAddress: getChecksumAddress(data.destinationAddress),
           });
         })}
       >
@@ -363,34 +370,48 @@ function BridgeAssetsFormContent({
             </HStack>
           }
           destinationNetworkInput={
-            <Select
-              {...register("destinationNetworkId")}
-              disabled={!availableNetworks}
-              value={destinationNetworkId ?? undefined}
-              label={formatMessage(messages.destinationNetwork)}
-              options={(availableNetworks ?? []).map((n) => ({
-                label: n.label,
-                value: n.chainport_network_id.toString(),
-              }))}
-              renderChildren={(children) => (
-                <HStack>
-                  {selectedNetwork && (
-                    <ChakraImage
-                      src={selectedNetwork.network_icon}
-                      boxSize="24px"
-                    />
-                  )}
-                  {children}
-                </HStack>
-              )}
-            />
+            tokenPathsLoading ? (
+              <Skeleton height={71} w="50%" />
+            ) : (
+              <Select
+                {...register("destinationNetworkId")}
+                disabled={!availableNetworks}
+                value={destinationNetworkId ?? undefined}
+                label={formatMessage(messages.destinationNetwork)}
+                options={(availableNetworks ?? []).map((n) => ({
+                  label: (
+                    <HStack>
+                      <Image
+                        src={n.network.network_icon}
+                        alt={n.network.label}
+                        width="24"
+                        height="24"
+                      />
+                      <ItemText>{n.network.label}</ItemText>
+                    </HStack>
+                  ),
+                  value: n.network.chainport_network_id.toString(),
+                }))}
+                renderChildren={(children) => (
+                  <HStack>
+                    {selectedNetwork && (
+                      <ChakraImage
+                        src={selectedNetwork.network.network_icon}
+                        boxSize="24px"
+                      />
+                    )}
+                    {children}
+                  </HStack>
+                )}
+              />
+            )
           }
-          targetAddressInput={
+          destinationAddressInput={
             <TextInput
-              {...register("targetAddress")}
-              label="Target Address"
-              error={formErrors.targetAddress?.message}
-              icon={targetAddressIcon}
+              {...register("destinationAddress")}
+              label="Destination Address"
+              error={formErrors.destinationAddress?.message}
+              icon={destinationAddressIcon}
             />
           }
           topLevelErrorMessage={transactionDetailsError}
@@ -400,7 +421,7 @@ function BridgeAssetsFormContent({
         <BridgeConfirmationModal
           onClose={() => setConfirmationData(null)}
           formData={confirmationData}
-          targetNetwork={confirmationData.destinationNetwork}
+          destinationNetwork={confirmationData.destinationNetwork}
           selectedAsset={assetOptionsMap.get(confirmationData.assetId)!}
           chainportToken={chainportTokensMap[confirmationData.assetId]!}
           handleTransactionDetailsError={(errorMessage) =>
@@ -418,11 +439,16 @@ export function BridgeAssetsForm() {
   const {
     data: tokensData,
     isLoading: isChainportLoading,
+    isFetching: isChainportFetching,
     isError: isTokensError,
     error: tokensError,
   } = trpcReact.getChainportTokens.useQuery();
 
-  if (!filteredAccounts || isChainportLoading) {
+  if (
+    !filteredAccounts ||
+    isChainportLoading ||
+    (isTokensError && isChainportFetching)
+  ) {
     return (
       <BridgeAssetsFormShell
         status="LOADING"
@@ -430,7 +456,7 @@ export function BridgeAssetsForm() {
         assetAmountInput={<Skeleton height={71} />}
         bridgeProviderInput={<Skeleton height={71} w="50%" />}
         destinationNetworkInput={<Skeleton height={71} w="50%" />}
-        targetAddressInput={<Skeleton height={71} w="100%" />}
+        destinationAddressInput={<Skeleton height={71} w="100%" />}
       />
     );
   }

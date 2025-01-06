@@ -8,6 +8,7 @@ import {
   ChainportBridgeTransaction,
   ChainportNetwork,
   ChainportToken,
+  ChainportTokenWithNetwork,
   ChainportTransactionStatus,
 } from "./types";
 
@@ -45,13 +46,16 @@ export const fetchChainportTokens = async (
 export const fetchChainportTokenPaths = async (
   networkId: number,
   tokenId: number,
-): Promise<ChainportNetwork[]> => {
+): Promise<ChainportTokenWithNetwork[]> => {
   const config = getConfig(networkId);
-  const url = new URL(
-    `/bridges/tokens/${tokenId}/networks`,
-    config.endpoint,
-  ).toString();
-  return (await makeChainportRequest<{ data: ChainportNetwork[] }>(url)).data;
+  const url = new URL(`/bridges/tokens/${tokenId}/networks`, config.endpoint);
+  url.searchParams.append("with_tokens", true.toString());
+
+  return (
+    await makeChainportRequest<{ data: ChainportTokenWithNetwork[] }>(
+      url.toString(),
+    )
+  ).data;
 };
 
 export const fetchChainportBridgeTransaction = async (
@@ -81,11 +85,11 @@ const makeChainportRequest = async <T extends object>(
     })
     .catch((error) => {
       // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
-      const chainportError = error.response?.data?.error?.description as string;
-      if (chainportError) {
-        throw new Error(chainportError);
+      const apiError = error.response?.data?.message as string;
+      if (apiError) {
+        throw new Error("Chainport error: " + apiError);
       } else {
-        throw new Error("Chainport error - " + error);
+        throw new Error("Chainport error: " + error);
       }
     });
 

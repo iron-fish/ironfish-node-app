@@ -26,6 +26,7 @@ import {
   transactionSchema,
 } from "./transactionSchema";
 import {
+  AssetOptionType,
   normalizeAmountInputChange,
   useAccountAssets,
 } from "../AssetAmountInput/utils";
@@ -76,18 +77,25 @@ const messages = defineMessages({
   },
 });
 
+export type PendingTransactionData = {
+  transactionData: TransactionData;
+  selectedAccount: TRPCRouterOutputs["getAccounts"][number];
+  selectedAsset?: AssetOptionType;
+};
+
 export function SendAssetsFormContent({
+  sendButtonText,
   accountsData,
   defaultToAddress,
+  onPendingChange,
 }: {
+  sendButtonText?: string;
   accountsData: TRPCRouterOutputs["getAccounts"];
   defaultToAddress?: string | null;
+  onPendingChange: (pending: PendingTransactionData) => void;
 }) {
   const router = useRouter();
   const { formatMessage } = useIntl();
-
-  const [pendingTransaction, setPendingTransaction] =
-    useState<TransactionData | null>(null);
 
   const accountOptions = useMemo(() => {
     return accountsData?.map((account) => {
@@ -177,14 +185,16 @@ export function SendAssetsFormContent({
     trpcReact.getEstimatedFees.useQuery(
       {
         accountName: fromAccountValue,
-        output: {
-          amount: Number(assetAmountToSend),
-          assetId: assetIdValue,
-          memo: "",
-          // For fee estimation, the actual address of the recipient is not important, is just has to be
-          // a valid address. Therefore, we're just going to use the address of the first account.
-          publicAddress: accountsData[0].address,
-        },
+        outputs: [
+          {
+            amount: assetAmountToSend.toString(),
+            assetId: assetIdValue,
+            memo: "",
+            // For fee estimation, the actual address of the recipient is not important, is just has to be
+            // a valid address. Therefore, we're just going to use the address of the first account.
+            publicAddress: accountsData[0].address,
+          },
+        ],
       },
       {
         retry: false,
@@ -226,15 +236,34 @@ export function SendAssetsFormContent({
   }, [assetIdValue, resetField, selectedAccount, accountBalances]);
 
   const { data: contactsData } = trpcReact.getContacts.useQuery();
+  const { data: allAccountsData } = trpcReact.getAccounts.useQuery();
+
   const formattedContacts = useMemo(() => {
-    return contactsData?.map((contact) => ({
+    const contacts = contactsData?.map((contact) => ({
       value: contact.address,
       label: {
         main: contact.name,
         sub: truncateString(contact.address, 2),
       },
     }));
-  }, [contactsData]);
+
+    const accounts = allAccountsData?.map((account) => ({
+      value: account.address,
+      label: {
+        main: account.name,
+        sub: truncateString(account.address, 2),
+      },
+    }));
+
+    return [...(contacts ?? []), ...(accounts ?? [])];
+  }, [contactsData, allAccountsData]);
+
+  const accountNameInAddressBook = useMemo(() => {
+    const fullContact = formattedContacts.find(
+      (contact) => contact.value === toAccountValue,
+    );
+    return fullContact?.label.main;
+  }, [formattedContacts, toAccountValue]);
 
   return (
     <>
@@ -264,13 +293,17 @@ export function SendAssetsFormContent({
 
           const fee = estimatedFeesData?.[data.fee] || null;
 
-          setPendingTransaction({
-            fromAccount: data.fromAccount,
-            toAccount: data.toAccount,
-            assetId: data.assetId,
-            amount: assetAmountToSend.toString(),
-            fee: fee,
-            memo: data.memo ?? "",
+          onPendingChange({
+            selectedAccount,
+            selectedAsset: assetOptionsMap.get(data.assetId),
+            transactionData: {
+              fromAccount: data.fromAccount,
+              toAccount: data.toAccount,
+              assetId: data.assetId,
+              amount: assetAmountToSend.toString(),
+              fee: fee,
+              memo: data.memo ?? "",
+            },
           });
         })}
       >
@@ -286,7 +319,9 @@ export function SendAssetsFormContent({
 
           <Combobox
             {...register("toAccount")}
-            label={formatMessage(messages.toLabel)}
+            label={`${formatMessage(messages.toLabel)}${
+              accountNameInAddressBook ? ": " + accountNameInAddressBook : ""
+            }`}
             error={errors.toAccount?.message}
             options={formattedContacts}
             value={toAccountValue}
@@ -402,36 +437,39 @@ export function SendAssetsFormContent({
             px={8}
             isDisabled={!isAccountSynced}
           >
-            {formatMessage(messages.sendAssetButton)}
+            {sendButtonText || formatMessage(messages.sendAssetButton)}
           </PillButton>
         </HStack>
       </chakra.form>
-      {(() => {
-        if (!pendingTransaction) return null;
-
-        return selectedAccount.isLedger ? (
-          <ConfirmLedgerModal
-            isOpen
-            transactionData={pendingTransaction}
-            selectedAsset={assetOptionsMap.get(assetIdValue)}
-            selectedAccount={selectedAccount}
-            onCancel={() => {
-              setPendingTransaction(null);
-            }}
-          />
-        ) : (
-          <ConfirmTransactionModal
-            isOpen
-            transactionData={pendingTransaction}
-            selectedAsset={assetOptionsMap.get(assetIdValue)}
-            selectedAccount={selectedAccount}
-            onCancel={() => {
-              setPendingTransaction(null);
-            }}
-          />
-        );
-      })()}
     </>
+  );
+}
+
+export function SendAssetConfirmModal({
+  pending,
+  onCancel,
+}: {
+  pending: PendingTransactionData;
+  onCancel: () => void;
+}) {
+  const { transactionData, selectedAccount, selectedAsset } = pending;
+
+  return selectedAccount.isLedger ? (
+    <ConfirmLedgerModal
+      isOpen
+      transactionData={transactionData}
+      selectedAsset={selectedAsset}
+      selectedAccount={selectedAccount}
+      onCancel={onCancel}
+    />
+  ) : (
+    <ConfirmTransactionModal
+      isOpen
+      transactionData={transactionData}
+      selectedAsset={selectedAsset}
+      selectedAccount={selectedAccount}
+      onCancel={onCancel}
+    />
   );
 }
 
@@ -443,6 +481,8 @@ export function SendAssetsForm() {
   });
   const defaultToAddress = asQueryString(router.query.to);
 
+  const [pending, setPending] = useState<PendingTransactionData | null>(null);
+
   if (!filteredAccounts) {
     return null;
   }
@@ -452,9 +492,18 @@ export function SendAssetsForm() {
   }
 
   return (
-    <SendAssetsFormContent
-      accountsData={filteredAccounts}
-      defaultToAddress={defaultToAddress}
-    />
+    <>
+      <SendAssetsFormContent
+        onPendingChange={setPending}
+        accountsData={filteredAccounts}
+        defaultToAddress={defaultToAddress}
+      />
+      {pending && (
+        <SendAssetConfirmModal
+          pending={pending}
+          onCancel={() => setPending(null)}
+        />
+      )}
+    </>
   );
 }

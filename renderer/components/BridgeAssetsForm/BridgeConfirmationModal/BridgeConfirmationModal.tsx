@@ -19,7 +19,6 @@ import { trpcReact, TRPCRouterOutputs } from "@/providers/TRPCProvider";
 import { PillButton } from "@/ui/PillButton/PillButton";
 import { CurrencyUtils } from "@/utils/currency";
 import { formatOre } from "@/utils/ironUtils";
-import { IRON_ID, IRON_SYMBOL } from "@shared/constants";
 
 import { StepIdle } from "./StepIdle";
 import { AssetOptionType } from "../../AssetAmountInput/utils";
@@ -72,7 +71,7 @@ type ChainportNetwork =
 type Props = {
   onClose: () => void;
   formData: BridgeAssetsConfirmationData;
-  targetNetwork: ChainportNetwork;
+  destinationNetwork: ChainportNetwork;
   selectedAsset: AssetOptionType;
   chainportToken: ChainportToken;
   handleTransactionDetailsError: (error: string) => void;
@@ -81,7 +80,7 @@ type Props = {
 export function BridgeConfirmationModal({
   onClose,
   formData,
-  targetNetwork,
+  destinationNetwork,
   selectedAsset,
   chainportToken,
   handleTransactionDetailsError,
@@ -114,8 +113,8 @@ export function BridgeConfirmationModal({
     {
       amount: convertedAmount.toString(),
       assetId: chainportToken.web3_address,
-      to: formData.targetAddress,
-      selectedNetwork: targetNetwork.chainport_network_id,
+      to: formData.destinationAddress,
+      selectedNetwork: destinationNetwork.network.chainport_network_id,
     },
     {
       retry: false,
@@ -148,16 +147,25 @@ export function BridgeConfirmationModal({
     error: submitError,
   } = trpcReact.sendChainportBridgeTransaction.useMutation();
 
-  const { data: estimatedFeesData, error: estimatedFeesError } =
-    trpcReact.getChainportBridgeTransactionEstimatedFees.useQuery(
-      {
-        fromAccount: formData.fromAccount,
-        txDetails: txDetails!,
-      },
-      {
-        enabled: isSubmitIdle && !!txDetails,
-      },
-    );
+  const getEstimatedFeesQuery = trpcReact.getEstimatedFees.useQuery(
+    {
+      accountName: formData.fromAccount,
+      outputs: txDetails
+        ? [txDetails.bridge_output, txDetails.gas_fee_output]
+        : [],
+    },
+    {
+      cacheTime: 0,
+      enabled: isSubmitIdle && !!txDetails,
+      refetchOnWindowFocus: false,
+      retry: false,
+    },
+  );
+  const {
+    data: estimatedFeesData,
+    isLoading: isEstimatedFeesLoading,
+    isError: isEstimatedFeesError,
+  } = getEstimatedFeesQuery;
 
   const amountToSend = useMemo(() => {
     const amount = CurrencyUtils.formatCurrency(
@@ -181,17 +189,12 @@ export function BridgeConfirmationModal({
       chainportToken.decimals,
     );
 
-    return `${convertedAmount} ${
-      chainportToken.web3_address === IRON_ID
-        ? IRON_SYMBOL
-        : chainportToken.symbol
-    }`;
+    return `${convertedAmount} ${destinationNetwork.token.symbol}`;
   }, [
     isTransactionDetailsLoading,
     txDetails,
+    destinationNetwork.token.symbol,
     chainportToken.decimals,
-    chainportToken.symbol,
-    chainportToken.web3_address,
   ]);
 
   const chainportGasFee = useMemo(() => {
@@ -270,19 +273,20 @@ export function BridgeConfirmationModal({
           {isSubmitIdle && (
             <StepIdle
               fromAccount={formData.fromAccount}
-              targetNetwork={targetNetwork.label}
-              targetNetworkIcon={targetNetwork.network_icon}
+              destinationNetwork={destinationNetwork.network.label}
+              destinationNetworkIcon={destinationNetwork.network.network_icon}
               amountSending={amountToSend}
+              amountSendingIcon={selectedAsset.asset.verification.logoURI}
               amountReceiving={amountToReceive}
-              targetAddress={formData.targetAddress}
+              amountReceivingIcon={destinationNetwork.token.token_image}
+              destinationAddress={formData.destinationAddress}
               chainportGasFee={chainportGasFee}
               chainportBridgeFee={chainportBridgeFee}
               feeRate={feeRate}
               onFeeRateChange={(nextValue) => {
                 setFeeRate(nextValue);
               }}
-              txDetails={txDetails}
-              error={estimatedFeesError?.message}
+              estimatedFees={getEstimatedFeesQuery}
             />
           )}
           {isSubmitLoading && (
@@ -342,6 +346,8 @@ export function BridgeConfirmationModal({
                 isDisabled={
                   isTransactionDetailsLoading ||
                   isTransactionDetailError ||
+                  isEstimatedFeesLoading ||
+                  isEstimatedFeesError ||
                   isSubmitLoading
                 }
               >

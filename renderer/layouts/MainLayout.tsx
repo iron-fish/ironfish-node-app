@@ -51,6 +51,9 @@ const messages = defineMessages({
   yourNode: {
     defaultMessage: "Your Node",
   },
+  multisigLedger: {
+    defaultMessage: "Multisig Ledger",
+  },
 });
 
 const LINKS = [
@@ -85,6 +88,12 @@ const LINKS = [
     href: "/your-node",
     icon: <YourNode />,
   },
+  {
+    id: "multisigLedger",
+    label: messages.multisigLedger,
+    href: "/multisig-ledger",
+    icon: <ArrowSend />,
+  },
 ];
 
 function ResponsiveLogo() {
@@ -116,6 +125,7 @@ function Sidebar() {
   const { colorMode } = useColorMode();
   const { flags } = useFeatureFlags();
   const { mutate: setUserSettings } = trpcReact.setUserSettings.useMutation();
+
   return (
     <Flex flexDirection="column" alignItems="stretch" w="100%">
       <Box
@@ -133,7 +143,12 @@ function Sidebar() {
         <ResponsiveLogo />
       </Box>
       <VStack alignItems="flex-start" flexGrow={1}>
-        {LINKS.map(({ label, href, icon }) => {
+        {LINKS.map(({ label, href, icon, id }) => {
+          // Multisig Ledger is only visible if the flag is enabled
+          if (id === "multisigLedger" && !flags.multisigLedger.enabled) {
+            return null;
+          }
+
           const isActive = router.pathname.startsWith(href);
           return (
             <ChakraLink
@@ -195,7 +210,7 @@ function Sidebar() {
 type Props = {
   children: ReactNode;
   backLinkProps?: {
-    label: string;
+    label: string | null;
     href: string;
   };
 };

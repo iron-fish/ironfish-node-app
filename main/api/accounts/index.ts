@@ -11,6 +11,7 @@ import {
 } from "./handleExportAccount";
 import { handleGetAccount } from "./handleGetAccount";
 import { handleGetAccounts } from "./handleGetAccounts";
+import { handleGetMultisigLedgerAccounts } from "./handleGetMultisigLedgerAccounts";
 import {
   handleImportAccount,
   handleImportAccountInputs,
@@ -33,15 +34,26 @@ export const accountRouter = t.router({
       return handleGetAccount(opts.input);
     }),
   getAccounts: t.procedure.query(handleGetAccounts),
+  getMultisigLedgerAccounts: t.procedure.query(handleGetMultisigLedgerAccounts),
   createAccount: t.procedure
     .input(
       z.object({
         name: z.string(),
+        createdAt: z.number().optional(),
+        head: z
+          .object({
+            sequence: z.number(),
+            hash: z.string(),
+          })
+          .optional(),
       }),
     )
     .mutation(async (opts) => {
       return handleCreateAccount(opts.input);
     }),
+  getExternalChainHead: t.procedure.query(async () =>
+    manager.getExternalChainHead(),
+  ),
   importAccount: t.procedure
     .input(handleImportAccountInputs)
     .mutation(async (opts) => {

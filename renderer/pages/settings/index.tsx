@@ -11,6 +11,7 @@ import { defineMessages, useIntl } from "react-intl";
 import { FeatureFlagsList } from "@/components/FeatureFlagsList/FeatureFlagsList";
 import { LanguageSelector } from "@/components/LanguageSelector/LanguageSelector";
 import { NetworkSelector } from "@/components/NetworkSelector/NetworkSelector";
+import { ViewLedgerAddress } from "@/components/ViewLedgerAddress/ViewLedgerAddress";
 import candyIronFish from "@/images/candy-iron-fish.svg";
 import flagFish from "@/images/flag-fish.svg";
 import languageBubble from "@/images/language-bubble.svg";
@@ -51,6 +52,12 @@ const messages = defineMessages({
     defaultMessage:
       "Feature flags allow you to enable or disable experimental features. These features are not fully tested and may not work as expected.",
   },
+  ledgerTab: {
+    defaultMessage: "Ledger",
+  },
+  ledgerDescription: {
+    defaultMessage: "Utilities for interacting with your Ledger device.",
+  },
 });
 
 export default function Settings() {
@@ -67,6 +74,7 @@ export default function Settings() {
           <Tab>{formatMessage(messages.networkTab)}</Tab>
           <Tab>{formatMessage(messages.languageTab)}</Tab>
           <Tab>{formatMessage(messages.themeTab)}</Tab>
+          <Tab>Ledger</Tab>
           {areFlagsEnabled && (
             <Tab>{formatMessage(messages.featureFlagsTab)}</Tab>
           )}
@@ -98,6 +106,15 @@ export default function Settings() {
               imgSrc={sunMoon}
             >
               <DarkModeSettingsCard />
+            </WithExplanatorySidebar>
+          </TabPanel>
+          <TabPanel p={0}>
+            <WithExplanatorySidebar
+              heading={formatMessage(messages.ledgerTab)}
+              description={formatMessage(messages.ledgerDescription)}
+              imgSrc={candyIronFish}
+            >
+              <ViewLedgerAddress />
             </WithExplanatorySidebar>
           </TabPanel>
           {areFlagsEnabled && (

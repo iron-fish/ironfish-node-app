@@ -8,7 +8,7 @@ import {
 } from "@/ui/Forms/MnemonicPhrase/MnemonicPhrase";
 import { TextInput } from "@/ui/Forms/TextInput/TextInput";
 import { PillButton } from "@/ui/PillButton/PillButton";
-import { validateMnemonic } from "@/utils/mnemonic";
+import { formatMnemonic, validateMnemonic } from "@/utils/mnemonic";
 
 const messages = defineMessages({
   accountNameLabel: {
@@ -64,7 +64,7 @@ export function MnemonicImport({
 
     onImport({
       name: accountName,
-      account: phraseValues.join(" "),
+      account: formatMnemonic(phraseValues),
     });
   }, [accountName, onImport, hasValidName, phraseValues]);
 

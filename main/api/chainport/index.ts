@@ -1,11 +1,9 @@
 import { z } from "zod";
 
-import { handleGetChainportBridgeTransactionEstimatedFees } from "./handleGetChainportBridgeTransactionEstimatedFees";
 import {
   handleSendChainportBridgeTransaction,
   handleSendChainportBridgeTransactionInput,
 } from "./handleSendChainportBridgeTransaction";
-import { buildTransactionRequestParamsInputs } from "./utils/buildTransactionRequestParams";
 import {
   fetchChainportBridgeTransaction,
   fetchChainportNetworks,
@@ -13,7 +11,7 @@ import {
   fetchChainportTokens,
   fetchChainportTransactionStatus,
 } from "./vendor/requests";
-import { ChainportNetwork } from "./vendor/types";
+import { ChainportTokenWithNetwork } from "./vendor/types";
 import {
   assertTokenPathsApiResponse,
   assertTokensApiResponse,
@@ -54,7 +52,9 @@ ${err}
       }),
     )
     .query(
-      async (opts): Promise<{ chainportTokenPaths: ChainportNetwork[] }> => {
+      async (
+        opts,
+      ): Promise<{ chainportTokenPaths: ChainportTokenWithNetwork[] }> => {
         const ironfish = await manager.getIronfish();
         const rpcClient = await ironfish.rpcClient();
         const network = await rpcClient.chain.getNetworkInfo();
@@ -109,14 +109,6 @@ ${err}
 `);
         throw err;
       }
-    }),
-  getChainportBridgeTransactionEstimatedFees: t.procedure
-    .input(buildTransactionRequestParamsInputs)
-    .query(async (opts) => {
-      const result = await handleGetChainportBridgeTransactionEstimatedFees(
-        opts.input,
-      );
-      return result;
     }),
   sendChainportBridgeTransaction: t.procedure
     .input(handleSendChainportBridgeTransactionInput)
