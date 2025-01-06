@@ -148,10 +148,6 @@ function Sidebar() {
           if (id === "multisigLedger" && !flags.multisigLedger.enabled) {
             return null;
           }
-          // The bridge tab is only visible if the flag is enabled and we're not on mainnet
-          if (id === "bridge" && !flags.chainportBridge.enabled) {
-            return null;
-          }
 
           const isActive = router.pathname.startsWith(href);
           return (

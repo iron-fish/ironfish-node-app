@@ -16,12 +16,6 @@ const FLAGS_DEFINITION = [
     key: "demoFlag",
   },
   {
-    name: "Chainport Bridge",
-    description:
-      "Turning this flag on will show the Bridge navigation item in the sidebar if the current network is Testnet.",
-    key: "chainportBridge",
-  },
-  {
     name: "Global Theme Toggle",
     description:
       "Turning this flag on will allow double clicking the logo to change the theme",
