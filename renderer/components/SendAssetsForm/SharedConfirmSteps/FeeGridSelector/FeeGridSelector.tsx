@@ -122,7 +122,7 @@ function FeeGridSelector({
   estimatedFeesData,
   selectedAsset,
 }: FeeGridSelectorProps) {
-  const [showGrid, setShowGrid] = useState(true);
+  const [showGrid, setShowGrid] = useState(false);
   const {
     control,
     formState: { errors },
