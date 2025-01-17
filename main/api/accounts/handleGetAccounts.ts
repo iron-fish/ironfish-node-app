@@ -13,22 +13,20 @@ export async function handleGetAccounts() {
   // Find and rename unnamed accounts
   const unnamedAccounts = fullAccounts.filter((account) => !account.name);
 
-  if (unnamedAccounts.length > 0) {
-    // Try to rename each unnamed account
-    for (const account of unnamedAccounts) {
-      try {
-        // Use last 4 characters of the address
-        const newName = `unnamed-account-${account.address.slice(-4)}`;
+  // Try to rename each unnamed account
+  for (const account of unnamedAccounts) {
+    try {
+      // Use last 4 characters of the address
+      const newName = `unnamed-account-${account.address.slice(-4)}`;
 
-        await rpcClient.wallet.renameAccount({
-          account: "",
-          newName,
-        });
-        // Update the account name in our local array
-        account.name = newName;
-      } catch (error) {
-        console.error(`Failed to rename account ${account.address}:`, error);
-      }
+      await rpcClient.wallet.renameAccount({
+        account: "",
+        newName,
+      });
+      // Update the account name in our local array
+      account.name = newName;
+    } catch (error) {
+      console.error(`Failed to rename account ${account.address}:`, error);
     }
   }
 
