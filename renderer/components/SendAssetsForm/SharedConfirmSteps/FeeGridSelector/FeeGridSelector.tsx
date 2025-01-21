@@ -72,6 +72,7 @@ const FeeOption = ({ label, fee, isSelected, onSelect }: FeeOptionProps) => {
       width="100%"
       height="100%"
       borderRadius="0"
+      pl={6}
       onClick={onSelect}
       border="1px solid"
       bg={isSelected ? COLORS.GRAY_LIGHT : "white"}
@@ -234,6 +235,13 @@ function FeeGridSelector({
                 control={control}
                 render={({ field: customFeeField }) => (
                   <TextInput
+                    triggerProps={{
+                      bg:
+                        feeField.value === "custom"
+                          ? COLORS.GRAY_LIGHT
+                          : "white",
+                      border: "none",
+                    }}
                     value={
                       customFeeField.value && feeField.value === "custom"
                         ? customFeeField.value
@@ -283,13 +291,6 @@ function FeeGridSelector({
                         />
                       )
                     }
-                    triggerProps={{
-                      bg:
-                        feeField.value === "custom"
-                          ? COLORS.GRAY_LIGHT
-                          : "white",
-                      border: "none",
-                    }}
                   />
                 )}
               />

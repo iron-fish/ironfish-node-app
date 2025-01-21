@@ -3,6 +3,7 @@ import Image from "next/image";
 import { useIntl, defineMessages } from "react-intl";
 
 import { PillButton } from "@/ui/PillButton/PillButton";
+
 import connectImage from "./assets/connect.svg";
 
 const messages = defineMessages({
