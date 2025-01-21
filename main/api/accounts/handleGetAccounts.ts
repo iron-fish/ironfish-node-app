@@ -16,9 +16,8 @@ export async function handleGetAccounts() {
   // Try to rename each unnamed account
   for (const account of unnamedAccounts) {
     try {
-      // Use last 4 characters of the address
-      const newName = `unnamed-account-${account.address.slice(-4)}`;
-
+      // Use first 4 characters of the address
+      const newName = `account-${account.address.slice(0, 4)}`;
       await rpcClient.wallet.renameAccount({
         account: "",
         newName,
