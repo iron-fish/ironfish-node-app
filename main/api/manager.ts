@@ -48,8 +48,10 @@ export class Manager {
     return hoursSinceLastBlock > 24 * 7 * 2;
   };
 
-  private async handleUnnamedAccounts(rpcClient: RpcClient) {
-    const accountsResponse = await rpcClient.wallet.getAccounts();
+  private async handleUnnamedAccounts(
+    rpcClient: RpcClient,
+    accountsResponse: { content: { accounts: string[] } },
+  ) {
     const fullAccounts = await Promise.all(
       accountsResponse.content.accounts.map((account) => getAccount(account)),
     );
@@ -65,37 +67,36 @@ export class Manager {
       return true;
     });
 
-    await Promise.all(
-      unnamedAccounts.map(async (account) => {
-        let newName = `account-${account.address.slice(0, 4)}`;
-        try {
-          const MAX_ATTEMPTS = 5;
-          let attempts = 0;
-          let randomString = "-";
-          while (existingNames.has(newName) && attempts < MAX_ATTEMPTS) {
-            const randomNum = Math.floor(Math.random() * 10); // 0-9
-            randomString = `${randomString}${randomNum}`;
-            newName = `${newName}${randomString}`;
-            attempts++;
-          }
-
-          if (attempts === MAX_ATTEMPTS && existingNames.has(newName)) {
-            const errorMsg =
-              "Could not generate unique account name after maximum attempts";
-            log.error(errorMsg);
-            throw new Error(errorMsg);
-          }
-
-          existingNames.add(newName); // Add the new name to the set
-          await rpcClient.wallet.renameAccount({
-            account: account.name,
-            newName,
-          });
-        } catch (error) {
-          log.error(`Failed to rename account ${account.address}: ${error}`);
+    // Handle each unnamed account sequentially
+    for (const account of unnamedAccounts) {
+      let newName = `account-${account.address.slice(0, 4)}`;
+      try {
+        const MAX_ATTEMPTS = 5;
+        let attempts = 0;
+        while (existingNames.has(newName) && attempts < MAX_ATTEMPTS) {
+          const randomString = `-${Math.floor(Math.random() * 100000)
+            .toString()
+            .padStart(5, "0")}`;
+          newName = `${newName}${randomString}`;
+          attempts++;
         }
-      }),
-    );
+
+        if (attempts === MAX_ATTEMPTS && existingNames.has(newName)) {
+          const errorMsg =
+            "Could not generate unique account name after maximum attempts";
+          log.error(errorMsg);
+          throw new Error(errorMsg);
+        }
+
+        existingNames.add(newName); // Add the new name to the set
+        await rpcClient.wallet.renameAccount({
+          account: account.name,
+          newName,
+        });
+      } catch (error) {
+        log.error(`Failed to rename account ${account.address}: ${error}`);
+      }
+    }
   }
 
   async getInitialState(): Promise<InitialState> {
@@ -114,8 +115,8 @@ export class Manager {
 
     const accountsResponse = await rpcClient.wallet.getAccounts();
 
-    // Checks if any accounts are unnamed and renames them
-    await this.handleUnnamedAccounts(rpcClient);
+    // Pass accountsResponse to handleUnnamedAccounts
+    await this.handleUnnamedAccounts(rpcClient, accountsResponse);
 
     if (accountsResponse.content.accounts.length === 0) {
       return "onboarding";
