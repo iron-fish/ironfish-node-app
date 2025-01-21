@@ -80,9 +80,10 @@ export class Manager {
           }
 
           if (attempts === MAX_ATTEMPTS && existingNames.has(newName)) {
-            throw new Error(
-              "Could not generate unique account name after maximum attempts",
-            );
+            const errorMsg =
+              "Could not generate unique account name after maximum attempts";
+            log.error(errorMsg);
+            throw new Error(errorMsg);
           }
 
           existingNames.add(newName); // Add the new name to the set
