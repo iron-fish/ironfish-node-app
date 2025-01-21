@@ -6,9 +6,12 @@ export async function handleGetAccounts() {
   const rpcClient = await ironfish.rpcClient();
 
   const accountsResponse = await rpcClient.wallet.getAccounts();
-  const fullAccounts = await Promise.all(
-    accountsResponse.content.accounts.map((account) => getAccount(account)),
+
+  const fullAccounts = accountsResponse.content.accounts.map((account) =>
+    getAccount(account),
   );
 
-  return fullAccounts;
+  const response = await Promise.all(fullAccounts);
+
+  return response;
 }
