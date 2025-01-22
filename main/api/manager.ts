@@ -1,7 +1,6 @@
 import { RpcClient } from "@ironfish/sdk";
 import log from "electron-log";
 
-// import { getAccount } from "./accounts/utils/getAccount";
 import { getExternalChainHead } from "./accounts/utils/getExternalChainHead";
 import { Ironfish } from "./ironfish/Ironfish";
 import { userSettingsStore } from "../stores/userSettingsStore";
@@ -95,7 +94,7 @@ export class Manager {
           newName,
         });
       } catch (error) {
-        log.error(`Failed to rename account ${publicKey}: ${error}`);
+        log.error(`Failed to rename account ${accountAddress}: ${error}`);
       }
     }
   }
