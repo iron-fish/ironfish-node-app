@@ -1,7 +1,7 @@
 import { RpcClient } from "@ironfish/sdk";
 import log from "electron-log";
 
-import { getAccount } from "./accounts/utils/getAccount";
+// import { getAccount } from "./accounts/utils/getAccount";
 import { getExternalChainHead } from "./accounts/utils/getExternalChainHead";
 import { Ironfish } from "./ironfish/Ironfish";
 import { userSettingsStore } from "../stores/userSettingsStore";
@@ -52,24 +52,25 @@ export class Manager {
     rpcClient: RpcClient,
     accountsResponse: { content: { accounts: string[] } },
   ) {
-    const fullAccounts = await Promise.all(
-      accountsResponse.content.accounts.map((account) => getAccount(account)),
-    );
-
     // Create a set of existing account names and find unnamed accounts in one pass
     const existingNames = new Set<string>();
-    const unnamedAccounts = fullAccounts.filter((account) => {
-      const trimmedName = account.name.trim();
-      if (trimmedName) {
-        existingNames.add(trimmedName);
-        return false;
-      }
-      return true;
-    });
+    const unnamedAccounts = accountsResponse.content.accounts.filter(
+      (account) => {
+        existingNames.add(account);
+        if (account.trim()) {
+          return false;
+        }
+        return true;
+      },
+    );
 
     // Handle each unnamed account sequentially
     for (const account of unnamedAccounts) {
-      let newName = `account-${account.address.slice(0, 4)}`;
+      const publicKey = await rpcClient.wallet.getAccountPublicKey({
+        account,
+      });
+      const accountAddress = publicKey.content.publicKey;
+      let newName = `account-${accountAddress.slice(0, 4)}`;
       try {
         const MAX_ATTEMPTS = 5;
         let attempts = 0;
@@ -90,11 +91,11 @@ export class Manager {
 
         existingNames.add(newName); // Add the new name to the set
         await rpcClient.wallet.renameAccount({
-          account: account.name,
+          account,
           newName,
         });
       } catch (error) {
-        log.error(`Failed to rename account ${account.address}: ${error}`);
+        log.error(`Failed to rename account ${publicKey}: ${error}`);
       }
     }
   }
