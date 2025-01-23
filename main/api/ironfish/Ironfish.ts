@@ -12,7 +12,7 @@ import {
   RpcMemoryClient,
   getPackageFrom,
 } from "@ironfish/sdk";
-import log from "electron-log";
+import log from "electron-log/main";
 import { v4 as uuid } from "uuid";
 
 import { logger } from "./logger";

@@ -1,4 +1,4 @@
-import log from "electron-log";
+import log from "electron-log/main";
 import * as z from "zod";
 
 import { manager } from "../manager";

@@ -1,7 +1,7 @@
 import fsAsync from "fs/promises";
 
 import { Event, FullNode, IronfishSdk, Meter } from "@ironfish/sdk";
-import log from "electron-log";
+import log from "electron-log/main";
 
 import {
   DownloadedSnapshot,

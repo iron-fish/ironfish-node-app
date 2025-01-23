@@ -1,3 +1,4 @@
+import log from "electron-log/main";
 import { z } from "zod";
 
 import {
@@ -16,7 +17,6 @@ import {
   assertTokenPathsApiResponse,
   assertTokensApiResponse,
 } from "../../../shared/chainport";
-import { logger } from "../ironfish/logger";
 import { manager } from "../manager";
 import { t } from "../trpc";
 
@@ -38,7 +38,7 @@ export const chainportRouter = t.router({
         ),
       };
     } catch (err) {
-      logger.error(`Failed to fetch Chainport tokens data.
+      log.error(`Failed to fetch Chainport tokens data.
 
 ${err}
 `);
@@ -71,7 +71,7 @@ ${err}
             chainportTokenPaths: tokenPathsData,
           };
         } catch (err) {
-          logger.error(`Failed to fetch Chainport token paths data.
+          log.error(`Failed to fetch Chainport token paths data.
 
 ${err}
 `);
@@ -103,7 +103,7 @@ ${err}
           to,
         );
       } catch (err) {
-        logger.error(`Failed to fetch Chainport bridge transaction details.
+        log.error(`Failed to fetch Chainport bridge transaction details.
 
 ${err}
 `);

@@ -6,7 +6,7 @@ import {
   Menu,
   MenuItem,
 } from "electron";
-import log from "electron-log";
+import log from "electron-log/main";
 import serve from "electron-serve";
 import { createIPCHandler } from "electron-trpc/main";
 
@@ -19,6 +19,7 @@ import { updater } from "./updater";
 
 const isProd: boolean = process.env.NODE_ENV === "production";
 
+log.initialize();
 log.transports.file.level = "info";
 
 if (isProd) {

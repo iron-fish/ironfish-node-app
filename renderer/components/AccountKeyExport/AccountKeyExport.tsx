@@ -12,6 +12,7 @@ import {
   Switch,
 } from "@chakra-ui/react";
 import type { AccountFormat } from "@ironfish/sdk";
+import log from "electron-log/renderer";
 import { useEffect, useState } from "react";
 import { defineMessages, useIntl } from "react-intl";
 
@@ -124,7 +125,7 @@ export function AccountKeyExport({ accountName }: { accountName: string }) {
               })
               .then((c) => {
                 if (typeof c.account !== "string") {
-                  console.error("account should not be string");
+                  log.error("account should not be string");
                   return;
                 }
                 downloadString(
