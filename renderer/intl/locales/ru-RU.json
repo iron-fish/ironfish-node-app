@@ -946,5 +946,445 @@
   "oZO6n5": {
     "message": "Доступно обновление приложения. Дождитесь его загрузки и перезапустите приложение, или скачайте последнюю версию с <link>сайта Iron Fish</link>.",
     "description": "An app update is available. Wait for it to finish downloading and restart the app, or download the latest version from the <link>Iron Fish website</link>."
+  },
+  "+mLiOr": {
+    "message": "Функциональные флаги",
+    "description": "Feature flags"
+  },
+  "+q+M5P": {
+    "message": "Соберите подписи-доли от всех участников, чтобы агрегировать их.",
+    "description": "Collect the signature shares from all of the participants to aggregate them."
+  },
+  "/YxWvM": {
+    "message": "Отправка мультиподписной транзакции начинается с создания неподписанной транзакции: полностью сгенерированной транзакции, которой не хватает только подписи. Координатор должен создать данные неподписанной транзакции и отправить их вам",
+    "description": "Sending a multisig transaction starts with creating an unsigned transaction: a fully generated transaction that is only missing the signature. The coordinator should create the unsigned transaction data and send it to you"
+  },
+  "0FN3ev": {
+    "message": "Еще один последний шаг! Подтвердите аккаунт, который вы хотите подключить к Node App.",
+    "description": "One last step! Confirm the account you'd like to connect to the Node App."
+  },
+  "0TJsMy": {
+    "message": "Подключите ваше устройство Ledger напрямую к компьютеру",
+    "description": "Plug your Ledger device directly into your computer"
+  },
+  "0YAxhZ": {
+    "message": "доступно",
+    "description": "available"
+  },
+  "1q+kPa": {
+    "message": "Импортировать аккаунт",
+    "description": "Import account"
+  },
+  "2Ik96T": {
+    "message": "Сменить сети",
+    "description": "Switch networks"
+  },
+  "3+EYHL": {
+    "message": "Целевая сеть",
+    "description": "Target Network"
+  },
+  "3KdqXd": {
+    "message": "Хеш транзакции назначения",
+    "description": "Destination Txn Hash"
+  },
+  "3cc4Ct": {
+    "message": "Светлый",
+    "description": "Light"
+  },
+  "3vA/R+": {
+    "message": "Мемо не может быть больше 32 байт",
+    "description": "Memo can't be more than 32 bytes"
+  },
+  "4V/PNA": {
+    "message": "Подтвердить и выполнить связывание",
+    "description": "Confirm & Bridge"
+  },
+  "68s+e1": {
+    "message": "{currMb} / {totalMb} мб",
+    "description": "{currMb} / {totalMb} mb"
+  },
+  "7/GPHF": {
+    "message": "Комиссия за транзакцию Iron Fish",
+    "description": "Iron Fish transaction fee"
+  },
+  "711SFa": {
+    "message": "Приложение Iron Fish Node поддерживает {networkCount} сетей.",
+    "description": "The Iron Fish Node App supports {networkCount} networks."
+  },
+  "8WFqnl": {
+    "message": "Пользовательская комиссия должна быть числом больше 0",
+    "description": "Custom fee must be a number greater than 0"
+  },
+  "8ZKRcK": {
+    "message": "{count, plural, one {актив} few {актива} many {активов} other {активов}}",
+    "description": "{count, plural, =1 {asset} other {assets}}"
+  },
+  "AAQoj1": {
+    "message": "Проверьте и одобрите информацию о транзакции на вашем устройстве Ledger.",
+    "description": "Review and approve the transaction information on your Ledger device."
+  },
+  "APTRzH": {
+    "message": "У вас нет аккаунтов, которые могут отправлять транзакции. Вы должны создать новый аккаунт или импортировать аккаунт с правами на отправку перед тем, как вы сможете отправлять активы.",
+    "description": "You don't have any accounts that can send transactions. You must create a new account or import an account with send permissions before you can send assets."
+  },
+  "AeE0SX": {
+    "message": "Добавьте идентификаторы участников мультиподписной транзакции.",
+    "description": "Add the identities of the participants in the multisig transaction."
+  },
+  "Byn5mN": {
+    "message": "Необходимо указать сумму комиссии",
+    "description": "A fee amount is required"
+  },
+  "C2CIgC": {
+    "message": "Отправка",
+    "description": "Sending"
+  },
+  "CxC3WU": {
+    "message": "Отправить мультиподписную транзакцию Ledger",
+    "description": "Send Multisig Ledger Transaction"
+  },
+  "DOMotB": {
+    "message": "Целевой адрес",
+    "description": "Target Address"
+  },
+  "Eddg06": {
+    "message": "Доли подписи",
+    "description": "Signature Shares"
+  },
+  "F3l7xL": {
+    "message": "Добавить аккаунт",
+    "description": "Add Account"
+  },
+  "FazwRl": {
+    "message": "Попробовать снова",
+    "description": "Try again"
+  },
+  "I3JhPS": {
+    "message": "Сеть",
+    "description": "Network"
+  },
+  "IphkOr": {
+    "message": "Открыть приложение Iron Fish",
+    "description": "Open the Iron Fish app"
+  },
+  "Iso3pe": {
+    "message": "Тестовая сеть",
+    "description": "Testnet"
+  },
+  "KBiJ4L": {
+    "message": "Чтобы продолжить подключение вашего аккаунта к приложению Iron Fish Node, пожалуйста, подтвердите запрос на вашем устройстве Ledger.",
+    "description": "To proceed with connecting your account to the Iron Fish Node app, please approve the request on your Ledger device."
+  },
+  "KJMlfb": {
+    "message": "Целевая сеть",
+    "description": "Destination network"
+  },
+  "Km+rD9": {
+    "message": "Доступно {balance} {asset}",
+    "description": "{balance} {asset} available"
+  },
+  "LPYoBI": {
+    "message": "Комиссия за мост",
+    "description": "Bridge fee"
+  },
+  "Ldr1+Z": {
+    "message": "Отправить подписанную транзакцию в сеть.",
+    "description": "Submit the signed transaction to the network."
+  },
+  "Lv0zJu": {
+    "message": "Подробности",
+    "description": "Details"
+  },
+  "M+isB1": {
+    "message": "Провайдер моста",
+    "description": "Bridge Provider"
+  },
+  "M99Eqr": {
+    "message": "Добавить мемо",
+    "description": "Add Memo"
+  },
+  "MZCNjq": {
+    "message": "Мост",
+    "description": "Bridge"
+  },
+  "Muzvyz": {
+    "message": "Подтвердить транзакцию моста",
+    "description": "Confirm Bridge Transaction"
+  },
+  "NRzTJh": {
+    "message": "Подключить Ledger",
+    "description": "Connect Ledger"
+  },
+  "NSs9IW": {
+    "message": "Получите пакет подписей от координатора и подпишите транзакцию.",
+    "description": "Get the signing package from the coordinator and sign the transaction."
+  },
+  "NTPwsP": {
+    "message": "Флажки функций позволяют включать или отключать экспериментальные функции. Эти функции не полностью протестированы и могут работать не так, как ожидалось.",
+    "description": "Feature flags allow you to enable or disable experimental features. These features are not fully tested and may not work as expected."
+  },
+  "NZYRdf": {
+    "message": "Основная сеть",
+    "description": "Mainnet"
+  },
+  "O62iwU": {
+    "message": "Неподписанная транзакция",
+    "description": "Unsigned Transaction"
+  },
+  "OAm3TT": {
+    "message": "Положить объяснение сюда",
+    "description": "Put an explantaion here"
+  },
+  "OC6jXV": {
+    "message": "Изменение срока истечения транзакции",
+    "description": "Transaction Expiration Delta"
+  },
+  "OEEl0G": {
+    "message": "Получение",
+    "description": "Receiving"
+  },
+  "PLUyno": {
+    "message": "Переключайтесь между светлым и темным режимом.",
+    "description": "Switch between light and dark mode."
+  },
+  "Pe0ogR": {
+    "message": "Тема",
+    "description": "Theme"
+  },
+  "PiWxd9": {
+    "message": "Мульисиг-транзакция",
+    "description": "Multisig Transaction"
+  },
+  "QAfX0s": {
+    "message": "Приложение Iron Fish Node поддерживает несколько языков. Если вашего предпочитаемого языка нет в списке, пожалуйста, свяжитесь и дайте нам знать!",
+    "description": "The Iron Fish Node App supports multiple languages. If your preferred language isn't listed, please reach out and let us know!"
+  },
+  "QgKpaU": {
+    "message": "Мост отправлен",
+    "description": "Bridge sent"
+  },
+  "RHsFBY": {
+    "message": "Входите обязательство на подписание для каждого участника в мульисиг-транзакции. Эти обязательства не должны быть в определенном порядке.",
+    "description": "Input a signing commitment for each participant in the multisig transaction. These do not have to be in any particular order."
+  },
+  "Sjo1P4": {
+    "message": "Пользовательский",
+    "description": "Custom"
+  },
+  "TKmub+": {
+    "message": "Это поле обязательно для заполнения",
+    "description": "This field is required"
+  },
+  "Uh1bJh": {
+    "message": "Информация о мосте",
+    "description": "Bridge Information"
+  },
+  "Uvwn4S": {
+    "message": "Что-то пошло не так при отрисовке этого компонента. Пожалуйста, попробуйте еще раз. Если проблема повторяется, сообщите о проблеме на <link>Discord</link>.",
+    "description": "Something went wrong while rendering this component. Please try again. If the issue persists, report the issue on <link>Discord</link>."
+  },
+  "Uziuar": {
+    "message": "Сменить сеть",
+    "description": "Change Network"
+  },
+  "V3K3zJ": {
+    "message": "Введите пользовательское значение",
+    "description": "Enter custom value"
+  },
+  "VVlAZ6": {
+    "message": "С аккаунта",
+    "description": "From Account"
+  },
+  "WLecCb": {
+    "message": "Подключите ваш Ledger",
+    "description": "Connect your Ledger"
+  },
+  "WSW+95": {
+    "message": "О мостировании",
+    "description": "About Bridging"
+  },
+  "XIdw3B": {
+    "message": "Контакт с таким адресом уже существует.",
+    "description": "A contact with that address already exists."
+  },
+  "Yeh8je": {
+    "message": "Этот бухгалтерский счет уже был импортирован",
+    "description": "This Ledger account has already been imported"
+  },
+  "bGuGjq": {
+    "message": "Актив моста",
+    "description": "Bridge Asset"
+  },
+  "bu6hO1": {
+    "message": "Разблокируйте ваш Ledger",
+    "description": "Unlock your Ledger"
+  },
+  "c/8gQC": {
+    "message": "Пакет подписей",
+    "description": "Signing Package"
+  },
+  "c6lbIa": {
+    "message": "Сумма должна быть больше 0",
+    "description": "Amount must be greater than 0"
+  },
+  "cwqQqt": {
+    "message": "Комиссия за транзакцию в целевой сети",
+    "description": "The fee for transacting on the destination chain"
+  },
+  "dJMieh": {
+    "message": "Подключить аккаунт",
+    "description": "Connect account"
+  },
+  "dJcfo0": {
+    "message": "Блоков на сообщение",
+    "description": "Blocks Per Message"
+  },
+  "e6HIlS": {
+    "message": "Адрес назначения",
+    "description": "Destination Address"
+  },
+  "gC6/qK": {
+    "message": "Исходная сеть",
+    "description": "Source Network"
+  },
+  "gu1qWm": {
+    "message": "Мост получен",
+    "description": "Bridge received"
+  },
+  "i8SZTD": {
+    "message": "Недопустимый публичный адрес",
+    "description": "Invalid public address"
+  },
+  "k9/k1W": {
+    "message": "Отправьте вашу долю подписи координатору, чтобы он мог объединить подписи.",
+    "description": "Send your signing share to the coordinator so they can aggregate the signatures."
+  },
+  "kJB38m": {
+    "message": "Нет аккаунтов с разрешением на отправку",
+    "description": "No accounts with send permissions"
+  },
+  "kObD+J": {
+    "message": "Мультиподписи удостоверений",
+    "description": "Multisig Identities"
+  },
+  "krty63": {
+    "message": "Нужна помощь?",
+    "description": "Need help?"
+  },
+  "lhnRYP": {
+    "message": "Выберите сеть",
+    "description": "Choose the network"
+  },
+  "niH3/k": {
+    "message": "Комиссия поставщика моста",
+    "description": "The bridge provider's fee"
+  },
+  "obZZi7": {
+    "message": "Отправка мультиподписной транзакции начинается с создания неподписанной транзакции: полностью сгенерированной транзакции, которой не хватает только подписи. Как координатор, создайте новую неподписанную транзакцию или используйте уже созданные данные неподписанной транзакции в CLI. Затем отправьте эти данные неподписанной транзакции участникам",
+    "description": "Sending a multisig transaction starts with creating an unsigned transaction: a fully generated transaction that is only missing the signature. As the coordinator either create a new unsigned transaction or use unsigned transaction data already created in the CLI. Then send that unsigned transaction data to the participants"
+  },
+  "ox304v": {
+    "message": "Произошла ошибка",
+    "description": "An error occurred"
+  },
+  "pAl4rq": {
+    "message": "Обязательства подписания",
+    "description": "Signing Commitments"
+  },
+  "phTfBA": {
+    "message": "Создать новый аккаунт",
+    "description": "Create new account"
+  },
+  "pvqPtw": {
+    "message": "Мультиподпись Ledger",
+    "description": "Multisig Ledger"
+  },
+  "qtSDFj": {
+    "message": "Вы в настоящее время на тестовой сети!",
+    "description": "You are currently on Testnet!"
+  },
+  "s3kz6s": {
+    "message": "Произошла сетевая ошибка, пожалуйста, попробуйте снова",
+    "description": "A network error occured, please try again"
+  },
+  "sPA8hu": {
+    "message": "Сумма должна быть действительным числом",
+    "description": "Amount must be a valid number"
+  },
+  "sXlL42": {
+    "message": "Поддержка зашифрованных кошельков недоступна",
+    "description": "Encrypted Wallets Unsupported"
+  },
+  "tBX0Dj": {
+    "message": "Ваш кошелек Iron Fish зашифрован. Зашифрованные кошельки еще не поддерживаются в приложении узла. Пожалуйста, расшифруйте ваш кошелек с помощью CLI, чтобы использовать приложение узла.",
+    "description": "Your Iron Fish wallet is encrypted. Encrypted wallets are not yet supported in the node app. Please decrypt your wallet using the CLI to use the node app."
+  },
+  "tOdNiY": {
+    "message": "Темная",
+    "description": "Dark"
+  },
+  "tjHKMS": {
+    "message": "Адрес отправителя",
+    "description": "Sender Address"
+  },
+  "uH8ffi": {
+    "message": "Пожалуйста, подтвердите транзакцию на вашем устройстве.",
+    "description": "Please approve the transaction on your device."
+  },
+  "uuDgUP": {
+    "message": "Произошла ошибка",
+    "description": "An error occured"
+  },
+  "vEiG+a": {
+    "message": "Комиссия за газ",
+    "description": "Gas fee"
+  },
+  "vGJnQL": {
+    "message": "Пересмотреть транзакцию",
+    "description": "Review Transaction"
+  },
+  "vysmK2": {
+    "message": "Выбрать сеть",
+    "description": "Select network"
+  },
+  "w2FJVr": {
+    "message": "Смена сети",
+    "description": "Changing Network"
+  },
+  "xOBoiD": {
+    "message": "Подключите ваше устройство Ledger напрямую к компьютеру",
+    "description": "Plug your ledger device directly into your computer"
+  },
+  "xfoZ0Z": {
+    "message": "Координаторы отвечают за сбор и объединение всех подписей и другой информации от участников. Участники подписывают транзакцию и отправляют свои подписи и другие данные координатору.",
+    "description": "Coordinators are responsible for gathering and combining all signatures and other information from participants. Participants sign the transaction and send their signatures and other data to the coordinator."
+  },
+  "xwWibX": {
+    "message": "Мосты позволяют осуществлять беспрепятственные переводы активов по любой сети EVM. Просто выберите свой аккаунт, провайдера моста, выберите актив и его количество, выберите целевую сеть и укажите адрес назначения для выполнения вашего перевода.",
+    "description": "Bridging enables seamless transfers of assets across any EVM network. Simply choose your account, a bridge provider, select the asset and its amount, pick the destination network, and provide the destination address to execute your transfer."
+  },
+  "y1Z3or": {
+    "message": "Язык",
+    "description": "Language"
+  },
+  "y6sD8c": {
+    "message": "Подтвердите на вашем Ledger",
+    "description": "Approve on your Ledger"
+  },
+  "yNVIfV": {
+    "message": "Отправить транзакцию",
+    "description": "Submit Transaction"
+  },
+  "yPUogf": {
+    "message": "Выбрать роль",
+    "description": "Select Role"
+  },
+  "yWnTVQ": {
+    "message": "Отправьте пакет подписей всем участникам, чтобы они могли подписать транзакцию.",
+    "description": "Send the signing package to all of the participants so they can sign the transaction."
+  },
+  "zELoFl": {
+    "message": "Вы можете выбрать между Mainnet, нашей рабочей сетью, где происходят реальные транзакции, и Testnet, безопасной средой, идеально подходящей для экспериментов с новыми функциями и обучения использованию приложения node без риска.",
+    "description": "You can choose between Mainnet, our live network where real transactions take place, and Testnet, a safe environment ideal for experimenting with new features and learning to use the node app without any risk."
   }
 }

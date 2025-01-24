@@ -7,17 +7,19 @@ import {
   Box,
   HStack,
 } from "@chakra-ui/react";
+import { useFormContext } from "react-hook-form";
 import { defineMessages, useIntl } from "react-intl";
 
 import { AssetOptionType } from "@/components/AssetAmountInput/utils";
 import { LedgerChip } from "@/components/LedgerChip/LedgerChip";
 import { TRPCRouterOutputs } from "@/providers/TRPCProvider";
 import { COLORS } from "@/ui/colors";
+import { RenderError } from "@/ui/Forms/FormField/FormField";
 import { PillButton } from "@/ui/PillButton/PillButton";
 import { CurrencyUtils } from "@/utils/currency";
-import { formatOre } from "@/utils/ironUtils";
 
-import { TransactionData } from "../transactionSchema";
+import FeeGridSelector from "./FeeGridSelector/FeeGridSelector";
+import MemoInput from "./MemoInput/MemoInput";
 
 const messages = defineMessages({
   confirmTransactionDetails: {
@@ -35,8 +37,20 @@ const messages = defineMessages({
   fee: {
     defaultMessage: "Fee:",
   },
-  memo: {
-    defaultMessage: "Memo:",
+  feeLabel: {
+    defaultMessage: "Fee ($IRON)",
+  },
+  slowFeeLabel: {
+    defaultMessage: "Slow",
+  },
+  averageFeeLabel: {
+    defaultMessage: "Average",
+  },
+  fastFeeLabel: {
+    defaultMessage: "Fast",
+  },
+  feeError: {
+    defaultMessage: "A fee amount is required",
   },
   cancelTransaction: {
     defaultMessage: "Cancel Transaction",
@@ -47,26 +61,50 @@ const messages = defineMessages({
   unknownAsset: {
     defaultMessage: "unknown asset",
   },
+  transactionError: {
+    defaultMessage: "Something went wrong with your transaction, please retry.",
+  },
 });
 
 type Props = {
-  transactionData: TransactionData;
   selectedAccount: TRPCRouterOutputs["getAccounts"][number];
   onClose: () => void;
   onSubmit: () => void;
   isLoading?: boolean;
-  selectedAsset?: AssetOptionType;
+  selectedAsset: AssetOptionType;
+  estimatedFeesData: TRPCRouterOutputs["getEstimatedFees"] | undefined;
 };
 
 export function ReviewTransaction({
-  transactionData,
   selectedAccount,
   selectedAsset,
   isLoading,
   onClose,
   onSubmit,
+  estimatedFeesData,
 }: Props) {
   const { formatMessage } = useIntl();
+  const {
+    watch,
+    formState: { errors },
+    setError,
+  } = useFormContext();
+  const transactionFormData = watch();
+
+  const [convertedAmount, conversionError] = CurrencyUtils.tryMajorToMinor(
+    transactionFormData.amount.toString(),
+    transactionFormData.assetId,
+    selectedAsset?.asset.verification,
+  );
+
+  if (conversionError) {
+    setError("root.serverError", {
+      type: "custom",
+      message: formatMessage(messages.transactionError),
+    });
+  }
+
+  const hasErrors = Object.keys(errors).length > 0 || conversionError;
 
   return (
     <>
@@ -85,44 +123,34 @@ export function ReviewTransaction({
               {selectedAccount?.isLedger && <LedgerChip />}
             </HStack>
           </Box>
-
           <Box py={4} borderBottom="1.5px dashed #DEDFE2">
             <Text color={COLORS.GRAY_MEDIUM}>{formatMessage(messages.to)}</Text>
-            <Text fontSize="md">{transactionData?.toAccount ?? ""}</Text>
+            <Text fontSize="md">{transactionFormData?.toAccount ?? ""}</Text>
           </Box>
-
           <Box py={4} borderBottom="1.5px dashed #DEDFE2">
             <Text color={COLORS.GRAY_MEDIUM}>
               {formatMessage(messages.amount)}
             </Text>
             <Text fontSize="md">
               {CurrencyUtils.render(
-                transactionData.amount.toString(),
-                transactionData.assetId,
+                convertedAmount?.toString() ?? "0",
+                transactionFormData.assetId,
                 selectedAsset?.asset.verification,
               )}{" "}
               {selectedAsset?.assetName ?? formatMessage(messages.unknownAsset)}
             </Text>
           </Box>
-
-          {transactionData?.fee && (
-            <Box py={4} borderBottom="1.5px dashed #DEDFE2">
-              <Text color={COLORS.GRAY_MEDIUM}>
-                {formatMessage(messages.fee)}
-              </Text>
-              <Text fontSize="md">
-                {formatOre(transactionData?.fee ?? 0)} $IRON
-              </Text>
-            </Box>
-          )}
-
-          <Box py={4} borderBottom="1.5px dashed #DEDFE2">
-            <Text color={COLORS.GRAY_MEDIUM}>
-              {formatMessage(messages.memo)}
-            </Text>
-            <Text fontSize="md">{transactionData?.memo}</Text>
-          </Box>
+          <FeeGridSelector
+            selectedAsset={selectedAsset}
+            estimatedFeesData={estimatedFeesData}
+          />
+          <MemoInput />
         </VStack>
+        <RenderError
+          error={
+            errors.root?.serverError ? errors.root?.serverError?.message : null
+          }
+        />
       </ModalBody>
 
       <ModalFooter display="flex" gap={2} px={16} py={8}>
@@ -135,7 +163,14 @@ export function ReviewTransaction({
         >
           {formatMessage(messages.cancelTransaction)}
         </PillButton>
-        <PillButton size="sm" isDisabled={isLoading} onClick={onSubmit}>
+        <PillButton
+          size="sm"
+          type="submit"
+          isDisabled={isLoading || !!hasErrors}
+          onClick={() => {
+            onSubmit();
+          }}
+        >
           {formatMessage(messages.confirmAndSend)}
         </PillButton>
       </ModalFooter>

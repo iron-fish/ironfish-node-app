@@ -1,30 +1,32 @@
-import { HStack, VStack, chakra } from "@chakra-ui/react";
+import { Container, HStack, Skeleton, VStack, chakra } from "@chakra-ui/react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useRouter } from "next/router";
 import { useEffect, useMemo, useState } from "react";
-import { Controller, useForm } from "react-hook-form";
+import { Controller, useForm, FormProvider } from "react-hook-form";
 import { defineMessages, useIntl } from "react-intl";
 
 import { TRPCRouterOutputs, trpcReact } from "@/providers/TRPCProvider";
+import { COLORS } from "@/ui/colors";
 import { Combobox } from "@/ui/Forms/Combobox/Combobox";
 import { RenderError } from "@/ui/Forms/FormField/FormField";
 import { Select } from "@/ui/Forms/Select/Select";
 import { TextInput } from "@/ui/Forms/TextInput/TextInput";
 import { PillButton } from "@/ui/PillButton/PillButton";
 import { CurrencyUtils } from "@/utils/currency";
-import { formatOre } from "@/utils/ironUtils";
 import { asQueryString } from "@/utils/parseRouteQuery";
-import { sliceToUtf8Bytes } from "@/utils/sliceToUtf8Bytes";
+import { normalizeTransactionData } from "@/utils/transactionUtils";
 import { truncateString } from "@/utils/truncateString";
 
 import { ConfirmLedgerModal } from "./ConfirmLedgerModal/ConfirmLedgerModal";
 import { ConfirmTransactionModal } from "./ConfirmTransactionModal/ConfirmTransactionModal";
+import FeeGridSelector from "./SharedConfirmSteps/FeeGridSelector/FeeGridSelector";
+import MemoInput from "./SharedConfirmSteps/MemoInput/MemoInput";
 import {
-  MAX_MEMO_SIZE,
   TransactionData,
   TransactionFormData,
-  transactionSchema,
+  createTransactionSchema,
 } from "./transactionSchema";
+import { AssetAmountInput } from "../AssetAmountInput/AssetAmountInput";
 import {
   AssetOptionType,
   normalizeAmountInputChange,
@@ -50,55 +52,64 @@ const messages = defineMessages({
   amountLabel: {
     defaultMessage: "Amount",
   },
-  feeLabel: {
-    defaultMessage: "Fee ($IRON)",
-  },
-  memoLabel: {
-    defaultMessage: "Memo (32 characters max)",
-  },
   sendAssetButton: {
     defaultMessage: "Send Asset",
+  },
+  nextButton: {
+    defaultMessage: "Next",
   },
   insufficientFundsError: {
     defaultMessage:
       "The selected account does not have enough funds to send this transaction",
   },
-  slowFeeLabel: {
-    defaultMessage: "Slow",
+  available: {
+    defaultMessage: "available",
   },
-  averageFeeLabel: {
-    defaultMessage: "Average",
-  },
-  fastFeeLabel: {
-    defaultMessage: "Fast",
-  },
-  estimatedFeeDefaultError: {
-    defaultMessage: "An error occurred while estimating the transaction fee",
+  finalizingTransactionError: {
+    defaultMessage: "Something went wrong finalizing your transaction",
   },
 });
 
+// Todo: This should be named better to differentiate between `transactionData`, `transactionFormData` and `pendingTransactionData`
+// "transactionFormData" - the data from the form and has string fields for the fee + a customFee field
+// "transactionData" - what is sent to create a transaction: the function normalizeTransactionData takes in the form data and returns this
+// "pendingTransactionData" - a superset of transactionData that includes the full selected account and asset objects which are used to contextualize the UI in the multisig flow
 export type PendingTransactionData = {
   transactionData: TransactionData;
   selectedAccount: TRPCRouterOutputs["getAccounts"][number];
-  selectedAsset?: AssetOptionType;
+  selectedAsset: AssetOptionType;
+};
+
+type BaseProps = {
+  sendButtonText?: string;
+  accountsData: TRPCRouterOutputs["getAccounts"];
+  defaultToAddress?: string | null;
+};
+
+type SingleSignerProps = BaseProps & {
+  isMultisig?: false;
+  onNextButtonClick?: never;
+};
+
+type MultisigProps = BaseProps & {
+  isMultisig: true;
+  onNextButtonClick: (pendingTransactionData: PendingTransactionData) => void;
 };
 
 export function SendAssetsFormContent({
   sendButtonText,
   accountsData,
   defaultToAddress,
-  onPendingChange,
-}: {
-  sendButtonText?: string;
-  accountsData: TRPCRouterOutputs["getAccounts"];
-  defaultToAddress?: string | null;
-  onPendingChange: (pending: PendingTransactionData) => void;
-}) {
+  isMultisig,
+  onNextButtonClick,
+}: SingleSignerProps | MultisigProps) {
   const router = useRouter();
   const { formatMessage } = useIntl();
 
+  const [showConfirmModal, setShowConfirmModal] = useState(false);
+
   const accountOptions = useMemo(() => {
-    return accountsData?.map((account) => {
+    return accountsData.map((account) => {
       return {
         label: account.name,
         value: account.name,
@@ -114,19 +125,14 @@ export function SendAssetsFormContent({
     return queryMatch ? queryMatch.value : accountOptions[0]?.value;
   }, [accountOptions, router.query.account]);
 
-  const defaultAssetId = accountsData[0]?.balances.iron.asset.id;
+  const defaultAssetId = accountsData[0].balances.iron.asset.id;
 
-  const {
-    register,
-    control,
-    handleSubmit,
-    formState: { errors },
-    watch,
-    setError,
-    clearErrors,
-    resetField,
-    setValue,
-  } = useForm<TransactionFormData>({
+  const transactionSchema = useMemo(
+    () => createTransactionSchema(formatMessage),
+    [formatMessage],
+  );
+
+  const formMethods = useForm<TransactionFormData>({
     resolver: zodResolver(transactionSchema),
     mode: "onBlur",
     defaultValues: {
@@ -135,12 +141,24 @@ export function SendAssetsFormContent({
       toAccount: defaultToAddress ?? "",
       assetId: defaultAssetId,
       fee: "average",
+      customFee: "",
     },
   });
 
+  const {
+    formState: { errors },
+    watch,
+    clearErrors,
+    resetField,
+    setValue,
+    setError,
+    register,
+    trigger,
+    control,
+  } = formMethods;
+
   const fromAccountValue = watch("fromAccount");
   const assetIdValue = watch("assetId");
-  const feeValue = watch("fee");
   const amountValue = watch("amount");
   const toAccountValue = watch("toAccount");
 
@@ -154,13 +172,17 @@ export function SendAssetsFormContent({
 
   const selectedAccount = useMemo(() => {
     return (
-      accountsData?.find((account) => account.name === fromAccountValue) ??
+      accountsData.find((account) => account.name === fromAccountValue) ??
       accountsData[0]
     );
   }, [accountsData, fromAccountValue]);
 
-  const { accountBalances, assetOptionsMap, assetOptions } =
-    useAccountAssets(selectedAccount);
+  const { accountBalances, assetOptions, assetOptionsMap } = useAccountAssets(
+    selectedAccount,
+    {
+      balanceInLabel: false,
+    },
+  );
 
   const assetAmountToSend = useMemo(() => {
     const assetToSend = assetOptionsMap.get(assetIdValue);
@@ -181,7 +203,7 @@ export function SendAssetsFormContent({
     return amountToSend;
   }, [amountValue, assetIdValue, assetOptionsMap]);
 
-  const { data: estimatedFeesData, error: estimatedFeesError } =
+  const { data: estimatedFeesData, error: _estimatedFeesError } =
     trpcReact.getEstimatedFees.useQuery(
       {
         accountName: fromAccountValue,
@@ -200,7 +222,6 @@ export function SendAssetsFormContent({
         retry: false,
         enabled:
           Number(amountValue) > 0 &&
-          !errors.memo &&
           !errors.amount &&
           !errors.toAccount &&
           !errors.assetId,
@@ -258,6 +279,59 @@ export function SendAssetsFormContent({
     return [...(contacts ?? []), ...(accounts ?? [])];
   }, [contactsData, allAccountsData]);
 
+  const selectedAsset = useMemo(() => {
+    // Accounts always have $IRON as an asset
+    return assetOptionsMap.get(assetIdValue) || assetOptions[0];
+  }, [assetIdValue, assetOptionsMap, assetOptions]);
+
+  const canAffordTransaction = () => {
+    const currentBalance = Number(accountBalances[assetIdValue].confirmed);
+    if (currentBalance < assetAmountToSend) {
+      setError("amount", {
+        type: "custom",
+        message: formatMessage(messages.insufficientFundsError),
+      });
+      return false;
+    }
+    return true;
+  };
+
+  const isSingleSignerValid = async () => {
+    if (!canAffordTransaction()) {
+      return false;
+    }
+    // We only check these inputs since single signer has a second step with form inputs
+    const validInputs = await trigger(["amount", "toAccount", "assetId"], {
+      shouldFocus: true,
+    });
+
+    return validInputs;
+  };
+
+  const isMultisigValid = async () => {
+    if (!canAffordTransaction()) {
+      return false;
+    }
+    const hasInfoForEstimating = await trigger([
+      "amount",
+      "toAccount",
+      "assetId",
+    ]);
+
+    if (!estimatedFeesData && hasInfoForEstimating) {
+      setError("root.serverError", {
+        type: "custom",
+        message: "Something went wrong estimating transaction fees",
+      });
+      return false;
+    }
+
+    // Check all form inputs
+    const hasValidForm = await trigger();
+
+    return hasValidForm && !!estimatedFeesData;
+  };
+
   const accountNameInAddressBook = useMemo(() => {
     const fullContact = formattedContacts.find(
       (contact) => contact.value === toAccountValue,
@@ -268,220 +342,207 @@ export function SendAssetsFormContent({
   return (
     <>
       {syncingMessage}
-      <chakra.form
-        onSubmit={handleSubmit(async (data) => {
-          const currentBalance = Number(
-            accountBalances[data.assetId].confirmed,
-          );
-
-          if (currentBalance < assetAmountToSend) {
-            setError("amount", {
-              type: "custom",
-              message: formatMessage(messages.insufficientFundsError),
-            });
-            return;
-          }
-
-          if (!estimatedFeesData && !selectedAccount.isLedger) {
-            setError("root.serverError", {
-              message:
-                estimatedFeesError?.message ??
-                formatMessage(messages.estimatedFeeDefaultError),
-            });
-            return;
-          }
-
-          const fee = estimatedFeesData?.[data.fee] || null;
-
-          onPendingChange({
-            selectedAccount,
-            selectedAsset: assetOptionsMap.get(data.assetId),
-            transactionData: {
-              fromAccount: data.fromAccount,
-              toAccount: data.toAccount,
-              assetId: data.assetId,
-              amount: assetAmountToSend.toString(),
-              fee: fee,
-              memo: data.memo ?? "",
-            },
-          });
-        })}
-      >
-        <VStack gap={4} alignItems="stretch">
-          <Select
-            {...register("fromAccount")}
-            value={fromAccountValue}
-            label={formatMessage(messages.fromLabel)}
-            options={accountOptions}
-            error={errors.fromAccount?.message}
-            icon={selectedAccount.isLedger ? <LedgerChip /> : null}
-          />
-
-          <Combobox
-            {...register("toAccount")}
-            label={`${formatMessage(messages.toLabel)}${
-              accountNameInAddressBook ? ": " + accountNameInAddressBook : ""
-            }`}
-            error={errors.toAccount?.message}
-            options={formattedContacts}
-            value={toAccountValue}
-            setValue={setValue}
-          />
-
-          <Select
-            {...register("assetId")}
-            value={assetIdValue}
-            label={formatMessage(messages.assetLabel)}
-            options={assetOptions}
-            error={errors.assetId?.message}
-          />
-
-          <Controller
-            name="amount"
-            control={control}
-            render={({ field }) => (
-              <TextInput
-                {...field}
-                value={field.value ?? ""}
-                onChange={(e) => {
-                  normalizeAmountInputChange({
-                    changeEvent: e,
-                    selectedAsset: assetOptionsMap.get(assetIdValue),
-                    onStart: () => clearErrors("root.serverError"),
-                    onChange: field.onChange,
-                  });
-                }}
-                onFocus={() => {
-                  if (field.value === "0") {
-                    field.onChange("");
-                  }
-                }}
-                onBlur={() => {
-                  if (!field.value) {
-                    field.onChange("0");
-                  }
-                  if (field.value.endsWith(".")) {
-                    field.onChange(field.value.slice(0, -1));
-                  }
-                }}
-                label={formatMessage(messages.amountLabel)}
-                error={errors.amount?.message}
-              />
-            )}
-          />
-
-          <Select
-            {...register("fee")}
-            value={feeValue}
-            label={formatMessage(messages.feeLabel)}
-            options={[
-              {
-                label:
-                  formatMessage(messages.slowFeeLabel) +
-                  (estimatedFeesData
-                    ? ` (${formatOre(estimatedFeesData.slow)} $IRON)`
-                    : ""),
-                value: "slow",
-              },
-              {
-                label:
-                  formatMessage(messages.averageFeeLabel) +
-                  (estimatedFeesData
-                    ? ` (${formatOre(estimatedFeesData.average)} $IRON)`
-                    : ""),
-                value: "average",
-              },
-              {
-                label:
-                  formatMessage(messages.fastFeeLabel) +
-                  (estimatedFeesData
-                    ? ` (${formatOre(estimatedFeesData.fast)} $IRON)`
-                    : ""),
-                value: "fast",
-              },
-            ]}
-            error={errors.fee?.message}
-          />
-
-          <Controller
-            name="memo"
-            control={control}
-            render={({ field }) => (
-              <TextInput
-                {...field}
-                value={field.value ?? ""}
-                onChange={(e) =>
-                  field.onChange(
-                    sliceToUtf8Bytes(e.target.value, MAX_MEMO_SIZE),
-                  )
-                }
-                label={formatMessage(messages.memoLabel)}
-                error={errors.memo?.message}
-              />
-            )}
-          />
-
-          <RenderError
-            error={
-              errors.root?.serverError
-                ? errors.root?.serverError?.message
-                : null
-            }
-          />
-        </VStack>
-
-        <HStack mt={8} justifyContent="flex-end">
-          <PillButton
-            type="submit"
-            height="60px"
-            px={8}
-            isDisabled={!isAccountSynced}
+      <FormProvider {...formMethods}>
+        <chakra.form>
+          <Container
+            _dark={{
+              bg: "inherit",
+              border: "1px solid",
+              borderColor: COLORS.DARK_MODE.GRAY_MEDIUM,
+            }}
+            bg={COLORS.GRAY_LIGHT}
+            borderRadius={4}
+            p={8}
           >
-            {sendButtonText || formatMessage(messages.sendAssetButton)}
-          </PillButton>
-        </HStack>
-      </chakra.form>
+            <VStack gap={4} alignItems="stretch">
+              <Select
+                {...register("fromAccount")}
+                value={fromAccountValue}
+                label={formatMessage(messages.fromLabel)}
+                options={accountOptions}
+                error={errors.fromAccount?.message}
+                icon={selectedAccount.isLedger ? <LedgerChip /> : null}
+              />
+              <Combobox
+                {...register("toAccount")}
+                label={`${formatMessage(messages.toLabel)}${
+                  accountNameInAddressBook
+                    ? ": " + accountNameInAddressBook
+                    : ""
+                }`}
+                error={errors.toAccount?.message}
+                options={formattedContacts}
+                value={toAccountValue}
+                setValue={setValue}
+              />
+              <Controller
+                name="amount"
+                control={control}
+                render={({ field }) => (
+                  <AssetAmountInput
+                    assetOptions={assetOptions}
+                    assetOptionsMap={assetOptionsMap}
+                    assetIdValue={assetIdValue}
+                    onAssetIdChange={async (e) => {
+                      setValue("assetId", e.target.value);
+                      field.onChange("0");
+                    }}
+                    error={errors.amount?.message}
+                    inputElement={
+                      <TextInput
+                        {...field}
+                        aria-label="Amount"
+                        value={amountValue}
+                        onChange={(e) => {
+                          normalizeAmountInputChange({
+                            changeEvent: e,
+                            selectedAsset: selectedAsset,
+                            onStart: () => {
+                              clearErrors("root.serverError");
+                              clearErrors("amount");
+                            },
+                            onChange: field.onChange,
+                          });
+                        }}
+                        onFocus={() => {
+                          if (field.value === "0") {
+                            field.onChange("");
+                          }
+                        }}
+                        onBlur={() => {
+                          if (!field.value) {
+                            field.onChange("0");
+                          }
+                          if (field.value.endsWith(".")) {
+                            field.onChange(field.value.slice(0, -1));
+                          }
+                        }}
+                        triggerProps={{
+                          borderTopRightRadius: 0,
+                          borderBottomRightRadius: 0,
+                          borderRightWidth: 0,
+                        }}
+                      />
+                    }
+                  />
+                )}
+              />
+              {isMultisig && (
+                <>
+                  <FeeGridSelector
+                    estimatedFeesData={estimatedFeesData}
+                    selectedAsset={selectedAsset}
+                  />
+                  <MemoInput />
+                </>
+              )}
+              <RenderError
+                error={
+                  errors.root?.serverError
+                    ? errors.root?.serverError?.message
+                    : null
+                }
+              />
+            </VStack>
+          </Container>
+
+          <HStack mt={8} justifyContent="flex-end">
+            <PillButton
+              onClick={async () => {
+                if (!isMultisig) {
+                  const isValid = await isSingleSignerValid();
+                  if (!isValid) return;
+                  setShowConfirmModal(true);
+                } else {
+                  const isFormValid = await isMultisigValid();
+                  if (!isFormValid) return;
+                  // Using assertion since we know we have estimatedFeesData from `isValidMultisig`
+                  const { normalizedTransactionData, error } =
+                    normalizeTransactionData({
+                      transactionFormData: formMethods.getValues(),
+                      estimatedFeesData: estimatedFeesData!,
+                      selectedAsset,
+                    });
+
+                  if (error !== null) {
+                    setError("root.serverError", {
+                      message: error,
+                    });
+                  } else {
+                    onNextButtonClick({
+                      transactionData: normalizedTransactionData,
+                      selectedAccount,
+                      selectedAsset,
+                    });
+                  }
+                }
+              }}
+              type="button"
+              height="60px"
+              px={8}
+              isDisabled={!isAccountSynced}
+            >
+              {sendButtonText ?? formatMessage(messages.nextButton)}
+            </PillButton>
+          </HStack>
+          {showConfirmModal && estimatedFeesData ? (
+            <SendAssetConfirmModal
+              selectedAccount={selectedAccount}
+              selectedAsset={selectedAsset}
+              estimatedFeesData={estimatedFeesData}
+              onCancel={() => {
+                setShowConfirmModal(false);
+              }}
+            />
+          ) : null}
+        </chakra.form>
+      </FormProvider>
     </>
   );
 }
 
 export function SendAssetConfirmModal({
-  pending,
+  estimatedFeesData,
   onCancel,
+  selectedAccount,
+  selectedAsset,
 }: {
-  pending: PendingTransactionData;
   onCancel: () => void;
+  estimatedFeesData: TRPCRouterOutputs["getEstimatedFees"];
+  selectedAccount: TRPCRouterOutputs["getAccounts"][number];
+  selectedAsset: AssetOptionType;
 }) {
-  const { transactionData, selectedAccount, selectedAsset } = pending;
-
   return selectedAccount.isLedger ? (
     <ConfirmLedgerModal
       isOpen
-      transactionData={transactionData}
       selectedAsset={selectedAsset}
+      estimatedFeesData={estimatedFeesData}
       selectedAccount={selectedAccount}
       onCancel={onCancel}
     />
   ) : (
     <ConfirmTransactionModal
       isOpen
-      transactionData={transactionData}
       selectedAsset={selectedAsset}
       selectedAccount={selectedAccount}
       onCancel={onCancel}
+      estimatedFeesData={estimatedFeesData}
     />
   );
 }
 
 export function SendAssetsForm() {
   const router = useRouter();
-  const { data: accountsData } = trpcReact.getAccounts.useQuery();
+  const { data: accountsData, isLoading: accountsLoading } =
+    trpcReact.getAccounts.useQuery();
   const filteredAccounts = accountsData?.filter((a) => {
     return !a.status.viewOnly || a.isLedger;
   });
   const defaultToAddress = asQueryString(router.query.to);
 
-  const [pending, setPending] = useState<PendingTransactionData | null>(null);
+  if (accountsLoading) {
+    return <Skeleton height="320px" />;
+  }
 
   if (!filteredAccounts) {
     return null;
@@ -492,18 +553,9 @@ export function SendAssetsForm() {
   }
 
   return (
-    <>
-      <SendAssetsFormContent
-        onPendingChange={setPending}
-        accountsData={filteredAccounts}
-        defaultToAddress={defaultToAddress}
-      />
-      {pending && (
-        <SendAssetConfirmModal
-          pending={pending}
-          onCancel={() => setPending(null)}
-        />
-      )}
-    </>
+    <SendAssetsFormContent
+      accountsData={filteredAccounts}
+      defaultToAddress={defaultToAddress}
+    />
   );
 }

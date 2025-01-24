@@ -946,5 +946,445 @@
   "oZO6n5": {
     "message": "应用有更新。等待其完成下载并重启应用，或从<link>Iron Fish 网站</link>下载最新版本。",
     "description": "An app update is available. Wait for it to finish downloading and restart the app, or download the latest version from the <link>Iron Fish website</link>."
+  },
+  "+mLiOr": {
+    "message": "功能标志",
+    "description": "Feature flags"
+  },
+  "+q+M5P": {
+    "message": "从所有参与者那里收集签名份额，以聚合它们。",
+    "description": "Collect the signature shares from all of the participants to aggregate them."
+  },
+  "/YxWvM": {
+    "message": "发送多签名交易开始时需要创建一个未签名的交易：一个完全生成的交易，只缺少签名。协调者应创建未签名的交易数据并将其发送给你",
+    "description": "Sending a multisig transaction starts with creating an unsigned transaction: a fully generated transaction that is only missing the signature. The coordinator should create the unsigned transaction data and send it to you"
+  },
+  "0FN3ev": {
+    "message": "最后一步！确认要连接到节点应用的帐户。",
+    "description": "One last step! Confirm the account you'd like to connect to the Node App."
+  },
+  "0TJsMy": {
+    "message": "将您的Ledger设备直接插入您的计算机中",
+    "description": "Plug your Ledger device directly into your computer"
+  },
+  "0YAxhZ": {
+    "message": "可用的",
+    "description": "available"
+  },
+  "1q+kPa": {
+    "message": "导入帐户",
+    "description": "Import account"
+  },
+  "2Ik96T": {
+    "message": "切换网络",
+    "description": "Switch networks"
+  },
+  "3+EYHL": {
+    "message": "目标网络",
+    "description": "Target Network"
+  },
+  "3KdqXd": {
+    "message": "目标交易哈希",
+    "description": "Destination Txn Hash"
+  },
+  "3cc4Ct": {
+    "message": "轻",
+    "description": "Light"
+  },
+  "3vA/R+": {
+    "message": "备注不能超过32字节",
+    "description": "Memo can't be more than 32 bytes"
+  },
+  "4V/PNA": {
+    "message": "确认并桥接",
+    "description": "Confirm & Bridge"
+  },
+  "68s+e1": {
+    "message": "{currMb} / {totalMb} mb",
+    "description": "{currMb} / {totalMb} mb"
+  },
+  "7/GPHF": {
+    "message": "Iron Fish交易费",
+    "description": "Iron Fish transaction fee"
+  },
+  "711SFa": {
+    "message": "Iron Fish节点应用支持{networkCount}个网络。",
+    "description": "The Iron Fish Node App supports {networkCount} networks."
+  },
+  "8WFqnl": {
+    "message": "自定义费用必须是大于0的数字",
+    "description": "Custom fee must be a number greater than 0"
+  },
+  "8ZKRcK": {
+    "message": "{count, plural, =1 {资产} other {资产}}",
+    "description": "{count, plural, =1 {asset} other {assets}}"
+  },
+  "AAQoj1": {
+    "message": "在您的Ledger设备上查看并批准交易信息。",
+    "description": "Review and approve the transaction information on your Ledger device."
+  },
+  "APTRzH": {
+    "message": "你没有任何可以发送交易的帐户。在你能发送资产之前，你必须创建一个新账户或导入一个具有发送权限的账户。",
+    "description": "You don't have any accounts that can send transactions. You must create a new account or import an account with send permissions before you can send assets."
+  },
+  "AeE0SX": {
+    "message": "添加多签名交易的参与者的身份。",
+    "description": "Add the identities of the participants in the multisig transaction."
+  },
+  "Byn5mN": {
+    "message": "需要费用金额",
+    "description": "A fee amount is required"
+  },
+  "C2CIgC": {
+    "message": "发送中",
+    "description": "Sending"
+  },
+  "CxC3WU": {
+    "message": "发送多签名Ledger交易",
+    "description": "Send Multisig Ledger Transaction"
+  },
+  "DOMotB": {
+    "message": "目标地址",
+    "description": "Target Address"
+  },
+  "Eddg06": {
+    "message": "签名份额",
+    "description": "Signature Shares"
+  },
+  "F3l7xL": {
+    "message": "添加帐户",
+    "description": "Add Account"
+  },
+  "FazwRl": {
+    "message": "再试一次",
+    "description": "Try again"
+  },
+  "I3JhPS": {
+    "message": "网络",
+    "description": "Network"
+  },
+  "IphkOr": {
+    "message": "打开Iron Fish应用程序",
+    "description": "Open the Iron Fish app"
+  },
+  "Iso3pe": {
+    "message": "测试网",
+    "description": "Testnet"
+  },
+  "KBiJ4L": {
+    "message": "要继续将您的帐户连接到 Iron Fish Node 应用程序，请在您的 Ledger 设备上批准请求。",
+    "description": "To proceed with connecting your account to the Iron Fish Node app, please approve the request on your Ledger device."
+  },
+  "KJMlfb": {
+    "message": "目标网络",
+    "description": "Destination network"
+  },
+  "Km+rD9": {
+    "message": "可用 {balance} {asset}",
+    "description": "{balance} {asset} available"
+  },
+  "LPYoBI": {
+    "message": "桥接费",
+    "description": "Bridge fee"
+  },
+  "Ldr1+Z": {
+    "message": "向网络提交已签名的交易。",
+    "description": "Submit the signed transaction to the network."
+  },
+  "Lv0zJu": {
+    "message": "详情",
+    "description": "Details"
+  },
+  "M+isB1": {
+    "message": "桥接提供者",
+    "description": "Bridge Provider"
+  },
+  "M99Eqr": {
+    "message": "添加备注",
+    "description": "Add Memo"
+  },
+  "MZCNjq": {
+    "message": "桥接",
+    "description": "Bridge"
+  },
+  "Muzvyz": {
+    "message": "确认桥接交易",
+    "description": "Confirm Bridge Transaction"
+  },
+  "NRzTJh": {
+    "message": "连接 Ledger",
+    "description": "Connect Ledger"
+  },
+  "NSs9IW": {
+    "message": "从协调器获取签名包并签署交易。",
+    "description": "Get the signing package from the coordinator and sign the transaction."
+  },
+  "NTPwsP": {
+    "message": "功能标志允许您启用或禁用实验性功能。这些功能没有经过全面测试，可能不会按预期工作。",
+    "description": "Feature flags allow you to enable or disable experimental features. These features are not fully tested and may not work as expected."
+  },
+  "NZYRdf": {
+    "message": "主网",
+    "description": "Mainnet"
+  },
+  "O62iwU": {
+    "message": "未签名的交易",
+    "description": "Unsigned Transaction"
+  },
+  "OAm3TT": {
+    "message": "在这里放一些解释",
+    "description": "Put an explantaion here"
+  },
+  "OC6jXV": {
+    "message": "交易过期增量",
+    "description": "Transaction Expiration Delta"
+  },
+  "OEEl0G": {
+    "message": "接收",
+    "description": "Receiving"
+  },
+  "PLUyno": {
+    "message": "在淡模式和深模式之间切换。",
+    "description": "Switch between light and dark mode."
+  },
+  "Pe0ogR": {
+    "message": "主题",
+    "description": "Theme"
+  },
+  "PiWxd9": {
+    "message": "多签名交易",
+    "description": "Multisig Transaction"
+  },
+  "QAfX0s": {
+    "message": " Iron Fish Node App 支持多种语言。如果您的首选语言未列出，请与我们联系并告知！",
+    "description": "The Iron Fish Node App supports multiple languages. If your preferred language isn't listed, please reach out and let us know!"
+  },
+  "QgKpaU": {
+    "message": "已发送桥接",
+    "description": "Bridge sent"
+  },
+  "RHsFBY": {
+    "message": "为多签名交易中的每个参与者输入签名承诺。这些不必按任何特定顺序。",
+    "description": "Input a signing commitment for each participant in the multisig transaction. These do not have to be in any particular order."
+  },
+  "Sjo1P4": {
+    "message": "自定义",
+    "description": "Custom"
+  },
+  "TKmub+": {
+    "message": "该字段是必需的",
+    "description": "This field is required"
+  },
+  "Uh1bJh": {
+    "message": "桥接信息",
+    "description": "Bridge Information"
+  },
+  "Uvwn4S": {
+    "message": "渲染此组件时出了些问题。请再试一次。如果问题仍然存在，报告在<link>Discord</link>的问题。",
+    "description": "Something went wrong while rendering this component. Please try again. If the issue persists, report the issue on <link>Discord</link>."
+  },
+  "Uziuar": {
+    "message": "更改网络",
+    "description": "Change Network"
+  },
+  "V3K3zJ": {
+    "message": "输入自定义值",
+    "description": "Enter custom value"
+  },
+  "VVlAZ6": {
+    "message": "从帐户",
+    "description": "From Account"
+  },
+  "WLecCb": {
+    "message": "连接您的 Ledger",
+    "description": "Connect your Ledger"
+  },
+  "WSW+95": {
+    "message": "关于桥接",
+    "description": "About Bridging"
+  },
+  "XIdw3B": {
+    "message": "一个带有该地址的联系人已经存在。",
+    "description": "A contact with that address already exists."
+  },
+  "Yeh8je": {
+    "message": "此账簿已被导入",
+    "description": "This Ledger account has already been imported"
+  },
+  "bGuGjq": {
+    "message": "Bridge 资产",
+    "description": "Bridge Asset"
+  },
+  "bu6hO1": {
+    "message": "解锁您的账簿",
+    "description": "Unlock your Ledger"
+  },
+  "c/8gQC": {
+    "message": "签署套餐",
+    "description": "Signing Package"
+  },
+  "c6lbIa": {
+    "message": "金额必须大于0",
+    "description": "Amount must be greater than 0"
+  },
+  "cwqQqt": {
+    "message": "在目标链上交易的费用",
+    "description": "The fee for transacting on the destination chain"
+  },
+  "dJMieh": {
+    "message": "连接账户",
+    "description": "Connect account"
+  },
+  "dJcfo0": {
+    "message": "每条信息的区块数",
+    "description": "Blocks Per Message"
+  },
+  "e6HIlS": {
+    "message": "目的地地址",
+    "description": "Destination Address"
+  },
+  "gC6/qK": {
+    "message": "源网络",
+    "description": "Source Network"
+  },
+  "gu1qWm": {
+    "message": "已接收 Bridge",
+    "description": "Bridge received"
+  },
+  "i8SZTD": {
+    "message": "无效的公共地址",
+    "description": "Invalid public address"
+  },
+  "k9/k1W": {
+    "message": "将您的签名份额发送给协调员，以便他们可以聚合签名。",
+    "description": "Send your signing share to the coordinator so they can aggregate the signatures."
+  },
+  "kJB38m": {
+    "message": "没有有发送权限的账户",
+    "description": "No accounts with send permissions"
+  },
+  "kObD+J": {
+    "message": "多签名身份",
+    "description": "Multisig Identities"
+  },
+  "krty63": {
+    "message": "需要帮忙吗？",
+    "description": "Need help?"
+  },
+  "lhnRYP": {
+    "message": "选择网络",
+    "description": "Choose the network"
+  },
+  "niH3/k": {
+    "message": "Bridge提供商的费用",
+    "description": "The bridge provider's fee"
+  },
+  "obZZi7": {
+    "message": "发送多签名交易首先要创建一个未签名的交易：一个已经完全生成的交易，只缺少签名。作为协ordinator，要么创建一个新的未签名交易，要么使用已经在CLI中创建的未签名交易数据。然后将那个未签名的交易数据发送给参与者。",
+    "description": "Sending a multisig transaction starts with creating an unsigned transaction: a fully generated transaction that is only missing the signature. As the coordinator either create a new unsigned transaction or use unsigned transaction data already created in the CLI. Then send that unsigned transaction data to the participants"
+  },
+  "ox304v": {
+    "message": "发生错误",
+    "description": "An error occurred"
+  },
+  "pAl4rq": {
+    "message": "签署承诺",
+    "description": "Signing Commitments"
+  },
+  "phTfBA": {
+    "message": "创建新账户",
+    "description": "Create new account"
+  },
+  "pvqPtw": {
+    "message": "多签名账簿",
+    "description": "Multisig Ledger"
+  },
+  "qtSDFj": {
+    "message": "您目前在测试网上！",
+    "description": "You are currently on Testnet!"
+  },
+  "s3kz6s": {
+    "message": "网络错误发生了，请再试一次",
+    "description": "A network error occured, please try again"
+  },
+  "sPA8hu": {
+    "message": "金额必须是有效的数字",
+    "description": "Amount must be a valid number"
+  },
+  "sXlL42": {
+    "message": "不支持加密钱包",
+    "description": "Encrypted Wallets Unsupported"
+  },
+  "tBX0Dj": {
+    "message": "您的Iron Fish钱包已被加密。节点应用程序尚不支持加密钱包。请使用CLI解密您的钱包以使用节点应用程序。",
+    "description": "Your Iron Fish wallet is encrypted. Encrypted wallets are not yet supported in the node app. Please decrypt your wallet using the CLI to use the node app."
+  },
+  "tOdNiY": {
+    "message": "暗",
+    "description": "Dark"
+  },
+  "tjHKMS": {
+    "message": "发件人地址",
+    "description": "Sender Address"
+  },
+  "uH8ffi": {
+    "message": "请在您的设备上批准交易。",
+    "description": "Please approve the transaction on your device."
+  },
+  "uuDgUP": {
+    "message": "发生错误",
+    "description": "An error occured"
+  },
+  "vEiG+a": {
+    "message": "燃气费",
+    "description": "Gas fee"
+  },
+  "vGJnQL": {
+    "message": "查看交易",
+    "description": "Review Transaction"
+  },
+  "vysmK2": {
+    "message": "选择网络",
+    "description": "Select network"
+  },
+  "w2FJVr": {
+    "message": "更改网络",
+    "description": "Changing Network"
+  },
+  "xOBoiD": {
+    "message": "将你的Ledger设备直接插入电脑",
+    "description": "Plug your ledger device directly into your computer"
+  },
+  "xfoZ0Z": {
+    "message": "协调员负责收集和合并来自参与者的所有签名和其他信息。参与者签署交易，并将他们的签名和其他数据发送给协调员。",
+    "description": "Coordinators are responsible for gathering and combining all signatures and other information from participants. Participants sign the transaction and send their signatures and other data to the coordinator."
+  },
+  "xwWibX": {
+    "message": "桥接使资产能够在任何EVM网络之间无缝转移。只需选择你的账户，桥接提供者，选择资产及其数量，挑选目的网络，并提供目的地址以执行你的转移。",
+    "description": "Bridging enables seamless transfers of assets across any EVM network. Simply choose your account, a bridge provider, select the asset and its amount, pick the destination network, and provide the destination address to execute your transfer."
+  },
+  "y1Z3or": {
+    "message": "语言",
+    "description": "Language"
+  },
+  "y6sD8c": {
+    "message": "在您的Ledger上批准",
+    "description": "Approve on your Ledger"
+  },
+  "yNVIfV": {
+    "message": "提交交易",
+    "description": "Submit Transaction"
+  },
+  "yPUogf": {
+    "message": "选择角色",
+    "description": "Select Role"
+  },
+  "yWnTVQ": {
+    "message": "将签名包发送给所有参与者，以便他们可以签署交易。",
+    "description": "Send the signing package to all of the participants so they can sign the transaction."
+  },
+  "zELoFl": {
+    "message": "你可以在Mainnet（我们的实时网络，进行实际交易）和Testnet（一个理想的安全环境，用于尝试新功能和学习如何使用节点应用，没有任何风险）之间选择。",
+    "description": "You can choose between Mainnet, our live network where real transactions take place, and Testnet, a safe environment ideal for experimenting with new features and learning to use the node app without any risk."
   }
 }

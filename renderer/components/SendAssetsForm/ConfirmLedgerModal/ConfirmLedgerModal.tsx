@@ -1,16 +1,10 @@
-import {
-  Modal,
-  ModalOverlay,
-  ModalContent,
-  ModalFooter,
-  ModalBody,
-} from "@chakra-ui/react";
+import { Modal, ModalOverlay, ModalContent } from "@chakra-ui/react";
 import { useCallback, useEffect, useState } from "react";
-import { useIntl, defineMessages } from "react-intl";
+import { useFormContext } from "react-hook-form";
 
 import { AssetOptionType } from "@/components/AssetAmountInput/utils";
 import { trpcReact, TRPCRouterOutputs } from "@/providers/TRPCProvider";
-import { PillButton } from "@/ui/PillButton/PillButton";
+import { normalizeTransactionData } from "@/utils/transactionUtils";
 
 import { StepConfirm } from "./Steps/StepConfirm";
 import { StepConnect } from "./Steps/StepConnect";
@@ -18,16 +12,7 @@ import { TransactionRejected } from "./Steps/TransactionRejected";
 import { ReviewTransaction } from "../SharedConfirmSteps/ReviewTransaction";
 import { SubmissionError } from "../SharedConfirmSteps/SubmissionError";
 import { TransactionSubmitted } from "../SharedConfirmSteps/TransactionSubmitted";
-import { TransactionData } from "../transactionSchema";
-
-const messages = defineMessages({
-  cancel: {
-    defaultMessage: "Cancel",
-  },
-  continue: {
-    defaultMessage: "Continue",
-  },
-});
+import { TransactionFormData } from "../transactionSchema";
 
 type LedgerStatus = {
   isLedgerConnected: boolean;
@@ -39,20 +24,21 @@ type LedgerStatus = {
 
 type Props = {
   isOpen: boolean;
-  transactionData: TransactionData;
   selectedAccount: TRPCRouterOutputs["getAccounts"][number];
-  selectedAsset?: AssetOptionType;
+  selectedAsset: AssetOptionType;
   onCancel: () => void;
+  estimatedFeesData: TRPCRouterOutputs["getEstimatedFees"];
 };
 
 export function ConfirmLedgerModal({
   isOpen,
   onCancel,
-  transactionData,
   selectedAccount,
   selectedAsset,
+  estimatedFeesData,
 }: Props) {
-  const { formatMessage } = useIntl();
+  const { watch } = useFormContext<TransactionFormData>();
+  const transactionFormData = watch();
 
   const [
     { isLedgerConnected, isLedgerUnlocked, isIronfishAppOpen },
@@ -66,6 +52,7 @@ export function ConfirmLedgerModal({
   }));
 
   const [_statusError, setStatusError] = useState("");
+  const { setError } = useFormContext();
 
   const [step, setStep] = useState<
     | "IDLE"
@@ -86,7 +73,7 @@ export function ConfirmLedgerModal({
 
   useEffect(() => {
     if (
-      !["CONNECT_LEDGER", "ERROR"].includes(step) &&
+      !["CONNECT_LEDGER", "ERROR", "IDLE"].includes(step) &&
       (!isLedgerConnected || !isLedgerUnlocked || !isIronfishAppOpen)
     ) {
       setStep("CONNECT_LEDGER");
@@ -120,6 +107,29 @@ export function ConfirmLedgerModal({
     }
   }, [isLedgerConnected, isLedgerUnlocked, isIronfishAppOpen, step]);
 
+  const handleSubmitTransaction = useCallback(() => {
+    const { normalizedTransactionData, error } = normalizeTransactionData({
+      transactionFormData,
+      estimatedFeesData,
+      selectedAsset,
+    });
+    if (error !== null) {
+      setError("root.serverError", {
+        message: error,
+      });
+      setStep("IDLE");
+    } else {
+      submitTransaction(normalizedTransactionData);
+      setStep("CONFIRM_TRANSACTION");
+    }
+  }, [
+    transactionFormData,
+    estimatedFeesData,
+    selectedAsset,
+    submitTransaction,
+    setError,
+  ]);
+
   const handleClose = useCallback(() => {
     if (step === "CONFIRM_TRANSACTION") {
       cancelTransaction();
@@ -128,106 +138,58 @@ export function ConfirmLedgerModal({
     onCancel();
   }, [onCancel, reset, step, cancelTransaction]);
 
+  const stepMap = {
+    IDLE: (
+      <ReviewTransaction
+        selectedAccount={selectedAccount}
+        selectedAsset={selectedAsset}
+        estimatedFeesData={estimatedFeesData}
+        onClose={handleClose}
+        onSubmit={() => {
+          setStep("CONNECT_LEDGER");
+        }}
+      />
+    ),
+    CONNECT_LEDGER: (
+      <StepConnect
+        isLedgerConnected={isLedgerConnected}
+        isLedgerUnlocked={isLedgerUnlocked}
+        isIronfishAppOpen={isIronfishAppOpen}
+        onCancel={handleClose}
+        onContinue={handleSubmitTransaction}
+        isLoading={isLoading}
+      />
+    ),
+    CONFIRM_TRANSACTION: <StepConfirm onCancel={handleClose} />,
+    TRANSACTION_SUBMITTED: (
+      <TransactionSubmitted
+        fromAccount={selectedAccount.name}
+        transactionHash={submittedTransactionData?.hash ?? ""}
+        handleClose={handleClose}
+      />
+    ),
+    SUBMISSION_ERROR:
+      error?.message === "TRANSACTION_REJECTED" ? (
+        <TransactionRejected
+          isLoading={isLoading}
+          handleClose={handleClose}
+          handleSubmit={handleSubmitTransaction}
+        />
+      ) : (
+        <SubmissionError
+          errorMessage={error?.message ?? ""}
+          isLoading={isLoading}
+          handleClose={handleClose}
+          handleSubmit={handleSubmitTransaction}
+        />
+      ),
+  };
+
   return (
     <Modal isOpen={isOpen} onClose={handleClose}>
       <ModalOverlay />
       <ModalContent maxW="100%" width="600px">
-        {step === "IDLE" && (
-          <ReviewTransaction
-            transactionData={transactionData}
-            selectedAccount={selectedAccount}
-            selectedAsset={selectedAsset}
-            onClose={handleClose}
-            onSubmit={() => {
-              setStep("CONNECT_LEDGER");
-            }}
-          />
-        )}
-        {step === "CONNECT_LEDGER" && (
-          <>
-            <ModalBody px={16} pt={16}>
-              <StepConnect
-                isLedgerConnected={isLedgerConnected}
-                isLedgerUnlocked={isLedgerUnlocked}
-                isIronfishAppOpen={isIronfishAppOpen}
-              />
-            </ModalBody>
-            <ModalFooter display="flex" gap={2} px={16} py={8}>
-              <PillButton
-                size="sm"
-                onClick={handleClose}
-                variant="inverted"
-                border={0}
-              >
-                {formatMessage(messages.cancel)}
-              </PillButton>
-              <PillButton
-                size="sm"
-                isDisabled={
-                  isLoading ||
-                  !isLedgerConnected ||
-                  !isLedgerUnlocked ||
-                  !isIronfishAppOpen
-                }
-                onClick={() => {
-                  submitTransaction(transactionData);
-                  setStep("CONFIRM_TRANSACTION");
-                }}
-              >
-                {formatMessage(messages.continue)}
-              </PillButton>
-            </ModalFooter>
-          </>
-        )}
-        {step === "CONFIRM_TRANSACTION" && (
-          <>
-            <ModalBody px={16} pt={16}>
-              <StepConfirm />
-            </ModalBody>
-            <ModalFooter display="flex" gap={2} px={16} py={8}>
-              <PillButton
-                size="sm"
-                onClick={handleClose}
-                variant="inverted"
-                border={0}
-              >
-                {formatMessage(messages.cancel)}
-              </PillButton>
-            </ModalFooter>
-          </>
-        )}
-        {step === "TRANSACTION_SUBMITTED" && (
-          <TransactionSubmitted
-            fromAccount={selectedAccount.name}
-            transactionHash={submittedTransactionData?.hash ?? ""}
-            handleClose={handleClose}
-          />
-        )}
-
-        {step === "SUBMISSION_ERROR" &&
-          error?.message === "TRANSACTION_REJECTED" && (
-            <TransactionRejected
-              isLoading={isLoading}
-              handleClose={handleClose}
-              handleSubmit={() => {
-                submitTransaction(transactionData);
-                setStep("CONFIRM_TRANSACTION");
-              }}
-            />
-          )}
-
-        {step === "SUBMISSION_ERROR" &&
-          error?.message !== "TRANSACTION_REJECTED" && (
-            <SubmissionError
-              errorMessage={error?.message ?? ""}
-              isLoading={isLoading}
-              handleClose={handleClose}
-              handleSubmit={() => {
-                submitTransaction(transactionData);
-                setStep("CONFIRM_TRANSACTION");
-              }}
-            />
-          )}
+        {stepMap[step]}
       </ModalContent>
     </Modal>
   );
