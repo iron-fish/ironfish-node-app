@@ -1,3 +1,5 @@
+import log from "electron-log/main";
+
 export class PromiseQueue {
   private queue: Array<() => Promise<unknown>> = [];
   private isProcessing = false;
@@ -12,7 +14,7 @@ export class PromiseQueue {
         try {
           await task();
         } catch (error) {
-          console.error("PromiseQueue task error:", error);
+          log.error("PromiseQueue task error:", error);
         }
       }
     }

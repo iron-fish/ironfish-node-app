@@ -1,5 +1,6 @@
 import { Box, HStack, Heading, Progress, Text } from "@chakra-ui/react";
 import { formatDuration } from "date-fns";
+import log from "electron-log/renderer";
 import { useRouter } from "next/router";
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { defineMessages, useIntl } from "react-intl";
@@ -116,7 +117,7 @@ function DownloadProgress({ onSuccess }: { onSuccess: () => void }) {
         reset();
       },
       onError: (err) => {
-        console.log(err);
+        log.log(err);
         setError(err.message);
         increment();
       },

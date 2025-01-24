@@ -5,6 +5,7 @@ import type {
   TransactionStatus,
   TransactionType,
 } from "@ironfish/sdk";
+import log from "electron-log/renderer";
 import { ReactNode, useMemo, useState } from "react";
 import { MessageDescriptor, useIntl } from "react-intl";
 
@@ -57,7 +58,7 @@ function getNoteStatusDisplay(
     }
 
     const unhandledType: never = type;
-    console.error("Unhandled transaction type", unhandledType);
+    log.error("Unhandled transaction type", unhandledType);
     return { icon: <ReceivedIcon />, message: messages.received };
   }
 
@@ -74,7 +75,7 @@ function getNoteStatusDisplay(
   }
 
   const unhandledStatus: never = status;
-  console.error("Unhandled transaction status", unhandledStatus);
+  log.error("Unhandled transaction status", unhandledStatus);
   return { icon: <PendingIcon />, message: messages.pending };
 }
 

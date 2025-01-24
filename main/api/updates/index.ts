@@ -1,6 +1,6 @@
 import axios from "axios";
 import { app } from "electron";
-import log from "electron-log";
+import log from "electron-log/main";
 import { clean, gt } from "semver";
 
 import { PartialGithubRelease } from "../../../shared/types";

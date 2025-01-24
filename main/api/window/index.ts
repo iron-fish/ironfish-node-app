@@ -1,5 +1,5 @@
 import { app, dialog } from "electron";
-import log from "electron-log";
+import log from "electron-log/main";
 
 import { mainWindow } from "../../main-window";
 import { t } from "../trpc";

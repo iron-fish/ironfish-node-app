@@ -1,6 +1,6 @@
 import { Logger } from "@ironfish/sdk";
 import consola, { ConsolaReporterLogObject, LogLevel, logType } from "consola";
-import log from "electron-log";
+import log from "electron-log/main";
 
 const logPrefix = "[node]";
 

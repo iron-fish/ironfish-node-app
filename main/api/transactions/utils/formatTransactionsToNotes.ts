@@ -1,5 +1,5 @@
 import { RpcAsset, RpcClient, RpcWalletTransaction } from "@ironfish/sdk";
-import log from "electron-log";
+import log from "electron-log/main";
 
 import { IRON_ID } from "@shared/constants";
 import { TransactionNote } from "@shared/types";
