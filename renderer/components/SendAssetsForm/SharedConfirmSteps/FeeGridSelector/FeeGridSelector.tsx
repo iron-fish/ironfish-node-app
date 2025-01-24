@@ -5,13 +5,12 @@ import {
   Flex,
   Grid,
   HStack,
-  IconButton,
   Skeleton,
   Text,
   VStack,
 } from "@chakra-ui/react";
 import Image from "next/image";
-import React, { useMemo, useState, KeyboardEvent } from "react";
+import React, { useMemo, useState } from "react";
 import { useFormContext, Controller, useWatch } from "react-hook-form";
 import { defineMessages, useIntl } from "react-intl";
 
@@ -164,14 +163,6 @@ function FeeGridSelector({
     return formatOre(0);
   };
 
-  const handleKeyDown = (e: KeyboardEvent<HTMLInputElement>) => {
-    if (e.key === "Enter") {
-      if (Number(customFee) > 0) {
-        setShowGrid(false);
-      }
-    }
-  };
-
   if (!estimatedFeesData) {
     return <FeeGridSkeleton showGrid={showGrid} />;
   }
@@ -226,7 +217,6 @@ function FeeGridSelector({
                     feeField.onChange(key);
                     clearErrors("customFee");
                     resetField("customFee");
-                    setShowGrid(false);
                   }}
                 />
               ))}
@@ -247,7 +237,6 @@ function FeeGridSelector({
                         ? customFeeField.value
                         : ""
                     }
-                    onKeyDown={handleKeyDown}
                     onSubmit={() => {
                       Number(customFeeField.value) > 0 && setShowGrid(false);
                     }}
@@ -267,28 +256,20 @@ function FeeGridSelector({
                     }}
                     icon={
                       customFeeField.value && (
-                        <IconButton
-                          variant="ghost"
-                          borderRadius="full"
-                          color="white"
+                        <Box
                           h={6}
                           w={6}
                           minW={6}
                           bg="#5BA54C"
-                          onClick={() => setShowGrid(false)}
-                          aria-label="Save memo"
-                          isDisabled={Number(customFeeField.value) <= 0}
-                          _disabled={{
-                            bg: COLORS.GREEN_DARK,
-                            opacity: 0.4,
-                            cursor: "not-allowed",
-                            _hover: { bg: COLORS.GREEN_DARK },
-                          }}
-                          _hover={{
-                            opacity: 0.8,
-                          }}
-                          icon={<CheckIcon w={3} />}
-                        />
+                          borderRadius="full"
+                          display="flex"
+                          alignItems="center"
+                          justifyContent="center"
+                          opacity={Number(customFeeField.value) <= 0 ? 0.4 : 1}
+                          color="white"
+                        >
+                          <CheckIcon w={3} />
+                        </Box>
                       )
                     }
                   />

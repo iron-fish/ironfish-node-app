@@ -1,4 +1,4 @@
-import { CheckIcon, CloseIcon } from "@chakra-ui/icons";
+import { CloseIcon } from "@chakra-ui/icons";
 import { Box, Button, HStack, Text, IconButton, Flex } from "@chakra-ui/react";
 import Image from "next/image";
 import { useState } from "react";
@@ -99,6 +99,10 @@ const MemoInput = () => {
                     color="white"
                     variant="ghost"
                     size="sm"
+                    h={6}
+                    minW={6}
+                    w={6}
+                    fontSize={8}
                     onClick={() => {
                       field.onChange("");
                       setShowMemoInput(false);
@@ -108,26 +112,6 @@ const MemoInput = () => {
                       opacity: 0.8,
                     }}
                     icon={<CloseIcon />}
-                  />
-                  <IconButton
-                    aria-label="Save memo"
-                    variant="ghost"
-                    borderRadius="full"
-                    color="white"
-                    size="sm"
-                    bg="#5BA54C"
-                    _hover={{
-                      opacity: 0.8,
-                    }}
-                    onClick={() => setShowMemoInput(false)}
-                    isDisabled={!field.value}
-                    _disabled={{
-                      bg: COLORS.GREEN_DARK,
-                      opacity: 0.4,
-                      cursor: "not-allowed",
-                      _hover: { bg: COLORS.GREEN_DARK },
-                    }}
-                    icon={<CheckIcon />}
                   />
                 </HStack>
               }
