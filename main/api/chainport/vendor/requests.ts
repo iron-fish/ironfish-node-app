@@ -64,13 +64,19 @@ export const fetchChainportBridgeTransaction = async (
   assetId: string,
   targetNetworkId: number,
   targetAddress: string,
+  sourceAddress: string,
 ): Promise<ChainportBridgeTransaction> => {
   const config = getConfig(networkId);
+  const isBridgeFeeUpgradeActivated =
+    new Date(config.bridgeFeeUpgrade) < new Date();
   const url = new URL(`/bridges/transactions/create`, config.endpoint);
   url.searchParams.append("amount", amount.toString());
   url.searchParams.append("asset_id", assetId);
   url.searchParams.append("target_network_id", targetNetworkId.toString());
   url.searchParams.append("target_address", targetAddress.toString());
+  if (isBridgeFeeUpgradeActivated) {
+    url.searchParams.append("source_address", sourceAddress);
+  }
 
   return await makeChainportRequest<ChainportBridgeTransaction>(url.toString());
 };

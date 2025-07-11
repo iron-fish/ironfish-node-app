@@ -86,6 +86,7 @@ ${err}
         assetId: z.string(),
         to: z.string(),
         selectedNetwork: z.number(),
+        fromAccount: z.string(),
       }),
     )
     .query(async (opts) => {
@@ -93,7 +94,11 @@ ${err}
       const rpcClient = await ironfish.rpcClient();
       const network = await rpcClient.chain.getNetworkInfo();
 
-      const { amount, assetId, to, selectedNetwork } = opts.input;
+      const { amount, assetId, to, selectedNetwork, fromAccount } = opts.input;
+      const publicAddressResponse = await rpcClient.wallet.getAccountPublicKey({
+        account: fromAccount,
+      });
+      const sourceAddress = publicAddressResponse.content.publicKey;
       try {
         return await fetchChainportBridgeTransaction(
           network.content.networkId,
@@ -101,6 +106,7 @@ ${err}
           assetId,
           selectedNetwork,
           to,
+          sourceAddress,
         );
       } catch (err) {
         log.error(`Failed to fetch Chainport bridge transaction details.
