@@ -44,46 +44,17 @@ export class ChainportMemoMetadata {
     return String.fromCharCode(num - 10 + "a".charCodeAt(0));
   }
 
-  public static encode(
-    networkId: number,
-    address: string,
-    toIronfish: boolean,
-  ) {
-    if (address.startsWith("0x")) {
-      address = address.slice(2);
-    }
-
-    const encodedNetworkId = this.encodeNumberTo10Bits(networkId);
-    const encodedAddress = address
-      .toLowerCase()
-      .split("")
-      .map((character: string) => {
-        return this.encodeCharacterTo6Bits(character);
-      })
-      .join("");
-
-    const combined =
-      (toIronfish ? "1" : "0") + (encodedNetworkId + encodedAddress).slice(1);
-    const hexString = BigInt("0b" + combined).toString(16);
-    return hexString.padStart(64, "0");
-  }
-
+  /**
+   * Decode the encoded hex string into a network id, address, and toIronfish flag
+   * @param encodedHex - The encoded hex string
+   * @returns A tuple containing the network id, address, and toIronfish flag
+   */
   public static decode(encodedHex: string): [number, string, boolean] {
-    const hexInteger = BigInt("0x" + encodedHex);
-    const encodedString = hexInteger.toString(2);
-    const padded = encodedString.padStart(250, "0");
-    const networkId = this.decodeNumberFrom10Bits(padded);
-
-    const toIronfish = padded[0] === "1";
-    const addressCharacters = [];
-
-    for (let i = 10; i < padded.length; i += 6) {
-      const j = i + 6;
-      const charBits = padded.slice(i, j);
-      addressCharacters.push(this.decodeCharFrom6Bits(charBits));
-    }
-
-    const address = "0x" + addressCharacters.join("");
+    const bytes = Buffer.from(encodedHex, "hex");
+    const networkId = bytes.readUInt8(0);
+    const addressBytes = bytes.subarray(1, 21);
+    const address = "0x" + addressBytes.toString("hex");
+    const toIronfish = (bytes[21] & 0x80) !== 0;
 
     return [networkId, address.toLowerCase(), toIronfish];
   }
