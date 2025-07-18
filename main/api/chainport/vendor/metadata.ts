@@ -49,7 +49,27 @@ export class ChainportMemoMetadata {
    * @param encodedHex - The encoded hex string
    * @returns A tuple containing the network id, address, and toIronfish flag
    */
-  public static decode(encodedHex: string): [number, string, boolean] {
+  public static decodeV1(encodedHex: string): [number, string, boolean] {
+    const hexInteger = BigInt("0x" + encodedHex);
+    const encodedString = hexInteger.toString(2);
+    const padded = encodedString.padStart(250, "0");
+    const networkId = this.decodeNumberFrom10Bits(padded);
+
+    const toIronfish = padded[0] === "1";
+    const addressCharacters = [];
+
+    for (let i = 10; i < padded.length; i += 6) {
+      const j = i + 6;
+      const charBits = padded.slice(i, j);
+      addressCharacters.push(this.decodeCharFrom6Bits(charBits));
+    }
+
+    const address = "0x" + addressCharacters.join("");
+
+    return [networkId, address.toLowerCase(), toIronfish];
+  }
+
+  public static decodeV2(encodedHex: string): [number, string, boolean] {
     const bytes = Buffer.from(encodedHex, "hex");
     const networkId = bytes.readUInt8(0);
     const addressBytes = bytes.subarray(1, 21);
