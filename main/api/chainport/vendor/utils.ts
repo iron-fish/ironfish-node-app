@@ -47,19 +47,9 @@ const getIncomingChainportTransactionData = (
     return undefined;
   }
 
-  let sourceNetwork: number;
-  let address: string;
-  let _toIronfish: boolean;
-
-  if (new Date(transaction.timestamp) < config.bridgeFeeUpgrade) {
-    [sourceNetwork, address, _toIronfish] = ChainportMemoMetadata.decodeV1(
-      bridgeNote.memoHex,
-    );
-  } else {
-    [sourceNetwork, address, _toIronfish] = ChainportMemoMetadata.decodeV2(
-      bridgeNote.memoHex,
-    );
-  }
+  const [sourceNetwork, address, _] = ChainportMemoMetadata.decode(
+    bridgeNote.memoHex,
+  );
 
   return {
     type: TransactionType.RECEIVE,
@@ -90,19 +80,9 @@ const getOutgoingChainportTransactionData = (
     return undefined;
   }
 
-  let sourceNetwork: number;
-  let address: string;
-  let _toIronfish: boolean;
-
-  if (new Date(transaction.timestamp) < config.bridgeFeeUpgrade) {
-    [sourceNetwork, address, _toIronfish] = ChainportMemoMetadata.decodeV1(
-      bridgeNote.memoHex,
-    );
-  } else {
-    [sourceNetwork, address, _toIronfish] = ChainportMemoMetadata.decodeV2(
-      bridgeNote.memoHex,
-    );
-  }
+  const [sourceNetwork, address, _] = ChainportMemoMetadata.decode(
+    bridgeNote.memoHex,
+  );
 
   return {
     type: TransactionType.SEND,
