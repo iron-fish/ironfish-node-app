@@ -211,17 +211,6 @@ export function BridgeConfirmationModal({
       return <Skeleton>123 FOO</Skeleton>;
     }
 
-    if (
-      "is_portx_fee_payment" in txDetails.bridge_fee &&
-      txDetails.bridge_fee.is_portx_fee_payment
-    ) {
-      const fee = CurrencyUtils.formatCurrency(
-        txDetails.bridge_fee.portx_fee_amount,
-        18,
-      );
-      return `${fee} PORTX`;
-    }
-
     return `${CurrencyUtils.formatCurrency(
       txDetails.bridge_fee.source_token_fee_amount,
       chainportToken.decimals,

@@ -36,7 +36,7 @@ export const extractChainportDataFromTransaction = (
 
 const getIncomingChainportTransactionData = (
   transaction: RpcWalletTransaction,
-  config: { incomingAddresses: Set<string>; bridgeFeeUpgrade: Date },
+  config: { incomingAddresses: Set<string> },
 ): ChainportTransactionData => {
   const bridgeNote = transaction.notes?.[0];
 
@@ -60,7 +60,7 @@ const getIncomingChainportTransactionData = (
 
 const getOutgoingChainportTransactionData = (
   transaction: RpcWalletTransaction,
-  config: { outgoingAddresses: Set<string>; bridgeFeeUpgrade: Date },
+  config: { outgoingAddresses: Set<string> },
 ): ChainportTransactionData => {
   if (!transaction.notes || transaction.notes.length < 2) {
     return undefined;
