@@ -44,31 +44,21 @@ export class ChainportMemoMetadata {
     return String.fromCharCode(num - 10 + "a".charCodeAt(0));
   }
 
-  public static encode(
-    networkId: number,
-    address: string,
-    toIronfish: boolean,
-  ) {
-    if (address.startsWith("0x")) {
-      address = address.slice(2);
+  public static convertHexToBinary(encodedHex: string): string {
+    const buffer = Buffer.from(encodedHex, "hex");
+    let binaryString = "";
+    for (let i = 0; i < buffer.length; i++) {
+      binaryString += buffer[i].toString(2).padStart(8, "0");
     }
-
-    const encodedNetworkId = this.encodeNumberTo10Bits(networkId);
-    const encodedAddress = address
-      .toLowerCase()
-      .split("")
-      .map((character: string) => {
-        return this.encodeCharacterTo6Bits(character);
-      })
-      .join("");
-
-    const combined =
-      (toIronfish ? "1" : "0") + (encodedNetworkId + encodedAddress).slice(1);
-    const hexString = BigInt("0b" + combined).toString(16);
-    return hexString.padStart(64, "0");
+    return binaryString;
   }
 
-  public static decode(encodedHex: string): [number, string, boolean] {
+  /**
+   * Decode the encoded hex string into a network id, address, and toIronfish flag
+   * @param encodedHex - The encoded hex string
+   * @returns A tuple containing the network id, address, and toIronfish flag
+   */
+  public static decodeV1(encodedHex: string): [number, string, boolean] {
     const hexInteger = BigInt("0x" + encodedHex);
     const encodedString = hexInteger.toString(2);
     const padded = encodedString.padStart(250, "0");
@@ -86,5 +76,33 @@ export class ChainportMemoMetadata {
     const address = "0x" + addressCharacters.join("");
 
     return [networkId, address.toLowerCase(), toIronfish];
+  }
+
+  public static decodeV2(encodedHex: string): [number, string, boolean] {
+    const bits = this.convertHexToBinary(encodedHex);
+    const toIronfish = bits[6] === "1";
+    const memoHexVersion = bits.slice(8, 10);
+    if (memoHexVersion !== "01") {
+      throw new Error(`Unexpected memoHex version: ${memoHexVersion}`);
+    }
+
+    const networkIdBits = bits.slice(10, 16);
+    const networkId = parseInt(networkIdBits, 2);
+    const addressBits = bits.slice(16, 176);
+    let address = "0x";
+    for (let i = 0; i < addressBits.length; i += 4) {
+      address += parseInt(addressBits.slice(i, i + 4), 2).toString(16);
+    }
+
+    return [networkId, address.toLowerCase(), toIronfish];
+  }
+
+  public static decode(encodedHex: string): [number, string, boolean] {
+    const bits = this.convertHexToBinary(encodedHex);
+    const memoHexVersion = bits.slice(8, 10);
+    if (memoHexVersion === "01") {
+      return this.decodeV2(encodedHex);
+    }
+    return this.decodeV1(encodedHex);
   }
 }
