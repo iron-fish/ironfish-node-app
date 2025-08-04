@@ -1,0 +1,1390 @@
+{
+  "+02x3X": {
+    "message": "Buku alamat Anda adalah tempat Anda dapat mengelola semua kontak, nama mereka, dan alamat publik mereka.",
+    "description": "Your address book is where you can manage all of your contacts, their names, and their public addresses."
+  },
+  "+RhnH+": {
+    "message": "Kosong",
+    "description": "Empty"
+  },
+  "+gH1Ai": {
+    "message": "Nama Node",
+    "description": "Node Name"
+  },
+  "/0TOL5": {
+    "message": "Jumlah",
+    "description": "Amount"
+  },
+  "/jJLYy": {
+    "message": "Transaksi",
+    "description": "Transactions"
+  },
+  "/km2Zu": {
+    "message": "Impor Akun",
+    "description": "Import Account"
+  },
+  "/tbC+S": {
+    "message": "Ekspor Akun",
+    "description": "Export Account"
+  },
+  "/zn2B0": {
+    "message": "Akun baca-saja tidak dapat memulai transaksi",
+    "description": "View only accounts cannot initiate transactions"
+  },
+  "0rIM5R": {
+    "message": "Hapus Akun",
+    "description": "Remove Account"
+  },
+  "21ueTy": {
+    "message": "Alamat Publik",
+    "description": "Public Address"
+  },
+  "25vn7e": {
+    "message": "Progres dekompresi: {progress}%",
+    "description": "Unzip progress: {progress}%"
+  },
+  "2AcArH": {
+    "message": "Pilih opsi ini jika Anda belum memiliki akun Iron Fish atau jika Anda ingin membuat akun baru.",
+    "description": "Choose this option if you don't have an existing Iron Fish account or if you'd like to create a new one."
+  },
+  "2DcNnd": {
+    "message": "Bagikan alamat Anda untuk menerima pembayaran sambil menjaga detail akun Anda tetap pribadi.",
+    "description": "Share your address to receive payments while keeping your account details entirely private."
+  },
+  "2G6Qs7": {
+    "message": "Pengaturan Tersimpan",
+    "description": "Settings saved"
+  },
+  "2KXvZ0": {
+    "message": "Anda yakin? Anda tidak dapat membatalkan tindakan ini setelah.",
+    "description": "Are you sure? You can't undo this action afterwards."
+  },
+  "2qzbcD": {
+    "message": "Minimum Teman",
+    "description": "Min Peers"
+  },
+  "3/a0Ho": {
+    "message": "Saat ini kami tidak dapat mengunduh catatan rilis.",
+    "description": "We're not able to download release notes right now."
+  },
+  "3OLlCN": {
+    "message": "Dari/Kepada",
+    "description": "From/To"
+  },
+  "3VI9mt": {
+    "message": "Simpan Perubahan",
+    "description": "Save Changes"
+  },
+  "3WkdVP": {
+    "message": "Nama Akun",
+    "description": "Account Name"
+  },
+  "3euoRJ": {
+    "message": "Frasa Pemulihan",
+    "description": "Recovery Phrase"
+  },
+  "47FYwb": {
+    "message": "Batal",
+    "description": "Cancel"
+  },
+  "4l6vz1": {
+    "message": "Salin",
+    "description": "Copy"
+  },
+  "4woaDB": {
+    "message": "Mengirim Transaksi",
+    "description": "Submitting Transaction"
+  },
+  "551bXe": {
+    "message": "Hanya Baca",
+    "description": "View Only"
+  },
+  "59UOUq": {
+    "message": "Anda tidak memiliki akun",
+    "description": "You don't have any accounts"
+  },
+  "5JcXdV": {
+    "message": "Buat Akun",
+    "description": "Create Account"
+  },
+  "5MiM5y": {
+    "message": "Kirim Aktif",
+    "description": "Send Asset"
+  },
+  "5OJ1yw": {
+    "message": "Nama Akun Internal",
+    "description": "Internal Account Name"
+  },
+  "5UdRx1": {
+    "message": "Impor Dengan",
+    "description": "Import With"
+  },
+  "5c3Wrw": {
+    "message": "Total Saldo Akun",
+    "description": "Total accounts balance"
+  },
+  "5jeq8P": {
+    "message": "Tidak Diketahui",
+    "description": "Unknown"
+  },
+  "62mqGj": {
+    "message": "Hapus Kontak",
+    "description": "Delete Contact"
+  },
+  "6AhQlk": {
+    "message": "Apakah Anda yakin ingin memulai ulang node ke keadaan awal?",
+    "description": "Are you sure you want to reset the node to its initial state?"
+  },
+  "6Ior7i": {
+    "message": "Saya menyimpan Frasa pemulihan saya",
+    "description": "I saved my recovery phrase"
+  },
+  "6P/bTL": {
+    "message": "Jenis Koneksi",
+    "description": "Connection Type"
+  },
+  "6q3tCn": {
+    "message": "Sedang Terhubung",
+    "description": "Connecting"
+  },
+  "7JxXKc": {
+    "message": "Unduh Snapshot",
+    "description": "Download Snapshot"
+  },
+  "7N6OYQ": {
+    "message": "Lihat Transaksi",
+    "description": "View Transaction"
+  },
+  "8GvVWZ": {
+    "message": "Ada yang salah, silakan coba lagi.",
+    "description": "Something went wrong, please try again."
+  },
+  "8JwFP/": {
+    "message": "Nama Akun Kustom?",
+    "description": "Custom account name?"
+  },
+  "8WtyrD": {
+    "message": "Bahasa Inggris",
+    "description": "Spanish"
+  },
+  "9+Ddtu": {
+    "message": "Berikutnya",
+    "description": "Next"
+  },
+  "9DI6zl": {
+    "message": "Anda dapat mengubah jumlah biaya yang ingin Anda bayarkan. Namun, hal itu akan berkorelasi langsung dengan seberapa cepat transaksi Anda dideteksi oleh blockchain.",
+    "description": "You can change the fee amount you'd like to pay. However, that will directly correlate with the speed with which your transaction is picked up by the blockchain."
+  },
+  "9IVf3z": {
+    "message": "Ringkasan Akun",
+    "description": "Account Overview"
+  },
+  "9WRlF4": {
+    "message": "Kirim",
+    "description": "Send"
+  },
+  "9WhwsR": {
+    "message": "Nama ini adalah nama yang akan kami gunakan untuk akun Anda secara internal. Nama ini tidak terlihat oleh orang lain.",
+    "description": "This name is how we will refer to your account internally. It is not visible to anyone else."
+  },
+  "9XUYQt": {
+    "message": "Impor",
+    "description": "Import"
+  },
+  "9j3hXO": {
+    "message": "A",
+    "description": "To"
+  },
+  "9pwT3E": {
+    "message": "Butuh bantuan? Temukan kami di Discord",
+    "description": "Need Help? Find us on Discord"
+  },
+  "9uOFF3": {
+    "message": "Ringkasan",
+    "description": "Overview"
+  },
+  "AFZGS9": {
+    "message": "Aplikasi Node Iron Fish mendukung {languageCount} Bahasa. Jika bahasa pilihan Anda tidak tercantum, silakan hubungi kami dan beri tahu kami!",
+    "description": "The Iron Fish Node App supports {languageCount} languages. If your preferred language isn't listed, please reach out and let us know!"
+  },
+  "AetNAD": {
+    "message": "Telusuri",
+    "description": "Browse"
+  },
+  "Arxl88": {
+    "message": "Keluar",
+    "description": "Outgoing"
+  },
+  "AyGP4T": {
+    "message": "Pesan Kesalahan",
+    "description": "Error Message"
+  },
+  "BwRLcj": {
+    "message": "Transaksi Anda telah terkirim. Konfirmasi mungkin memerlukan beberapa menit. Transaksi ini akan muncul di aktivitas Anda sebagai tertunda hingga dikonfirmasi.",
+    "description": "Your transaction has been submitted. It may take a few minutes until it is confirmed. This transaction will appear in your activity as pending until it is confirmed."
+  },
+  "BxM6mJ": {
+    "message": "Saldo terendah ke tertinggi",
+    "description": "Lowest to highest balance"
+  },
+  "C43FrR": {
+    "message": "Jumlah:",
+    "description": "Amount:"
+  },
+  "D31nQ7": {
+    "message": "Terjadi kesalahan saat memperkirakan biaya transaksi",
+    "description": "An error occurred while estimating the transaction fee"
+  },
+  "D3idYv": {
+    "message": "Pengaturan",
+    "description": "Settings"
+  },
+  "D5NqQO": {
+    "message": "Memo",
+    "description": "Memo"
+  },
+  "Dh1MGS": {
+    "message": "Sinkronisasi Akun",
+    "description": "Account Syncing"
+  },
+  "DnuK8f": {
+    "message": "Aktifkan ini jika Anda ingin menentukan nama khusus untuk akun ini. Jika tidak, nama akun akan diambil dari data akun yang diekspor.",
+    "description": "Turn this on if you want to specify a custom name for this account. Otherwise, the account name will be inferred from your exported account data."
+  },
+  "FM2S9I": {
+    "message": "Konfigurasikan node Anda",
+    "description": "Set up your node"
+  },
+  "Fn/FTS": {
+    "message": "Terjadi kesalahan saat mengunggah transaksi Anda. Jika ini terjadi beberapa kali, beri tahu kami di Discord.",
+    "description": "An error occurred while loading your transactions. If this happens several times, please let us know on Discord."
+  },
+  "FnRTEV": {
+    "message": "Rata-rata",
+    "description": "Average"
+  },
+  "FvanT6": {
+    "message": "Akun",
+    "description": "Accounts"
+  },
+  "GHoUMq": {
+    "message": "Sinkronisasi Akun: {progress}%",
+    "description": "Account Syncing: {progress}%"
+  },
+  "GKzO/A": {
+    "message": "Biaya:",
+    "description": "Fee:"
+  },
+  "Gcv5yj": {
+    "message": "Penggunaan Heap",
+    "description": "Heap Used"
+  },
+  "Gcv7QB": {
+    "message": "Nama Akun",
+    "description": "Account name"
+  },
+  "Gxw4v5": {
+    "message": "Kunci dan mnemonik Anda penting untuk akses eksklusif ke aset digital Anda. Penting untuk menyimpannya dengan aman.",
+    "description": "Your keys and mnemonic phrase are essential for accessing your digital assets exclusively. It's important to store them securely."
+  },
+  "H56oje": {
+    "message": "Pekerja Node",
+    "description": "Node Workers"
+  },
+  "HAlOn1": {
+    "message": "Nama",
+    "description": "Name"
+  },
+  "HkADqs": {
+    "message": "Biaya ($IRON)",
+    "description": "Fee ($IRON)"
+  },
+  "HtgUU8": {
+    "message": "Ketik ''{accountName}'' untuk menghapus",
+    "description": "Type ''{accountName}'' to remove"
+  },
+  "JJNc3c": {
+    "message": "Sebelumnya",
+    "description": "Previous"
+  },
+  "JM4YI+": {
+    "message": "Apakah Anda yakin ingin menghapus akun ini?",
+    "description": "Are you sure you want to remove this account?"
+  },
+  "Jjpq7w": {
+    "message": "Urutan Pemblokiran",
+    "description": "Block Sequence"
+  },
+  "JoB2Ml": {
+    "message": "Akun Anda berhasil diimpor",
+    "description": "Your account was successfully imported"
+  },
+  "JqiqNj": {
+    "message": "Ada yang salah",
+    "description": "Something went wrong"
+  },
+  "K340v+": {
+    "message": "Terjadi kesalahan terjadi saat mengunduh snapshot:",
+    "description": "An error occurred while downloading the snapshot:"
+  },
+  "K3r6DQ": {
+    "message": "Hapus",
+    "description": "Delete"
+  },
+  "KN7zKn": {
+    "message": "Kesalahan",
+    "description": "Error"
+  },
+  "Kkv03/": {
+    "message": "Detail Transaksi",
+    "description": "Transaction Details"
+  },
+  "L4MaM3": {
+    "message": "Inti",
+    "description": "Cores"
+  },
+  "LP4H/8": {
+    "message": "Memindai blok: {sequence} / {totalSequence}",
+    "description": "Scanning blocks: {sequence} / {totalSequence}"
+  },
+  "LPlno7": {
+    "message": "Beberapa penerima",
+    "description": "Multiple recipients"
+  },
+  "LRJJAc": {
+    "message": "Hash Transaksi",
+    "description": "Transaction Hash"
+  },
+  "Ld49Lh": {
+    "message": "Apa nama yang ingin Anda berikan untuk akun ini? Nama ini hanya dapat dilihat oleh Anda.",
+    "description": "What would you like to name this account? This name is only visible to you."
+  },
+  "MDZ4hi": {
+    "message": "Apakah Anda sudah memiliki akun? Masukkan kredensial pemulihan Anda dan lanjutkan menggunakan akun Anda seperti yang diharapkan.",
+    "description": "Already have an account? Enter your recovery credentials and continue using your account as expected."
+  },
+  "MFUhla": {
+    "message": "Saldo tertinggi ke terendah",
+    "description": "Highest to lowest balance"
+  },
+  "MFXvHT": {
+    "message": "Saldo Anda mungkin tidak sepenuhnya diperbarui selama proses sinkronisasi ini",
+    "description": "Your balance may not be fully updated during this syncing process."
+  },
+  "N0KGQj": {
+    "message": "Blokir Grafiti",
+    "description": "Block Graffiti"
+  },
+  "N0bVvU": {
+    "message": "Kesalahan disalin ke dalam papan klip",
+    "description": "Error copied to clipboard"
+  },
+  "NX/nQR": {
+    "message": "Mengubah pengaturan node dapat mengoptimalkan kinerja, meningkatkan konektivitas, meningkatkan keamanan, dan mengelola sumber daya secara efisien.",
+    "description": "Changing node settings can optimize performance, improve connectivity, enhance security, and manage resources effectively."
+  },
+  "Nw8+4i": {
+    "message": "ID Peer",
+    "description": "Peer ID"
+  },
+  "O+Q7TL": {
+    "message": "Aliran terkirim",
+    "description": "Submitted Sequence"
+  },
+  "OfA95/": {
+    "message": "Berkas terpilih: {fileName}",
+    "description": "Selected file: {fileName}"
+  },
+  "Og5CP/": {
+    "message": "Heap Maksimum",
+    "description": "Heap Max"
+  },
+  "Ohn4yX": {
+    "message": "Telemetri dinonaktifkan",
+    "description": "Telemetry disabled"
+  },
+  "P3UCNi": {
+    "message": "Sinkronisasi blok: {progress}%",
+    "description": "Syncing blocks: {progress}%"
+  },
+  "P7PLVj": {
+    "message": "Tanggal",
+    "description": "Date"
+  },
+  "Pq25uf": {
+    "message": "Atur Ulang Node",
+    "description": "Reset Node"
+  },
+  "Q/MbJP": {
+    "message": "Simpan frasa ini di tempat yang aman.",
+    "description": "Please keep this phrase stored somewhere safe."
+  },
+  "QS9NTE": {
+    "message": "Nama Akun — A sampai Z",
+    "description": "Account name — A to Z"
+  },
+  "QXxopU": {
+    "message": "Frasa mnemonik disalin ke papan klip!",
+    "description": "Mnemonic phrase copied to clipboard!"
+  },
+  "QlsDcr": {
+    "message": "Tindakan",
+    "description": "Action"
+  },
+  "Qu9LpU": {
+    "message": "Akun yang dipilih sedang disinkronkan. Saldonya mungkin tidak akurat, dan pengiriman transaksi akan dinonaktifkan hingga sinkronisasi selesai.",
+    "description": "The selected account is syncing. Your balance may be inaccurate and sending transactions will be disabled until the sync is complete."
+  },
+  "QwFX54": {
+    "message": "Catatan Transaksi",
+    "description": "Transaction Notes"
+  },
+  "RIUFf+": {
+    "message": "Ukraina",
+    "description": "Ukrainian"
+  },
+  "RLGujF": {
+    "message": "Rekan terhubung",
+    "description": "Connected Peers"
+  },
+  "RYLKpw": {
+    "message": "Sinkronisasi dari rekan",
+    "description": "Sync from Peers"
+  },
+  "RahCRH": {
+    "message": "Kedaluwarsa",
+    "description": "Expired"
+  },
+  "RsD3Mg": {
+    "message": "Mandarin",
+    "description": "Chinese"
+  },
+  "Ry+/2j": {
+    "message": "Beberapa Memo",
+    "description": "Multiple memos"
+  },
+  "S+nmcq": {
+    "message": "Transaksi Informasi",
+    "description": "Transaction Information"
+  },
+  "SaPa2h": {
+    "message": "Kunci Terkode",
+    "description": "Encoded Key"
+  },
+  "Seu2ON": {
+    "message": "Kepada:",
+    "description": "To:"
+  },
+  "T2yddR": {
+    "message": "Node Anda",
+    "description": "Your Node"
+  },
+  "TRfaIL": {
+    "message": "Disinkronkan",
+    "description": "Synced"
+  },
+  "TTpGX5": {
+    "message": "Pilih cara menyinkronkan rantai Anda",
+    "description": "Choose how to sync your chain"
+  },
+  "Te4gbw": {
+    "message": "Format Ekspor:",
+    "description": "Export Format:"
+  },
+  "TebMku": {
+    "message": "Anda tidak memiliki transaksi",
+    "description": "You don't have any transactions"
+  },
+  "TenpoO": {
+    "message": "Kami ingin mengumpulkan data telemetri anonim untuk terus meningkatkan pengalaman Anda. Data ini mencakup kinerja node, informasi blok, dan metrik kesehatan lainnya. Anda dapat mengaktifkan atau menonaktifkannya kapan saja di halaman pengaturan node.",
+    "description": "We'd like to collect anonymous telemetry data in order to continually improve your experience. This data includes node performance, block information, and other health metrics. You can enable or disable this at any time in the node settings page."
+  },
+  "ThbkST": {
+    "message": "Tidak dapat mengunggah transaksi Anda",
+    "description": "Unable to load your transactions"
+  },
+  "TzwzhT": {
+    "message": "Anda dapat menghapus dan mengimpor ulang akun Anda kapan saja, selama Anda memiliki kunci akun. Sangat disarankan untuk menyimpan cadangan kunci akun Anda di tempat yang aman.",
+    "description": "You can remove and reimport your accounts whenever you like, provided that you possess the account keys. It is highly recommended to maintain a backup of your account keys in a secure location."
+  },
+  "ULXFfP": {
+    "message": "Terima",
+    "description": "Receive"
+  },
+  "UTOugV": {
+    "message": "Aset Anda",
+    "description": "Your Assets"
+  },
+  "VBDJ/l": {
+    "message": "Saldo Anda mungkin tidak akurat saat sinkronisasi",
+    "description": "Your balance might not be accurate while you're syncing"
+  },
+  "VqP8r/": {
+    "message": "Memo:",
+    "description": "Memo:"
+  },
+  "VzzYJk": {
+    "message": "Buat",
+    "description": "Create"
+  },
+  "WKCp0D": {
+    "message": "Aktif",
+    "description": "Asset"
+  },
+  "WNgCs+": {
+    "message": "Kembali ke Buku Alamat",
+    "description": "Back to Address Book"
+  },
+  "WWEwrn": {
+    "message": "Pengaturan Node",
+    "description": "Node Settings"
+  },
+  "WkrNSk": {
+    "message": "Bahasa Inggris",
+    "description": "English"
+  },
+  "WsssxH": {
+    "message": "Pilih berkas JSON atau Bech32 Anda untuk mengimpor akun Anda.",
+    "description": "Select your JSON or Bech32 file to import your account."
+  },
+  "X+BJ/8": {
+    "message": "Aset Lainnya",
+    "description": "Other Assets"
+  },
+  "XLvNHQ": {
+    "message": "Harap tuliskan frasa pemulihan ini dan simpan di tempat yang aman. Anda akan membutuhkannya untuk memulihkan akun Anda.",
+    "description": "Please write down this recovery phrase and keep it in a safe place. You will need it to recover your account."
+  },
+  "XYgEt1": {
+    "message": "Harap simpan frasa ini di tempat yang aman. Kami akan meminta Anda untuk memasukkannya kembali.",
+    "description": "Please keep this phrase stored somewhere safe. We will ask you to re-enter this."
+  },
+  "Xvk80E": {
+    "message": "Harap masukkan nama untuk akun ini",
+    "description": "Please enter a name for this account"
+  },
+  "YDkqMJ": {
+    "message": "Masuk",
+    "description": "Incoming"
+  },
+  "YFT4rG": {
+    "message": "Kunci",
+    "description": "Keys"
+  },
+  "Z7mY5w": {
+    "message": "Konfirmasi Detail Transaksi",
+    "description": "Confirm Transaction Details"
+  },
+  "ZQCgnA": {
+    "message": "Nama kontak ini hanya dapat dilihat oleh Anda.",
+    "description": "This contact's name is only visible to you."
+  },
+  "ZhUW3G": {
+    "message": "Total Heap",
+    "description": "Heap Total"
+  },
+  "a1u/d5": {
+    "message": "Lihat Aktivitas Akun",
+    "description": "View Account Activity"
+  },
+  "acrOoz": {
+    "message": "Lanjutkan",
+    "description": "Continue"
+  },
+  "av5C8J": {
+    "message": "Terjadi kesalahan. Harap tinjau transaksi Anda dan coba lagi.",
+    "description": "Something went wrong. Please review your transaction and try again."
+  },
+  "bFQd/U": {
+    "message": "Dengan mengaitkan nama kontak dengan alamat publik, Anda bebas menyesuaikan cara mengidentifikasi kontak tanpa memengaruhi alamat aslinya.",
+    "description": "With contact names being associated with public addresses, you have the freedom to customize how you identify your contacts without affecting their underlying address."
+  },
+  "bW7B87": {
+    "message": "Baru",
+    "description": "New"
+  },
+  "baVA6q": {
+    "message": "Urutan Utama",
+    "description": "Head Sequence"
+  },
+  "bcOwoF": {
+    "message": "Pilih bahasa Anda",
+    "description": "Choose your language"
+  },
+  "c/KktL": {
+    "message": "Sumber Daya",
+    "description": "Resources"
+  },
+  "dM+p3/": {
+    "message": "Dari",
+    "description": "From"
+  },
+  "dTSUUK": {
+    "message": "Jika Anda menghapus akun ini tanpa mengekspornya terlebih dahulu, ANDA AKAN KEHILANGAN AKSES KE AKSES TERSEBUT.",
+    "description": "If you remove this account without exporting it first, YOU WILL LOSE ACCESS TO IT."
+  },
+  "e6Ph5+": {
+    "message": "Alamat",
+    "description": "Address"
+  },
+  "eKEL/g": {
+    "message": "Tertunda",
+    "description": "Pending"
+  },
+  "eVlu1R": {
+    "message": "Pilih bahasa",
+    "description": "Select language"
+  },
+  "ecJcrS": {
+    "message": "Sinkronisasi blok",
+    "description": "Syncing blocks"
+  },
+  "ekfOaV": {
+    "message": "Kembali",
+    "description": "Go Back"
+  },
+  "f6dOFt": {
+    "message": "Coba sekarang",
+    "description": "Retry now"
+  },
+  "fF376U": {
+    "message": "Saat ini",
+    "description": "Current"
+  },
+  "fKN5VY": {
+    "message": "Buat Kontak",
+    "description": "Create Contact"
+  },
+  "flxGnZ": {
+    "message": "Telemetri diaktifkan",
+    "description": "Telemetry enabled"
+  },
+  "g/oZa8": {
+    "message": "Menunggu sinkronisasi peer",
+    "description": "Waiting for peers to sync from"
+  },
+  "gcuDcH": {
+    "message": "Terkirim",
+    "description": "Sent"
+  },
+  "gjBiyj": {
+    "message": "Memuat...",
+    "description": "Loading..."
+  },
+  "gu9i+5": {
+    "message": "Versi {currentVersion}",
+    "description": "Version {currentVersion}"
+  },
+  "gyrIEl": {
+    "message": "Arsip",
+    "description": "File"
+  },
+  "h/XIMH": {
+    "message": "Tambah Kontak",
+    "description": "Add Contact"
+  },
+  "h1fexv": {
+    "message": "Anda akan secara otomatis dialihkan ke halaman akun Anda setelah snapshot diterapkan.",
+    "description": "You'll automatically be redirected to your accounts page once the snapshot is applied."
+  },
+  "hDI+JM": {
+    "message": "Pesanan",
+    "description": "Sort by"
+  },
+  "hR0flV": {
+    "message": "Semua transaksi Anda, baik dalam $IRON maupun aset kustom lainnya, akan ditampilkan di bagian ini. Untuk memulai transaksi, cukup klik tab 'Kirim' atau 'Terima'.",
+    "description": "All your transactions, whether in $IRON or other custom assets, will be displayed in this section. To start a transaction, simply click on the 'Send' or 'Receive' tabs."
+  },
+  "iWiHY7": {
+    "message": "Blockchain sedang disinkronkan. Saldo Anda mungkin tidak akurat, dan pengiriman transaksi akan dinonaktifkan hingga sinkronisasi selesai.",
+    "description": "The blockchain is syncing. Your balance may be inaccurate and sending transactions will be disabled until the sync is complete."
+  },
+  "is+QTN": {
+    "message": "Pengaturan Kontak",
+    "description": "Contact Settings"
+  },
+  "j2AFTQ": {
+    "message": "Status Node",
+    "description": "Node Status"
+  },
+  "jc6sBv": {
+    "message": "Kontak Diperbarui",
+    "description": "Contact updated"
+  },
+  "jd6+BK": {
+    "message": "Mencoba Lagi di {duration}...",
+    "description": "Retrying in {duration}..."
+  },
+  "jsy7pk": {
+    "message": "Coba lagi",
+    "description": "Try Again"
+  },
+  "jwIURF": {
+    "message": "Akun yang dipilih tidak memiliki dana yang cukup untuk mengirim transaksi ini",
+    "description": "The selected account does not have enough funds to send this transaction"
+  },
+  "kF9XUo": {
+    "message": "Stempel waktu",
+    "description": "Timestamp"
+  },
+  "kTt/ND": {
+    "message": "Rusia",
+    "description": "Russian"
+  },
+  "lu5YPq": {
+    "message": "Aset tidak diketahui",
+    "description": "unknown asset"
+  },
+  "ml3Hqe": {
+    "message": "Akun ini sedang disinkronkan. Harap tunggu hingga sinkronisasi selesai sebelum mengirim transaksi.",
+    "description": "This account is syncing. Please wait until the sync is complete before sending transactions."
+  },
+  "mrlGwZ": {
+    "message": "Unduh Snapshot: Cepat dan terpusat. Dapatkan salinan lengkap blockchain dengan cepat dari sumber terpusat.",
+    "description": "Download Snapshot: Fast and centralized. Get a complete copy of the blockchain quickly from a central source."
+  },
+  "mzRLqs": {
+    "message": "Unduh sedang berlangsung...",
+    "description": "Download in progress..."
+  },
+  "nkeKcx": {
+    "message": "Master Hash",
+    "description": "Head Hash"
+  },
+  "nleCAa": {
+    "message": "Catatan dari versi",
+    "description": "Release Notes"
+  },
+  "o0DpEu": {
+    "message": "Mengekstrak...",
+    "description": "Unzipping..."
+  },
+  "omnNfq": {
+    "message": "Tentang biaya",
+    "description": "About Fees"
+  },
+  "p8bsw4": {
+    "message": "Kesalahan transaksi",
+    "description": "Transaction Error"
+  },
+  "pPk+ar": {
+    "message": "Dari:",
+    "description": "From:"
+  },
+  "pQJ67O": {
+    "message": "Sinkronisasi Peer: Lebih lambat tetapi terdesentralisasi. Pulihkan blockchain dari pengguna lain, berkontribusi pada desentralisasi jaringan. Meskipun mungkin membutuhkan waktu lebih lama, hal ini memperkuat ketahanan jaringan.",
+    "description": "Sync from peers: Slower but decentralized. Retrieve the blockchain from other users, contributing to network decentralization. While it may take longer, it strengthens the network's resilience."
+  },
+  "pbdvze": {
+    "message": "Silakan masukkan frasa mnemonik Anda. Jika Anda menyalin seluruh frasa ke papan klip, Anda dapat menempelkannya ke postingan mana pun dan frasa tersebut akan otomatis terbagi menjadi jumlah kata yang tepat.",
+    "description": "Please enter your mnemonic phrase. If you've copied the full phrase to your clipboard, you can paste it in any input and it will automatically be split into the correct number of words."
+  },
+  "pqKz+h": {
+    "message": "Lambat",
+    "description": "Slow"
+  },
+  "q0qMyV": {
+    "message": "RSS",
+    "description": "RSS"
+  },
+  "qDYGja": {
+    "message": "Simpan Pengaturan",
+    "description": "Save Settings"
+  },
+  "qVtJd7": {
+    "message": "Memo (maks. 32 karakter)",
+    "description": "Memo (32 characters max)"
+  },
+  "qkf/DE": {
+    "message": "Batalkan Transaksi",
+    "description": "Cancel Transaction"
+  },
+  "r1Z23X": {
+    "message": "Semua akun Anda akan ditampilkan di bagian ini. Untuk membuat atau mengimpor akun, cukup klik salah satu tombol di atas.",
+    "description": "All your accounts will be displayed in this section. To create or import an account, simply click one of the buttons above."
+  },
+  "rGIQdX": {
+    "message": "Kembali ke Ikhtisar Akun",
+    "description": "Back to Account Overview"
+  },
+  "rbrahO": {
+    "message": "Tutup",
+    "description": "Close"
+  },
+  "rfxp5c": {
+    "message": "Konfirmasi dan kirim",
+    "description": "Confirm & Send"
+  },
+  "rqrhXg": {
+    "message": "Konfirmasi Pemulihan Anda Frasa",
+    "description": "Confirm Your Recovery Phrase"
+  },
+  "tU2A8W": {
+    "pesan": "Lihat di Penjelajah Blok",
+    "description": "View in Block Explorer"
+  },
+  "tf+yHL": {
+    "pesan": "Cepat",
+    "description": "Fast"
+  },
+  "tf1lIh": {
+    "pesan": "Gratis",
+    "description": "Free"
+  },
+  "tzMNF3": {
+    "pesan": "Status",
+    "description": "Status"
+  },
+  "uCgp+K": {
+    "pesan": "Blok per pesan",
+    "description": "Blocks Per message"
+  },
+  "uHGB/g": {
+    "pesan": "{currMb} / {totalMb} mb diunduh",
+    "description": "{currMb} / {totalMb} mb downloaded"
+  },
+  "uT4OlP": {
+    "pesan": "Biaya",
+    "description": "Fee"
+  },
+  "vNT9Ip": {
+    "pesan": "Frasa Mnemonik",
+    "description": "Mnemonic Phrase"
+  },
+  "vV69eP": {
+    "pesan": "Mengunduh snapshot adalah cara tercepat untuk sinkronisasi dengan jaringan.",
+    "description": "Downloading a snapshot is the fastest way to sync with the network."
+  },
+  "vaP4MI": {
+    "pesan": "Akun saat ini memiliki:",
+    "description": "It currently holds:"
+  },
+  "wGpbja": {
+    "pesan": "Kesalahan saat menambahkan kontak",
+    "description": "Add Contact Error"
+  },
+  "wsALI4": {
+    "pesan": "Masukkan kunci enkripsi",
+    "description": "Enter Encoded Key"
+  },
+  "xP64Lw": {
+    "pesan": "Buku Alamat",
+    "description": "Address Book"
+  },
+  "xkLxAx": {
+    "pesan": "Akun Dibuat",
+    "description": "Account Created"
+  },
+  "xmcVZ0": {
+    "pesan": "Cari",
+    "description": "Search"
+  },
+  "y3LzSM": {
+    "pesan": "Maksimum rekan kerja",
+    "description": "Max Peers"
+  },
+  "yLnnBl": {
+    "pesan": "Transaksi terkirim",
+    "description": "Transaction Submitted"
+  },
+  "yjpdGo": {
+    "pesan": "Anda tidak memiliki kontak",
+    "description": "You don't have any contacts"
+  },
+  "ytT37i": {
+    "pesan": "Kembali ke semua akun",
+    "description": "Back to all accounts"
+  },
+  "z/wUXE": {
+    "message": "Diterima",
+    "description": "Received"
+  },
+  "zAPy5e": {
+    "message": "Nama akun — Z hingga A",
+    "description": "Account name — Z to A"
+  },
+  "zCTaQX": {
+    "message": "Akun hanya baca tidak dapat mengirim transaksi",
+    "description": "View only accounts cannot send transactions"
+  },
+  "zFegDD": {
+    "message": "Kontak",
+    "description": "Contact"
+  },
+  "zR2zr+": {
+    "message": "Alamat disalin ke papan klip",
+    "description": "Address copied to clipboard"
+  },
+  "zl76y/": {
+    "message": "Teks harus sesuai dengan nama akun ''{accountName}''",
+    "description": "Text must match the account name ''{accountName}''"
+  },
+  "6Zll8z": {
+    "message": "Silakan mulai ulang node. Anda perlu memindai ulang blockchain, tetapi akun dan dana Anda tidak akan terpengaruh.",
+    "description": "Reset the node. You'll have to re-scan the blockchain, but your accounts and funds will not be affected."
+  },
+  "IwW0RC": {
+    "message": "Jika tidak ada langkah-langkah ini yang membantu, silakan laporkan masalah ini di <link>Discord</link>.",
+    "description": "If none of these steps help, please report the issue on <link>Discord</link>."
+  },
+  "KGELcL": {
+    "message": "Ubah",
+    "description": "Change"
+  },
+  "KiaI4a": {
+    "message": "Coba mulai ulang aplikasi",
+    "description": "Try restarting the app"
+  },
+  "bqjW+S": {
+    "message": "Langkah-langkah pemecahan masalah",
+    "description": "Troubleshooting Steps"
+  },
+  "kNJdlj": {
+    "message": "Mulai ulang aplikasi",
+    "description": "Restart App"
+  },
+  "oZO6n5": {
+    "message": "Pembaruan aplikasi tersedia. Tunggu hingga selesai diunduh dan mulai ulang aplikasi, atau unduh versi terbaru dari <link> situs web Iron Fish </link>.",
+    "description": "An app update is available. Wait for it to finish downloading and restart the app, or download the latest version from the <link>Iron Fish website</link>."
+  },
+  "+mLiOr": {
+    "message": "Bendera Fitur",
+    "description": "Feature flags"
+  },
+  "+q+M5P": {
+    "message": "Kumpulkan pihak penanda tangan dari semua peserta untuk menambahkannya.",
+    "description": "Collect the signature shares from all of the participants to aggregate them."
+  },
+  "/YxWvM": {
+    "message": "Mengirim transaksi multisig dimulai dengan pembuatan transaksi yang tidak ditandatangani: transaksi yang sepenuhnya dihasilkan yang hanya perlu ditandatangani. Koordinator harus membuat data transaksi yang tidak ditandatangani dan mengirimkannya kepada Anda.",
+    "description": "Sending a multisig transaction starts with creating an unsigned transaction: a fully generated transaction that is only missing the signature. The coordinator should create the unsigned transaction data and send it to you"
+  },
+  "0FN3ev": {
+    "message": "Satu langkah terakhir! Konfirmasikan akun yang ingin Anda hubungkan ke aplikasi Node.",
+    "description": "One last step! Confirm the account you'd like to connect to the Node App."
+  },
+  "0TJsMy": {
+    "message": "Hubungkan perangkat Ledger Anda langsung ke komputer Anda",
+    "description": "Plug your Ledger device directly into your computer"
+  },
+  "0YAxhZ": {
+    "message": "tersedia",
+    "description": "available"
+  },
+  "1q+kPa": {
+    "message": "Impor akun",
+    "description": "Import account"
+  },
+  "2Ik96T": {
+    "message": "Ganti jaringan",
+    "description": "Switch networks"
+  },
+  "3+EYHL": {
+    "message": "Target jaringan",
+    "description": "Target Network"
+  },
+  "3KdqXd": {
+    "message": "Hash Transaksi Tujuan",
+    "description": "Destination Txn Hash"
+  },
+  "3cc4Ct": {
+    "message": "Ringan",
+    "description": "Light"
+  },
+  "3vA/R+": {
+    "message": "Memo tidak boleh lebih besar dari 32 bita",
+    "description": "Memo can't be more than 32 bytes"
+  },
+  "4V/PNA": {
+    "message": "Konfirmasi dan Gabungkan",
+    "description": "Confirm & Bridge"
+  },
+  "68s+e1": {
+    "message": "{currMb} / {totalMb} mb",
+    "description": "{currMb} / {totalMb} mb"
+  },
+  "7/GPHF": {
+    "message": "Biaya Transaksi Iron Fish",
+    "description": "Iron Fish transaction fee"
+  },
+  "711SFa": {
+    "message": "Aplikasi Node Iron Fish mendukung {networkCount} jaringan.",
+    "description": "The Iron Fish Node App supports {networkCount} networks."
+  },
+  "8WFqnl": {
+    "message": "Biaya khusus harus berupa angka yang lebih besar dari 0",
+    "description": "Custom fee must be a number greater than 0"
+  },
+  "8ZKRcK": {
+    "message": "{count, plural, =1 {assets} {assets} lainnya}",
+    "description": "{count, plural, =1 {asset} other {assets}}"
+  },
+  "AAQoj1": {
+    "message": "Harap tinjau dan setujui informasi transaksi di perangkat Ledger Anda.",
+    "description": "Review and approve the transaction information on your Ledger device."
+  },
+  "APTRzH": {
+    "message": "Anda tidak memiliki akun yang dapat mengirim transaksi. Anda harus membuat akun baru atau mengimpor akun dengan izin pengiriman sebelum dapat mengirim aset.",
+    "description": "You don't have any accounts that can send transactions. You must create a new account or import an account with send permissions before you can send assets."
+  },
+  "AeE0SX": {
+    "message": "Tambahkan identitas peserta dalam transaksi multisig.",
+    "description": "Add the identities of the participants in the multisig transaction."
+  },
+  "Byn5mN": {
+    "message": "Jumlah biaya diperlukan",
+    "description": "A fee amount is required"
+  },
+  "C2CIgC": {
+    "message": "Mengirim",
+    "description": "Sending"
+  },
+  "CxC3WU": {
+    "message": "Kirim Transaksi Multisig Ledger",
+    "description": "Send Multisig Ledger Transaction"
+  },
+  "DOMotB": {
+    "message": "Alamat Target",
+    "description": "Target Address"
+  },
+  "Eddg06": {
+    "message": "Pihak Penandatangan",
+    "description": "Signature Shares"
+  },
+  "F3l7xL": {
+    "message": "Tambah Akun",
+    "description": "Add Account"
+  },
+  "FazwRl": {
+    "message": "Coba Lagi",
+    "description": "Try again"
+  },
+  "I3JhPS": {
+    "message": "Jaringan",
+    "description": "Network"
+  },
+  "IphkOr": {
+    "message": "Buka Aplikasi Iron Fish",
+    "description": "Open the Iron Fish app"
+  },
+  "Iso3pe": {
+    "message": "Testnet",
+    "description": "Testnet"
+  },
+  "KBiJ4L": {
+    "message": "Untuk melanjutkan menghubungkan akun Anda ke Aplikasi Node Iron Fish, harap setujui permintaan di perangkat Ledger Anda.",
+    "description": "To proceed with connecting your account to the Iron Fish Node app, please approve the request on your Ledger device."
+  },
+  "KJMlfb": {
+    "message": "Jaringan Target",
+    "description": "Destination network"
+  },
+  "Km+rD9": {
+    "message": "{balance} {assets} tersedia",
+    "description": "{balance} {asset} available"
+  },
+  "LPYoBI": {
+    "message": "Biaya Bridge",
+    "description": "Bridge fee"
+  },
+  "Ldr1+Z": {
+    "message": "Harap kirim transaksi yang telah ditandatangani ke jaringan.",
+    "description": "Submit the signed transaction to the network."
+  },
+  "Lv0zJu": {
+    "message": "Detail",
+    "description": "Details"
+  },
+  "M+isB1": {
+    "message": "Penyedia Bridge",
+    "description": "Bridge Provider"
+  },
+  "M99Eqr": {
+    "message": "Tambah Memo",
+    "description": "Add Memo"
+  },
+  "MZCNjq": {
+    "message": "Bridge",
+    "description": "Bridge"
+  },
+  "Muzvyz": {
+    "message": "Konfirmasi bridge transaksi",
+    "description": "Confirm Bridge Transaction"
+  },
+  "NRzTJh": {
+    "message": "Hubungkan Ledger",
+    "description": "Connect Ledger"
+  },
+  "NSs9IW": {
+    "message": "Dapatkan paket penandatanganan dari koordinator dan menandatangani transaksi.",
+    "description": "Get the signing package from the coordinator and sign the transaction."
+  },
+  "NTPwsP": {
+    "message": "Tanda fitur memungkinkan Anda mengaktifkan atau menonaktifkan fitur eksperimental. Fitur-fitur ini belum sepenuhnya diuji dan mungkin tidak berfungsi seperti yang diharapkan.",
+    "description": "Feature flags allow you to enable or disable experimental features. These features are not fully tested and may not work as expected."
+  },
+  "NZYRdf": {
+    "message": "Jaringan Utama",
+    "description": "Mainnet"
+  },
+  "O62iwU": {
+    "message": "Transaksi belum ditandatangani",
+    "description": "Unsigned Transaction"
+  },
+  "OAm3TT": {
+    "message": "Berikan penjelasan di sini",
+    "description": "Put an explantaion here"
+  },
+  "OC6jXV": {
+    "message": "Delta Kedaluwarsa Transaksi",
+    "description": "Transaction Expiration Delta"
+  },
+  "OEEl0G": {
+    "message": "Menerima",
+    "description": "Receiving"
+  },
+  "PLUyno": {
+    "message": "Beralih antara mode terang dan gelap.",
+    "description": "Switch between light and dark mode."
+  },
+  "Pe0ogR": {
+    "message": "Tema",
+    "description": "Theme"
+  },
+  "PiWxd9": {
+    "message": "Transaksi Multisig",
+    "description": "Multisig Transaction"
+  },
+  "QAfX0s": {
+    "message": "Aplikasi Iron Fish Node mendukung berbagai bahasa. Jika bahasa pilihan Anda tidak tercantum, beri tahu kami!",
+    "description": "The Iron Fish Node App supports multiple languages. If your preferred language isn't listed, please reach out and let us know!"
+  },
+  "QgKpaU": {
+    "message": "Bridge terkirim",
+    "description": "Bridge sent"
+  },
+  "RHsFBY": {
+    "message": "Masukkan komitmen penandatanganan untuk setiap peserta dalam transaksi multisig. Ini tidak harus dalam urutan tertentu.",
+    "description": "Input a signing commitment for each participant in the multisig transaction. These do not have to be in any particular order."
+  },
+  "Sjo1P4": {
+    "message": "Kustom",
+    "description": "Custom"
+  },
+  "TKmub+": {
+    "message": "Kolom ini wajib diisi",
+    "description": "This field is required"
+  },
+  "Uh1bJh": {
+    "message": "Informasi Bridge",
+    "description": "Bridge Information"
+  },
+  "Uvwn4S": {
+    "message": "Terjadi kesalahan saat merender komponen ini. Silakan coba lagi. Jika masalah berlanjut, silakan laporkan masalah ini di <link>Discord</link>.",
+    "description": "Something went wrong while rendering this component. Please try again. If the issue persists, report the issue on <link>Discord</link>."
+  },
+  "Uziuar": {
+    "message": "Ganti Jaringan",
+    "description": "Change Network"
+  },
+  "V3K3zJ": {
+    "message": "Masukkan nilai khusus",
+    "description": "Enter custom value"
+  },
+  "VVlAZ6": {
+    "message": "Dari Akun",
+    "description": "From Account"
+  },
+  "WLecCb": {
+    "message": "Hubungkan Ledger Anda",
+    "description": "Connect your Ledger"
+  },
+  "WSW+95": {
+    "message": "Tentang Bridge",
+    "description": "About Bridging"
+  },
+  "XIdw3B": {
+    "message": "Kontak dengan alamat tersebut sudah ada.",
+    "description": "A contact with that address already exists."
+  },
+  "Yeh8je": {
+    "message": "Akun Ledger ini telah diimpor",
+    "description": "This Ledger account has already been imported"
+  },
+  "bGuGjq": {
+    "message": "Aset Bridge",
+    "description": "Bridge Asset"
+  },
+  "bu6hO1": {
+    "message": "Buka Kunci Ledger Anda",
+    "description": "Unlock your Ledger"
+  },
+  "c/8gQC": {
+    "message": "Paket Tanda Tangan",
+    "description": "Signing Package"
+  },
+  "c6lbIa": {
+    "message": "Jumlahnya harus lebih besar dari 0",
+    "description": "Amount must be greater than 0"
+  },
+  "cwqQqt": {
+    "message": "Biaya untuk melakukan transaksi di rantai tujuan",
+    "description": "The fee for transacting on the destination chain"
+  },
+  "dJMieh": {
+    "message": "Hubungkan akun",
+    "description": "Connect account"
+  },
+  "dJcfo0": {
+    "message": "Blok per pesan",
+    "description": "Blocks Per Message"
+  },
+  "e6HIlS": {
+    "message": "Alamat Tujuan",
+    "description": "Destination Address"
+  },
+  "gC6/qK": {
+    "message": "Jaringan Sumber",
+    "description": "Source Network"
+  },
+  "gu1qWm": {
+    "message": "Bridge Diterima",
+    "description": "Bridge received"
+  },
+  "i8SZTD": {
+    "message": "Alamat Publik Tidak Valid",
+    "description": "Invalid public address"
+  },
+  "k9/k1W": {
+    "message": "Silakan kirim bagian penandatanganan Anda ke koordinator agar mereka dapat menambahkan tanda tangan.",
+    "description": "Send your signing share to the coordinator so they can aggregate the signatures."
+  },
+  "kJB38m": {
+    "message": "Tidak ada akun yang memiliki izin untuk mengirim",
+    "description": "No accounts with send permissions"
+  },
+  "kObD+J": {
+    "message": "Identitas Multisig",
+    "description": "Multisig Identities"
+  },
+  "krty63": {
+    "message": "Butuh bantuan?",
+    "description": "Need help?"
+  },
+  "lhnRYP": {
+    "message": "Pilih jaringan",
+    "description": "Choose the network"
+  },
+  "niH3/k": {
+    "message": "Biaya penyedia bridge",
+    "description": "The bridge provider's fee"
+  },
+  "obZZi7": {
+    "message": "Mengirim transaksi multisig dimulai dengan pembuatan transaksi yang tidak ditandatangani: transaksi yang dihasilkan sepenuhnya yang hanya kekurangan tanda tangan. Sebagai koordinator, buat transaksi yang tidak ditandatangani baru atau gunakan data transaksi yang tidak ditandatangani yang sudah dibuat di CLI. Kemudian kirimkan data transaksi yang tidak ditandatangani tersebut kepada peserta",
+    "description": "Sending a multisig transaction starts with creating an unsigned transaction: a fully generated transaction that is only missing the signature. As the coordinator either create a new unsigned transaction or use unsigned transaction data already created in the CLI. Then send that unsigned transaction data to the participants"
+  },
+  "ox304v": {
+    "message": "Terjadi kesalahan",
+    "description": "An error occurred"
+  },
+  "pAl4rq": {
+    "message": "Komitmen tanda tangan",
+    "description": "Signing Commitments"
+  },
+  "phTfBA": {
+    "message": "Buat akun baru",
+    "description": "Create new account"
+  },
+  "pvqPtw": {
+    "message": "Multisig Ledger",
+    "description": "Multisig Ledger"
+  },
+  "qtSDFj": {
+    "message": "Anda saat ini berada di Testnet!",
+    "description": "You are currently on Testnet!"
+  },
+  "s3kz6s": {
+    "message": "Terjadi kesalahan jaringan, silakan coba lagi",
+    "description": "A network error occured, please try again"
+  },
+  "sPA8hu": {
+    "message": "Jumlah harus berupa angka yang valid",
+    "description": "Amount must be a valid number"
+  },
+  "sXlL42": {
+    "message": "Dompet terenkripsi tidak didukung",
+    "description": "Encrypted Wallets Unsupported"
+  },
+  "tBX0Dj": {
+    "message": "Dompet Iron Fish Anda dienkripsi. Dompet terenkripsi belum didukung di aplikasi node. Silakan dekripsi dompet Anda menggunakan CLI untuk menggunakan aplikasi node.",
+    "description": "Your Iron Fish wallet is encrypted. Encrypted wallets are not yet supported in the node app. Please decrypt your wallet using the CLI to use the node app."
+  },
+  "tOdNiY": {
+    "message": "Gelap",
+    "description": "Dark"
+  },
+  "tjHKMS": {
+    "message": "Alamat pengirim",
+    "description": "Sender Address"
+  },
+  "uH8ffi": {
+    "message": "Silakan setujui transaksi di perangkat Anda.",
+    "description": "Please approve the transaction on your device."
+  },
+  "uuDgUP": {
+    "message": "Terjadi kesalahan",
+    "description": "An error occured"
+  },
+  "vEiG+a": {
+    "message": "Biaya gas",
+    "description": "Gas fee"
+  },
+  "vGJnQL": {
+    "message": "Tinjau transaksi",
+    "description": "Review Transaction"
+  },
+  "vysmK2": {
+    "message": "Pilih jaringan",
+    "description": "Select network"
+  },
+  "w2FJVr": {
+    "message": "Beralih Jaringan",
+    "description": "Changing Network"
+  },
+  "xOBoiD": {
+    "message": "Hubungkan perangkat Ledger Anda langsung ke komputer Anda",
+    "description": "Plug your ledger device directly into your computer"
+  },
+  "xfoZ0Z": {
+    "message": "Koordinator bertanggung jawab untuk Mengumpulkan dan menggabungkan semua tanda tangan dan informasi lainnya dari peserta. Peserta menandatangani transaksi dan mengirimkan tanda tangan serta data lainnya kepada koordinator.",
+    "description": "Coordinators are responsible for gathering and combining all signatures and other information from participants. Participants sign the transaction and send their signatures and other data to the coordinator."
+  },
+  "xwWibX": {
+    "message": "Bridging memungkinkan transfer aset yang lancar di seluruh jaringan EVM. Cukup pilih akun Anda, penyedia bridge, pilih aset dan jumlahnya, pilih jaringan tujuan, dan berikan alamat tujuan untuk mengeksekusi transfer Anda.",
+    "description": "Bridging enables seamless transfers of assets across any EVM network. Simply choose your account, a bridge provider, select the asset and its amount, pick the destination network, and provide the destination address to execute your transfer."
+  },
+  "y1Z3or": {
+    "message": "Bahasa",
+    "description": "Language"
+  },
+  "y6sD8c": {
+    "message": "Setujui di Ledger Anda",
+    "description": "Approve on your Ledger"
+  },
+  "yNVIfV": {
+    "message": "Kirim Transaksi",
+    "description": "Submit Transaction"
+  },
+  "yPUogf": {
+    "message": "Pilih Peran",
+    "description": "Select Role"
+  },
+  "yWnTVQ": {
+    "message": "Kirim paket tanda tangan ke semua peserta agar mereka dapat menandatangani transaksi.",
+    "description": "Send the signing package to all of the participants so they can sign the transaction."
+  },
+  "zELoFl": {
+    "message": "Anda dapat memilih antara Mainnet, jaringan langsung kami tempat transaksi nyata berlangsung, dan Testnet, lingkungan aman yang ideal untuk bereksperimen dengan fitur-fitur baru dan mempelajari cara menggunakan aplikasi node tanpa risiko apa pun.",
+    "description": "You can choose between Mainnet, our live network where real transactions take place, and Testnet, a safe environment ideal for experimenting with new features and learning to use the node app without any risk."
+  }
+}
