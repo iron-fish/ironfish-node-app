@@ -60,7 +60,7 @@
     "description": "Are you sure? You can't undo this action afterwards."
   },
   "2qzbcD": {
-    "message": "Minimum Teman",
+    "message": "Minimum Peers",
     "description": "Min Peers"
   },
   "3/a0Ho": {
@@ -108,7 +108,7 @@
     "description": "Create Account"
   },
   "5MiM5y": {
-    "message": "Kirim Aktif",
+    "message": "Kirim Asset",
     "description": "Send Asset"
   },
   "5OJ1yw": {
@@ -164,7 +164,7 @@
     "description": "Custom account name?"
   },
   "8WtyrD": {
-    "message": "Bahasa Inggris",
+    "message": "Spanyol",
     "description": "Spanish"
   },
   "9+Ddtu": {
@@ -312,7 +312,7 @@
     "description": "Are you sure you want to remove this account?"
   },
   "Jjpq7w": {
-    "message": "Urutan Pemblokiran",
+    "message": "Urutan Blok",
     "description": "Block Sequence"
   },
   "JoB2Ml": {
@@ -324,7 +324,7 @@
     "description": "Something went wrong"
   },
   "K340v+": {
-    "message": "Terjadi kesalahan terjadi saat mengunduh snapshot:",
+    "message": "Terjadi kesalahan saat mengunduh snapshot:",
     "description": "An error occurred while downloading the snapshot:"
   },
   "K3r6DQ": {
@@ -372,7 +372,7 @@
     "description": "Your balance may not be fully updated during this syncing process."
   },
   "N0KGQj": {
-    "message": "Blokir Grafiti",
+    "message": "Grafiti Blok",
     "description": "Block Graffiti"
   },
   "N0bVvU": {
@@ -388,7 +388,7 @@
     "description": "Peer ID"
   },
   "O+Q7TL": {
-    "message": "Aliran terkirim",
+    "message": "Urutan yang Dikirim",
     "description": "Submitted Sequence"
   },
   "OfA95/": {
@@ -420,7 +420,7 @@
     "description": "Please keep this phrase stored somewhere safe."
   },
   "QS9NTE": {
-    "message": "Nama Akun — A sampai Z",
+    "message": "Nama Akun — A ke Z",
     "description": "Account name — A to Z"
   },
   "QXxopU": {
@@ -444,7 +444,7 @@
     "description": "Ukrainian"
   },
   "RLGujF": {
-    "message": "Rekan terhubung",
+    "message": "Peers terhubung",
     "description": "Connected Peers"
   },
   "RYLKpw": {
@@ -456,7 +456,7 @@
     "description": "Expired"
   },
   "RsD3Mg": {
-    "message": "Mandarin",
+    "message": "Tiongkok",
     "description": "Chinese"
   },
   "Ry+/2j": {
@@ -464,7 +464,7 @@
     "description": "Multiple memos"
   },
   "S+nmcq": {
-    "message": "Transaksi Informasi",
+    "message": "Informasi Transaksi",
     "description": "Transaction Information"
   },
   "SaPa2h": {
@@ -528,7 +528,7 @@
     "description": "Create"
   },
   "WKCp0D": {
-    "message": "Aktif",
+    "message": "Asset",
     "description": "Asset"
   },
   "WNgCs+": {
@@ -620,7 +620,7 @@
     "description": "From"
   },
   "dTSUUK": {
-    "message": "Jika Anda menghapus akun ini tanpa mengekspornya terlebih dahulu, ANDA AKAN KEHILANGAN AKSES KE AKSES TERSEBUT.",
+    "message": "Jika Anda menghapus akun ini tanpa mengekspornya terlebih dahulu, ANDA AKAN KEHILANGAN AKSES KE AKUN TERSEBUT.",
     "description": "If you remove this account without exporting it first, YOU WILL LOSE ACCESS TO IT."
   },
   "e6Ph5+": {
@@ -688,7 +688,7 @@
     "description": "You'll automatically be redirected to your accounts page once the snapshot is applied."
   },
   "hDI+JM": {
-    "message": "Pesanan",
+    "message": "Urutkan berdasarkan",
     "description": "Sort by"
   },
   "hR0flV": {
@@ -748,7 +748,7 @@
     "description": "Download in progress..."
   },
   "nkeKcx": {
-    "message": "Master Hash",
+    "message": "Hash Utama",
     "description": "Head Hash"
   },
   "nleCAa": {
@@ -820,79 +820,79 @@
     "description": "Confirm Your Recovery Phrase"
   },
   "tU2A8W": {
-    "pesan": "Lihat di Penjelajah Blok",
+    "Message": "Lihat di Penjelajah Blok",
     "description": "View in Block Explorer"
   },
   "tf+yHL": {
-    "pesan": "Cepat",
+    "Message": "Cepat",
     "description": "Fast"
   },
   "tf1lIh": {
-    "pesan": "Gratis",
+    "Message": "Gratis",
     "description": "Free"
   },
   "tzMNF3": {
-    "pesan": "Status",
+    "Message": "Status",
     "description": "Status"
   },
   "uCgp+K": {
-    "pesan": "Blok per pesan",
+    "Message": "Blok per pesan",
     "description": "Blocks Per message"
   },
   "uHGB/g": {
-    "pesan": "{currMb} / {totalMb} mb diunduh",
+    "Message": "{currMb} / {totalMb} mb diunduh",
     "description": "{currMb} / {totalMb} mb downloaded"
   },
   "uT4OlP": {
-    "pesan": "Biaya",
+    "Message": "Biaya",
     "description": "Fee"
   },
   "vNT9Ip": {
-    "pesan": "Frasa Mnemonik",
+    "Message": "Frasa Mnemonik",
     "description": "Mnemonic Phrase"
   },
   "vV69eP": {
-    "pesan": "Mengunduh snapshot adalah cara tercepat untuk sinkronisasi dengan jaringan.",
+    "Message": "Mengunduh snapshot adalah cara tercepat untuk sinkronisasi dengan jaringan.",
     "description": "Downloading a snapshot is the fastest way to sync with the network."
   },
   "vaP4MI": {
-    "pesan": "Akun saat ini memiliki:",
+    "Message": "Akun saat ini memiliki:",
     "description": "It currently holds:"
   },
   "wGpbja": {
-    "pesan": "Kesalahan saat menambahkan kontak",
+    "Message": "Kesalahan saat menambahkan kontak",
     "description": "Add Contact Error"
   },
   "wsALI4": {
-    "pesan": "Masukkan kunci enkripsi",
+    "message": "Masukkan kunci enkripsi",
     "description": "Enter Encoded Key"
   },
   "xP64Lw": {
-    "pesan": "Buku Alamat",
+    "message": "Buku Alamat",
     "description": "Address Book"
   },
   "xkLxAx": {
-    "pesan": "Akun Dibuat",
+    "message": "Akun Dibuat",
     "description": "Account Created"
   },
   "xmcVZ0": {
-    "pesan": "Cari",
+    "message": "Cari",
     "description": "Search"
   },
   "y3LzSM": {
-    "pesan": "Maksimum rekan kerja",
+    "message": "Maksimum Peer",
     "description": "Max Peers"
   },
   "yLnnBl": {
-    "pesan": "Transaksi terkirim",
+    "message": "Transaksi terkirim",
     "description": "Transaction Submitted"
   },
   "yjpdGo": {
-    "pesan": "Anda tidak memiliki kontak",
+    "message": "Anda tidak memiliki kontak",
     "description": "You don't have any contacts"
   },
   "ytT37i": {
-    "pesan": "Kembali ke semua akun",
+    "message": "Kembali ke semua akun",
     "description": "Back to all accounts"
   },
   "z/wUXE": {
@@ -920,7 +920,7 @@
     "description": "Text must match the account name ''{accountName}''"
   },
   "6Zll8z": {
-    "message": "Silakan mulai ulang node. Anda perlu memindai ulang blockchain, tetapi akun dan dana Anda tidak akan terpengaruh.",
+    "message": "Atur ulang node. Anda perlu memindai ulang blockchain, tetapi akun dan dana Anda tidak akan terpengaruh.",
     "description": "Reset the node. You'll have to re-scan the blockchain, but your accounts and funds will not be affected."
   },
   "IwW0RC": {
@@ -992,7 +992,7 @@
     "description": "Light"
   },
   "3vA/R+": {
-    "message": "Memo tidak boleh lebih besar dari 32 bita",
+    "message": "Memo tidak boleh lebih besar dari 32 byte",
     "description": "Memo can't be more than 32 bytes"
   },
   "4V/PNA": {
@@ -1016,7 +1016,7 @@
     "description": "Custom fee must be a number greater than 0"
   },
   "8ZKRcK": {
-    "message": "{count, plural, =1 {assets} {assets} lainnya}",
+    "message": "{count, plural, =1 {asset} {assets} lainnya}",
     "description": "{count, plural, =1 {asset} other {assets}}"
   },
   "AAQoj1": {
