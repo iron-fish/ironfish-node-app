@@ -1016,7 +1016,7 @@
     "description": "Custom fee must be a number greater than 0"
   },
   "8ZKRcK": {
-    "message": "{count, plural, =1 {asset} {assets} lainnya}",
+    "message": "{count, plural, =1 {asset} other {{count} assets lainnya}}",
     "description": "{count, plural, =1 {asset} other {assets}}"
   },
   "AAQoj1": {
