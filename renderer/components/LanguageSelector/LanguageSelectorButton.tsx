@@ -31,6 +31,9 @@ const messages = defineMessages({
   langChinese: {
     defaultMessage: "Chinese",
   },
+  langIndonesian: {
+    defaultMessage: "Bahasa Indonesia",
+  },
   langRussian: {
     defaultMessage: "Russian",
   },
@@ -73,6 +76,11 @@ const languageOptionsMap: {
     message: messages.langChinese,
     ownLanguageLabel: "中文",
     value: "zh-CN",
+  },
+  "id-ID": {
+    message: messages.langIndonesian,
+    ownLanguageLabel: "Bahasa Indonesia",
+    value: "id-ID",
   },
   "ru-RU": {
     message: messages.langRussian,
