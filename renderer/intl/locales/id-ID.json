@@ -217,7 +217,7 @@
   },
   "AyGP4T": {
     "message": "Pesan Kesalahan",
-    "description": "Error Message"
+    "description": "Error message"
   },
   "BwRLcj": {
     "message": "Transaksi Anda telah terkirim. Konfirmasi mungkin memerlukan beberapa menit. Transaksi ini akan muncul di aktivitas Anda sebagai tertunda hingga dikonfirmasi.",
@@ -820,47 +820,47 @@
     "description": "Confirm Your Recovery Phrase"
   },
   "tU2A8W": {
-    "Message": "Lihat di Penjelajah Blok",
+    "message": "Lihat di Penjelajah Blok",
     "description": "View in Block Explorer"
   },
   "tf+yHL": {
-    "Message": "Cepat",
+    "message": "Cepat",
     "description": "Fast"
   },
   "tf1lIh": {
-    "Message": "Gratis",
+    "message": "Gratis",
     "description": "Free"
   },
   "tzMNF3": {
-    "Message": "Status",
+    "message": "Status",
     "description": "Status"
   },
   "uCgp+K": {
-    "Message": "Blok per pesan",
+    "message": "Blok per pesan",
     "description": "Blocks Per message"
   },
   "uHGB/g": {
-    "Message": "{currMb} / {totalMb} mb diunduh",
+    "message": "{currMb} / {totalMb} mb diunduh",
     "description": "{currMb} / {totalMb} mb downloaded"
   },
   "uT4OlP": {
-    "Message": "Biaya",
+    "message": "Biaya",
     "description": "Fee"
   },
   "vNT9Ip": {
-    "Message": "Frasa Mnemonik",
+    "message": "Frasa Mnemonik",
     "description": "Mnemonic Phrase"
   },
   "vV69eP": {
-    "Message": "Mengunduh snapshot adalah cara tercepat untuk sinkronisasi dengan jaringan.",
+    "message": "Mengunduh snapshot adalah cara tercepat untuk sinkronisasi dengan jaringan.",
     "description": "Downloading a snapshot is the fastest way to sync with the network."
   },
   "vaP4MI": {
-    "Message": "Akun saat ini memiliki:",
+    "message": "Akun saat ini memiliki:",
     "description": "It currently holds:"
   },
   "wGpbja": {
-    "Message": "Kesalahan saat menambahkan kontak",
+    "message": "Kesalahan saat menambahkan kontak",
     "description": "Add Contact Error"
   },
   "wsALI4": {
@@ -1237,7 +1237,7 @@
   },
   "dJcfo0": {
     "message": "Blok per pesan",
-    "description": "Blocks Per Message"
+    "description": "Blocks Per message"
   },
   "e6HIlS": {
     "message": "Alamat Tujuan",
