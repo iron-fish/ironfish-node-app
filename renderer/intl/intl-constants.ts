@@ -6,5 +6,6 @@ export const LOCALES = [
   "id-ID",
   "ru-RU",
   "uk-UA",
+  "jv-ID",
 ] as const;
 export type Locale = (typeof LOCALES)[number];
