@@ -16,6 +16,7 @@ import Russian from "./compiled-locales/ru-RU.json";
 import Ukrainian from "./compiled-locales/uk-UA.json";
 import Chinese from "./compiled-locales/zh-CN.json";
 import Indonesian from "./compiled-locales/id-ID.json";
+import Javanese from "./compiled-locales/jv-ID.json";
 import { LOCALES, DEFAULT_LOCALE } from "./intl-constants";
 
 export type Locales = (typeof LOCALES)[number];
@@ -76,6 +77,8 @@ export function IntlProvider({ children }: { children: React.ReactNode }) {
         return Chinese;
       case "id-ID":
         return Indonesian;
+      case "jv-ID":
+        return Javanese;
       default:
         return English;
     }

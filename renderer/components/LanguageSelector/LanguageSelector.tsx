@@ -24,6 +24,9 @@ const messages = defineMessages({
   langUkrainian: {
     defaultMessage: "Ukrainian",
   },
+  langJavanese: {
+    defaultMessage: "Bahasa Jawa",
+  },
   chooseLanguage: {
     defaultMessage: "Choose your language",
   },
@@ -76,12 +79,17 @@ const languageOptionsMap: {
     ownLanguageLabel: "Українська",
     value: "uk-UA",
   },
+  "jv-ID": {
+    message: messages.langJavanese,
+    ownLanguageLabel: "Bahasa Jawa",
+    value: "jv-ID",
+  },
 };
 
 const languageOptions = Object.values(languageOptionsMap);
 
 const localeSchema = z.object({
-  language: z.enum(["en-US", "es-MX", "zh-CN", "id-ID", "ru-RU", "uk-UA"]),
+  language: z.enum(["en-US", "es-MX", "zh-CN", "id-ID", "ru-RU", "uk-UA", "jv-ID"]),
 });
 
 export function LanguageSelector() {

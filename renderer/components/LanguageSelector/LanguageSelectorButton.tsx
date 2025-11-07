@@ -40,6 +40,9 @@ const messages = defineMessages({
   langUkrainian: {
     defaultMessage: "Ukrainian",
   },
+  langJavanese: {
+    defaultMessage: "Bahasa Jawa",
+  },
   chooseLanguage: {
     defaultMessage: "Choose your language",
   },
@@ -91,6 +94,11 @@ const languageOptionsMap: {
     message: messages.langUkrainian,
     ownLanguageLabel: "Українська",
     value: "uk-UA",
+  },
+  "jv-ID": {
+    message: messages.langJavanese,
+    ownLanguageLabel: "Bahasa Jawa",
+    value: "jv-ID",
   },
 };
 
