@@ -166,7 +166,7 @@ jobs:
   publish_on_mac:
     name: Mac x64
     needs: [delete_existing_artifacts]
-    runs-on: macos-13
+    runs-on: macos-14
     steps:
       - name: Check runner architecture
         shell: bash
