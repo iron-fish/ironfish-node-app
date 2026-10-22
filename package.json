@@ -113,5 +113,8 @@
   },
   "resolutions": {
     "@ledgerhq/errors": "^6.19.1"
+  },
+  "overrides": {
+    "napi-build-utils": "2.0.0"
   }
 }
