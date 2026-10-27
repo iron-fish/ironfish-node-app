@@ -5,6 +5,7 @@ import { clean, gt } from "semver";
 
 import { PartialGithubRelease } from "../../../shared/types";
 import { t } from "../trpc";
+import { isUnsupportedMacOS } from "../utils/osSupport";
 
 const githubReleaseUrl =
   "https://api.github.com/repos/iron-fish/ironfish-node-app/releases";
@@ -60,7 +61,13 @@ export const updateRouter = t.router({
   getCurrentVersion: t.procedure.query(async () => {
     return app.getVersion();
   }),
+  isUnsupportedMacOS: t.procedure.query(async () => {
+    return isUnsupportedMacOS();
+  }),
   isUpdateAvailable: t.procedure.query(async () => {
+    // Newer releases won't run on this OS, so don't prompt to update.
+    if (isUnsupportedMacOS()) return false;
+
     const latestRelease = await getLatestReleases();
 
     if (!latestRelease.ok) return false;

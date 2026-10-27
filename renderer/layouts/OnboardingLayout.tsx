@@ -13,6 +13,7 @@ import { defineMessages, useIntl } from "react-intl";
 
 import { LanguageSelectorButton } from "@/components/LanguageSelector/LanguageSelectorButton";
 import { NetworkSelectorButton } from "@/components/NetworkSelector/NetworkSelectorButton";
+import { UnsupportedOSBanner } from "@/components/UnsupportedOSBanner/UnsupportedOSBanner";
 import bigOnboardingFish from "@/images/big-onboarding-fish.svg";
 import discord from "@/images/discord.png";
 
@@ -72,6 +73,7 @@ export function OnboardingLayout({ children }: { children: ReactNode }) {
             w="100%"
             transform="translateY(-100%)"
           />
+          <UnsupportedOSBanner />
           <Flex
             flex={1}
             overflow="auto"

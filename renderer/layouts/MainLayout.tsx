@@ -17,6 +17,7 @@ import { SettingsLink } from "@/components/AppSettings/SidebarBottomLinks/Settin
 import { BackButton } from "@/components/BackButton/BackButton";
 import { StatusIndicator } from "@/components/StatusIndicator/StatusIndicator";
 import { TestnetBanner } from "@/components/TestnetBanner/TestnetBanner";
+import { UnsupportedOSBanner } from "@/components/UnsupportedOSBanner/UnsupportedOSBanner";
 import { useFeatureFlags } from "@/providers/FeatureFlagsProvider";
 import { trpcReact } from "@/providers/TRPCProvider";
 import { ChakraLink } from "@/ui/ChakraLink/ChakraLink";
@@ -234,6 +235,7 @@ export default function MainLayout({ children, backLinkProps }: Props) {
       }}
     >
       <VStack alignItems="stretch" h="100%">
+        <UnsupportedOSBanner />
         <TestnetBanner />
         <Grid flexGrow={1} templateColumns="auto 1fr" overflow="auto">
           <GridItem

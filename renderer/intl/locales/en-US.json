@@ -276,6 +276,9 @@
   "DnuK8f": {
     "message": "Turn this on if you want to specify a custom name for this account. Otherwise, the account name will be inferred from your exported account data."
   },
+  "DpI2NA": {
+    "message": "Your version of macOS is no longer supported. This is the last version of the Iron Fish Node App that will run on it. Upgrade to macOS 13 or later to keep receiving updates."
+  },
   "Eddg06": {
     "message": "Signature Shares"
   },
@@ -987,6 +990,9 @@
   },
   "wGpbja": {
     "message": "Add Contact Error"
+  },
+  "wMn6/y": {
+    "message": "Bahasa Jawa"
   },
   "wsALI4": {
     "message": "Enter Encoded Key"
