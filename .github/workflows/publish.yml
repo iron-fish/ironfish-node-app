@@ -67,7 +67,7 @@ jobs:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
         with:
-          node-version: 18
+          node-version: '24.22.1'
       - name: Install dependencies
         run: npm install --fetch-timeout 600000
       - name: Install AzureSignTool
@@ -97,7 +97,7 @@ jobs:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
         with:
-          node-version: 18
+          node-version: '24.22.1'
       - name: Install Python setuptools
         run: brew install python-setuptools
       - name: Install dependencies
@@ -178,7 +178,7 @@ jobs:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
         with:
-          node-version: 18
+          node-version: '24.22.1'
       - name: Install Python setuptools
         run: brew install python-setuptools
       - name: Install dependencies
@@ -290,7 +290,7 @@ jobs:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
         with:
-          node-version: 18
+          node-version: '24.22.1'
       - name: Install dependencies
         run: npm install
       - name: Build and publish release
