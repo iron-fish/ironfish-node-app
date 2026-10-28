@@ -27,13 +27,10 @@ export async function handleGetTransactions({
     transactionsStream.contentStream(),
   );
 
-  const networkId = (await rpcClient.chain.getNetworkInfo()).content.networkId;
-
   const notes = await formatTransactionsToNotes(
     rpcClient,
     transactions,
     accountName,
-    networkId,
   );
 
   return {

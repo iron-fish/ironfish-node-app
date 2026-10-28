@@ -12,8 +12,6 @@ export async function handleGetTransactionsForContact({
   const ironfish = await manager.getIronfish();
   const rpcClient = await ironfish.rpcClient();
 
-  const networkId = (await rpcClient.chain.getNetworkInfo()).content.networkId;
-
   const accountsResponse = await rpcClient.wallet.getAccounts();
   const accountNames = accountsResponse.content.accounts;
 
@@ -43,7 +41,6 @@ export async function handleGetTransactionsForContact({
       rpcClient,
       transactions,
       accountName,
-      networkId,
     );
 
     result.push(...notes);

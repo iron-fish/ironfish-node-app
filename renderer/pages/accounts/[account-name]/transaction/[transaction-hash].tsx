@@ -2,8 +2,6 @@ import { Box, HStack, Heading, Skeleton } from "@chakra-ui/react";
 import { useRouter } from "next/router";
 import { defineMessages, useIntl } from "react-intl";
 
-import { BridgeTransactionInformation } from "@/components/BridgeTransactionInformation/BridgeTransactionInformation";
-import { BridgeTransactionProgressIndicator } from "@/components/BridgeTransactionProgressIndicator/BridgeTransactionProgressIndicator";
 import { CopyAddress } from "@/components/CopyAddress/CopyAddress";
 import { NotesList } from "@/components/NotesList/NotesList";
 import { TransactionInformation } from "@/components/TransactionInformation/TransactionInformation";
@@ -101,23 +99,10 @@ function SingleTransactionContent({
         <Heading fontSize="28px">{accountName}</Heading>
         <CopyAddress address={accountData.address} />
       </HStack>
-      {transactionData.chainportData &&
-        transactionData.transaction.type === "send" && (
-          <BridgeTransactionProgressIndicator
-            transaction={transactionData.transaction}
-          />
-        )}
       <TransactionInformation
         transaction={transactionData.transaction}
         mb={16}
       />
-      {transactionData.chainportData && (
-        <BridgeTransactionInformation
-          transaction={transactionData.transaction}
-          chainportData={transactionData.chainportData}
-          mb={16}
-        />
-      )}
       <NotesList
         heading={formatMessage(messages.transactionNotes)}
         notes={showSelfSendNotes ? regularNotes : transactionData.notes}

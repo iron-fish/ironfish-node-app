@@ -32,9 +32,6 @@
   "/km2Zu": {
     "message": "Import Account"
   },
-  "/nrkEG": {
-    "message": "The fee for transacting on the destination network"
-  },
   "/tbC+S": {
     "description": "Button to export account in the specified format",
     "message": "Export Account"
@@ -84,9 +81,6 @@
   "3/a0Ho": {
     "message": "We're not able to download release notes right now."
   },
-  "3KdqXd": {
-    "message": "Destination Txn Hash"
-  },
   "3OLlCN": {
     "message": "From/To"
   },
@@ -102,17 +96,11 @@
   "3euoRJ": {
     "message": "Recovery Phrase"
   },
-  "3v74IM": {
-    "message": "By bridging your assets, you agree to Chainport's <link>terms of service</link>."
-  },
   "3vA/R+": {
     "message": "Memo can't be more than 32 bytes"
   },
   "47FYwb": {
     "message": "Cancel"
-  },
-  "4V/PNA": {
-    "message": "Confirm & Bridge"
   },
   "4l6vz1": {
     "message": "Copy"
@@ -171,12 +159,6 @@
   "6q3tCn": {
     "message": "Connecting"
   },
-  "6ugwQB": {
-    "message": "Receiving (Estimated)"
-  },
-  "7/GPHF": {
-    "message": "Iron Fish transaction fee"
-  },
   "711SFa": {
     "message": "The Iron Fish Node App supports {networkCount} networks."
   },
@@ -185,9 +167,6 @@
   },
   "7N6OYQ": {
     "message": "View Transaction"
-  },
-  "7Qw9T7": {
-    "message": "Destination Network"
   },
   "8GvVWZ": {
     "message": "Something went wrong, please try again."
@@ -254,9 +233,6 @@
   },
   "Byn5mN": {
     "message": "A fee amount is required"
-  },
-  "C2CIgC": {
-    "message": "Sending"
   },
   "C43FrR": {
     "message": "Amount:"
@@ -373,12 +349,6 @@
     "description": "Change as in the money that is returned to the sender after a transaction",
     "message": "Change"
   },
-  "KIbwgQ": {
-    "message": "Sending amount minus the bridge fee. This is an estimate, and you may receive a slightly different amount."
-  },
-  "KJMlfb": {
-    "message": "Destination network"
-  },
   "KN7zKn": {
     "message": "Error"
   },
@@ -397,9 +367,6 @@
   "LP4H/8": {
     "message": "Scanning blocks: {sequence} / {totalSequence}"
   },
-  "LPYoBI": {
-    "message": "Bridge fee"
-  },
   "LPlno7": {
     "message": "Multiple recipients"
   },
@@ -415,9 +382,6 @@
   "Lv0zJu": {
     "message": "Details"
   },
-  "M+isB1": {
-    "message": "Bridge Provider"
-  },
   "M99Eqr": {
     "message": "Add Memo"
   },
@@ -429,12 +393,6 @@
   },
   "MFXvHT": {
     "message": "Your balance may not be fully updated during this syncing process."
-  },
-  "MZCNjq": {
-    "message": "Bridge"
-  },
-  "Muzvyz": {
-    "message": "Confirm Bridge Transaction"
   },
   "N0KGQj": {
     "message": "Block Graffiti"
@@ -507,9 +465,6 @@
   },
   "QXxopU": {
     "message": "Mnemonic phrase copied to clipboard!"
-  },
-  "QgKpaU": {
-    "message": "Bridge sent"
   },
   "QlsDcr": {
     "message": "Action"
@@ -586,9 +541,6 @@
   "UTOugV": {
     "message": "Your Assets"
   },
-  "Uh1bJh": {
-    "message": "Bridge Information"
-  },
   "Uvwn4S": {
     "message": "Something went wrong while rendering this component. Please try again. If the issue persists, report the issue on <link>Discord</link>."
   },
@@ -613,9 +565,6 @@
   "WNgCs+": {
     "message": "Back to Address Book"
   },
-  "WSW+95": {
-    "message": "About Bridging"
-  },
   "WWEwrn": {
     "message": "Node Settings"
   },
@@ -639,9 +588,6 @@
   },
   "Xvk80E": {
     "message": "Please enter a name for this account"
-  },
-  "Y0TjmL": {
-    "message": "A network error occurred, please try again"
   },
   "YDkqMJ": {
     "message": "Incoming"
@@ -672,9 +618,6 @@
   },
   "bFQd/U": {
     "message": "With contact names being associated with public addresses, you have the freedom to customize how you identify your contacts without affecting their underlying address."
-  },
-  "bGuGjq": {
-    "message": "Bridge Asset"
   },
   "bW7B87": {
     "message": "New"
@@ -712,9 +655,6 @@
   "e0hVig": {
     "message": "Fill out the 'To' and 'Amount' fields to see estimated fees."
   },
-  "e6HIlS": {
-    "message": "Destination Address"
-  },
   "e6Ph5+": {
     "message": "Address"
   },
@@ -745,17 +685,11 @@
   "g/oZa8": {
     "message": "Waiting for peers to sync from"
   },
-  "gC6/qK": {
-    "message": "Source Network"
-  },
   "gcuDcH": {
     "message": "Sent"
   },
   "gjBiyj": {
     "message": "Loading..."
-  },
-  "gu1qWm": {
-    "message": "Bridge received"
   },
   "gu9i+5": {
     "message": "Version {currentVersion}"
@@ -826,9 +760,6 @@
   "koRMZ3": {
     "message": "Address:"
   },
-  "krty63": {
-    "message": "Need help?"
-  },
   "lhnRYP": {
     "message": "Choose the network"
   },
@@ -843,9 +774,6 @@
   },
   "mzRLqs": {
     "message": "Download in progress..."
-  },
-  "niH3/k": {
-    "message": "The bridge provider's fee"
   },
   "nkeKcx": {
     "message": "Head Hash"
@@ -949,9 +877,6 @@
   "tf1lIh": {
     "message": "Free"
   },
-  "tjHKMS": {
-    "message": "Sender Address"
-  },
   "trO2pQ": {
     "message": "Your Ledger device is locked or the Ironfish app is not open."
   },
@@ -963,9 +888,6 @@
   },
   "uT4OlP": {
     "message": "Fee"
-  },
-  "vEiG+a": {
-    "message": "Gas fee"
   },
   "vGJnQL": {
     "message": "Review Transaction"
@@ -988,6 +910,9 @@
   "wGpbja": {
     "message": "Add Contact Error"
   },
+  "wMn6/y": {
+    "message": "Bahasa Jawa"
+  },
   "wsALI4": {
     "message": "Enter Encoded Key"
   },
@@ -1002,9 +927,6 @@
   },
   "xmcVZ0": {
     "message": "Search"
-  },
-  "xwWibX": {
-    "message": "Bridging enables seamless transfers of assets across any EVM network. Simply choose your account, a bridge provider, select the asset and its amount, pick the destination network, and provide the destination address to execute your transfer."
   },
   "y1Z3or": {
     "message": "Language"

@@ -20,7 +20,6 @@ import {
   isTransactionStatusTerminal,
 } from "@/utils/transactionUtils";
 
-import { BridgeIcon } from "./icons/BridgeIcon";
 import { ChangeIcon } from "./icons/ChangeIcon";
 import { ExpiredIcon } from "./icons/ExpiredIcon";
 import { PendingIcon } from "./icons/PendingIcon";
@@ -34,19 +33,10 @@ function getNoteStatusDisplay(
   status: TransactionStatus,
   asTransaction: boolean,
   isSelfSend: boolean,
-  isBridge: boolean,
 ): { icon: ReactNode; message: MessageDescriptor } {
   if (!asTransaction || status === "confirmed") {
     if (isSelfSend) {
       return { icon: <ChangeIcon />, message: messages.change };
-    }
-
-    if (isBridge && type === "send") {
-      return { icon: <BridgeIcon />, message: messages.bridgeSent };
-    }
-
-    if (isBridge && type === "receive") {
-      return { icon: <BridgeIcon />, message: messages.bridgeReceived };
     }
 
     if (type === "send") {
@@ -119,7 +109,6 @@ export function NoteRow({
   memo,
   transactionHash,
   asTransaction = false,
-  isBridge = false,
   contact,
 }: {
   accountName: string;
@@ -139,7 +128,6 @@ export function NoteRow({
    * show the status as the transaction's status)
    */
   asTransaction?: boolean;
-  isBridge?: boolean;
 }) {
   const { formatMessage } = useIntl();
   const [status, setStatus] = useState(initialStatus);
@@ -163,7 +151,6 @@ export function NoteRow({
     status,
     asTransaction,
     from === to && type !== "miner",
-    isBridge,
   );
   const headings = useHeadingsText();
 
@@ -192,7 +179,7 @@ export function NoteRow({
         {formatDate(timestamp)}
       </Text>,
       <Text as="span" key={key++}>
-        {!memo || isBridge
+        {!memo
           ? "—"
           : Array.isArray(memo)
           ? formatMessage(messages.multipleMemos)
@@ -204,7 +191,6 @@ export function NoteRow({
     assetId,
     formatMessage,
     from,
-    isBridge,
     memo,
     statusDisplay.icon,
     statusDisplay.message,
