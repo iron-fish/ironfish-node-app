@@ -104,7 +104,6 @@ export function NotesList({
                 status={note.status}
                 memo={note.memo}
                 asTransaction={asTransactions}
-                isBridge={asTransactions && !!note.chainportData}
               />
             );
           }}
